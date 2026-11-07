@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "skills": {
+    "@osamagweaa/seo-geo-optimizer": {
+      "version": "1.0.0",
+      "installedAt": 1794079046749,
+      "ownerHandle": "osamagweaa"
+    },
+    "@ivangdavila/seo": {
+      "version": "1.0.6",
+      "installedAt": 1794079054457,
+      "ownerHandle": "ivangdavila"
+    },
+    "@billyutw/web-search": {
+      "version": "1.0.0",
+      "installedAt": 1794079059119,
+      "ownerHandle": "billyutw"
+    }
+  }
+}

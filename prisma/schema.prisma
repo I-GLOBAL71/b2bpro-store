@@ -1,0 +1,136 @@
+// Schéma Prisma — b2bpro.store
+// Place de marché B2B francophone : services, vendeurs, options, avis, blog, base de connaissances IA, leads.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Vendeurs (profils fictifs FR / CA / AF) ────────────────────────────────
+model Seller {
+  id           String    @id @default(cuid())
+  slug         String    @unique
+  name         String
+  country      String // FR, CA, SN, CI, CM, MA, CD, BJ, TG, GA, BF, ML, GN, TN
+  countryLabel String // "France", "Canada (Québec)", "Sénégal"...
+  city         String
+  title        String // accroche professionnelle
+  bio          String // présentation unique (jamais dupliquée)
+  skills       String // JSON array : ["Veille concurrentielle", ...]
+  languages    String // JSON array : ["Français", "Anglais"]
+  rating       Float // note moyenne 4.2 → 5.0
+  reviewsCount Int
+  totalSales   Int // ventes cumulées
+  responseTime String // "répond en moins de 2 h"
+  memberSince  String // "2021"
+  level        String // "Confirmé", "Expert", "Élite", "Légende"
+  avatarColors String // JSON [c1, c2] pour avatar SVG
+  isTop        Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  services     Service[]
+}
+
+// ─── Services ───────────────────────────────────────────────────────────────
+model Service {
+  id           String          @id @default(cuid())
+  slug         String          @unique
+  code         String // "F-01" | "#01"
+  name         String // nom long du service
+  title        String // titre commercial ComeUp (≈70 car.)
+  category     String // catégorie fine
+  pole         String // pôle métier (libellé complet)
+  poleSlug     String // slug du pôle pour /categories/[slug]
+  poleIcon     String // nom d'icône Lucide
+  basePrice    Float
+  deliveryDays Int
+  description  String // description complète markdown (SEO)
+  shortDesc    String // résumé 1-2 phrases pour cartes
+  keywords     String // JSON { primary, secondary[], longTail[], aiQueries[] }
+  faq          String // JSON [{q, a}] — optimisé AIO
+  features     String // JSON [string] — points forts
+  deliverables String // JSON [string] — livrables
+  process      String // JSON [{step, title, detail}] — méthode
+  rating       Float // 4.2 → 5.0
+  reviewsCount Int
+  salesCount   Int // nombre de services déjà réalisés (aléatoire)
+  views        Int
+  featured     Boolean         @default(false)
+  isFounder    Boolean         @default(false)
+  createdAt    DateTime        @default(now())
+  sellerId     String
+  seller       Seller          @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  options      ServiceOption[]
+  reviews      Review[]
+}
+
+// ─── Options supplémentaires (upsell à la ComeUp) ──────────────────────────
+model ServiceOption {
+  id          String  @id @default(cuid())
+  serviceId   String
+  service     Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  name        String
+  description String
+  priceExtra  Float
+  daysExtra   Int
+  monthly     Boolean @default(false)
+  position    Int     @default(0)
+}
+
+// ─── Avis clients ───────────────────────────────────────────────────────────
+model Review {
+  id         String   @id @default(cuid())
+  serviceId  String
+  service    Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  authorName String
+  country    String
+  rating     Float // 4.2 → 5.0
+  comment    String
+  orderLabel String // option commandée
+  createdAt  DateTime @default(now())
+}
+
+// ─── Blog (référencement continu) ──────────────────────────────────────────
+model BlogPost {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  excerpt     String
+  content     String // markdown
+  category    String
+  coverTheme  String // thème SVG de couverture
+  readMinutes Int
+  publishedAt DateTime @default(now())
+  author      String
+}
+
+// ─── Base de connaissances du support IA ────────────────────────────────────
+model KnowledgeItem {
+  id       String @id @default(cuid())
+  category String // "general" | "plateforme" | "paiement" | slug pôle | slug service
+  question String
+  answer   String
+  keywords String // mots-clés de déclenchement
+}
+
+// ─── Leads (email requis avant le support IA) ───────────────────────────────
+model Lead {
+  id        String        @id @default(cuid())
+  email     String        @unique
+  name      String?
+  source    String // "support-ia", "newsletter", ...
+  createdAt DateTime      @default(now())
+  messages  ChatMessage[]
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  role      String // "user" | "assistant"
+  content   String
+  createdAt DateTime @default(now())
+}
