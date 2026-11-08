@@ -7,6 +7,90 @@
 
 ---
 
+## [1.3.0] — 2026-11-08 — Stack de production : Vercel · Neon Postgres · Vercel Blob (WebP) · PayPal · GSC
+
+Mandat utilisateur : intégrer la stack de production — Vercel (hébergement), Neon
+PostgreSQL (base de données), Vercel Blob (miniatures compressées en WebP),
+PayPal (paiement via l'API), Google Search Console.
+
+### [ADDITIF] Paiement PayPal — API REST v2 + SDK JS
+- **`src/lib/paypal.ts`** : client serveur (OAuth avec cache, création CAPTURE,
+  capture, erreurs typées `PayPalError`). Le secret ne quitte jamais le serveur.
+- **`POST /api/paypal/create-order`** : total TOUJOURS recalculé serveur depuis
+  la base (le client ne transmet aucun montant) → commande PayPal + commande
+  locale `Order` (CREATED, slugs/titres dénormalisés).
+- **`POST /api/paypal/capture-order`** : capture → PAID + paidAt +
+  paypalCaptureId + infos payeur → récapitulatif client en ChatMessage du lead
+  (parité avec la voie démo) ; idempotent si déjà PAID ; échec → FAILED.
+- **Modèle `Order`** (additif) : reference CMD-XXXXXXXX, lead, service, options
+  JSON, total, devise, statuts CREATED/PAID/FAILED/REFUNDED, traçabilité PayPal.
+- **Tunnel UI 2 étapes** (form → boutons PayPal SDK → confirmation avec
+  référence) ; 503 explicite sans configuration ; **voie démo /api/orders
+  strictement préservée** quand PayPal n'est pas configuré (comportement local
+  inchangé).
+- Contrats Zod/DTO + `API_ROUTES` paypal dans `src/lib/contracts.ts` (additif).
+
+### [ADDITIF] Vercel Blob — miniatures/avatars WebP
+- **`scripts/thumbs-to-blob.ts`** (`bun run thumbs:blob`) : SVG → WebP (sharp,
+  1200×750 q82 / avatars 256×256) → upload Vercel Blob (`addRandomSuffix=false`
+  → URLs stables) → `Service.thumbUrls` / `Seller.avatarUrl` en base. Options
+  `--dry-run` (validation locale, testée : WebP conformes), `--with-avatars`,
+  `--service=<slug>`, `--limit=N`. Idempotent (reprise possible).
+- **Champs additifs** `Service.thumbUrls` / `Seller.avatarUrl` (nullable) +
+  helper défensif `parseThumbUrls` (contrats) : **fallback automatique sur les
+  SVG locaux** — galerie, 5 points de montage des cartes, avatars, image
+  OG/JSON-LD — jamais d'image cassée.
+- `next.config.ts` : `images.remotePatterns` pour `*.public.blob.vercel-storage.com`.
+
+### [ADDITIF] Neon PostgreSQL (production)
+- **`prisma/schema.postgres.prisma`** : miroir strict du schéma SQLite pour
+  PostgreSQL/Neon (règle : toute évolution répliquée sur les deux).
+- **`scripts/migrate-to-neon.ts`** (`bun run db:migrate:neon`) : copie intégrale
+  SQLite → Neon (9 tables, IDs/slugs préservés, transaction + ROLLBACK,
+  vérification des comptes, code sortie 1 si divergence, source en lecture
+  seule). URL via `NEON_DATABASE_URL` ou `--url=` (jamais DATABASE_URL local).
+- **`vercel.json`** : buildCommand générant le client Prisma Postgres ;
+  `output: standalone` désactivé sur Vercel ; scripts npm `db:generate:pg` /
+  `db:push:pg` (`--skip-generate` : protège le client SQLite local).
+- Dépendances : `@vercel/blob` (prod) · `pg` + `@types/pg` (dev, migration).
+
+### [ADDITIF] SEO production + Google Search Console
+- `GOOGLE_SITE_VERIFICATION` → balise META `google-site-verification`
+  (defaultMetadata, active uniquement si définie).
+- `NEXT_PUBLIC_SITE_URL`/`SITE_URL` → `SITE.url` (sitemap, robots, canonicals,
+  JSON-LD) — défaut inchangé https://b2bpro.store.
+- **`.env.example`** (catalogue complet documenté, exception .gitignore) +
+  **`docs/DEPLOIEMENT-VERCEL.md`** : runbook complet (Neon → Vercel → env →
+  Blob → PayPal → GSC → checklist 12 points → rollback → FAQ).
+- **`src/lib/env.ts`** : accès typé unique aux variables d'environnement
+  (site, PayPal, Blob, GSC) — tolérantes, valeurs par défaut sûres.
+
+### [FORCE MAJEURE] Modifications justifiées d'implémentations existantes (protocole §5)
+- `option-selector.tsx` : tunnel de commande étendu pour PayPal (mandat
+  utilisateur explicite) — prop `payPal` optionnelle ; **sans elle, comportement
+  et textes strictement identiques à l'existant** (voie démo vérifiée e2e).
+- `site.ts` : `SITE.url` résolu via env (défaut identique) + meta GSC
+  conditionnelle — aucune URL SEO existante ne change.
+- `next.config.ts` : `output` conditionné à l'absence d'environnement Vercel +
+  remotePatterns Blob (additifs).
+- `service-card.tsx` / `service-gallery.tsx` : props `thumbUrls` optionnelles
+  avec fallback SVG local (comportement inchangé sans données Blob).
+- Pages `services/[slug]`, `services`, `categories/[slug]`, `vendeurs/[slug]`,
+  `components/home/sections.tsx` : passage optionnel des champs Blob +
+  avatar/avatarUrl fallback (aucun changement visuel sans migration).
+
+### Vérification de la release
+- Rituel charte respecté : `bun run guard` avant (14/14) + snapshot préalable ;
+  `bun run guard` après : **14 contrôles verts** ; `bun run lint` : 0 erreur.
+- Navigateur (agent-browser) : accueil (14 cartes, miniatures 8/8 chargées) ;
+  fiche service complète ; **tunnel démo e2e** (lead + récapitulatif persistés
+  en base) ; **tunnel PayPal** : étape paiement, fallback gracieux SDK (ID
+  factice), 503/502 API propres et actionnables.
+- Migration WebP dry-run : 39 fichiers convertis, magic bytes WebP conformes.
+- Client Prisma régénéré et serveur dev redémarré sans erreur (`dev.log` propre).
+
+---
+
 ## [1.2.0] — 2026-11-08 — Audit SGA™ intégral + skill rédactionnel obligatoire + suppression du nombre figé
 
 Mandat utilisateur : vérifier INDIVIDUELLEMENT chaque service (SEO/GEO/AIO), garantir que

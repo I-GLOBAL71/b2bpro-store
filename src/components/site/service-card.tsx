@@ -19,6 +19,8 @@ export interface ServiceCardData {
   sellerName?: string;
   sellerCountry?: string;
   variant?: number; // 0, 1 ou 2 → miniature affichée
+  /** Miniatures WebP Vercel Blob (3 URLs absolues) — sinon SVG local par slug. */
+  thumbUrls?: string[];
 }
 
 export function ServiceCard({
@@ -29,6 +31,7 @@ export function ServiceCard({
   className?: string;
 }) {
   const v = (service.variant ?? 0) % 3;
+  const thumbSrc = service.thumbUrls?.[v] ?? `/thumbs/${service.slug}-${v + 1}.svg`;
   return (
     <Link
       href={`/services/${service.slug}`}
@@ -39,7 +42,7 @@ export function ServiceCard({
     >
       <div className="relative aspect-[16/10] overflow-hidden">
         <Image
-          src={`/thumbs/${service.slug}-${v + 1}.svg`}
+          src={thumbSrc}
           alt={`${service.title} — miniature du service`}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
+import { getSiteUrl, getGoogleSiteVerification } from "@/lib/env";
 
 export const SITE = {
   name: "b2bpro.store",
   fullName: "b2bpro.store — La place de marché des services digitaux B2B francophones",
-  url: "https://b2bpro.store",
+  // URL canonique : surchargeable via NEXT_PUBLIC_SITE_URL / SITE_URL (Vercel),
+  // défaut production https://b2bpro.store — utilisée par sitemap, robots,
+  // canonicals et JSON-LD.
+  url: getSiteUrl(),
   description:
     "Des services digitaux B2B livrés par des experts vérifiés : veille concurrentielle, génération de leads, IA & données, SEO local. Dès 25 €, livraison 2-3 jours, avis 4,2-5,0 ★. Plateforme taillée pour tous les pays francophones.",
   tagline: "Les services digitaux B2B qui font croître votre business",
@@ -120,6 +124,7 @@ export const POLE_ICONS: Record<string, string> = {
 };
 
 export function defaultMetadata(): Metadata {
+  const googleVerification = getGoogleSiteVerification();
   return {
     title: {
       default: "b2bpro.store — Services digitaux B2B francophones dès 25 €",
@@ -127,6 +132,9 @@ export function defaultMetadata(): Metadata {
     },
     description: SITE.description,
     metadataBase: new URL(SITE.url),
+    // Vérification de propriété Google Search Console (balise META) — active
+    // uniquement si GOOGLE_SITE_VERIFICATION est défini (runbook §GSC).
+    ...(googleVerification ? { verification: { google: googleVerification } } : {}),
     openGraph: {
       type: "website",
       siteName: "b2bpro.store",

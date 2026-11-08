@@ -269,6 +269,8 @@ export const API_ROUTES = {
   services: "/api/services",
   chat: "/api/support/chat",
   integrity: "/api/integrity",
+  paypalCreateOrder: "/api/paypal/create-order",
+  paypalCaptureOrder: "/api/paypal/capture-order",
 } as const;
 
 // ─── Rapport d'intégrité (contrat de /api/integrity et du script guard) ──────
@@ -307,4 +309,73 @@ export interface IntegrityReport {
     avatars: number;
   };
   checks: CheckResult[];
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  SECTION ADDITIVE v1.3.0 — Paiement PayPal + miniatures Vercel Blob
+//  (stack de production : Vercel · Neon Postgres · Vercel Blob · PayPal)
+// ═══════════════════════════════════════════════════════════════════════════
+
+// ─── Miniatures : lecture défensive du champ Service.thumbUrls ────────────────
+
+/**
+ * Parse `Service.thumbUrls` (JSON [url×3], miniatures WebP Vercel Blob).
+ * Retourne `undefined` si absent/invalide/incomplet → l'appelant retombe sur
+ * les SVG locaux `/thumbs/<slug>-{1,2,3}.svg` (jamais d'image cassée).
+ */
+export function parseThumbUrls(raw: string | null | undefined): string[] | undefined {
+  const urls = safeJsonParse<string[]>(raw, [] as string[]);
+  return Array.isArray(urls) && urls.length === BUSINESS_RULES.THUMBS_PER_SERVICE &&
+    urls.every((u) => typeof u === "string" && /^https?:\/\//.test(u))
+    ? urls
+    : undefined;
+}
+
+// ─── Commandes PayPal (modèle Order) ──────────────────────────────────────────
+
+/** Statuts de paiement d'une commande (modèle Order.paymentStatus). */
+export const ORDER_PAYMENT_STATUS = {
+  CREATED: "CREATED",
+  PAID: "PAID",
+  FAILED: "FAILED",
+  REFUNDED: "REFUNDED",
+} as const;
+
+export type OrderPaymentStatus = (typeof ORDER_PAYMENT_STATUS)[keyof typeof ORDER_PAYMENT_STATUS];
+
+/** POST /api/paypal/create-order — corps de requête (le total est TOUJOURS recalculé serveur). */
+export const paypalCreateOrderRequestSchema = z.object({
+  email: z.string().regex(EMAIL_RE, "Email invalide"),
+  name: z.string().optional(),
+  brief: z.string().optional(),
+  serviceId: z.string().min(1),
+  optionIds: z.array(z.string()).default([]),
+});
+
+/** POST /api/paypal/create-order — réponse de succès. */
+export interface PayPalCreateOrderResponse {
+  paypalOrderId: string;
+  reference: string;
+  total: number;
+  currency: "EUR";
+}
+
+/** POST /api/paypal/capture-order — corps de requête. */
+export const paypalCaptureOrderRequestSchema = z.object({
+  paypalOrderId: z.string().min(1),
+});
+
+/** POST /api/paypal/capture-order — réponse de succès. */
+export interface PayPalCaptureOrderResponse {
+  ok: true;
+  reference: string;
+  total: number;
+  currency: "EUR";
+  payerEmail: string | null;
+}
+
+/** Configuration PayPal passée par une page serveur à un composant client (jamais le secret). */
+export interface PayPalClientConfig {
+  clientId: string;
+  currency: "EUR";
 }

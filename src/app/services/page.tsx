@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Search, SlidersHorizontal, PackageSearch } from "lucide-react";
 import { ServiceCard } from "@/components/site/service-card";
+import { parseThumbUrls } from "@/lib/contracts";
 import { PoleIcon } from "@/components/site/pole-icon";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -195,6 +196,7 @@ export default async function ServicesPage({
                 rating: s.rating,
                 reviewsCount: s.reviewsCount,
                 salesCount: s.salesCount,
+                thumbUrls: parseThumbUrls(s.thumbUrls),
                 sellerName: s.seller.name,
                 sellerCountry: s.seller.countryLabel,
                 variant: i % 3,

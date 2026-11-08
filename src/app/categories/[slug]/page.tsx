@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { ServiceCard } from "@/components/site/service-card";
+import { parseThumbUrls } from "@/lib/contracts";
 import { PoleIcon } from "@/components/site/pole-icon";
 import { getServices } from "@/lib/queries";
 import { POLE_LABELS, POLE_DESCRIPTIONS, POLE_ICONS, POLE_ACCENTS, POLE_DESCRIPTIONS as POLE_DESC } from "@/lib/site";
@@ -94,6 +95,7 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
                   rating: s.rating,
                   reviewsCount: s.reviewsCount,
                   salesCount: s.salesCount,
+                  thumbUrls: parseThumbUrls(s.thumbUrls),
                   sellerName: s.seller.name,
                   sellerCountry: s.seller.countryLabel,
                   variant: i % 3,

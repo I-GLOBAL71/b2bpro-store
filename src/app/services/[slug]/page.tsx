@@ -20,6 +20,8 @@ import {
 } from "lucide-react";
 import { db } from "@/lib/db";
 import { getServiceBySlug, getRelatedServices } from "@/lib/queries";
+import { getPayPalConfig } from "@/lib/env";
+import { parseThumbUrls } from "@/lib/contracts";
 import { ServiceGallery } from "@/components/site/service-gallery";
 import { OptionSelector } from "@/components/site/option-selector";
 import { ReviewForm } from "@/components/site/review-form";
@@ -43,6 +45,8 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const svc = await db.service.findUnique({ where: { slug } });
   if (!svc) return {};
   const kw = JSON.parse(svc.keywords) as { primary: string; secondary: string[] };
+  // Miniature principale : WebP Vercel Blob si migrée, sinon SVG local (résolu via metadataBase).
+  const ogImage = parseThumbUrls(svc.thumbUrls)?.[0] ?? `/thumbs/${svc.slug}-1.svg`;
   return {
     title: `${svc.title.replace(/^Je vais\s+/i, "")} dès ${svc.basePrice} €`.slice(0, 68),
     description: `${svc.shortDesc.slice(0, 140)} Livré en ${svc.deliveryDays} jours, note ${svc.rating.toString().replace(".", ",")}/5, paiement sécurisé.`.slice(0, 165),
@@ -52,7 +56,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
       title: svc.title,
       description: svc.shortDesc.slice(0, 200),
       type: "website",
-      images: [{ url: `/thumbs/${svc.slug}-1.svg`, width: 1200, height: 750 }],
+      images: [{ url: ogImage, width: 1200, height: 750 }],
     },
   };
 }
@@ -71,6 +75,16 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
   const sellerSkills = JSON.parse(svc.seller.skills) as string[];
 
   const accent = POLE_ACCENTS[svc.poleSlug];
+
+  // Miniatures WebP (Vercel Blob) si migrées — sinon SVG locaux via le slug.
+  const thumbUrls = parseThumbUrls(svc.thumbUrls);
+  const primaryThumb = thumbUrls?.[0] ?? `${SITE.url}/thumbs/${svc.slug}-1.svg`;
+
+  // Configuration PayPal (mode démo si absente) — le secret ne quitte jamais le serveur.
+  const payPalCfg = getPayPalConfig();
+  const payPal = payPalCfg.enabled
+    ? { clientId: payPalCfg.clientId, currency: payPalCfg.currency }
+    : undefined;
 
   // Répartition des notes
   const dist = [5, 4.5, 4, 3.5, 3].map((star) => {
@@ -116,7 +130,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
       "@type": "Product",
       name: svc.title,
       description: svc.shortDesc,
-      image: `${SITE.url}/thumbs/${svc.slug}-1.svg`,
+      image: primaryThumb,
       brand: { "@type": "Brand", name: "b2bpro.store" },
       offers: {
         "@type": "Offer",
@@ -212,7 +226,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
             </div>
 
             <div className="mt-6">
-              <ServiceGallery slug={svc.slug} alt={svc.title} />
+              <ServiceGallery slug={svc.slug} alt={svc.title} thumbUrls={thumbUrls} />
             </div>
 
             {/* Réponse directe AIO (answer-first) */}
@@ -403,7 +417,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
                 </p>
                 <div className="mt-3 flex items-start gap-3.5">
                   <Image
-                    src={`/avatars/${svc.seller.slug}.svg`}
+                    src={svc.seller.avatarUrl ?? `/avatars/${svc.seller.slug}.svg`}
                     alt={`Avatar de ${svc.seller.name}`}
                     width={56}
                     height={56}
@@ -465,6 +479,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
                     daysExtra: o.daysExtra,
                     monthly: o.monthly,
                   }))}
+                  payPal={payPal}
                 />
               </div>
 
@@ -524,6 +539,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
                     rating: r.rating,
                     reviewsCount: r.reviewsCount,
                     salesCount: r.salesCount,
+                    thumbUrls: parseThumbUrls(r.thumbUrls),
                     sellerName: r.seller.name,
                     sellerCountry: r.seller.countryLabel,
                     variant: i % 3,

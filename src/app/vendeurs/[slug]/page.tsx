@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { MapPin, Clock, Award, Languages, ChevronRight } from "lucide-react";
 import { getSellerBySlug } from "@/lib/queries";
 import { ServiceCard } from "@/components/site/service-card";
+import { parseThumbUrls } from "@/lib/contracts";
 import { RatingStars } from "@/components/site/rating-stars";
 import { formatCompact, SITE } from "@/lib/site";
 
@@ -71,7 +72,7 @@ export default async function SellerPage({ params }: { params: Promise<Params> }
           <div className="relative px-6 pb-6 sm:px-8">
             <div className="-mt-12 flex flex-wrap items-end gap-5 sm:-mt-14">
               <Image
-                src={`/avatars/${seller.slug}.svg`}
+                src={seller.avatarUrl ?? `/avatars/${seller.slug}.svg`}
                 alt={`Avatar de ${seller.name}`}
                 width={112}
                 height={112}
@@ -167,6 +168,7 @@ export default async function SellerPage({ params }: { params: Promise<Params> }
                   rating: s.rating,
                   reviewsCount: s.reviewsCount,
                   salesCount: s.salesCount,
+                  thumbUrls: parseThumbUrls(s.thumbUrls),
                   variant: i % 3,
                 }}
               />

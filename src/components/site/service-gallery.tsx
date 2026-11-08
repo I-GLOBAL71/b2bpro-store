@@ -3,9 +3,25 @@
 import { useState } from "react";
 import Image from "next/image";
 
-export function ServiceGallery({ slug, alt }: { slug: string; alt: string }) {
+/**
+ * Galerie 3 miniatures d'un service.
+ * `thumbUrls` : URLs absolues WebP (Vercel Blob) issues de Service.thumbUrls —
+ * fallback automatique sur les SVG locaux /thumbs/<slug>-{1,2,3}.svg.
+ */
+export function ServiceGallery({
+  slug,
+  alt,
+  thumbUrls,
+}: {
+  slug: string;
+  alt: string;
+  thumbUrls?: string[];
+}) {
   const [active, setActive] = useState(0);
-  const images = [1, 2, 3].map((v) => `/thumbs/${slug}-${v}.svg`);
+  const images =
+    thumbUrls && thumbUrls.length === 3
+      ? thumbUrls
+      : [1, 2, 3].map((v) => `/thumbs/${slug}-${v}.svg`);
 
   return (
     <div className="flex flex-col gap-3">

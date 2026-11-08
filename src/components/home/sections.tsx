@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, CreditCard, SearchCheck, PackageCheck } from "lucide-react";
 import { ServiceCard } from "@/components/site/service-card";
+import { parseThumbUrls } from "@/lib/contracts";
 import { RatingStars } from "@/components/site/rating-stars";
 
 export function BestSellersSection({
@@ -49,6 +50,7 @@ export function BestSellersSection({
               key={s.slug}
               service={{
                 ...s,
+                thumbUrls: parseThumbUrls(s.thumbUrls),
                 sellerName: s.seller.name,
                 sellerCountry: s.seller.countryLabel,
                 variant: i % 3,

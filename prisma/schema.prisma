@@ -29,6 +29,7 @@ model Seller {
   memberSince  String // "2021"
   level        String // "Confirmé", "Expert", "Élite", "Légende"
   avatarColors String // JSON [c1, c2] pour avatar SVG
+  avatarUrl    String? // URL absolue (Vercel Blob WebP) — sinon fallback /avatars/<slug>.svg
   isTop        Boolean   @default(false)
   createdAt    DateTime  @default(now())
   services     Service[]
@@ -60,11 +61,13 @@ model Service {
   views        Int
   featured     Boolean         @default(false)
   isFounder    Boolean         @default(false)
+  thumbUrls    String? // JSON [url1, url2, url3] — miniatures WebP Vercel Blob (sinon fallback local SVG)
   createdAt    DateTime        @default(now())
   sellerId     String
   seller       Seller          @relation(fields: [sellerId], references: [id], onDelete: Cascade)
   options      ServiceOption[]
   reviews      Review[]
+  orders       Order[]
 }
 
 // ─── Options supplémentaires (upsell à la ComeUp) ──────────────────────────
@@ -124,6 +127,7 @@ model Lead {
   source    String // "support-ia", "newsletter", ...
   createdAt DateTime      @default(now())
   messages  ChatMessage[]
+  orders    Order[]
 }
 
 model ChatMessage {
@@ -133,4 +137,32 @@ model ChatMessage {
   role      String // "user" | "assistant"
   content   String
   createdAt DateTime @default(now())
+}
+
+// ─── Commandes réelles (paiement PayPal) ──────────────────────────────────────
+// Modèle additif v1.3.0 : persiste les paiements capturés via l'API PayPal.
+// Le récapitulatif client reste attaché au lead (ChatMessage), comme pour la
+// voie démo /api/orders — la commande apporte en plus la traçabilité paiement.
+model Order {
+  id              String    @id @default(cuid())
+  reference       String    @unique // "CMD-XXXXXXXX" (même format que la voie démo)
+  leadId          String
+  lead            Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  serviceId       String
+  service         Service   @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  serviceSlug     String // dénormalisé — l'URL SEO de la fiche reste traçable
+  serviceTitle    String
+  optionIds       String    @default("[]") // JSON [string] — options choisies
+  brief           String?
+  total           Float // total recalculé SERVEUR (jamais celui du client)
+  deliveryDays    Int
+  currency        String    @default("EUR")
+  paymentProvider String    @default("paypal") // "paypal" | "demo"
+  paymentStatus   String    @default("CREATED") // CREATED | PAID | FAILED | REFUNDED
+  paypalOrderId   String?   @unique
+  paypalCaptureId String?
+  payerEmail      String?
+  payerName       String?
+  createdAt       DateTime  @default(now())
+  paidAt          DateTime?
 }

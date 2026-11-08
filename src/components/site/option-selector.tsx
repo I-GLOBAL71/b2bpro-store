@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Check, Clock, ShoppingCart, Sparkles, Info } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Check, Clock, ShoppingCart, Sparkles, Info, ArrowLeft, Lock, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,6 +17,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { API_ROUTES, type PayPalClientConfig } from "@/lib/contracts";
 
 export interface OptionItem {
   id: string;
@@ -31,7 +32,41 @@ function fmt(n: number) {
   return `${n.toLocaleString("fr-FR")} €`;
 }
 
-/** Sélecteur d'options à la ComeUp : offre de base + options cumulables, total en direct. */
+// ─── Typages minimaux du SDK PayPal JS (chargé dynamiquement) ────────────────
+
+interface PayPalButtonsInstance {
+  close(): Promise<void>;
+}
+
+interface PayPalButtonsConfig {
+  style?: Record<string, string>;
+  createOrder: () => Promise<string>;
+  onApprove: (data: { orderID: string }) => Promise<void>;
+  onError?: (err: unknown) => void;
+}
+
+interface PayPalSdk {
+  Buttons: (config: PayPalButtonsConfig) => {
+    render: (target: HTMLElement) => Promise<PayPalButtonsInstance>;
+  };
+}
+
+declare global {
+  interface Window {
+    paypal?: PayPalSdk;
+  }
+}
+
+type CheckoutStep = "form" | "payment" | "done";
+
+/** Sélecteur d'options à la ComeUp : offre de base + options cumulables, total en direct.
+ *
+ * Paiement :
+ *  - prop `payPal` fournie (production) → tunnel 2 étapes : formulaire →
+ *    boutons PayPal (SDK JS) → capture serveur → confirmation avec référence.
+ *  - prop absente (démo / sandbox) → voie historique POST /api/orders,
+ *    strictement inchangée.
+ */
 export function OptionSelector({
   serviceId,
   serviceSlug,
@@ -39,6 +74,7 @@ export function OptionSelector({
   basePrice,
   baseDays,
   options,
+  payPal,
 }: {
   serviceId: string;
   serviceSlug: string;
@@ -46,6 +82,8 @@ export function OptionSelector({
   basePrice: number;
   baseDays: number;
   options: OptionItem[];
+  /** Configuration PayPal (clientId public + devise) — absente = mode démo. */
+  payPal?: PayPalClientConfig;
 }) {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [orderOpen, setOrderOpen] = useState(false);
@@ -54,6 +92,19 @@ export function OptionSelector({
   const [brief, setBrief] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
+
+  // Tunnel PayPal
+  const [step, setStep] = useState<CheckoutStep>("form");
+  const [sdkReady, setSdkReady] = useState(false);
+  const [sdkFailed, setSdkFailed] = useState(false);
+  const [paying, setPaying] = useState(false);
+  const [paid, setPaid] = useState<{ reference: string; total: number; payerEmail: string | null } | null>(null);
+  const paypalContainerRef = useRef<HTMLDivElement>(null);
+
+  // Réfs anti-closures-périmées : le SDK est rendu une fois, les données du
+  // formulaire restent fraîches via ces réfs.
+  const formRef = useRef({ email, name, brief, selected });
+  formRef.current = { email, name, brief, selected };
 
   const { total, totalDays } = useMemo(() => {
     let t = basePrice;
@@ -76,6 +127,27 @@ export function OptionSelector({
     });
   }
 
+  function handleDialogOpen(open: boolean) {
+    setOrderOpen(open);
+    if (!open) {
+      // Fermeture : réinitialiser le tunnel pour une prochaine commande propre.
+      setStep("form");
+      setPaid(null);
+      setPaying(false);
+    }
+  }
+
+  // ── Étape 1 → Étape 2 (validation légère ; la validation d'autorité reste serveur) ──
+  function goToPayment(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email.includes("@")) {
+      toast.error("Veuillez saisir un email valide pour recevoir votre commande.");
+      return;
+    }
+    setStep("payment");
+  }
+
+  // ── Voie démo historique (POST /api/orders) — strictement inchangée ──────
   async function placeOrder(e: React.FormEvent) {
     e.preventDefault();
     if (!email.includes("@")) {
@@ -84,7 +156,7 @@ export function OptionSelector({
     }
     setSubmitting(true);
     try {
-      const res = await fetch("/api/orders", {
+      const res = await fetch(API_ROUTES.orders, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -107,6 +179,113 @@ export function OptionSelector({
       setSubmitting(false);
     }
   }
+
+  // ── Chargement du SDK PayPal JS (une seule balise <script> partagée) ─────
+  useEffect(() => {
+    if (!payPal) return;
+    const src =
+      `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(payPal.clientId)}` +
+      `&currency=${payPal.currency}&locale=fr_FR&intent=capture&components=buttons&disable-funding=paylater`;
+
+    let script = document.getElementById("paypal-sdk-js") as HTMLScriptElement | null;
+    if (script?.dataset.loaded === "1") {
+      setSdkReady(true);
+      return;
+    }
+    if (!script) {
+      script = document.createElement("script");
+      script.id = "paypal-sdk-js";
+      script.src = src;
+      script.async = true;
+      document.body.appendChild(script);
+    }
+    const onLoad = () => {
+      script!.dataset.loaded = "1";
+      setSdkReady(true);
+    };
+    const onError = () => setSdkFailed(true);
+    script.addEventListener("load", onLoad);
+    script.addEventListener("error", onError);
+    return () => {
+      script?.removeEventListener("load", onLoad);
+      script?.removeEventListener("error", onError);
+    };
+  }, [payPal]);
+
+  // ── Rendu des boutons PayPal dans le conteneur (étape paiement) ───────────
+  useEffect(() => {
+    if (!payPal || !sdkReady || step !== "payment") return;
+    const sdk = window.paypal;
+    const target = paypalContainerRef.current;
+    if (!sdk || !target) {
+      if (!sdk) setSdkFailed(true);
+      return;
+    }
+
+    let cancelled = false;
+    let instance: PayPalButtonsInstance | null = null;
+
+    sdk.Buttons({
+      style: { layout: "vertical", color: "gold", shape: "pill", label: "paypal", height: "45" },
+      createOrder: async () => {
+        const f = formRef.current;
+        setPaying(true);
+        const res = await fetch(API_ROUTES.paypalCreateOrder, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: f.email,
+            name: f.name,
+            brief: f.brief,
+            serviceId,
+            optionIds: [...f.selected],
+          }),
+        });
+        if (!res.ok) {
+          const err = (await res.json().catch(() => null)) as { error?: string } | null;
+          setPaying(false);
+          throw new Error(err?.error ?? "Création de commande impossible.");
+        }
+        const data = (await res.json()) as { paypalOrderId: string };
+        return data.paypalOrderId;
+      },
+      onApprove: async (data) => {
+        const res = await fetch(API_ROUTES.paypalCaptureOrder, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ paypalOrderId: data.orderID }),
+        });
+        setPaying(false);
+        if (!res.ok) {
+          const err = (await res.json().catch(() => null)) as { error?: string } | null;
+          toast.error(err?.error ?? "Le paiement n'a pas pu être finalisé. Aucun montant n'a été débité.");
+          return;
+        }
+        const ok = (await res.json()) as { reference: string; total: number; payerEmail: string | null };
+        setPaid({ reference: ok.reference, total: ok.total, payerEmail: ok.payerEmail });
+        setStep("done");
+        toast.success(`Paiement confirmé — commande ${ok.reference}.`);
+      },
+      onError: () => {
+        setPaying(false);
+        toast.error("PayPal a signalé une erreur. Vous pouvez réessayer ou contactez le support IA.");
+      },
+    })
+      .render(target)
+      .then((btn) => {
+        if (cancelled) btn.close().catch(() => undefined);
+        else instance = btn;
+      })
+      .catch(() => setSdkFailed(true));
+
+    return () => {
+      cancelled = true;
+      instance?.close().catch(() => undefined);
+      if (paypalContainerRef.current) paypalContainerRef.current.innerHTML = "";
+    };
+  }, [payPal, sdkReady, step, serviceId]);
+
+  const selectedOptions = options.filter((o) => selected.has(o.id));
 
   return (
     <div className="flex flex-col gap-4">
@@ -202,7 +381,7 @@ export function OptionSelector({
           </div>
         </div>
 
-        <Dialog open={orderOpen} onOpenChange={setOrderOpen}>
+        <Dialog open={orderOpen} onOpenChange={handleDialogOpen}>
           <DialogTrigger asChild>
             <Button className="mt-4 h-12 w-full gap-2 rounded-full bg-gradient-to-r from-primary to-emerald-500 text-[15px] font-bold text-white shadow-lg shadow-primary/20 hover:shadow-xl">
               <ShoppingCart className="h-5 w-5" aria-hidden="true" />
@@ -213,15 +392,158 @@ export function OptionSelector({
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2 text-xl">
                 <Sparkles className="h-5 w-5 text-primary" aria-hidden="true" />
-                Finaliser votre commande
+                {payPal && step === "payment"
+                  ? "Paiement sécurisé PayPal"
+                  : payPal
+                    ? "Finaliser votre commande"
+                    : "Finaliser votre commande"}
               </DialogTitle>
               <DialogDescription>
                 {serviceTitle} — <span className="font-semibold text-foreground">{fmt(total)}</span> ·
-                livraison {totalDays} j. Paiement sécurisé après validation du formulaire.
+                livraison {totalDays} j.{" "}
+                {payPal
+                  ? "Paiement par carte ou compte PayPal, fonds sécurisés."
+                  : "Paiement sécurisé après validation du formulaire."}
               </DialogDescription>
             </DialogHeader>
 
-            {done ? (
+            {/* ── Confirmation finale (voie PayPal payée OU voie démo) ── */}
+            {payPal && paid ? (
+              <div className="rounded-xl border border-primary/30 bg-accent/30 p-5 text-center">
+                <p className="text-[15px] font-bold">Paiement confirmé ✓</p>
+                <p className="mt-1 text-[13px] font-semibold text-primary">
+                  Commande {paid.reference} — {fmt(paid.total)} réglés
+                </p>
+                <p className="mt-2 text-[13.5px] leading-6 text-muted-foreground">
+                  Le paiement a été encaissé via PayPal
+                  {paid.payerEmail ? (
+                    <>
+                      {" "}({paid.payerEmail})
+                    </>
+                  ) : null}
+                  . Le récapitulatif complet et le suivi de livraison partent vers{" "}
+                  <strong>{email}</strong>. Votre expert est notifié et démarre sous 24 h —
+                  vos fonds restent protégés jusqu'à validation du livrable.
+                </p>
+              </div>
+            ) : payPal && step === "done" && !paid ? null :
+
+            /* ── Étape 2 : paiement PayPal ── */
+            payPal && step === "payment" ? (
+              <div className="mt-2 space-y-4">
+                <div className="rounded-xl bg-muted/60 p-3.5 text-[12.5px] leading-5 text-muted-foreground">
+                  <p className="flex items-center gap-1.5 font-semibold text-foreground">
+                    <Check className="h-4 w-4 text-primary" aria-hidden="true" />
+                    Récapitulatif : {fmt(total)} · {totalDays} jours
+                  </p>
+                  <p className="mt-1">
+                    {selectedOptions.length > 0
+                      ? `Offre de base + ${selectedOptions.length} option${selectedOptions.length > 1 ? "s" : ""} : ${selectedOptions
+                          .map((o) => o.name)
+                          .join(", ")}`
+                      : "Offre de base (ajustements inclus)"}
+                  </p>
+                  <p className="mt-1">
+                    Confirmation envoyée à <strong>{email}</strong>
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-center gap-2 text-[12px] font-medium text-muted-foreground">
+                  <Lock className="h-3.5 w-3.5" aria-hidden="true" />
+                  Paiement chiffré — le vendeur n'est payé qu'après votre validation du livrable
+                </div>
+
+                {sdkFailed ? (
+                  <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-[13px] leading-6 text-amber-800">
+                    <p className="font-semibold">Impossible de charger le module PayPal.</p>
+                    <p className="mt-1">
+                      Vérifiez votre connexion puis réessayez — ou contactez le support IA,
+                      aucun montant n'a été débité.
+                    </p>
+                  </div>
+                ) : (
+                  <div
+                    ref={paypalContainerRef}
+                    aria-busy={!sdkReady || paying}
+                    aria-label="Boutons de paiement PayPal"
+                    className="min-h-[120px] rounded-xl"
+                  >
+                    {(!sdkReady || paying) && (
+                      <div className="flex h-[120px] items-center justify-center gap-2 rounded-xl border border-dashed border-border text-[13px] text-muted-foreground">
+                        <CreditCard className="h-4 w-4 animate-pulse" aria-hidden="true" />
+                        {paying ? "Finalisation du paiement…" : "Chargement du paiement sécurisé…"}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="h-9 w-full gap-1.5 text-[13px] text-muted-foreground"
+                  onClick={() => setStep("form")}
+                >
+                  <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                  Modifier mes informations
+                </Button>
+              </div>
+            ) :
+
+            /* ── Étape 1 (PayPal) / formulaire unique (voie démo) ── */
+            payPal ? (
+              <form onSubmit={goToPayment} className="mt-2 space-y-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="order-name">Nom / Société</Label>
+                  <Input
+                    id="order-name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Ex : Durand SAS"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="order-email">Email professionnel *</Label>
+                  <Input
+                    id="order-email"
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="vous@entreprise.com"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="order-brief">Vos consignes (optionnel)</Label>
+                  <Textarea
+                    id="order-brief"
+                    value={brief}
+                    onChange={(e) => setBrief(e.target.value)}
+                    placeholder="Décrivez votre besoin : cible, zone, volume attendu…"
+                    rows={3}
+                  />
+                </div>
+                <div className="rounded-xl bg-muted/60 p-3.5 text-[12.5px] leading-5 text-muted-foreground">
+                  <p className="flex items-center gap-1.5 font-semibold text-foreground">
+                    <Check className="h-4 w-4 text-primary" aria-hidden="true" />
+                    Récapitulatif : {fmt(total)} · {totalDays} jours
+                  </p>
+                  <p className="mt-1">
+                    {selectedOptions.length > 0
+                      ? `Offre de base + ${selectedOptions.length} option${selectedOptions.length > 1 ? "s" : ""} : ${selectedOptions
+                          .map((o) => o.name)
+                          .join(", ")}`
+                      : "Offre de base (ajustements inclus)"}
+                  </p>
+                </div>
+                <Button
+                  type="submit"
+                  className="h-11 w-full gap-2 rounded-full bg-gradient-to-r from-primary to-emerald-500 text-[14.5px] font-bold text-white"
+                >
+                  <Lock className="h-4 w-4" aria-hidden="true" />
+                  Continuer vers le paiement sécurisé
+                </Button>
+              </form>
+            ) : done ? (
               <div className="rounded-xl border border-primary/30 bg-accent/30 p-5 text-center">
                 <p className="text-[15px] font-bold">Commande enregistrée ✓</p>
                 <p className="mt-2 text-[13.5px] leading-6 text-muted-foreground">
@@ -268,9 +590,8 @@ export function OptionSelector({
                     Récapitulatif : {fmt(total)} · {totalDays} jours
                   </p>
                   <p className="mt-1">
-                    {selected.size > 0
-                      ? `Offre de base + ${selected.size} option${selected.size > 1 ? "s" : ""} : ${options
-                          .filter((o) => selected.has(o.id))
+                    {selectedOptions.length > 0
+                      ? `Offre de base + ${selectedOptions.length} option${selectedOptions.length > 1 ? "s" : ""} : ${selectedOptions
                           .map((o) => o.name)
                           .join(", ")}`
                       : "Offre de base (ajustements inclus)"}
@@ -290,8 +611,17 @@ export function OptionSelector({
       </div>
 
       <p className="text-center text-[12px] leading-5 text-muted-foreground">
-        Paiement séquestré · le vendeur n'est payé qu'après votre validation ·
-        remboursement intégral si non conforme
+        {payPal ? (
+          <>
+            Paiement PayPal — carte bleue ou compte PayPal · le vendeur n'est payé qu'après
+            votre validation · remboursement intégral si non conforme
+          </>
+        ) : (
+          <>
+            Paiement séquestré · le vendeur n'est payé qu'après votre validation ·
+            remboursement intégral si non conforme
+          </>
+        )}
       </p>
     </div>
   );
