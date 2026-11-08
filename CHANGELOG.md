@@ -7,6 +7,23 @@
 
 ---
 
+## [1.3.3] — 2026-11-08 — Identité Git alignée sur le compte GitHub (I-GLOBAL71)
+
+### [CORRECTIF] Métadonnées Git uniquement — aucun code modifié
+- **Problème** : le déploiement Vercel était bloqué — les commits étaient signés
+  par l'identité de la sandbox (`Z User <z@container>`), non rattachée au compte
+  GitHub, donc invérifiable par la plateforme.
+- **Correctif** : historique Git réécrit (auteur **et** committer des 8 commits)
+  vers `I-GLOBAL71 <54584316+I-GLOBAL71@users.noreply.github.com>` (forme
+  « noreply » GitHub : attribution garantie sans exposer l'email réel), puis
+  force-push. `user.name`/`user.email` locaux fixés durablement.
+- **Invariants** : contenu des commits strictement inchangé (mêmes arbres Git,
+  mêmes messages) ; seuls les hashs changent (réécriture d'historique).
+  Tags locaux (v1.1.0-protection, v1.2.0-sga, v1.3.0) déplacés vers les nouveaux
+  hashs et poussés.
+
+---
+
 ## [1.3.2] — 2026-11-08 — Correction documentaire : comportement réel sans DATABASE_URL
 
 ### [CORRECTIF] Documentation uniquement — aucun code modifié
