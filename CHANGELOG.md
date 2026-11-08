@@ -7,6 +7,18 @@
 
 ---
 
+## [1.3.2] — 2026-11-08 — Correction documentaire : comportement réel sans DATABASE_URL
+
+### [CORRECTIF] Documentation uniquement — aucun code modifié
+- `docs/DEPLOIEMENT-VERCEL.md` : la note « premier déploiement sans variables →
+  pages dynamiques vides » était **inexacte** (comportement observé en production) :
+  sans `DATABASE_URL`, le build réussit mais **toutes les pages dynamiques
+  affichent la page d'erreur** (« An error occurred in the Server Components
+  render ») — la base étant injoignable à l'exécution. Note corrigée (§2) +
+  entrée dédiée ajoutée en FAQ (§9). Rétablissement : §1 + §3 + Redeploy.
+
+---
+
 ## [1.3.0] — 2026-11-08 — Stack de production : Vercel · Neon Postgres · Vercel Blob (WebP) · PayPal · GSC
 
 Mandat utilisateur : intégrer la stack de production — Vercel (hébergement), Neon

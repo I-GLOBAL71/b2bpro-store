@@ -147,8 +147,12 @@ Catalogue complet de référence : `.env.example` (racine du repo).
    (quelques minutes à 48 h). ✓ Vous devez voir `b2bpro.store` en **Valid
    Configuration** et le site répondre en HTTPS.
 
-> Premier déploiement sans variables : normal si les pages dynamiques sont vides —
-> le §3 complète la configuration puis un Redeploy peuplera le site.
+> **Premier déploiement sans variables : comportement attendu** — le build
+> **réussit**, mais toutes les pages dynamiques affichent la **page d'erreur**
+> (« An error occurred in the Server Components render ») : sans `DATABASE_URL`, la
+> base est injoignable à l'exécution et chaque page serveur échoue (l'écran d'erreur
+> b2bpro s'affiche — rien n'est cassé dans le code). Le §3 (variables Neon) puis un
+> **Redeploy** rétablit le site complet.
 
 ---
 
@@ -368,6 +372,7 @@ Réflexe : **snapshot local avant toute manipulation risquée** (charte §1).
 
 | Symptôme | Cause probable | Remède |
 |---|---|---|
+| **Toutes les pages affichent la page d'erreur** en production (« An error occurred in the Server Components render ») | `DATABASE_URL` absente ou invalide sur Vercel — le build réussit, mais la base est injoignable à l'exécution | Créer le projet Neon (§1), migrer les données (`db:migrate:neon`), définir `DATABASE_URL` (§3) puis **Redeploy** |
 | **503** *« Paiement PayPal non configuré »* | `PAYPAL_CLIENT_ID`/`PAYPAL_CLIENT_SECRET` absents de Vercel (mode démo actif) ou non redéployés | Définir les deux variables (§5) puis **Redeploy** ; sans clés, la voie `POST /api/orders` reste le comportement par défaut |
 | Fiches servant des **SVG locaux** au lieu du WebP Blob | Migration Blob non faite (`thumbUrls` absent → fallback SVG, aucune image cassée) | Exécuter `bun run thumbs:blob --with-avatars` (§4) |
 | Erreur **P1001** Prisma (build / runtime Vercel) | `DATABASE_URL` absente ou invalide sur Vercel | Renseigner la chaîne Neon **« Pooled connection »** avec `sslmode=require` (§1.2 / §3) puis Redeploy |
