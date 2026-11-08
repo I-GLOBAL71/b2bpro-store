@@ -54,6 +54,9 @@ dev.out.log
 test
 prompt
 
+# runtime sandbox — PID du serveur dev (jamais versionné)
+.zscripts/dev.pid
+
 server.log
 # Skills directory
 /skills/
