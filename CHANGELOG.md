@@ -7,6 +7,68 @@
 
 ---
 
+## [1.2.0] — 2026-11-08 — Audit SGA™ intégral + skill rédactionnel obligatoire + suppression du nombre figé
+
+Mandat utilisateur : vérifier INDIVIDUELLEMENT chaque service (SEO/GEO/AIO), garantir que
+toute future rédaction passe obligatoirement par les skills, et supprimer toute mention du
+nombre de services (le catalogue s'enrichira).
+
+### [DONNÉES] Optimisation SGA™ des 112 fiches (migration idempotente `scripts/migrate-content-v12.ts`)
+- **Answer-first** : le mot-clé primaire ouvre désormais chaque description (il était absent
+  des 250 premiers caractères sur 112/112 fiches — principe AIO fondamental désormais respecté).
+- **Structuration GEO** : chaque description passe de 1 à 4 sections H2 explicites
+  (« Pourquoi ce service est décisif », « Ce que vous recevez concrètement »,
+  « Votre avantage concurrentiel », « Pourquoi commander sur b2bpro.store ? »).
+- **Densité sémantique** : secondaires + entités francophones + requête longue traîne intégrée.
+- 5 descriptions trop courtes enrichies (toutes ≥ 1000 car.), 4 shortDesc portés au standard
+  100-230 car., 1 fiche (#40) portée à 3 livrables explicites.
+- Résultat : **1280/1280 contrôles verts** à l'audit individuel (`bun run audit:content`),
+  rapport versionné dans `docs/audits/`.
+
+### [ADDITIF] Skill rédactionnel canonique (obligatoire pour toute future rédaction)
+- **`skills/redaction-seo-geo-aio/SKILL.md`** (skill d'environnement, auto-déclenché) +
+  **`docs/SKILL-REDACTION-SEO-GEO-AIO.md`** (contrat versionné, source de vérité Git).
+- Méthode SGA™ en 6 étapes : SOURCER les mots-clés à fort trafic AVANT d'écrire → champ
+  keywords complet → template answer-first/H2/FAQ → standards quantitatifs exacts →
+  intégration technique (catalog.json → enrich → 3 miniatures) → VALIDATION machine.
+- **Rendu exécutable** : le garde-fou vérifie désormais les standards rédactionnels
+  (2 nouveaux contrôles : `services-content-standards`, `blog-content-standards`) — toute
+  future fiche ou article sous-standard fait échouer `bun run guard` = contenu refusé.
+- **`scripts/audit-content.ts`** (`bun run audit:content`) : audit individuel par service et
+  par article (rapport console + markdown versionné dans `docs/audits/`).
+
+### [CORRECTIF] Suppression du nombre figé de services (future-robustesse — mandat utilisateur)
+- **Dynamique** partout où des données sont disponibles : badge héro (`stats.services`),
+  JSON-LD d'accueil, `llms.txt` (`services.length`), prompt système du support IA (compteurs
+  injectés en direct depuis la base à chaque requête — `buildSystemPrompt()`).
+- **Formulations ouvertes** dans les textes statiques : « tous nos services », « le catalogue
+  complet », « l'ensemble de ses services » (site.ts, support, catalogue, blog, 404, erreur,
+  footer, support-chat, franco-support, sections).
+- **Contenus base** : 4 entrées de la base de connaissances IA + 1 article de blog + les
+  générateurs (`data/gen/knowledge.ts`, `data/seed.ts`) alignés (« dépasse déjà la centaine
+  de services et s'enrichit régulièrement »).
+- Interdiction désormais **gravée dans le skill, la charte et le garde-fou** (contrôle
+  `blog-content-standards` : mention de nombre figé = échec).
+
+### [CORRECTIF] Modifications justifiées d'implémentations existantes (protocole §5)
+- `data/seed.ts` : la description insérée passe par `optimizeDescription()` (la ligne
+  template est remplacée par l'appel au générateur) — mandat : fiches optimisées SGA™ ;
+  le seed reste fonctionnel et produit exactement les contenus migrés.
+- `data/gen/enrich.ts` : `buildShortDesc` (plancher 100 car.) et `buildDeliverables`
+  (plancher 3 livrables) alignés sur les standards du skill ; ajouts purs par ailleurs
+  (`optimizeDescription`, `SocialStats`, `OPTIMIZED_DESC_MARKER`, `isDescriptionOptimized`).
+- `src/app/api/support/chat/route.ts` : `SYSTEM_PROMPT` (constante figée) →
+  `buildSystemPrompt(nbServices, nbPoles)` dynamique ; `retrieveContext` retourne aussi les
+  compteurs du catalogue. Aucun changement de contrat d'API (mêmes corps/réponses).
+
+### Vérification de la release
+- `bun run guard` : **14 contrôles verts** (dont 2 nouveaux standards rédactionnels).
+- `bun run audit:content` : **1280/1280 verts** (112 services × 11 contrôles + 12 articles × 4).
+- `bun run lint` : 0 erreur. Snapshot préalable effectué (`db/snapshots/`), pages vérifiées
+  au navigateur (accueil, fiche service avec answer-first + H2, support, 404, integrity).
+
+---
+
 ## [1.1.0] — 2026-11-08 — Couche de protection anti-régression
 
 ### [ADDITIF] Socle contractuel

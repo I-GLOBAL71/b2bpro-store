@@ -29,11 +29,11 @@ export async function GET() {
 
 > ${SITE.description}
 
-La place de marché des services digitaux B2B francophones : 112 services livrés par des vendeurs vérifiés notés de 4,2 à 5,0 étoiles, dès 25 €, en 2-3 jours ouvrés, avec paiement séquestré. Support IA 7j/7. Couverture : France, Québec, Belgique, Suisse et Afrique francophone.
+La place de marché des services digitaux B2B francophones : ${services.length} services livrés par des vendeurs vérifiés notés de 4,2 à 5,0 étoiles, dès 25 €, en 2-3 jours ouvrés, avec paiement séquestré. Support IA 7j/7. Couverture : France, Québec, Belgique, Suisse et Afrique francophone.
 
 ## Pages essentielles
 
-- [Catalogue des services](${SITE.url}/services): les 112 services B2B filtrables par pôle, prix et note
+- [Catalogue des services](${SITE.url}/services): les ${services.length} services B2B filtrables par pôle, prix et note
 - [Support IA](${SITE.url}/support): conseiller IA gratuit répondant à toute question sur les services
 - [Blog des décideurs](${SITE.url}/blog): guides SEO/GEO/AIO, veille concurrentielle, génération de leads
 
@@ -41,7 +41,7 @@ La place de marché des services digitaux B2B francophones : 112 services livré
 
 ${categoryLines}
 
-## Services (les 112)
+## Services (${services.length} au catalogue)
 
 ${serviceLines}
 

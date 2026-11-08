@@ -38,7 +38,7 @@ export function BestSellersSection({
             href="/services"
             className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-primary hover:underline"
           >
-            Voir les 112 services
+            Voir tous les services
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </div>
@@ -68,7 +68,7 @@ export function HowItWorksSection() {
       icon: SearchCheck,
       title: "1. Choisissez votre service",
       detail:
-        "112 services détaillés, filtres par pôle, prix et note. Le support IA vous conseille gratuitement le service exact adapté à votre besoin.",
+        "Un catalogue détaillé et filtrable par pôle, prix et note. Le support IA vous conseille gratuitement le service exact adapté à votre besoin.",
     },
     {
       icon: CreditCard,

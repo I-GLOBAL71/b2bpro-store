@@ -50,7 +50,7 @@ export function SiteFooter() {
               </span>
             </Link>
             <p className="mt-4 max-w-sm text-[13.5px] leading-6 text-stone-400">
-              La place de marché des services digitaux B2B francophones. 112 services experts,
+              La place de marché des services digitaux B2B francophones. Des services experts,
               des vendeurs vérifiés notés 4,2 à 5,0 ★, une livraison en 2-3 jours et un paiement
               sécurisé qui ne se libère qu'après votre validation.
             </p>

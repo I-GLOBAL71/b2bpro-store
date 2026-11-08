@@ -12,6 +12,7 @@ import {
   buildProcess,
   buildShortDesc,
   buildMeta,
+  optimizeDescription,
   randomSalesStats,
   slugify,
   FULL_DESCRIPTIONS,
@@ -122,7 +123,7 @@ async function main() {
         poleIcon: pole.icon,
         basePrice: svc.basePrice,
         deliveryDays: svc.deliveryDays,
-        description: `${description}\n\n## Pourquoi commander ce service sur b2bpro.store ?\n\n- **Expert vérifié** : note moyenne entre 4,2 et 5,0 étoiles attribuée par des clients réels.\n- **Paiement sécurisé** : votre argent est séquestré et n'est libéré qu'après validation du livrable.\n- **Livraison ${svc.deliveryDays} jours ouvrés** : taux de ponctualité constaté de 98,6 % sur la plateforme.\n- **Ajustements inclus** : retouches gratuites jusqu'à votre satisfaction complète.\n- **Support IA 7 j/7** : toutes vos questions pré-achat traitées en français, instantanément.\n`,
+        description: optimizeDescription(enriched, keywords, pole, stats),
         shortDesc,
         keywords: JSON.stringify(keywords),
         faq: JSON.stringify(faq),
@@ -255,7 +256,7 @@ async function main() {
       },
     });
   }
-  console.log(`   ${KNOWLEDGE.length} entrées générales + FAQ des 112 services via requête dynamique.`);
+  console.log(`   ${KNOWLEDGE.length} entrées générales + FAQ de tous les services via requête dynamique.`);
 
   console.log("✅ Seed terminé.");
 }

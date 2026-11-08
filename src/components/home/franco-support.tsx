@@ -95,7 +95,7 @@ export function SupportCtaSection() {
             </h2>
             <p className="mt-4 max-w-2xl text-[14.5px] leading-7 text-stone-300">
               Quel service choisir pour votre besoin exact ? Quel volume prévoir ? Comment
-              fonctionnent les options ? Notre intelligence artificielle connaît les 112 services
+              fonctionnent les options ? Notre intelligence artificielle connaît tout le catalogue
               par cœur et vous oriente vers la meilleure décision — avec le sourire et en français.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">

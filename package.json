@@ -12,6 +12,8 @@
     "db:migrate": "prisma migrate dev",
     "db:reset": "prisma migrate reset",
     "guard": "bun run scripts/check-integrity.ts",
+    "audit:content": "bun run scripts/audit-content.ts",
+    "migrate:content-v12": "bun run scripts/migrate-content-v12.ts",
     "db:snapshot": "bun run scripts/db-snapshot.ts",
     "db:restore": "bun run scripts/db-restore.ts"
   },

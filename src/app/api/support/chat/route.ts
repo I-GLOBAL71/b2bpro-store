@@ -84,10 +84,17 @@ async function retrieveContext(message: string) {
     .sort((a, b) => b.score - a.score)
     .slice(0, 4);
 
-  return { kb: scoredKb.map((s) => s.item), services: scoredServices.map((s) => s.item) };
+  return {
+    kb: scoredKb.map((s) => s.item),
+    services: scoredServices.map((s) => s.item),
+    catalog: { services: services.length, poles: new Set(services.map((s) => s.pole)).size },
+  };
 }
 
-const SYSTEM_PROMPT = `Tu es « l'Assistant Conseiller » de b2bpro.store, la place de marché francophone des services digitaux B2B (112 services, 14 pôles d'expertise, des vendeurs vérifiés en France, au Québec et en Afrique francophone, notes 4,2 à 5,0 ★, livraison 2-3 jours ouvrés, offres dès 25 €, paiement séquestré avec validation client, support 7j/7).
+/** Prompt système : les compteurs du catalogue sont injectés EN DIRECT depuis la base
+ *  (aucun nombre figé — reste exact même après ajout de services). */
+function buildSystemPrompt(nbServices: number, nbPoles: number): string {
+  return `Tu es « l'Assistant Conseiller » de b2bpro.store, la place de marché francophone des services digitaux B2B (${nbServices} services, ${nbPoles} pôles d'expertise, des vendeurs vérifiés en France, au Québec et en Afrique francophone, notes 4,2 à 5,0 ★, livraison 2-3 jours ouvrés, offres dès 25 €, paiement séquestré avec validation client, support 7j/7).
 
 ## Ta personnalité
 - Bienveillant, chaleureux et professionnel : tu t'adresses au client comme un conseiller de confiance qui veut son succès.
@@ -105,6 +112,7 @@ const SYSTEM_PROMPT = `Tu es « l'Assistant Conseiller » de b2bpro.store, la pl
 
 ## Format des liens
 Quand tu recommandes un service : « [nom du service](/services/slug) » — le nom doit être explicite et le slug exact.`;
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -124,7 +132,7 @@ export async function POST(req: NextRequest) {
       create: { email: email.toLowerCase().trim(), source: "support-ia" },
     });
 
-    const { kb, services } = await retrieveContext(question);
+    const { kb, services, catalog } = await retrieveContext(question);
 
     // Contexte injecté
     const kbContext = kb.length
@@ -156,7 +164,7 @@ export async function POST(req: NextRequest) {
     const zai = await ZAI.create();
     const completion = await zai.chat.completions.create({
       messages: [
-        { role: "assistant", content: SYSTEM_PROMPT },
+        { role: "assistant", content: buildSystemPrompt(catalog.services, catalog.poles) },
         { role: "assistant", content: contextBlock },
         ...trimmed,
       ],

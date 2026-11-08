@@ -71,7 +71,7 @@ export function SupportChat() {
         {
           role: "assistant",
           content:
-            `Bonjour et bienvenue sur b2bpro.store ! 👋\n\nJe suis votre conseiller IA : je connais nos 112 services par cœur, leurs options, leurs tarifs et leurs livrables. Posez-moi toutes vos questions — choisir le bon service, comprendre un livrable, vérifier un délai…\n\nQuel besoin business puis-je vous aider à résoudre aujourd'hui ?`,
+            `Bonjour et bienvenue sur b2bpro.store ! 👋\n\nJe suis votre conseiller IA : je connais tous nos services par cœur, leurs options, leurs tarifs et leurs livrables. Posez-moi toutes vos questions — choisir le bon service, comprendre un livrable, vérifier un délai…\n\nQuel besoin business puis-je vous aider à résoudre aujourd'hui ?`,
         },
       ]);
       toast.success("Support IA activé ! Vos réponses arrivent instantanément.");
@@ -188,7 +188,7 @@ export function SupportChat() {
         </span>
         <div className="min-w-0 flex-1">
           <p className="text-[14.5px] font-bold">Conseiller IA b2bpro.store</p>
-          <p className="text-[11.5px] text-stone-400">En ligne · répond instantanément · connaît les 112 services</p>
+          <p className="text-[11.5px] text-stone-400">En ligne · répond instantanément · connaît tout le catalogue</p>
         </div>
         <Button
           variant="ghost"

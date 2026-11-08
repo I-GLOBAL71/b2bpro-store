@@ -29,7 +29,7 @@ export function HeroSection({ stats }: { stats: HeroStats }) {
         <div className="animate-fade-up">
           <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-3.5 py-1.5 text-[12.5px] font-medium text-emerald-300">
             <BadgeCheck className="h-4 w-4" aria-hidden="true" />
-            112 services experts · 14 pôles · 100 % francophone
+            {stats.services} services experts · 14 pôles · 100 % francophone
           </div>
 
           <h1 className="mt-6 text-balance text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.4rem]">

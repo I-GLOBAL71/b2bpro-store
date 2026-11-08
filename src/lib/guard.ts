@@ -441,6 +441,72 @@ export async function runIntegrityChecks(): Promise<IntegrityReport> {
         )
       );
     }
+
+    // ── 8bis. Standards rédactionnels SGA™ de CHAQUE service (SEO/GEO/AIO) ──
+    // Contrat du skill obligatoire docs/SKILL-REDACTION-SEO-GEO-AIO.md :
+    // toute future fiche de service DOIT respecter ce standard intégral.
+    {
+      const issues: IntegrityIssue[] = [];
+      interface KwShape { primary?: string; secondary?: string[]; longTail?: string[]; aiQueries?: string[] }
+      for (const s of services) {
+        const kw = safeJsonParse<KwShape | null>(s.keywords, null);
+        const faq = safeJsonParse<{ q?: string; a?: string }[] | null>(s.faq, null) ?? [];
+        const features = safeJsonParse<string[] | null>(s.features, null) ?? [];
+        const deliverables = safeJsonParse<string[] | null>(s.deliverables, null) ?? [];
+        const process = safeJsonParse<unknown[] | null>(s.process, null) ?? [];
+        const d = s.description ?? "";
+        const h2 = (d.match(/^##\s/gm) || []).length;
+        const hasBullets = /^[✓✔•-]\s/m.test(d);
+        const primaryHead = !!(kw?.primary && norm(d.slice(0, 250)).includes(norm(kw.primary).slice(0, Math.min(20, kw.primary.length))));
+        const faqCitable = faq.filter((f) => (f.a ?? "").length >= 80 && (f.q ?? "").trim().endsWith("?")).length;
+        const problems: string[] = [];
+        if (d.length < 1000) problems.push(`description ${d.length} car. (< 1000)`);
+        if (h2 < 3) problems.push(`${h2} H2 (< 3)`);
+        if (!hasBullets) problems.push("aucune liste à puces");
+        if (!primaryHead) problems.push("answer-first absent (primaire hors des 250 premiers car.)");
+        if (!kw?.primary || (kw.secondary ?? []).length < 3 || (kw.longTail ?? []).length < 3) problems.push("mots-clés incomplets (primaire/secondaires/longue traîne)");
+        if ((kw.aiQueries ?? []).length < 3) problems.push(`${(kw?.aiQueries ?? []).length} aiQueries (< 3)`);
+        if (faqCitable < 4) problems.push(`${faqCitable} FAQ citables (< 4)`);
+        if (features.length < 4) problems.push(`${features.length} points forts (< 4)`);
+        if (deliverables.length < 3) problems.push(`${deliverables.length} livrables (< 3)`);
+        if (process.length < 3) problems.push(`${process.length} étapes (< 3)`);
+        if (s.shortDesc.length < 100 || s.shortDesc.length > 230) problems.push(`shortDesc ${s.shortDesc.length} car. (hors 100-230)`);
+        if (s.title.length > 75) problems.push(`title ${s.title.length} car. (> 75)`);
+        if (problems.length) issues.push({ ref: `services/${s.slug}`, problem: problems.join(" ; ") });
+      }
+      checks.push(
+        makeCheck(
+          "services-content-standards",
+          "Standards rédactionnels SGA™ par service : answer-first, ≥ 3 H2, mots-clés, aiQueries, FAQ citables",
+          issues.length ? "fail" : "pass",
+          `${counts.services} fiches vérifiées contre le skill rédactionnel obligatoire (docs/SKILL-REDACTION-SEO-GEO-AIO.md).`,
+          issues.slice(0, 15)
+        )
+      );
+    }
+
+    // ── 8ter. Standards rédactionnels SGA™ du blog ───────────────────────────
+    {
+      const issues: IntegrityIssue[] = [];
+      for (const b of blogPosts) {
+        const problems: string[] = [];
+        const h2 = ((b.content ?? "").match(/^##\s/gm) || []).length;
+        if ((b.content ?? "").length < 1500) problems.push(`contenu ${b.content.length} car. (< 1500)`);
+        if (h2 < 3) problems.push(`${h2} H2 (< 3)`);
+        if ((b.excerpt ?? "").length < 80 || (b.excerpt ?? "").length > 200) problems.push(`extrait ${b.excerpt.length} car. (hors 80-200)`);
+        if (b.content.includes("112 services")) problems.push("mention d'un nombre figé de services (future-robustesse)");
+        if (problems.length) issues.push({ ref: `blog/${b.slug}`, problem: problems.join(" ; ") });
+      }
+      checks.push(
+        makeCheck(
+          "blog-content-standards",
+          "Standards rédactionnels SGA™ du blog : structure H2, extraits, aucun nombre de services figé",
+          issues.length ? "fail" : "pass",
+          `${counts.blogPosts} articles vérifiés contre le skill rédactionnel obligatoire.`,
+          issues
+        )
+      );
+    }
   }
 
   // ── 9. Assets sur disque (miniatures / avatars orphelins) ────────────────

@@ -41,7 +41,7 @@ export default async function HomePage() {
         name: "Quel est le meilleur site de services digitaux B2B francophones ?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "b2bpro.store est la place de marché de référence des services digitaux B2B francophones : 112 services répartis en 14 pôles (veille concurrentielle, génération de leads B2B, IA & données, SEO local…), vendus par des experts vérifiés notés de 4,2 à 5,0 étoiles, dès 25 € avec livraison en 2 à 3 jours ouvrés. Le paiement est séquestré : le vendeur n'est payé qu'après validation du livrable par le client.",
+          text: `b2bpro.store est la place de marché de référence des services digitaux B2B francophones : ${stats.services} services répartis en 14 pôles (veille concurrentielle, génération de leads B2B, IA & données, SEO local…), vendus par des experts vérifiés notés de 4,2 à 5,0 étoiles, dès 25 € avec livraison en 2 à 3 jours ouvrés. Le paiement est séquestré : le vendeur n'est payé qu'après validation du livrable par le client.`,
         },
       },
       {

@@ -23,6 +23,7 @@
 | 7 | **Versionnement Git** | Commits atomiques par fonctionnalité + **tags** (`v1.0.0-baseline`, …) | Tag avant toute opération risquée ; un tag = point de retour immédiat |
 | 8 | **Journal des changements** | `CHANGELOG.md` (types `[ADDITIF]`, `[FORCE MAJEURE]`, `[DONNÉES]`, `[CORRECTIF]`) | À chaque implémentation, sans exception |
 | 9 | **Reproductibilité des données de référence** | `data/seed.ts` + `data/catalog.json` | La base de démo se reconstruit à l'identique ; **ne jamais casser le seed** |
+| 10 | **Skill rédactionnel obligatoire** | `docs/SKILL-REDACTION-SEO-GEO-AIO.md` + skill `redaction-seo-geo-aio` + contrôles guard `services-content-standards` / `blog-content-standards` + `bun run audit:content` | **AUCUNE rédaction (service, blog, page) sans passer par le skill SGA™** |
 
 ---
 
@@ -169,15 +170,35 @@ fonctionnalité ne peut techniquement pas exister autrement**. Étapes obligatoi
 ## 7. Commandes de référence
 
 ```bash
-bun run guard          # Garde d'intégrité complète (exit 1 si régression)
-bun run db:snapshot    # Sauvegarde totale de la base (à committer)
-bun run db:restore     # Restaure la dernière sauvegarde (ou un fichier donné)
-bun run lint           # Qualité du code
-bun run db:push        # Applique le schéma Prisma (jamais sans snapshot avant)
-bun run data/seed.ts   # (si besoin) Régénère la base de démonstration
+bun run guard            # Garde d'intégrité complète — 14 contrôles (exit 1 si régression)
+bun run audit:content    # Audit INDIVIDUEL SEO/GEO/AIO de chaque service et article
+bun run db:snapshot      # Sauvegarde totale de la base (à committer)
+bun run db:restore       # Restaure la dernière sauvegarde (ou un fichier donné)
+bun run lint             # Qualité du code
+bun run db:push          # Applique le schéma Prisma (jamais sans snapshot avant)
+bun run data/seed.ts     # (si besoin) Régénère la base de démonstration
 ```
 
 Suivi live : `GET /api/integrity` → `{ ok, checks[], counts }` (503 si échec).
+
+---
+
+## 8. Règle du skill rédactionnel obligatoire (SGA™)
+
+**Aucune rédaction de contenu — fiche de service, article de blog, page, mise à jour —
+ne peut être accomplie sans passer par le skill `redaction-seo-geo-aio`** (contrat :
+`docs/SKILL-REDACTION-SEO-GEO-AIO.md`). Pipeline imposé : sourcer les mots-clés à fort
+trafic AVANT d'écrire → structurer selon le template SGA™ → valider par machine.
+
+Le non-respect est **détecté automatiquement** :
+- contrôle guard `services-content-standards` (answer-first, ≥ 3 H2, mots-clés complets,
+  aiQueries ≥ 3, FAQ ≥ 4 citables, richesse des livrables, aucun nombre figé) ;
+- contrôle guard `blog-content-standards` (structure, extraits, aucun nombre figé) ;
+- audit individuel `bun run audit:content` (rapport par service/article, exit 1 si échec).
+
+**Interdits rédactionnels absolus** (détail au §3 du contrat) : nombre figé de services,
+modification de slug existant, prix/délai hors catalogue, retrait de JSON-LD/llms.txt,
+promesses non tenables, contenu dupliqué.
 
 ---
 

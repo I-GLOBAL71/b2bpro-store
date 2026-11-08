@@ -5,7 +5,7 @@ export const SITE = {
   fullName: "b2bpro.store — La place de marché des services digitaux B2B francophones",
   url: "https://b2bpro.store",
   description:
-    "112 services digitaux B2B livrés par des experts vérifiés : veille concurrentielle, génération de leads, IA & données, SEO local. Dès 25 €, livraison 2-3 jours, avis 4,2-5,0 ★. Plateforme taillée pour tous les pays francophones.",
+    "Des services digitaux B2B livrés par des experts vérifiés : veille concurrentielle, génération de leads, IA & données, SEO local. Dès 25 €, livraison 2-3 jours, avis 4,2-5,0 ★. Plateforme taillée pour tous les pays francophones.",
   tagline: "Les services digitaux B2B qui font croître votre business",
 };
 

@@ -47,7 +47,7 @@ Un fichier llms.txt suit une structure en cinq blocs. Exemple réel pour un site
 # B2BPro
 
 > Place de marché francophone de services digitaux B2B :
-> 112 services livrés en 2-3 jours, de 25 à 50 € le socle.
+> Plus de 100 services livrés en 2-3 jours, de 25 à 50 € le socle.
 
 B2BPro connecte les entreprises francophones (France, Québec,
 Belgique, Suisse, Afrique) à des prestataires data, IA et

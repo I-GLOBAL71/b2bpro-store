@@ -10,9 +10,9 @@ import { POLE_LABELS, POLE_ICONS, POLE_ACCENTS } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Catalogue des 112 services digitaux B2B — dès 25 €",
+  title: "Catalogue complet des services digitaux B2B — dès 25 €",
   description:
-    "Explorez les 112 services B2B de b2bpro.store : veille concurrentielle, génération de leads, IA & RAG, SEO local, immobilier, e-commerce… Filtrez par pôle, prix et note. Livraison 2-3 jours, paiement sécurisé.",
+    "Explorez tous les services B2B de b2bpro.store : veille concurrentielle, génération de leads, IA & RAG, SEO local, immobilier, e-commerce… Filtrez par pôle, prix et note. Livraison 2-3 jours, paiement sécurisé.",
   alternates: { canonical: "/services" },
 };
 
@@ -167,8 +167,8 @@ export default async function ServicesPage({
           <PackageSearch className="h-10 w-10 text-muted-foreground/50" aria-hidden="true" />
           <p className="text-[15px] font-semibold">Aucun service ne correspond à votre recherche</p>
           <p className="max-w-md text-[13.5px] text-muted-foreground">
-            Essayez un autre mot-clé, ou demandez conseil à notre support IA : il connaît les
-            112 services et trouvera celui qui résout votre besoin.
+            Essayez un autre mot-clé, ou demandez conseil à notre support IA : il connaît tout le
+            catalogue et trouvera celui qui résout votre besoin.
           </p>
           <div className="flex gap-3">
             <Button asChild variant="outline" className="rounded-full">

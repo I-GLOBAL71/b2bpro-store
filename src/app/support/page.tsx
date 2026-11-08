@@ -4,7 +4,7 @@ import { Zap, Database, Globe2, HeartHandshake } from "lucide-react";
 import { SupportChat } from "@/components/site/support-chat";
 
 export const metadata: Metadata = {
-  title: "Support IA 7j/7 — conseils gratuits sur nos 112 services",
+  title: "Support IA 7j/7 — conseils gratuits sur tous nos services",
   description:
     "Notre support IA répond instantanément à toutes vos questions sur b2bpro.store : choix de service, tarifs, délais, garanties. Gratuit, en français, 7 j/7. Un email suffit pour démarrer.",
   alternates: { canonical: "/support" },
@@ -23,7 +23,7 @@ export default function SupportPage() {
           Votre conseiller IA vous répond instantanément
         </h1>
         <p className="mt-4 text-[14.5px] leading-7 text-muted-foreground">
-          Il connaît les 112 services de b2bpro.store par cœur : livrables, options, tarifs,
+          Il connaît tous les services de b2bpro.store par cœur : livrables, options, tarifs,
           délais et garanties. Posez votre question en français, obtenez la réponse à la seconde —
           et la recommandation du service exact dont votre business a besoin.
         </p>
@@ -48,7 +48,7 @@ export default function SupportPage() {
             {
               icon: Database,
               title: "Base exhaustive",
-              detail: "112 services, 14 pôles, toutes les options et FAQ : rien ne lui échappe.",
+              detail: "Tout le catalogue, 14 pôles, toutes les options et FAQ : rien ne lui échappe.",
             },
             {
               icon: Globe2,
@@ -78,7 +78,7 @@ export default function SupportPage() {
           <h2 className="text-[15px] font-bold">Comment fonctionne le support IA de b2bpro.store ?</h2>
           <p className="mt-2 text-[14px] leading-7 text-foreground/90">
             Le support IA de b2bpro.store est un assistant conversationnel disponible 7 j/7 qui
-            répond à toutes les questions sur la place de marché et ses 112 services B2B :
+            répond à toutes les questions sur la place de marché et l'ensemble de ses services B2B :
             choix de service adapté à un besoin précis, tarifs et options, délais de livraison
             (2-3 jours ouvrés), garanties (paiement séquestré, ajustements inclus, remboursement
             intégral). L'accès nécessite uniquement un email — utilisé pour le suivi de la
@@ -88,7 +88,7 @@ export default function SupportPage() {
           </p>
           <p className="mt-4">
             <Link href="/services" className="text-[14px] font-semibold text-primary hover:underline">
-              Explorer le catalogue des 112 services →
+              Explorer le catalogue complet des services →
             </Link>
           </p>
         </div>

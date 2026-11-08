@@ -42,7 +42,7 @@ export default function Error({
       <p className="mt-3 max-w-md text-[14.5px] leading-7 text-muted-foreground">
         Rien n&apos;est perdu : le reste de la marketplace fonctionne normalement.
         Vous pouvez réessayer l&apos;affichage ou reprendre votre navigation —
-        nos {`112`} services restent à un clic.
+        tous nos services restent à un clic.
       </p>
       {error.digest && (
         <p className="mt-2 rounded-full bg-muted px-3 py-1 text-[11.5px] font-medium text-muted-foreground">

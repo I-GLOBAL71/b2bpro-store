@@ -123,13 +123,13 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
             Passez de la théorie aux résultats concrets
           </h2>
           <p className="mt-2 text-[14px] leading-6 text-muted-foreground">
-            Les méthodes décrites dans cet article sont exactement celles que nos 112 services
+            Les méthodes décrites dans cet article sont exactement celles que nos services experts
             appliquent pour vous : données fraîches vérifiées, livrables prêts à l'emploi et
             experts notés 4,2 à 5,0 ★ — dès 25 €.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Button asChild className="rounded-full bg-gradient-to-r from-primary to-emerald-500 text-white">
-              <Link href="/services">Explorer les 112 services</Link>
+              <Link href="/services">Explorer tous les services</Link>
             </Button>
             <Button asChild variant="outline" className="rounded-full border-primary/40 text-primary hover:bg-accent">
               <Link href="/support">Conseil gratuit du support IA</Link>
