@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Zap, Database, Globe2, HeartHandshake } from "lucide-react";
+import { Zap, Database, Globe2, HeartHandshake, MessageCircleOff } from "lucide-react";
 import { SupportChat } from "@/components/site/support-chat";
+import { getSiteSettings } from "@/lib/settings";
 
 export const metadata: Metadata = {
   title: "Support IA 7j/7 — conseils gratuits sur tous nos services",
@@ -12,7 +13,8 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default function SupportPage() {
+export default async function SupportPage() {
+  const { support } = await getSiteSettings();
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
       <header className="mx-auto max-w-2xl text-center">
@@ -30,7 +32,28 @@ export default function SupportPage() {
       </header>
 
       <div className="mt-10">
-        <SupportChat />
+        {support.enabled ? (
+          <SupportChat welcome={support.welcome} />
+        ) : (
+          <div className="mx-auto flex max-w-xl flex-col items-center gap-5 rounded-3xl border border-border bg-card p-10 text-center shadow-sm">
+            <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
+              <MessageCircleOff className="h-7 w-7" aria-hidden="true" />
+            </span>
+            <div>
+              <h2 className="text-xl font-extrabold">Support IA momentanément indisponible</h2>
+              <p className="mt-2 text-[14px] leading-6 text-muted-foreground">
+                Notre conseiller IA fait une courte pause maintenance. L&apos;équipe humaine reste
+                joignable — laissez-nous un peu de temps, nous revenons très vite.
+              </p>
+            </div>
+            <Link
+              href="/services"
+              className="rounded-full bg-primary px-6 py-2.5 text-[14px] font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+            >
+              Explorer les services en attendant
+            </Link>
+          </div>
+        )}
       </div>
 
       {/* Capacités du support */}

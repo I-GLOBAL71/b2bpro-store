@@ -20,7 +20,7 @@ const SUGGESTIONS = [
   "Je cherche des leads B2B dans le BTP, c'est possible ?",
 ];
 
-export function SupportChat() {
+export function SupportChat({ welcome }: { welcome?: string }) {
   const [email, setEmail] = useState("");
   const [gateLoading, setGateLoading] = useState(false);
   const [gated, setGated] = useState(false);
@@ -28,6 +28,11 @@ export function SupportChat() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  /** Message d'accueil configurable (panneau admin → Support IA). */
+  const welcomeMessage =
+    welcome ||
+    "Bonjour et bienvenue sur b2bpro.store ! 👋 Comment puis-je vous aider aujourd'hui ?";
 
   useEffect(() => {
     // Restaure la session précédente
@@ -70,8 +75,7 @@ export function SupportChat() {
       setMessages([
         {
           role: "assistant",
-          content:
-            `Bonjour et bienvenue sur b2bpro.store ! 👋\n\nJe suis votre conseiller IA : je connais tous nos services par cœur, leurs options, leurs tarifs et leurs livrables. Posez-moi toutes vos questions — choisir le bon service, comprendre un livrable, vérifier un délai…\n\nQuel besoin business puis-je vous aider à résoudre aujourd'hui ?`,
+          content: welcomeMessage,
         },
       ]);
       toast.success("Support IA activé ! Vos réponses arrivent instantanément.");

@@ -20,7 +20,7 @@ const SNAPSHOTS_DIR = path.join(process.cwd(), "db", "snapshots");
 
 async function main() {
   console.log("→ Lecture de la base complète…");
-  const [sellers, services, options, reviews, blogPosts, knowledgeItems, leads, chatMessages] =
+  const [sellers, services, options, reviews, blogPosts, knowledgeItems, leads, chatMessages, siteConfig, adminLogs] =
     await Promise.all([
       db.seller.findMany(),
       db.service.findMany(),
@@ -30,6 +30,8 @@ async function main() {
       db.knowledgeItem.findMany(),
       db.lead.findMany(),
       db.chatMessage.findMany(),
+      db.siteConfig.findMany(),
+      db.adminLog.findMany(),
     ]);
 
   const snapshot = {
@@ -45,6 +47,8 @@ async function main() {
       knowledgeItems: knowledgeItems.length,
       leads: leads.length,
       chatMessages: chatMessages.length,
+      siteConfig: siteConfig.length,
+      adminLogs: adminLogs.length,
     },
     data: {
       sellers,
@@ -55,6 +59,9 @@ async function main() {
       knowledgeItems,
       leads,
       chatMessages,
+      // v1.5.0 — réglages dynamiques du panneau admin + journal d'audit
+      siteConfig,
+      adminLogs,
     },
   };
 
@@ -67,7 +74,7 @@ async function main() {
 
   console.log(`✓ Snapshot écrit : ${file}`);
   console.log(
-    `  ${snapshot.counts.services} services · ${snapshot.counts.sellers} vendeurs · ${snapshot.counts.options} options · ${snapshot.counts.reviews} avis · ${snapshot.counts.blogPosts} articles · ${snapshot.counts.knowledgeItems} entrées IA · ${snapshot.counts.leads} leads · ${snapshot.counts.chatMessages} messages`
+    `  ${snapshot.counts.services} services · ${snapshot.counts.sellers} vendeurs · ${snapshot.counts.options} options · ${snapshot.counts.reviews} avis · ${snapshot.counts.blogPosts} articles · ${snapshot.counts.knowledgeItems} entrées IA · ${snapshot.counts.leads} leads · ${snapshot.counts.chatMessages} messages · ${snapshot.counts.siteConfig} groupes de réglages · ${snapshot.counts.adminLogs} entrées d'audit`
   );
   console.log("  Pensez à committer le snapshot (les données runtime sont ainsi versionnées).");
 }

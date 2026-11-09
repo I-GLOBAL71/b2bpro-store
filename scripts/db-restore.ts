@@ -25,6 +25,9 @@ interface Snapshot {
     knowledgeItems: Record<string, unknown>[];
     leads: Record<string, unknown>[];
     chatMessages: Record<string, unknown>[];
+    /** v1.5.0 — optionnel : réglages admin + journal d'audit (absents des anciens snapshots). */
+    siteConfig?: Record<string, unknown>[];
+    adminLogs?: Record<string, unknown>[];
   };
 }
 
@@ -62,6 +65,8 @@ async function main() {
     await tx.seller.deleteMany();
     await tx.blogPost.deleteMany();
     await tx.knowledgeItem.deleteMany();
+    await tx.siteConfig.deleteMany();
+    await tx.adminLog.deleteMany();
 
     // Ordre parents → enfants, IDs préservés (relations et slugs intacts)
     await tx.seller.createMany({ data: d.sellers as never });
@@ -72,6 +77,9 @@ async function main() {
     await tx.knowledgeItem.createMany({ data: d.knowledgeItems as never });
     await tx.lead.createMany({ data: d.leads as never });
     await tx.chatMessage.createMany({ data: d.chatMessages as never });
+    // v1.5.0 — réglages et audit (présents seulement dans les snapshots récents)
+    if (d.siteConfig?.length) await tx.siteConfig.createMany({ data: d.siteConfig as never });
+    if (d.adminLogs?.length) await tx.adminLog.createMany({ data: d.adminLogs as never });
   });
 
   console.log("✓ Base restaurée à l'identique (IDs et slugs préservés).");

@@ -7,6 +7,92 @@
 
 ---
 
+## [1.5.0] — 2026-11-09 — Vitrine rotative équitable + panneau d'administration complet
+
+Mandat utilisateur : gestion dynamique des services afin que **tous aient la même chance de
+positionnement préférentiel en page d'accueil** — « le même article ne peut pas faire plus de
+10 minutes à la première place et tous les produits doivent se relayer sans cesse »,
+configurable via un panneau d'administration robuste couvrant toutes les fonctionnalités du site.
+
+### [ADDITIF] Rotation équitable de la vitrine d'accueil (algorithme déterministe)
+- **Principe** : « tapis roulant » circulaire — les services éligibles (ordre stable
+  `createdAt, id`) sont découpés en fenêtres temporelles `windowIndex = floor(epochMs / fenêtre)`.
+  Le ruban avance d'un **pas copremier** avec le nombre d'éligibles
+  (`rotationStride`, pgcd = 1) : la 1ère position parcourt **la totalité du catalogue** —
+  chaque service passe en tête exactement une fois par cycle complet. **Aucune écriture en
+  base par requête** (position recalculée depuis l'horloge : zéro course critique, vitrine
+  identique pour tous les visiteurs d'une même fenêtre).
+- **Défaut produit** : rotation ACTIVE — fenêtre **10 min**, 8 cartes, note d'éligibilité 4,0
+  (tout le catalogue). Avec 113 services : cycle complet ≈ 19 h, chaque service réapparaît en
+  vitrine toutes les ~2 h 20. Repli « rotation désactivée » = comportement historique
+  best-sellers figés, conservé à l'identique (`getFeaturedServices`).
+- **UI accueil** : section « La vitrine qui tourne pour tous les talents » — badge configurable,
+  compte à rebours `aria-live` (`VitrineTimer`) et **rafraîchissement automatique sans
+  rechargement** à chaque changement de fenêtre (`router.refresh()` sur page dynamique).
+- Fichiers : `src/lib/rotation.ts` (moteur), `src/components/home/vitrine-timer.tsx`,
+  `BestSellersSection` étendue (contrats `RotationInfoDTO`, `VitrineResultDTO`).
+
+### [ADDITIF] Panneau d'administration `/admin` (authentifié)
+- **Authentification** (`src/lib/admin-auth.ts`) : mot de passe `ADMIN_PASSWORD` (défaut
+  documenté « b2bpro-admin », alerte visible tant que non personnalisé) → cookie HttpOnly
+  signé HMAC-SHA256 (8 h, `ADMIN_SESSION_COOKIE`), comparaisons `timingSafeEqual`,
+  anti-brute-force 5 essais / 10 min / IP en mémoire. `/admin/login` hors du groupe protégé
+  (jamais verrouillé par la maintenance).
+- **7 pages** (shell latéral responsive, groupe `(panel)` gardé côté serveur) : Tableau de
+  bord (stats + rotation en direct + file d'attente des prochaines 1ères positions) ·
+  Vitrine & Rotation (fenêtre 1-120 min, cartes 1-12, filtre de note, textes, compte à
+  rebours, auto-refresh) · Page d'accueil (bandeau d'annonce rejetable, héros complet
+  [badge/titres/intro/placeholder/mots-clés/statistique], visibilité et volumétrie des 7
+  sections) · Support IA (activation + message d'accueil) · Général & SEO (title/description
+  accueil, **mode maintenance** avec contournement admin, état de sécurité) · Services
+  (recherche, filtres pôle/mise en avant, pagination, bascule `featured`) · Journal d'audit.
+- **9 routes API** : `login`, `logout`, `session`, `config` (GET/PATCH validés zod par
+  groupe, refus 422 hors bornes), `stats`, `vitrine` (état live + file d'attente),
+  `services` + `services/[id]` (PATCH `featured`), `logs`. Toutes protégées par
+  `ensureAdmin()` (401 JSON).
+
+### [DONNÉES] Schéma — deux modèles additifs (SQLite + Postgres Neon en miroir)
+- `SiteConfig` (key/value JSON par groupe de réglages, fusion défensive sur
+  `DEFAULT_SITE_SETTINGS`, ligne absente/invalide = défaut du code) et `AdminLog`
+  (journal d'audit : login/logout/config.update/service.update/login.failed).
+- Snapshot/restore étendus : `db:snapshot` / `db:restore` embarquent désormais réglages et
+  audit (compatibilité ascendante — champs optionnels dans les anciens snapshots).
+
+### [FORCE MAJEURE] (protocole §5) Restructuration en route group `(public)/`
+- **Justification** : le mode maintenance doit bloquer le site public **côté serveur** sans
+  jamais verrouiller `/admin` — impossible avec un layout racine unique. Les pages publiques
+  (accueil, services, blog, catégories, vendeurs, support) migrent sous
+  `src/app/(public)/` (URLs inchangées), le chrome public (header/footer/annonce/maintenance)
+  vit dans son layout dédié, la racine garde polices/JSON-LD/Toaster. Footer collé conservé
+  (`min-h-screen` + `flex-1`), skip-link intact.
+- **Garde adaptée** : chemins de `CRITICAL_FILES` mis à jour vers le groupe (contrôle
+  `critical-files` étendu à 51 fichiers — sémantique inchangée, aucune vérification retirée).
+
+### [ADDITIF] Contrats & garde
+- `contracts.ts` section v1.5.0 : `SiteSettingsDTO` + 7 schémas zod par groupe,
+  `DEFAULT_SITE_SETTINGS`, `ROTATION_RULES`, `AdminStatsResponse`, `AdminLogDTO`, routes
+  `API_ROUTES` étendues — 100 % additif.
+- **Nouveau contrôle `home-rotation-fairness`** (garde 14 → **15 contrôles**) : réglages
+  valides, bornes respectées, et **preuve d'équité simulée sur un cycle complet** (la 1ère
+  position change à chaque fenêtre ET couvre tous les éligibles).
+
+### Validation machine (protocole complet docs/REGRESSION-GUARD.md)
+- `bun run guard` avant/après : **15/15** ✓ (dont équité de rotation vérifiée sur cycle
+  simulé : 113 éligibles, fenêtre 10 min, cycle 19 h). `bun run lint` : 0 erreur.
+- Snapshot avant (00:53) / après (01:20) pris et committés.
+- **Navigateur (agent-browser) — golden path complète** : rotation prouvée EN DIRECT
+  (fenêtre passée à 1 min via l'admin → carte n°1 changée « outils IA et SaaS » →
+  « liens cassés SEO », compte à rebours réinitialisé sans rechargement) ; login admin
+  (401 sur mauvais mot de passe, cookie 8 h) ; sauvegarde vitrine persistée en base +
+  entrée d'audit ; maintenance ON → visiteur bloqué (message personnalisé), admin
+  contourné avec bandeau, `/admin/login` toujours accessible ; bandeau d'annonce affiché ;
+  page Services (20 lignes, recherche « insta » + filtre pôle → 1 résultat exact, bascule
+  featured on/off/on restaurée) ; footer collé (page courte : bas = 1600/1600 px) et poussé
+  naturellement (accueil 7058 px) ; mobile 375 px sans scroll horizontal ; zéro erreur
+  console, zéro erreur dev.log.
+
+---
+
 ## [1.4.0] — 2026-11-09 — Premier service ajouté via le skill rédactionnel : rédaction d'articles SEO/GEO/AIO
 
 Mandat utilisateur : ajouter un service de rédaction d'articles de blog « extrêmement

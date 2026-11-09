@@ -11,7 +11,19 @@ interface HeroStats {
   reviews: number;
 }
 
-export function HeroSection({ stats }: { stats: HeroStats }) {
+/** Textes du héros pilotés par l'admin (défauts = comportement historique). */
+export interface HeroContent {
+  badge: string;
+  titleStart: string;
+  titleHighlight: string;
+  subtitle: string;
+  searchPlaceholder: string;
+  popularKeywords: string[];
+  onTimeRate: string;
+}
+
+export function HeroSection({ stats, hero }: { stats: HeroStats; hero: HeroContent }) {
+  const keywords = hero.popularKeywords.filter(Boolean).slice(0, 6);
   return (
     <section className="relative overflow-hidden bg-stone-950 text-white">
       {/* décor */}
@@ -29,20 +41,18 @@ export function HeroSection({ stats }: { stats: HeroStats }) {
         <div className="animate-fade-up">
           <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-3.5 py-1.5 text-[12.5px] font-medium text-emerald-300">
             <BadgeCheck className="h-4 w-4" aria-hidden="true" />
-            {stats.services} services experts · 14 pôles · 100 % francophone
+            {hero.badge}
           </div>
 
           <h1 className="mt-6 text-balance text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.4rem]">
-            Les services digitaux B2B qui font{" "}
+            {hero.titleStart}{" "}
             <span className="bg-gradient-to-r from-emerald-300 to-emerald-500 bg-clip-text text-transparent">
-              croître votre business
+              {hero.titleHighlight}
             </span>
           </h1>
 
           <p className="mt-5 max-w-xl text-[15.5px] leading-7 text-stone-300">
-            Veille concurrentielle, génération de leads, bases de connaissances IA, SEO local…
-            Des experts vérifiés livrent vos données prêtes à l'emploi en 2-3 jours, dès 25 €.
-            Paiement sécurisé : vous ne payez qu'après validation du livrable.
+            {hero.subtitle}
           </p>
 
           <form action="/services" role="search" className="mt-7 flex max-w-lg gap-2">
@@ -54,7 +64,7 @@ export function HeroSection({ stats }: { stats: HeroStats }) {
               <Input
                 type="search"
                 name="q"
-                placeholder="Ex : surveiller les prix de mes concurrents…"
+                placeholder={hero.searchPlaceholder}
                 aria-label="Rechercher un service"
                 className="h-12 rounded-full border-stone-800 bg-stone-900/80 pl-11 pr-4 text-[14.5px] text-white placeholder:text-stone-500"
               />
@@ -69,8 +79,7 @@ export function HeroSection({ stats }: { stats: HeroStats }) {
 
           <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[13px] text-stone-400">
             <span>Populaires :</span>
-            {["veille concurrentielle", "fichier de prospection B2B", "base de connaissances IA", "SEO local"].map(
-              (k) => (
+            {keywords.map((k) => (
                 <Link
                   key={k}
                   href={`/services?q=${encodeURIComponent(k)}`}
@@ -87,7 +96,7 @@ export function HeroSection({ stats }: { stats: HeroStats }) {
               { v: stats.services.toString(), l: "services experts" },
               { v: stats.sellers.toString(), l: "vendeurs vérifiés" },
               { v: `${stats.avgRating.toString().replace(".", ",")}/5`, l: "note moyenne" },
-              { v: "98,6 %", l: "livrés à l'heure" },
+              { v: hero.onTimeRate, l: "livrés à l'heure" },
             ].map((s) => (
               <div key={s.l}>
                 <p className="text-2xl font-extrabold text-white">{s.v}</p>

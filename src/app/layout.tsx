@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import { SiteHeader } from "@/components/site/site-header";
-import { SiteFooter } from "@/components/site/site-footer";
 import { defaultMetadata, SITE } from "@/lib/site";
 
 const geistSans = Geist({
@@ -18,6 +16,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = defaultMetadata();
 
+/**
+ * Layout racine — socle commun (polices, JSON-LD Organisation, toasts).
+ * Le chrome public (header/footer/annonce/maintenance) vit dans
+ * src/app/(public)/layout.tsx ; le panneau d'administration a son propre
+ * chrome sous src/app/admin — la maintenance ne bloque jamais l'admin.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -44,17 +48,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
         />
-        <a
-          href="#contenu"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
-        >
-          Aller au contenu
-        </a>
-        <SiteHeader />
-        <main id="contenu" className="flex-1">
-          {children}
-        </main>
-        <SiteFooter />
+        {children}
         <Toaster position="bottom-right" richColors />
       </body>
     </html>

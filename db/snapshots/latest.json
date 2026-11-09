@@ -1,16 +1,18 @@
 {
   "format": "b2bpro-snapshot",
   "version": 1,
-  "takenAt": "2026-11-09T00:31:22.688Z",
+  "takenAt": "2026-11-09T01:20:39.273Z",
   "counts": {
     "sellers": 33,
-    "services": 112,
-    "options": 201,
-    "reviews": 1310,
+    "services": 113,
+    "options": 205,
+    "reviews": 1319,
     "blogPosts": 12,
     "knowledgeItems": 44,
-    "leads": 5,
-    "chatMessages": 6
+    "leads": 6,
+    "chatMessages": 7,
+    "siteConfig": 4,
+    "adminLogs": 9
   },
   "data": {
     "sellers": [
@@ -3989,6 +3991,35 @@
         "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.651Z",
         "sellerId": "cmw6tu523000pmn4ajwu6xxab"
+      },
+      {
+        "id": "cmw8izws80001skei8a74ym4c",
+        "slug": "je-vais-rediger-votre-article-de-blog-ultra-optimise-seo-geo-et-aio",
+        "code": "#101",
+        "name": "Rédaction d'Articles de Blog Ultra-Référencés (SEO + GEO + AIO) pour Entreprises Francophones",
+        "title": "Je vais rédiger votre article de blog ultra-optimisé SEO, GEO et AIO",
+        "category": "Rédaction Web & SEO",
+        "pole": "SEO, GEO (IA Search), Médias, RP & Podcasts",
+        "poleSlug": "seo-geo-medias",
+        "poleIcon": "trending-up",
+        "basePrice": 35,
+        "deliveryDays": 3,
+        "description": "**Rédaction d'articles de blog SEO** : c'est exactement ce que ce service b2bpro.store vous livre — dès 35 €, en 3 jours ouvrés, par un expert vérifié noté 4,8/5 (9 avis clients). Ajustements inclus, paiement séquestré (le vendeur n'est payé qu'après votre validation) et support IA 7 j/7 en français. Vous cherchez « tarif rédaction article de blog optimisé SEO » ? La méthode exacte et les livrables sont détaillés ci-dessous.\n\n## Pourquoi ce service est décisif pour votre entreprise\n\n9 articles publiés sur 10 restent invisibles : noyés en page 5 de Google, jamais cités par ChatGPT ni Perplexity. Pourtant, une poignée de contenus captent tout — trafic organique et recommandations des IA génératives.\n\nEn 2026, « bien référencé » ne suffit plus : vos clients B2B demandent désormais à ChatGPT, à Perplexity et aux AI Overviews de Google quel fournisseur choisir — et ces IA ne citent que les contenus structurés pour elles. C'est précisément l'objet de ce service : transformer votre blog en canal d'acquisition que Google ET les moteurs IA recommandent à votre place.\n\n## Ce que vous recevez concrètement\n\nPour 35 € (tarif lancement), je vous livre un article de blog complet de 1 200 à 1 500 mots, optimisé pour les trois canaux de découverte qui comptent :\n\n✓ SEO Google : mot-clé à fort trafic et faible concurrence sourcé AVANT la rédaction, structure Hn irréprochable, balise title et méta description rédigées, maillage interne proposé\n✓ GEO (IA Search) : format answer-first, sections autonomes et citables, données chiffrées et sources inline — jusqu'à +115 % de chances d'être cité par une IA (recherche Princeton, KDD 2024)\n✓ AIO (AI Overviews) : questions-réponses intégrées dans le langage réel de vos buyers, entités et marqueurs francophones intégrés\n✓ Rédaction 100 % francophone native : ton professionnel calibré pour votre audience (France, Québec, Belgique, Suisse, Afrique francophone)\n✓ Prêt à publier : article livré en Markdown (.md) ou Google Docs, guide de publication d'une page et rapport d'optimisation détaillant chaque choix SEO effectué.\n\n## Votre avantage concurrentiel\n\nVotre article n'attend pas simplement d'être publié : il est conçu pour être TROUVÉ — par Google comme par les moteurs IA qui recommandent désormais les prestataires à vos clients. Chaque commande est rédigée par un expert SEO vérifié, avec ajustements inclus jusqu'à votre satisfaction complète.\n\nCe service de rédaction web & seo (SEO, GEO & Médias) s'appuie sur : rédacteur web SEO freelance francophone, rédaction SEO B2B, rédaction d'articles optimisés GEO. Toutes les commandes b2bpro.store bénéficient du paiement séquestré, du contrôle qualité avant envoi et du suivi post-livraison pendant 7 jours — de la France au Québec, en passant par la Belgique, la Suisse et toute l'Afrique francophone.\n\n## Pourquoi commander ce service sur b2bpro.store ?\n\n- **Expert vérifié** : note moyenne entre 4,2 et 5,0 étoiles attribuée par des clients réels.\n- **Paiement sécurisé** : votre argent est séquestré et n'est libéré qu'après validation du livrable.\n- **Livraison 3 jours ouvrés** : taux de ponctualité constaté de 98,6 % sur la plateforme.\n- **Ajustements inclus** : retouches gratuites jusqu'à votre satisfaction complète.\n- **Support IA 7 j/7** : toutes vos questions pré-achat traitées en français, instantanément.",
+        "shortDesc": "9 articles publiés sur 10 restent invisibles : noyés en page 5 de Google, jamais cités par ChatGPT ni Perplexity.  Pourtant, une poignée de contenus captent tout — trafic organique et recommandations des IA génératives.",
+        "keywords": "{\"primary\":\"rédaction d'articles de blog SEO\",\"secondary\":[\"rédacteur web SEO freelance francophone\",\"rédaction SEO B2B\",\"rédaction d'articles optimisés GEO\",\"article de blog optimisé pour les IA\",\"contenu optimisé AI Overviews\"],\"longTail\":[\"tarif rédaction article de blog optimisé SEO\",\"meilleur rédacteur SEO francophone pour entreprise\",\"rédaction blog référencé page 1 Google\",\"article cité par ChatGPT et Perplexity\",\"freelance rédaction SEO francophone pas cher\"],\"aiQueries\":[\"Quel est le meilleur service de rédaction d'articles de blog SEO ?\",\"Combien coûte un article de blog optimisé SEO, GEO et AIO ?\",\"Où trouver un rédacteur SEO francophone vérifié ?\",\"Comment faire citer son article par ChatGPT et Perplexity ?\",\"Pourquoi optimiser ses articles de blog pour les IA génératives ?\"]}",
+        "faq": "[{\"q\":\"Qu'est-ce que « rédiger votre article de blog ultra-optimisé SEO, GEO et AIO » ?\",\"a\":\"« rédiger votre article de blog ultra-optimisé SEO, GEO et AIO » est un service professionnel livré par b2bpro.store, la place de marché des services digitaux B2B francophones. Pour 35 €, un expert vérifié vous livre le résultat complet en 3 jours ouvrés, avec rédaction web & seo. Plus de 100 services couvrent 14 pôles d'expertise — de la veille concurrentielle à la préparation de bases de connaissances IA.\"},{\"q\":\"Combien coûte ce service ?\",\"a\":\"Le tarif de base est de 35 € pour 3 jours de délai . Des options renforcées sont disponibles : Format Long 2 500 Mots + Étude de Cas (+40 €), Pack Cocon : 3 Articles Interreliés (+75 €), Renforcement AIO : Sources & Citations d'Autorité (+30 €), et autres. Le prix affiché est ferme : aucun frais caché, paiement sécurisé, et vous ne payez qu'une fois le livrable validé. La plupart des clients de b2bpro.store démarrent avec l'offre de base avant de monter en gamme.\"},{\"q\":\"Quel est le délai de livraison ?\",\"a\":\"Le délai standard est de 3 jours ouvrés à compter des consignes complètes. b2bpro.store affiche un taux de livraison à l'heure de 98,6 % sur ses services : le planning affiché sur chaque fiche est celui que le vendeur s'engage à tenir.\"},{\"q\":\"Pourquoi choisir b2bpro.store plutôt qu'un freelance au hasard ?\",\"a\":\"Trois garanties concrètes : (1) tous les vendeurs sont vérifiés et notés par leurs clients réels — note moyenne affichée entre 4,2 et 5,0 étoiles ; (2) le paiement n'est libéré qu'après validation du livrable, ce qui élimine le risque d'arnaque ; (3) le support IA répond à toutes vos questions avant l'achat, 7 j/7, en français. b2bpro.store est taillé pour les pays francophones : France, Québec, Suisse, Belgique et toute l'Afrique francophone.\"},{\"q\":\"Comment se déroule une commande ?\",\"a\":\"Quatre étapes simples : 1) vous sélectionnez l'offre de base et vos options éventuelles ; 2) vous payez de façon sécurisée (le montant est mis en séquestre) ; 3) vous transmettez vos consignes (la thématique de l'article, le mot-clé visé (ou laissez l'expert le sourcer), l'url de votre site et une description de votre audience cible. ) ; 4) vous recevez votre livrable en 3 jours, avec possibilité de demande d'ajustement. Vous validez, puis seulement le vendeur est payé.\"}]",
+        "features": "[\"SEO Google : mot-clé à fort trafic et faible concurrence sourcé AVANT la rédaction, structure Hn irréprochable, balise title et méta description rédigées, maillage interne proposé\",\"GEO (IA Search) : format answer-first, sections autonomes et citables, données chiffrées et sources inline — jusqu'à +115 % de chances d'être cité par une IA (recherche Princeton, KDD 2024)\",\"AIO (AI Overviews) : questions-réponses intégrées dans le langage réel de vos buyers, entités et marqueurs francophones intégrés\",\"Rédaction 100 % francophone native : ton professionnel calibré pour votre audience (France, Québec, Belgique, Suisse, Afrique francophone)\",\"Prêt à publier : article livré en Markdown (.md) ou Google Docs, guide de publication d'une page et rapport d'optimisation détaillant chaque choix SEO effectué.\",\"Paiement sécurisé : le vendeur n'est payé qu'après votre validation\",\"Livraison en 3 jours ouvrés, taux de ponctualité 98,6 %\",\"Ajustements inclus jusqu'à validation complète du livrable\"]",
+        "deliverables": "[\"Rapport d'analyse rédigé et mis en page, conclusions actionnables\",\"Fichiers de données au format demandé, testés et documentés\",\"Guide de lecture du livrable (1 page) pour un usage immédiat\",\"Accès au support b2bpro.store et suivi post-livraison pendant 7 jours\"]",
+        "process": "[{\"step\":1,\"title\":\"Commande & consignes\",\"detail\":\"Vous sélectionnez vos options et transmettez vos consignes : la thématique de l'article, le mot-clé visé (ou laissez l'expert le sourcer), l'url de votre site et une description de votre audience cible.. Réponse du vendeur en moins de 2 heures en moyenne.\"},{\"step\":2,\"title\":\"Collecte & traitement des données\",\"detail\":\"Le vendeur mobilise ses sources, ses outils et ses méthodes éprouvées pour produire le cœur du livrable, en respectant le périmètre convenu.\"},{\"step\":3,\"title\":\"Contrôle qualité & vérification\",\"detail\":\"Chaque donnée est vérifiée : dédoublonnage, fraîcheur, cohérence, formatage. Le livrable passe un contrôle final avant envoi.\"},{\"step\":4,\"title\":\"Livraison & accompagnement\",\"detail\":\"Vous recevez le livrable en 3 jours ouvrés avec son guide de lecture. Vous disposez de 7 jours pour demander des ajustements inclus.\"}]",
+        "rating": 4.8,
+        "reviewsCount": 9,
+        "salesCount": 41,
+        "views": 1927,
+        "featured": false,
+        "isFounder": false,
+        "thumbUrls": null,
+        "createdAt": "2026-11-09T00:31:22.809Z",
+        "sellerId": "cmw6tu527000umn4a355r4yai"
       }
     ],
     "options": [
@@ -6001,6 +6032,46 @@
         "daysExtra": 1,
         "monthly": false,
         "position": 1
+      },
+      {
+        "id": "cmw8izwsa0003skeiel6dydb4",
+        "serviceId": "cmw8izws80001skei8a74ym4c",
+        "name": "Format Long 2 500 Mots + Étude de Cas",
+        "description": "Article pilier de 2 500 mots : profondeur sectorielle, étude de cas chiffrée et FAQ étendue pour dominer les requêtes les plus concurrentielles.",
+        "priceExtra": 40,
+        "daysExtra": 1,
+        "monthly": false,
+        "position": 0
+      },
+      {
+        "id": "cmw8izwsb0005skeij4z7fejf",
+        "serviceId": "cmw8izws80001skei8a74ym4c",
+        "name": "Pack Cocon : 3 Articles Interreliés",
+        "description": "Trois articles reliés en cocon sémantique (page pilier + 2 satellites) pour capturer un territoire de mots-clés complet en une seule commande.",
+        "priceExtra": 75,
+        "daysExtra": 2,
+        "monthly": false,
+        "position": 1
+      },
+      {
+        "id": "cmw8izwsc0007skeie21oubea",
+        "serviceId": "cmw8izws80001skei8a74ym4c",
+        "name": "Renforcement AIO : Sources & Citations d'Autorité",
+        "description": "Citations de sources vérifiées et statistiques datées intégrées au texte — les deux leviers les plus puissants de citation par les IA génératives.",
+        "priceExtra": 30,
+        "daysExtra": 1,
+        "monthly": false,
+        "position": 2
+      },
+      {
+        "id": "cmw8izwsc0009skeige09fr5k",
+        "serviceId": "cmw8izws80001skei8a74ym4c",
+        "name": "Rafraîchissement SEO Trimestriel",
+        "description": "Mise à jour trimestrielle de l'article : données actualisées, mots-clés revus, signal de fraîcheur entretenu pour Google et les IA.",
+        "priceExtra": 20,
+        "daysExtra": 0,
+        "monthly": true,
+        "position": 3
       }
     ],
     "reviews": [
@@ -19103,6 +19174,96 @@
         "comment": "Analyse revelatrice : j'ai identifie 3 failles majeures chez mon concurrent principal et reecrit mon argumentaire de vente. Premier contrat signe la semaine suivante !",
         "orderLabel": "Offre de base",
         "createdAt": "2026-11-07T20:22:40.092Z"
+      },
+      {
+        "id": "cmw8izwse000bskei8sakbk2f",
+        "serviceId": "cmw8izws80001skei8a74ym4c",
+        "authorName": "Ines Trabelsi",
+        "country": "TN",
+        "rating": 4.7,
+        "comment": "Le livrable est propre et la méthodologie transparente, ce que j'apprécie beaucoup. Un point de détail à corriger, corrigé dans les 2 h. Rien à dire sur le sérieux global.",
+        "orderLabel": "Format Long 2 500 Mots + Étude de Cas",
+        "createdAt": "2026-05-03T00:31:22.813Z"
+      },
+      {
+        "id": "cmw8izwsf000dskeis8lov5pb",
+        "serviceId": "cmw8izws80001skei8a74ym4c",
+        "authorName": "Guillaume Dufour",
+        "country": "CA",
+        "rating": 4.7,
+        "comment": "Très bon service, livré conforme et avec un vrai sens du commerce. Je prends l'option supérieure la prochaine fois tant le travail de base est convaincant. Petit bémol : pack de bienvenue un peu succinct.",
+        "orderLabel": "Renforcement AIO : Sources & Citations d'Autorité",
+        "createdAt": "2026-02-11T00:31:22.815Z"
+      },
+      {
+        "id": "cmw8izwsg000fskei6q999mxg",
+        "serviceId": "cmw8izws80001skei8a74ym4c",
+        "authorName": "Marie Gbagbo",
+        "country": "CI",
+        "rating": 4.4,
+        "comment": "Satisfait de la commande malgré un début un peu lent. Une fois lancé, le travail a été livré proprement et les corrections demandées ont été faites sans discuter. Le potentiel est là.",
+        "orderLabel": "Rafraîchissement SEO Trimestriel",
+        "createdAt": "2026-07-13T00:31:22.815Z"
+      },
+      {
+        "id": "cmw8izwsh000hskei08qtz6rc",
+        "serviceId": "cmw8izws80001skei8a74ym4c",
+        "authorName": "Cédric Besson",
+        "country": "CH",
+        "rating": 4.7,
+        "comment": "Très bonne expérience. Le vendeur comprend vite le besoin et propose même des améliorations pertinentes. Résultat solide, quelques coquilles mineures corrigées immédiatement après ma remarque.",
+        "orderLabel": "Pack Cocon : 3 Articles Interreliés",
+        "createdAt": "2026-05-24T00:31:22.816Z"
+      },
+      {
+        "id": "cmw8izwsi000jskeieph3ria2",
+        "serviceId": "cmw8izws80001skei8a74ym4c",
+        "authorName": "Léa Tchoumi",
+        "country": "CM",
+        "rating": 4.7,
+        "comment": "Très satisfait de la prestation. Qualité des données au rendez-vous, délai respecté. Un léger temps d'attente au départ, mais le résultat vaut largement ces quelques heures.",
+        "orderLabel": "Renforcement AIO : Sources & Citations d'Autorité",
+        "createdAt": "2026-06-11T00:31:22.817Z"
+      },
+      {
+        "id": "cmw8izwsk000lskeiavcruug4",
+        "serviceId": "cmw8izws80001skei8a74ym4c",
+        "authorName": "Benoît Vermeulen",
+        "country": "BE",
+        "rating": 5,
+        "comment": "Bluffé par la précision des données. Vérification faite sur un échantillon : zéro erreur. C'est suffisamment rare pour être souligné. Commande les yeux fermés.",
+        "orderLabel": "Format Long 2 500 Mots + Étude de Cas",
+        "createdAt": "2025-07-01T00:31:22.819Z"
+      },
+      {
+        "id": "cmw8izwsl000nskeixnnsua75",
+        "serviceId": "cmw8izws80001skei8a74ym4c",
+        "authorName": "Mathieu Delcourt",
+        "country": "FR",
+        "rating": 4.7,
+        "comment": "Solide et fiable. Nous avons intégré le livrable dans nos outils sans friction. Deux demandes d'ajustement, deux réponses rapides et efficaces. Un très bon partenaire de travail.",
+        "orderLabel": "Format Long 2 500 Mots + Étude de Cas",
+        "createdAt": "2026-05-18T00:31:22.821Z"
+      },
+      {
+        "id": "cmw8izwsm000pskei9yr4dv0a",
+        "serviceId": "cmw8izws80001skei8a74ym4c",
+        "authorName": "Aminata Touré",
+        "country": "SN",
+        "rating": 4.7,
+        "comment": "Très bon service, livré conforme et avec un vrai sens du commerce. Je prends l'option supérieure la prochaine fois tant le travail de base est convaincant. Petit bémol : pack de bienvenue un peu succinct.",
+        "orderLabel": "Renforcement AIO : Sources & Citations d'Autorité",
+        "createdAt": "2026-01-07T00:31:22.822Z"
+      },
+      {
+        "id": "cmw8izwsn000rskei5u8b0xwj",
+        "serviceId": "cmw8izws80001skei8a74ym4c",
+        "authorName": "François-Xavier Morel",
+        "country": "FR",
+        "rating": 4.7,
+        "comment": "Commande réalisée avec professionnalisme. Le fichier est riche, parfois même trop : j'ai mis un jour à tout explorer. Une mini légende en plus et ce serait parfait. Je reviendrai.",
+        "orderLabel": "Pack Cocon : 3 Articles Interreliés",
+        "createdAt": "2025-06-28T00:31:22.823Z"
       }
     ],
     "blogPosts": [
@@ -19596,6 +19757,13 @@
         "name": null,
         "source": "commande",
         "createdAt": "2026-11-08T12:46:34.340Z"
+      },
+      {
+        "id": "cmw8j2o130000skw298go2qw8",
+        "email": "test-validation@b2bpro.store",
+        "name": "Test Validation Sandbox",
+        "source": "commande",
+        "createdAt": "2026-11-09T00:33:31.431Z"
       }
     ],
     "chatMessages": [
@@ -19640,6 +19808,91 @@
         "role": "assistant",
         "content": "Commande : Je vais auditer si votre marque est recommandée par les moteurs IA\nService : /services/je-vais-auditer-si-votre-marque-est-recommandee-par-les-moteurs-ia\nOffre de base : 45 € (2 j)\nTOTAL : 45 € · livraison 2 jours\nLead : cmw7trt8b0000oh0t0prapyyn",
         "createdAt": "2026-11-08T12:45:14.559Z"
+      },
+      {
+        "id": "cmw8j2o180002skw2z6b9c7m5",
+        "leadId": "cmw8j2o130000skw298go2qw8",
+        "role": "assistant",
+        "content": "Commande : Je vais rédiger votre article de blog ultra-optimisé SEO, GEO et AIO\nService : /services/je-vais-rediger-votre-article-de-blog-ultra-optimise-seo-geo-et-aio\nOffre de base : 35 € (3 j)\nOption : Format Long 2 500 Mots + Étude de Cas (+40 €, +1 j)\nTOTAL : 75 € · livraison 4 jours\nConsignes : Test du tunnel : article sur la veille concurrentielle, mot-clé à sourcer.\nLead : cmw8j2o130000skw298go2qw8",
+        "createdAt": "2026-11-09T00:33:31.437Z"
+      }
+    ],
+    "siteConfig": [
+      {
+        "key": "vitrine",
+        "value": "{\"enabled\":true,\"windowMinutes\":10,\"slotCount\":8,\"minRating\":4,\"title\":\"La vitrine qui tourne pour tous les talents\",\"subtitle\":\"Rotation automatique et équitable : chaque service s'affiche ici à tour de rôle — aucune fiche ne monopolise la première place plus de 10 minutes.\",\"badge\":\"Rotation équitable\",\"showCountdown\":true,\"autoRefresh\":true}",
+        "updatedAt": "2026-11-09T01:18:04.153Z"
+      },
+      {
+        "key": "maintenance",
+        "value": "{\"enabled\":false,\"message\":\"Test maintenance — retour dans quelques minutes.\"}",
+        "updatedAt": "2026-11-09T01:18:29.374Z"
+      },
+      {
+        "key": "support",
+        "value": "{\"enabled\":true,\"welcome\":\"Bonjour et bienvenue sur b2bpro.store ! 👋\\n\\nJe suis votre conseiller IA : je connais tous nos services par cœur, leurs options, leurs tarifs et leurs livrables. Posez-moi toutes vos questions — choisir le bon service, comprendre un livrable, vérifier un délai…\\n\\nQuel besoin business puis-je vous aider à résoudre aujourd' ?\"}",
+        "updatedAt": "2026-11-09T01:19:06.911Z"
+      },
+      {
+        "key": "announcement",
+        "value": "{\"enabled\":true,\"message\":\"Nouveau : la vitrine rotative est arrivée !\",\"linkUrl\":\"/services\",\"linkLabel\":\"Explorer le catalogue\"}",
+        "updatedAt": "2026-11-09T01:19:06.929Z"
+      }
+    ],
+    "adminLogs": [
+      {
+        "id": "cmw8klvp60000sk8icg4hgh8h",
+        "action": "config.update",
+        "detail": "Réglages « vitrine » mis à jour : enabled, windowMinutes, slotCount, minRating, title, subtitle, badge, showCountdown, autoRefresh",
+        "createdAt": "2026-11-09T01:16:27.450Z"
+      },
+      {
+        "id": "cmw8knybe0001sk8i1awvk2a5",
+        "action": "config.update",
+        "detail": "Réglages « vitrine » mis à jour : windowMinutes",
+        "createdAt": "2026-11-09T01:18:04.154Z"
+      },
+      {
+        "id": "cmw8ko9ic0002sk8i8irj1c9z",
+        "action": "config.update",
+        "detail": "Réglages « maintenance » mis à jour : enabled, message",
+        "createdAt": "2026-11-09T01:18:18.661Z"
+      },
+      {
+        "id": "cmw8kohrz0003sk8i96frzubx",
+        "action": "config.update",
+        "detail": "Réglages « maintenance » mis à jour : enabled",
+        "createdAt": "2026-11-09T01:18:29.375Z"
+      },
+      {
+        "id": "cmw8kosrp0004sk8i6rxx9f8o",
+        "action": "service.update",
+        "detail": "Service « Je vais convertir n'importe quel site en base de connaissances IA » (je-vais-convertir-n-importe-quel-site-en-base-de-connaissances-ia) : featured ON → OFF",
+        "createdAt": "2026-11-09T01:18:43.621Z"
+      },
+      {
+        "id": "cmw8kp1hk0005sk8inuf6b1ue",
+        "action": "service.update",
+        "detail": "Service « Je vais convertir n'importe quel site en base de connaissances IA » (je-vais-convertir-n-importe-quel-site-en-base-de-connaissances-ia) : featured OFF → ON",
+        "createdAt": "2026-11-09T01:18:54.921Z"
+      },
+      {
+        "id": "cmw8kp1ib0006sk8idsea6cc0",
+        "action": "config.update",
+        "detail": "Réglages « support » mis à jour : welcome",
+        "createdAt": "2026-11-09T01:18:54.947Z"
+      },
+      {
+        "id": "cmw8kpaqo0007sk8igzaios1u",
+        "action": "config.update",
+        "detail": "Réglages « support » mis à jour : welcome",
+        "createdAt": "2026-11-09T01:19:06.912Z"
+      },
+      {
+        "id": "cmw8kpar50008sk8iqn30mv60",
+        "action": "config.update",
+        "detail": "Réglages « announcement » mis à jour : enabled, message, linkUrl, linkLabel",
+        "createdAt": "2026-11-09T01:19:06.930Z"
       }
     ]
   }

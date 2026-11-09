@@ -20,10 +20,14 @@ import { existsSync, readdirSync, statSync } from "fs";
 import path from "path";
 import { db } from "@/lib/db";
 import { POLE_LABELS } from "@/lib/site";
+import { getSiteSettings } from "@/lib/settings";
+import { rotationWindowIndices } from "@/lib/rotation";
 import {
   BUSINESS_RULES,
   CONTRACT_VERSION,
+  ROTATION_RULES,
   safeJsonParse,
+  siteSettingsSchema,
   type CheckResult,
   type CheckStatus,
   type IntegrityIssue,
@@ -66,27 +70,43 @@ function makeCheck(
 const CRITICAL_FILES: string[] = [
   // Socle
   "src/app/layout.tsx",
-  "src/app/page.tsx",
+  "src/app/(public)/layout.tsx", // v1.5.0 — chrome public + maintenance (page.tsx déplacée dans le groupe (public))
+  "src/app/(public)/page.tsx",
   "src/app/globals.css",
   "src/lib/db.ts",
   "src/lib/queries.ts",
   "src/lib/site.ts",
   "src/lib/contracts.ts",
   "src/lib/guard.ts",
+  "src/lib/settings.ts", // v1.5.0 — réglages dynamiques
+  "src/lib/rotation.ts", // v1.5.0 — rotation équitable
+  "src/lib/admin-auth.ts", // v1.5.0 — sessions admin
   // Pages publiques (SEO : URLs déjà référencables)
-  "src/app/services/page.tsx",
-  "src/app/services/[slug]/page.tsx",
-  "src/app/blog/page.tsx",
-  "src/app/blog/[slug]/page.tsx",
-  "src/app/categories/[slug]/page.tsx",
-  "src/app/vendeurs/[slug]/page.tsx",
-  "src/app/support/page.tsx",
+  "src/app/(public)/services/page.tsx",
+  "src/app/(public)/services/[slug]/page.tsx",
+  "src/app/(public)/blog/page.tsx",
+  "src/app/(public)/blog/[slug]/page.tsx",
+  "src/app/(public)/categories/[slug]/page.tsx",
+  "src/app/(public)/vendeurs/[slug]/page.tsx",
+  "src/app/(public)/support/page.tsx",
+  // Panneau d'administration (v1.5.0)
+  "src/app/admin/login/page.tsx",
+  "src/app/admin/(panel)/layout.tsx",
+  "src/app/admin/(panel)/page.tsx",
+  "src/app/admin/(panel)/vitrine/page.tsx",
+  "src/app/admin/(panel)/accueil/page.tsx",
+  "src/app/admin/(panel)/support/page.tsx",
+  "src/app/admin/(panel)/general/page.tsx",
+  "src/app/admin/(panel)/services/page.tsx",
+  "src/app/admin/(panel)/journal/page.tsx",
   // Endpoints API (contrats consommés par le front)
   "src/app/api/orders/route.ts",
   "src/app/api/reviews/route.ts",
   "src/app/api/leads/route.ts",
   "src/app/api/services/route.ts",
   "src/app/api/support/chat/route.ts",
+  "src/app/api/admin/login/route.ts", // v1.5.0
+  "src/app/api/admin/config/route.ts", // v1.5.0
   // SEO technique
   "src/app/sitemap.ts",
   "src/app/robots.ts",
@@ -562,6 +582,84 @@ export async function runIntegrityChecks(): Promise<IntegrityReport> {
         "Reproductibilité : sources de données (seed.ts, catalog.json) présentes",
         issues.length ? "fail" : "pass",
         "La base peut être reconstruite à l'identique via data/seed.ts.",
+        issues
+      )
+    );
+  }
+
+  // ── 12. [ADDITIF v1.5.0] Rotation équitable de la vitrine ────────────────
+  // Contrôle que la configuration est valide ET que l'algorithme garantit
+  // l'exigence produit : la 1ère position change à chaque fenêtre, et chaque
+  // service éligible y passe exactement une fois par cycle complet.
+  {
+    const issues: IntegrityIssue[] = [];
+    let rotationDetails = "Rotation désactivée (mode best-sellers figé).";
+    try {
+      const settings = await getSiteSettings();
+      const parsedSettings = siteSettingsSchema.safeParse(settings);
+      if (!parsedSettings.success) {
+        issues.push({
+          ref: "site-settings",
+          problem: `Réglages invalides : ${parsedSettings.error.issues[0]?.path.join(".") ?? "?"} — ${parsedSettings.error.issues[0]?.message ?? "forme inattendue"}`,
+        });
+      }
+      const v = settings.vitrine;
+      if (
+        v.windowMinutes < ROTATION_RULES.WINDOW_MIN_MINUTES ||
+        v.windowMinutes > ROTATION_RULES.WINDOW_MAX_MINUTES ||
+        v.slotCount < ROTATION_RULES.SLOTS_MIN ||
+        v.slotCount > ROTATION_RULES.SLOTS_MAX ||
+        v.minRating < ROTATION_RULES.MIN_RATING_FLOOR
+      ) {
+        issues.push({
+          ref: "vitrine/bornes",
+          problem: `Paramètres hors bornes (fenêtre ${v.windowMinutes} min, ${v.slotCount} cartes, note min ${v.minRating})`,
+        });
+      }
+      if (v.enabled) {
+        const eligible = await db.service.count({ where: { rating: { gte: v.minRating } } });
+        if (eligible === 0) {
+          issues.push({ ref: "vitrine/eligibles", problem: "Aucun service éligible — la vitrine serait vide" });
+        } else {
+          // Preuve d'équité sur un cycle complet simulé :
+          const firsts = new Set<number>();
+          let changes = 0;
+          let prev = -1;
+          for (let w = 0; w < eligible; w++) {
+            const idx = rotationWindowIndices(eligible, v.slotCount, w);
+            if (idx.length !== Math.min(v.slotCount, eligible)) {
+              issues.push({ ref: "rotation/uniqueness", problem: `La fenêtre ${w} ne renvoie pas ${Math.min(v.slotCount, eligible)} indices uniques` });
+              break;
+            }
+            const first = idx[0]!;
+            if (prev !== -1 && first !== prev) changes++;
+            prev = first;
+            firsts.add(first);
+          }
+          if (firsts.size !== eligible) {
+            issues.push({
+              ref: "rotation/equite",
+              problem: `Sur un cycle de ${eligible} fenêtres, seulement ${firsts.size} services différents atteignent la 1ère position (attendu : ${eligible})`,
+            });
+          }
+          if (eligible > 1 && changes !== eligible - 1) {
+            issues.push({
+              ref: "rotation/cadence",
+              problem: `La 1ère position ne change pas à chaque fenêtre (${changes}/${eligible - 1} changements observés)`,
+            });
+          }
+          rotationDetails = `Rotation active : ${eligible} services éligibles, fenêtre de ${v.windowMinutes} min, cycle complet en ${Math.round((eligible * v.windowMinutes) / 60)} h — équité vérifiée sur un cycle simulé.`;
+        }
+      }
+    } catch (e) {
+      issues.push({ ref: "vitrine", problem: `Contrôle de rotation impossible : ${e instanceof Error ? e.message : String(e)}` });
+    }
+    checks.push(
+      makeCheck(
+        "home-rotation-fairness",
+        "Vitrine rotative : réglages valides, cadence respectée, équité stricte du cycle complet",
+        issues.length ? "fail" : "pass",
+        rotationDetails,
         issues
       )
     );

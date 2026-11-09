@@ -271,6 +271,15 @@ export const API_ROUTES = {
   integrity: "/api/integrity",
   paypalCreateOrder: "/api/paypal/create-order",
   paypalCaptureOrder: "/api/paypal/capture-order",
+  // ── v1.5.0 : panneau d'administration ──
+  adminLogin: "/api/admin/login",
+  adminLogout: "/api/admin/logout",
+  adminSession: "/api/admin/session",
+  adminConfig: "/api/admin/config",
+  adminStats: "/api/admin/stats",
+  adminVitrine: "/api/admin/vitrine",
+  adminServices: "/api/admin/services",
+  adminLogs: "/api/admin/logs",
 } as const;
 
 // ─── Rapport d'intégrité (contrat de /api/integrity et du script guard) ──────
@@ -378,4 +387,370 @@ export interface PayPalCaptureOrderResponse {
 export interface PayPalClientConfig {
   clientId: string;
   currency: "EUR";
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  SECTION ADDITIVE v1.5.0 — Panneau d'administration & rotation équitable
+//  (vitrine d'accueil rotative, réglages pilotables, journal d'audit)
+// ═══════════════════════════════════════════════════════════════════════════
+
+// ─── Bornes métier de la rotation (additif à BUSINESS_RULES) ─────────────────
+
+/** Bornes de la fenêtre de rotation (minutes) — ex. 10 min = exigence produit. */
+export const ROTATION_RULES = {
+  WINDOW_MIN_MINUTES: 1,
+  WINDOW_MAX_MINUTES: 120,
+  SLOTS_MIN: 1,
+  SLOTS_MAX: 12,
+  /** Le filtre de note ne peut descendre sous la note plancher du catalogue. */
+  MIN_RATING_FLOOR: 4,
+} as const;
+
+/** Durée de vie d'une session administrateur (cookie signé). */
+export const ADMIN_SESSION_TTL_HOURS = 8;
+
+/** Nom du cookie de session admin (HttpOnly, signé HMAC-SHA256). */
+export const ADMIN_SESSION_COOKIE = "b2bpro_admin_session";
+
+/** Actions tracées dans le journal d'audit (model AdminLog). */
+export const ADMIN_LOG_ACTIONS = {
+  LOGIN: "login",
+  LOGIN_FAILED: "login.failed",
+  LOGOUT: "logout",
+  CONFIG_UPDATE: "config.update",
+  SERVICE_UPDATE: "service.update",
+} as const;
+
+// ─── Groupes de réglages du site (SiteConfig.key) ────────────────────────────
+
+export const SETTINGS_GROUPS = [
+  "announcement",
+  "vitrine",
+  "hero",
+  "sections",
+  "support",
+  "maintenance",
+  "seo",
+] as const;
+
+export type SettingsGroup = (typeof SETTINGS_GROUPS)[number];
+
+// ─── Formes typées (champs JSON des modèles Prisma, PARSÉS) ──────────────────
+
+/** Bandeau d'annonce affiché en haut de toutes les pages publiques. */
+export interface AnnouncementSettings {
+  enabled: boolean;
+  message: string;
+  linkUrl: string;
+  linkLabel: string;
+}
+
+/** Vitrine rotative de la page d'accueil (équité stricte entre services). */
+export interface VitrineSettings {
+  enabled: boolean;
+  /** Fenêtre de rotation en minutes : aucune fiche ne garde la 1ère place plus longtemps. */
+  windowMinutes: number;
+  /** Nombre de cartes affichées dans la vitrine. */
+  slotCount: number;
+  /** Note minimale pour être éligible (4 = tout le catalogue). */
+  minRating: number;
+  title: string;
+  subtitle: string;
+  badge: string;
+  /** Affiche le compte à rebours avant la prochaine rotation. */
+  showCountdown: boolean;
+  /** Rafraîchit automatiquement la page d'accueil au changement de fenêtre. */
+  autoRefresh: boolean;
+}
+
+/** Textes du héros de la page d'accueil. `{services}` est remplacé par le décompte réel. */
+export interface HeroSettings {
+  badge: string;
+  titleStart: string;
+  titleHighlight: string;
+  subtitle: string;
+  searchPlaceholder: string;
+  popularKeywords: string[];
+  /** Statistique « livrés à l'heure » affichée sous le héros. */
+  onTimeRate: string;
+}
+
+/** Visibilité et volumétrie des sections de la page d'accueil. */
+export interface SectionsSettings {
+  categories: boolean;
+  howItWorks: boolean;
+  testimonials: boolean;
+  testimonialsCount: number;
+  testimonialsMinRating: number;
+  francophonie: boolean;
+  blogTeaser: boolean;
+  blogTeaserCount: number;
+  supportCta: boolean;
+}
+
+/** Support IA conversationnel. */
+export interface SupportSettings {
+  enabled: boolean;
+  welcome: string;
+}
+
+/** Mode maintenance (les administrateurs connectés passent toujours au travers). */
+export interface MaintenanceSettings {
+  enabled: boolean;
+  message: string;
+}
+
+/** Surcharges SEO de la page d'accueil (chaîne vide = comportement par défaut). */
+export interface SeoSettings {
+  homeTitle: string;
+  homeDescription: string;
+}
+
+/** Réglages complets du site — fusion des défauts et des surcharges base. */
+export interface SiteSettingsDTO {
+  announcement: AnnouncementSettings;
+  vitrine: VitrineSettings;
+  hero: HeroSettings;
+  sections: SectionsSettings;
+  support: SupportSettings;
+  maintenance: MaintenanceSettings;
+  seo: SeoSettings;
+}
+
+// ─── Défauts (comportement v1.5.0 : rotation ACTIVE, 10 min, 8 cartes) ───────
+
+export const DEFAULT_SITE_SETTINGS: SiteSettingsDTO = {
+  announcement: {
+    enabled: false,
+    message: "Bienvenue sur b2bpro.store — la vitrine rotative est arrivée !",
+    linkUrl: "/services",
+    linkLabel: "Découvrir les services",
+  },
+  vitrine: {
+    enabled: true,
+    windowMinutes: 10,
+    slotCount: 8,
+    minRating: 4,
+    title: "La vitrine qui tourne pour tous les talents",
+    subtitle:
+      "Rotation automatique et équitable : chaque service s'affiche ici à tour de rôle — aucune fiche ne monopolise la première place plus de 10 minutes.",
+    badge: "Rotation équitable",
+    showCountdown: true,
+    autoRefresh: true,
+  },
+  hero: {
+    badge: "{services} services experts · 14 pôles · 100 % francophone",
+    titleStart: "Les services digitaux B2B qui font",
+    titleHighlight: "croître votre business",
+    subtitle:
+      "Veille concurrentielle, génération de leads, bases de connaissances IA, SEO local… Des experts vérifiés livrent vos données prêtes à l'emploi en 2-3 jours, dès 25 €. Paiement sécurisé : vous ne payez qu'après validation du livrable.",
+    searchPlaceholder: "Ex : surveiller les prix de mes concurrents…",
+    popularKeywords: [
+      "veille concurrentielle",
+      "fichier de prospection B2B",
+      "base de connaissances IA",
+      "SEO local",
+    ],
+    onTimeRate: "98,6 %",
+  },
+  sections: {
+    categories: true,
+    howItWorks: true,
+    testimonials: true,
+    testimonialsCount: 6,
+    testimonialsMinRating: 4.8,
+    francophonie: true,
+    blogTeaser: true,
+    blogTeaserCount: 3,
+    supportCta: true,
+  },
+  support: {
+    enabled: true,
+    welcome:
+      "Bonjour et bienvenue sur b2bpro.store ! 👋\n\nJe suis votre conseiller IA : je connais tous nos services par cœur, leurs options, leurs tarifs et leurs livrables. Posez-moi toutes vos questions — choisir le bon service, comprendre un livrable, vérifier un délai…\n\nQuel besoin business puis-je vous aider à résoudre aujourd'hui ?",
+  },
+  maintenance: {
+    enabled: false,
+    message:
+      "b2bpro.store est en maintenance programmée. Nous revenons très vite — merci de votre patience.",
+  },
+  seo: {
+    homeTitle: "",
+    homeDescription: "",
+  },
+};
+
+// ─── Schémas zod par groupe (validation des PATCH admin et des lignes base) ──
+
+const text = (min: number, max: number) => z.string().trim().min(min).max(max);
+
+export const announcementSettingsSchema = z.object({
+  enabled: z.boolean(),
+  message: text(3, 220),
+  linkUrl: text(0, 300),
+  linkLabel: text(0, 60),
+});
+
+export const vitrineSettingsSchema = z.object({
+  enabled: z.boolean(),
+  windowMinutes: z.coerce
+    .number()
+    .int()
+    .min(ROTATION_RULES.WINDOW_MIN_MINUTES)
+    .max(ROTATION_RULES.WINDOW_MAX_MINUTES),
+  slotCount: z.coerce.number().int().min(ROTATION_RULES.SLOTS_MIN).max(ROTATION_RULES.SLOTS_MAX),
+  minRating: z.coerce
+    .number()
+    .min(ROTATION_RULES.MIN_RATING_FLOOR)
+    .max(BUSINESS_RULES.MAX_RATING),
+  title: text(3, 90),
+  subtitle: text(0, 220),
+  badge: text(2, 40),
+  showCountdown: z.boolean(),
+  autoRefresh: z.boolean(),
+});
+
+export const heroSettingsSchema = z.object({
+  badge: text(3, 120),
+  titleStart: text(3, 90),
+  titleHighlight: text(2, 60),
+  subtitle: text(20, 400),
+  searchPlaceholder: text(4, 90),
+  popularKeywords: z.array(text(2, 50)).max(8),
+  onTimeRate: text(1, 12),
+});
+
+export const sectionsSettingsSchema = z.object({
+  categories: z.boolean(),
+  howItWorks: z.boolean(),
+  testimonials: z.boolean(),
+  testimonialsCount: z.coerce.number().int().min(1).max(12),
+  testimonialsMinRating: z.coerce.number().min(BUSINESS_RULES.MIN_RATING).max(BUSINESS_RULES.MAX_RATING),
+  francophonie: z.boolean(),
+  blogTeaser: z.boolean(),
+  blogTeaserCount: z.coerce.number().int().min(1).max(6),
+  supportCta: z.boolean(),
+});
+
+export const supportSettingsSchema = z.object({
+  enabled: z.boolean(),
+  welcome: text(20, 1200),
+});
+
+export const maintenanceSettingsSchema = z.object({
+  enabled: z.boolean(),
+  message: text(10, 500),
+});
+
+export const seoSettingsSchema = z.object({
+  homeTitle: text(0, 120),
+  homeDescription: text(0, 320),
+});
+
+/** Schéma complet (tous les groupes). */
+export const siteSettingsSchema = z.object({
+  announcement: announcementSettingsSchema,
+  vitrine: vitrineSettingsSchema,
+  hero: heroSettingsSchema,
+  sections: sectionsSettingsSchema,
+  support: supportSettingsSchema,
+  maintenance: maintenanceSettingsSchema,
+  seo: seoSettingsSchema,
+});
+
+/** Schémas par groupe — clé = SiteConfig.key. */
+export const siteSettingsGroupSchemas = {
+  announcement: announcementSettingsSchema,
+  vitrine: vitrineSettingsSchema,
+  hero: heroSettingsSchema,
+  sections: sectionsSettingsSchema,
+  support: supportSettingsSchema,
+  maintenance: maintenanceSettingsSchema,
+  seo: seoSettingsSchema,
+} as const satisfies Record<SettingsGroup, z.ZodTypeAny>;
+
+/** État de la rotation calculé côté serveur (transmis à la vitrine et à l'admin). */
+export interface RotationInfoDTO {
+  enabled: true;
+  /** Fenêtre courante (index entier depuis l'epoch — déterministe). */
+  windowIndex: number;
+  windowMinutes: number;
+  slotCount: number;
+  /** Date (epoch ms) de la prochaine rotation. */
+  rotatesAt: number;
+  /** Nombre de services éligibles participant à la rotation. */
+  totalEligible: number;
+  /** Durée (minutes) pour que chaque service repasse en 1ère position. */
+  fullCycleMinutes: number;
+}
+
+/** Vitrine d'accueil : services + état de rotation (rotation null = mode best-sellers figé). */
+export interface VitrineResultDTO {
+  services: VitrineServiceDTO[];
+  rotation: RotationInfoDTO | null;
+}
+
+/** Champs d'un service de vitrine (sélection minimale pour les cartes). */
+export interface VitrineServiceDTO {
+  slug: string;
+  title: string;
+  shortDesc: string;
+  poleSlug: string;
+  category: string;
+  basePrice: number;
+  deliveryDays: number;
+  rating: number;
+  reviewsCount: number;
+  salesCount: number;
+  thumbUrls: string | null;
+  seller: SellerSummaryDTO;
+}
+
+// ─── Contrats des ENDPOINTS admin ─────────────────────────────────────────────
+
+/** POST /api/admin/login — corps de requête. */
+export const adminLoginRequestSchema = z.object({
+  password: z.string().min(1, "Mot de passe requis"),
+});
+
+/** POST /api/admin/login — réponse (jamais le mot de passe ni le token). */
+export interface AdminLoginResponse {
+  ok: true;
+  expiresInMinutes: number;
+}
+
+/** PATCH /api/admin/config — corps de requête (patch partiel d'un groupe). */
+export const adminConfigPatchSchema = z.object({
+  group: z.enum(SETTINGS_GROUPS),
+  patch: z.record(z.string(), z.unknown()),
+});
+
+/** PATCH /api/admin/services/[id] — corps de requête. */
+export const adminServicePatchSchema = z.object({
+  featured: z.boolean().optional(),
+});
+
+/** GET /api/admin/stats — réponse du tableau de bord. */
+export interface AdminStatsResponse {
+  counts: {
+    services: number;
+    sellers: number;
+    reviews: number;
+    orders: number;
+    leads: number;
+    blogPosts: number;
+    knowledgeItems: number;
+  };
+  revenuePaid: number;
+  avgRating: number;
+  rotation: RotationInfoDTO | null;
+  topService: { slug: string; title: string; salesCount: number } | null;
+}
+
+/** GET /api/admin/logs — entrée du journal d'audit. */
+export interface AdminLogDTO {
+  id: string;
+  action: string;
+  detail: string;
+  createdAt: string;
 }

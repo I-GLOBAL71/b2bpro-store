@@ -155,6 +155,23 @@ model ChatMessage {
   createdAt DateTime @default(now())
 }
 
+// ─── Configuration dynamique du site (panneau d'administration) ──────────────
+// v1.5.0 — rotation équitable de la vitrine d'accueil + réglages pilotables.
+// Miroir exact de prisma/schema.prisma (SQLite dev) — voir les commentaires là-bas.
+model SiteConfig {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+// ─── Journal d'audit du panneau d'administration ──────────────────────────────
+model AdminLog {
+  id        String   @id @default(cuid())
+  action    String
+  detail    String
+  createdAt DateTime @default(now())
+}
+
 // ─── Commandes réelles (paiement PayPal) ──────────────────────────────────────
 // Modèle additif v1.3.0 : persiste les paiements capturés via l'API PayPal.
 model Order {

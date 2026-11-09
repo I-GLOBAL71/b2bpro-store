@@ -1,11 +1,24 @@
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, CreditCard, SearchCheck, PackageCheck } from "lucide-react";
+import { ArrowRight, ShieldCheck, CreditCard, SearchCheck, PackageCheck, Recycle } from "lucide-react";
 import { ServiceCard } from "@/components/site/service-card";
 import { parseThumbUrls } from "@/lib/contracts";
 import { RatingStars } from "@/components/site/rating-stars";
+import { VitrineTimer } from "@/components/home/vitrine-timer";
+import type { RotationInfoDTO } from "@/lib/contracts";
+
+/** Titres par défaut du mode historique (rotation désactivée). */
+const LEGACY_TITLE = "Nos best-sellers plébiscités par les clients";
+const LEGACY_SUBTITLE =
+  "Les services les plus commandés du catalogue, avec les notes les plus élevées de leurs catégories respectives.";
 
 export function BestSellersSection({
   services,
+  rotation,
+  title,
+  subtitle,
+  badge,
+  showCountdown,
+  autoRefresh,
 }: {
   services: {
     slug: string;
@@ -18,30 +31,64 @@ export function BestSellersSection({
     rating: number;
     reviewsCount: number;
     salesCount: number;
+    thumbUrls: string | null;
     seller: { name: string; countryLabel: string };
   }[];
+  rotation: RotationInfoDTO | null;
+  title?: string;
+  subtitle?: string;
+  badge?: string;
+  showCountdown?: boolean;
+  autoRefresh?: boolean;
 }) {
+  const rotating = rotation !== null;
+  const heading = rotating ? title || "La vitrine qui tourne pour tous les talents" : LEGACY_TITLE;
+  const sub = rotating ? subtitle || "" : LEGACY_SUBTITLE;
+
   return (
     <section className="border-y border-border/70 bg-muted/40 py-16 lg:py-20" aria-labelledby="bestsellers-title">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="text-[12.5px] font-semibold uppercase tracking-wider text-primary">Les plus commandés</p>
+          <div className="min-w-0">
+            {rotating ? (
+              <p className="flex flex-wrap items-center gap-2 text-[12.5px] font-semibold uppercase tracking-wider text-primary">
+                <Recycle className="h-4 w-4" aria-hidden="true" />
+                {badge || "Rotation équitable"}
+              </p>
+            ) : (
+              <p className="text-[12.5px] font-semibold uppercase tracking-wider text-primary">Les plus commandés</p>
+            )}
             <h2 id="bestsellers-title" className="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">
-              Nos best-sellers plébiscités par les clients
+              {heading}
             </h2>
-            <p className="mt-3 max-w-2xl text-[14.5px] leading-7 text-muted-foreground">
-              Les services les plus commandés du catalogue, avec les notes les plus élevées de leurs
-              catégories respectives.
-            </p>
+            <p className="mt-3 max-w-2xl text-[14.5px] leading-7 text-muted-foreground">{sub}</p>
+            {rotating && rotation.totalEligible > 0 && (
+              <p className="mt-2 text-[12.5px] text-muted-foreground">
+                {rotation.totalEligible} services éligibles se relaient — chacun passe en tête à tour
+                de rôle, un cycle complet en{" "}
+                {rotation.fullCycleMinutes >= 60
+                  ? `${Math.round((rotation.fullCycleMinutes / 60) * 10) / 10} h`
+                  : `${rotation.fullCycleMinutes} min`}
+                .
+              </p>
+            )}
           </div>
-          <Link
-            href="/services"
-            className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-primary hover:underline"
-          >
-            Voir tous les services
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          </Link>
+          <div className="flex flex-col items-end gap-3">
+            {rotating && showCountdown && (
+              <VitrineTimer
+                rotatesAt={rotation.rotatesAt}
+                autoRefresh={Boolean(autoRefresh)}
+                windowMinutes={rotation.windowMinutes}
+              />
+            )}
+            <Link
+              href="/services"
+              className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-primary hover:underline"
+            >
+              Voir tous les services
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          </div>
         </div>
 
         <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">

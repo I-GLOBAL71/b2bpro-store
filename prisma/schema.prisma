@@ -139,6 +139,27 @@ model ChatMessage {
   createdAt DateTime @default(now())
 }
 
+// ─── Configuration dynamique du site (panneau d'administration) ──────────────
+// v1.5.0 — rotation équitable de la vitrine d'accueil + réglages pilotables.
+// Une ligne par groupe de réglages ; `value` est un JSON typé via les contrats
+// de src/lib/contracts.ts (section v1.5.0) et fusionné sur les défauts dans
+// src/lib/settings.ts. Absence de ligne = valeur par défaut du code.
+model SiteConfig {
+  key       String   @id // "announcement" | "vitrine" | "hero" | "sections" | "support" | "maintenance" | "seo"
+  value     String // JSON du groupe de réglages (forme validée par zod)
+  updatedAt DateTime @updatedAt
+}
+
+// ─── Journal d'audit du panneau d'administration ──────────────────────────────
+// Traçabilité des actions admin : connexions, modifications de configuration,
+// changements sur les services. Consultable dans /admin/journal.
+model AdminLog {
+  id        String   @id @default(cuid())
+  action    String // "login" | "logout" | "config.update" | "service.update" | "login.failed"
+  detail    String // description lisible (jamais de secret)
+  createdAt DateTime @default(now())
+}
+
 // ─── Commandes réelles (paiement PayPal) ──────────────────────────────────────
 // Modèle additif v1.3.0 : persiste les paiements capturés via l'API PayPal.
 // Le récapitulatif client reste attaché au lead (ChatMessage), comme pour la

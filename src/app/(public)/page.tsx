@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { HeroSection } from "@/components/home/hero-section";
 import { CategoriesSection } from "@/components/home/categories-section";
 import { BestSellersSection, HowItWorksSection, TestimonialsSection } from "@/components/home/sections";
@@ -7,29 +6,40 @@ import { FrancophonieSection, SupportCtaSection } from "@/components/home/franco
 import { BlogTeaserSection } from "@/components/home/blog-teaser";
 import {
   getStats,
-  getFeaturedServices,
   getPolesWithCounts,
   getBestReviews,
   getLatestBlogPosts,
 } from "@/lib/queries";
+import { getSiteSettings } from "@/lib/settings";
+import { getVitrine } from "@/lib/rotation";
 import { SITE } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "b2bpro.store — Services digitaux B2B francophones dès 25 €, livrés en 2-3 jours",
-  description: SITE.description,
-  alternates: { canonical: "/" },
-};
+const DEFAULT_HOME_TITLE = "b2bpro.store — Services digitaux B2B francophones dès 25 €, livrés en 2-3 jours";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getSiteSettings();
+  return {
+    title: seo.homeTitle || DEFAULT_HOME_TITLE,
+    description: seo.homeDescription || SITE.description,
+    alternates: { canonical: "/" },
+  };
+}
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [stats, featured, poleCounts, bestReviews, blogPosts] = await Promise.all([
+  // Les réglages pilotent les volumétries des sections : lus en premier.
+  const settings = await getSiteSettings();
+  const { hero, sections, vitrine: vitrineCfg } = settings;
+
+  const [stats, vitrine, poleCounts, bestReviews, blogPosts] = await Promise.all([
     getStats(),
-    getFeaturedServices(8),
+    getVitrine(),
     getPolesWithCounts(),
-    getBestReviews(6),
-    getLatestBlogPosts(3),
+    getBestReviews(sections.testimonialsCount, sections.testimonialsMinRating),
+    getLatestBlogPosts(sections.blogTeaserCount),
   ]);
+  const { services: featured, rotation } = vitrine;
 
   // Bloc answer-first (GEO/AIO) : réponse directement citable par les moteurs IA
   const faqJsonLd = {
@@ -73,7 +83,18 @@ export default async function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
-      <HeroSection stats={stats} />
+      <HeroSection
+        stats={stats}
+        hero={{
+          badge: hero.badge.replace("{services}", String(stats.services)),
+          titleStart: hero.titleStart,
+          titleHighlight: hero.titleHighlight,
+          subtitle: hero.subtitle,
+          searchPlaceholder: hero.searchPlaceholder,
+          popularKeywords: hero.popularKeywords,
+          onTimeRate: hero.onTimeRate,
+        }}
+      />
 
       {/* Bloc réponse directe pour moteurs IA (GEO/AIO) */}
       <section className="mx-auto max-w-7xl px-4 pt-12 sm:px-6 lg:px-8" aria-label="Présentation de b2bpro.store">
@@ -92,19 +113,27 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <CategoriesSection counts={poleCounts} />
+      {sections.categories && <CategoriesSection counts={poleCounts} />}
 
-      <BestSellersSection services={featured} />
+      <BestSellersSection
+        services={featured}
+        rotation={rotation}
+        title={vitrineCfg.title}
+        subtitle={vitrineCfg.subtitle}
+        badge={vitrineCfg.badge}
+        showCountdown={vitrineCfg.showCountdown}
+        autoRefresh={vitrineCfg.autoRefresh}
+      />
 
-      <HowItWorksSection />
+      {sections.howItWorks && <HowItWorksSection />}
 
-      <TestimonialsSection reviews={bestReviews} />
+      {sections.testimonials && <TestimonialsSection reviews={bestReviews} />}
 
-      <FrancophonieSection />
+      {sections.francophonie && <FrancophonieSection />}
 
-      <BlogTeaserSection posts={blogPosts} />
+      {sections.blogTeaser && <BlogTeaserSection posts={blogPosts} />}
 
-      <SupportCtaSection />
+      {sections.supportCta && <SupportCtaSection />}
     </>
   );
 }

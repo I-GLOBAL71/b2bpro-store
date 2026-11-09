@@ -58,9 +58,9 @@ export const getLatestReviews = cache(async (limit = 6) => {
   });
 });
 
-export const getBestReviews = cache(async (limit = 6) => {
+export const getBestReviews = cache(async (limit = 6, minRating = 4.8) => {
   return db.review.findMany({
-    where: { rating: { gte: 4.8 } },
+    where: { rating: { gte: minRating } },
     take: limit,
     orderBy: [{ rating: "desc" }, { createdAt: "desc" }],
     include: {
