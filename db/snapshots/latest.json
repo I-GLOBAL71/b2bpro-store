@@ -1,7 +1,7 @@
 {
   "format": "b2bpro-snapshot",
   "version": 1,
-  "takenAt": "2026-11-09T01:20:39.273Z",
+  "takenAt": "2026-11-09T15:33:22.711Z",
   "counts": {
     "sellers": 33,
     "services": 113,
@@ -19825,7 +19825,7 @@
       },
       {
         "key": "maintenance",
-        "value": "{\"enabled\":false,\"message\":\"Test maintenance — retour dans quelques minutes.\"}",
+        "value": "{\"enabled\":false,\"message\":\"b2bpro.store est en maintenance programmée. Nous revenons très vite — merci de votre patience.\"}",
         "updatedAt": "2026-11-09T01:18:29.374Z"
       },
       {

@@ -3,7 +3,8 @@
  *
  * Copie TOUTES les données de la base locale (db/custom.db) vers la base Neon
  * de production : vendeurs, services, options, avis, blog, base de connaissances
- * IA, leads, conversations, commandes — IDs et slugs préservés à l'identique
+ * IA, leads, conversations, commandes, réglages du site (SiteConfig v1.5.0) et
+ * journal d'audit (AdminLog) — IDs et slugs préservés à l'identique
  * (aucune URL SEO ne change).
  *
  * Usage :
@@ -39,7 +40,20 @@ if (!TARGET_URL || !/^postgres(ql)?:\/\//.test(TARGET_URL)) {
 }
 
 // Ordre de copie = ordre des dépendances FK ; purge = ordre inverse.
-const TABLES = ["Seller", "Service", "ServiceOption", "Review", "BlogPost", "KnowledgeItem", "Lead", "ChatMessage", "Order"] as const;
+// SiteConfig/AdminLog (v1.5.0) : sans FK, appendus en fin de liste.
+const TABLES = [
+  "Seller",
+  "Service",
+  "ServiceOption",
+  "Review",
+  "BlogPost",
+  "KnowledgeItem",
+  "Lead",
+  "ChatMessage",
+  "Order",
+  "SiteConfig",
+  "AdminLog",
+] as const;
 
 interface SqliteColumn {
   name: string;

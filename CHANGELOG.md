@@ -7,6 +7,53 @@
 
 ---
 
+## [1.5.1] — 2026-11-09 — Base de production Neon alimentée + correctifs de migration
+
+Mandat utilisateur : fourniture de la chaîne de connexion Neon (« Pooled connection »)
+— mise en production des données de b2bpro.store.
+
+### [DONNÉES] Migration intégrale vers Neon PostgreSQL (production)
+- Schéma appliqué puis **11 tables copiées et vérifiées sans divergence** : 33 vendeurs,
+  113 services, 205 options, 1 319 avis, 12 articles, 44 entrées de base de
+  connaissances IA, 6 leads, 7 messages, 0 commande, **4 groupes de réglages
+  `SiteConfig`** (annonce, vitrine rotative, maintenance, support IA) et **9 entrées
+  `AdminLog`** — IDs et slugs préservés, transaction + vérification des comptes (exit 0).
+- Message de maintenance local réinitialisé sur le défaut du code avant copie
+  (résidu de la session de vérification navigateur v1.5.0 : « Test maintenance… »).
+
+### [CORRECTIF] `db:migrate:neon` couvre désormais les tables v1.5.0
+- La liste `TABLES` de `scripts/migrate-to-neon.ts` omettait `SiteConfig` et
+  `AdminLog` (introduits en v1.5.0) : la production serait démarrée **sans les
+  réglages** de la vitrine rotative / de l'annonce / du support — repli silencieux
+  sur les défauts du code, écart par rapport à la parité locale ↔ production.
+- Les deux tables (sans FK) sont appendues en fin d'ordre de copie ; purge inverse
+  inchangée ; vérification des comptes étendue (11/11 tables).
+
+### [CORRECTIF] `db:push:pg` accepte `NEON_DATABASE_URL` (runbook rendu exact)
+- `prisma db push` lit `env("DATABASE_URL")` : la commande documentée
+  `NEON_DATABASE_URL=… bun run db:push:pg` échouait (le `DATABASE_URL` du `.env`
+  local — SQLite — primait sur la variable d'exécution fournie à `prisma`).
+- Nouveau wrapper `scripts/push-neon-schema.ts` : accepte `--url=…`,
+  `NEON_DATABASE_URL` ou une `DATABASE_URL` déjà `postgres://` ; l'URL est injectée
+  en **variable d'environnement réelle** (prime sur le `.env`, fichier jamais
+  modifié) ; `--skip-generate` conservé (client Prisma SQLite local protégé) ;
+  **retry automatique (3 essais, 5 s d'écart) sur P1001** — réveil du compute Neon
+  auto-suspendu (plan gratuit : suspension après inactivité, première connexion
+  parfois refusée le temps du réveil).
+
+### Documentation
+- `docs/DEPLOIEMENT-VERCEL.md` : §1.3 documente le réveil Neon/P1001 et les options
+  du wrapper ; §1.4 comptes actualisés (113 services, 4 réglages + 9 entrées
+  d'audit) ; checklist §7 et rappels §8 passés à **15 contrôles** ; commandes de
+  référence explicites (`NEON_DATABASE_URL=…` sur les deux commandes ciblant Neon).
+
+### Validation machine (protocole complet docs/REGRESSION-GUARD.md)
+- `bun run guard` : **15/15** ✓ · `bun run lint` : 0 erreur · `GET /api/integrity`
+  local : `ok: true` (113 services) · `db:migrate:neon` : exit 0, 11/11 tables
+  identiques source ↔ cible.
+
+---
+
 ## [1.5.0] — 2026-11-09 — Vitrine rotative équitable + panneau d'administration complet
 
 Mandat utilisateur : gestion dynamique des services afin que **tous aient la même chance de

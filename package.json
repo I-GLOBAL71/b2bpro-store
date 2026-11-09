@@ -12,7 +12,7 @@
     "db:migrate": "prisma migrate dev",
     "db:reset": "prisma migrate reset",
     "db:generate:pg": "prisma generate --schema prisma/schema.postgres.prisma",
-    "db:push:pg": "prisma db push --skip-generate --schema prisma/schema.postgres.prisma",
+    "db:push:pg": "bun run scripts/push-neon-schema.ts",
     "db:migrate:neon": "bun run scripts/migrate-to-neon.ts",
     "thumbs:blob": "bun run scripts/thumbs-to-blob.ts",
     "guard": "bun run scripts/check-integrity.ts",

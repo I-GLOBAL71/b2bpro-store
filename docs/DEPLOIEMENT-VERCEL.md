@@ -98,7 +98,11 @@ Catalogue complet de référence : `.env.example` (racine du repo).
    NEON_DATABASE_URL="postgresql://…sslmode=require" bun run db:push:pg
    ```
    ✓ Vous devez voir `The database is now in sync with the schema` (le script intègre
-   `--skip-generate` : le client Prisma **SQLite local est protégé**).
+   `--skip-generate` : le client Prisma **SQLite local est protégé**). Le wrapper
+   (`scripts/push-neon-schema.ts`) accepte aussi `--url="postgresql://…"` et
+   **réessaie automatiquement (3 essais, 5 s) sur P1001** : sur les plans Neon avec
+   auto-suspend, le compute s'endort après inactivité et la première connexion peut
+   être refusée le temps du réveil — c'est attendu, laissez-le retenter.
 
 4. **Copier les données** (migration intégrale, toujours depuis la machine locale) :
    ```bash
@@ -106,16 +110,19 @@ Catalogue complet de référence : `.env.example` (racine du repo).
    ```
    (variante : `bun run db:migrate:neon --url="postgresql://…"`.)
    ✓ Vous devez voir en fin d'exécution la **vérification des comptes table par
-   table** : `Seller` (33), `Service` (112), `ServiceOption`, `Review`, `BlogPost`,
-   `KnowledgeItem`, `Lead`, `ChatMessage`, `Order` — tous ✅ sans divergence. Le script
+   table** : `Seller` (33), `Service` (113), `ServiceOption` (205), `Review` (1319),
+   `BlogPost` (12), `KnowledgeItem` (44), `Lead` (6), `ChatMessage` (7), `Order` (0),
+   `SiteConfig` (4 groupes de réglages : annonce, vitrine rotative, maintenance,
+   support IA) et `AdminLog` (journal d'audit) — tous ✅ sans divergence. Le script
    s'exécute en **transaction avec ROLLBACK** et termine avec un **code sortie 1 si
    divergence** : vérifiez `echo $?` → `0`.
 
    Points clés (`scripts/migrate-to-neon.ts`) : copie **intégrale** SQLite → Neon
    (vendeurs, services, options, avis, blog, base de connaissances IA, leads,
-   conversations, commandes) · **IDs et slugs préservés** (aucune URL SEO ne change) ·
-   **idempotent** (ré-exécution = refresh complet) · source SQLite **en lecture
-   seule**. Utilisez impérativement `NEON_DATABASE_URL` et **pas** `DATABASE_URL`.
+   conversations, commandes, **réglages du site et journal d'audit**) · **IDs et
+   slugs préservés** (aucune URL SEO ne change) · **idempotent** (ré-exécution =
+   refresh complet) · source SQLite **en lecture seule**. Utilisez impérativement
+   `NEON_DATABASE_URL` et **pas** `DATABASE_URL`.
 
 > ⚠️ **`db:push:pg` seul ne copie PAS les données** — il ne crée/met à jour que
 > les tables. Sans l'étape 4, la production démarre sur une base vide. (L'étape 4
@@ -323,7 +330,7 @@ avant d'annoncer la mise en production :
 | ☐ | 9 | Source de l'accueil | `<meta name="google-site-verification" content="…">` présente |
 | ☐ | 10 | GSC | Propriété **vérifiée**, sitemap soumis (Réussi) |
 | ☐ | 11 | Un paiement test (sandbox, puis live à faible montant) | Commande `PAID` + transaction dans le dashboard PayPal |
-| ☐ | 12 | Guard local `bun run guard` | **14 contrôles verts** |
+| ☐ | 12 | Guard local `bun run guard` | **15 contrôles verts** |
 
 ---
 
@@ -347,7 +354,7 @@ Réflexe : **snapshot local avant toute manipulation risquée** (charte §1).
 
 ### Rappels charte anti-régression applicables à la production
 
-- `bun run guard` **avant ET après** toute évolution (14 contrôles — exit 1 si
+- `bun run guard` **avant ET après** toute évolution (15 contrôles — exit 1 si
   régression) ; `GET /api/integrity` branchable sur un monitoring d'uptime
   (HTTP 503 = alarme).
 - Les schémas `prisma/schema.prisma` (SQLite) **et** `prisma/schema.postgres.prisma`
@@ -364,7 +371,7 @@ Réflexe : **snapshot local avant toute manipulation risquée** (charte §1).
 3. `bun run thumbs:blob --service=<slug>` pour téléverser les WebP du nouveau
    service (+ `--with-avatars` si nouveau vendeur/avatar).
 4. `NEON_DATABASE_URL="…" bun run db:migrate:neon` (refresh complet idempotent).
-5. `bun run guard` → 14 contrôles verts → vérifier la fiche en production.
+5. `bun run guard` → 15 contrôles verts → vérifier la fiche en production.
 
 ---
 
@@ -387,11 +394,11 @@ Réflexe : **snapshot local avant toute manipulation risquée** (charte §1).
 ### Commandes de référence
 
 ```bash
-NEON_DATABASE_URL="postgresql://…sslmode=require" bun run db:migrate:neon  # copie intégrale SQLite → Neon
-bun run db:push:pg           # crée/met à jour les tables Neon (schéma seul)
+NEON_DATABASE_URL="postgresql://…sslmode=require" bun run db:migrate:neon  # copie intégrale SQLite → Neon (11 tables)
+NEON_DATABASE_URL="postgresql://…sslmode=require" bun run db:push:pg  # crée/met à jour les tables Neon (schéma seul)
 bun run db:generate:pg       # génère le client Prisma Postgres
 bun run thumbs:blob          # miniatures SVG → WebP → Vercel Blob (idempotent)
-bun run guard                # 14 contrôles d'intégrité — avant/après toute évolution
+bun run guard                # 15 contrôles d'intégrité — avant/après toute évolution
 bun run db:snapshot          # sauvegarde intégrale de la base locale
 bun run db:restore           # restauration à l'identique (IDs et slugs préservés)
 ```
