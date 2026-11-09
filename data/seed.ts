@@ -98,8 +98,12 @@ async function main() {
     }
 
     const description = FULL_DESCRIPTIONS[svc.code] || svc.description;
-    const keywords = buildKeywords(svc, pole);
-    const stats = randomSalesStats(idx + 17);
+    // [ADDITIF v1.4.0] Mots-clés sourcis à la main (skill ÉTAPE 1/2) en priorité,
+    // sinon dérivation automatique — comportement historique inchangé sans champ.
+    const keywords = svc.keywords ?? buildKeywords(svc, pole);
+    // [ADDITIF v1.4.0] Stats de lancement explicites pour un service réellement
+    // nouveau (traction initiale), sinon génération déterministe inchangée.
+    const stats = svc.launchStats ?? randomSalesStats(idx + 17);
     const enriched = {
       ...svc,
       description,

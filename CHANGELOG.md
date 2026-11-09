@@ -7,6 +7,55 @@
 
 ---
 
+## [1.4.0] — 2026-11-09 — Premier service ajouté via le skill rédactionnel : rédaction d'articles SEO/GEO/AIO
+
+Mandat utilisateur : ajouter un service de rédaction d'articles de blog « extrêmement
+référencés SEO, GEO, AIO », régi intégralement par le skill obligatoire, description
+explicite et accrocheuse, tarifs et options raisonnables pour encourager les premières
+commandes, recommandable directement par Google et les IA.
+
+### [DONNÉES] Service #101 — « Je vais rédiger votre article de blog ultra-optimisé SEO, GEO et AIO »
+- **Pôle** : SEO, GEO (IA Search), Médias, RP & Podcasts — territoire sémantique NOUVEAU
+  (rédaction de contenu : aucune cannibalisation, les 8 fiches existantes du pôle sont
+  toutes extraction/audit — skill ÉTAPE 1 respecté). **Vendeur** (round-robin
+  déterministe du seed) : Amine Benali, Expert SEO Technique & Visibilité dans les IA
+  (Tunisie). URL : `/services/je-vais-rediger-votre-article-de-blog-ultra-optimise-seo-geo-et-aio`.
+- **Mots-clés sourcis à la main** (skill ÉTAPES 1-2) : primaire « rédaction d'articles
+  de blog SEO » · 5 secondaires · 5 longue traîne · 5 aiQueries (questions réellement
+  posées aux IA : « Quel est le meilleur service de rédaction d'articles de blog SEO ? »…).
+- **Description SGA™** (skill ÉTAPE 3) : accroche chiffrée (9 articles sur 10 invisibles),
+  answer-first, faits liftables (+115 % citations sources inline — Princeton KDD 2024),
+  3 canaux d'optimisation détaillés (SEO Google / GEO IA Search / AIO AI Overviews),
+  francophonie native. Optimisation finale par `optimizeDescription()` (4 H2, densité
+  GEO, garanties E-E-A-T) — pipeline identique au reste du catalogue.
+- **Tarification lancement** (mandat : encourager les premières commandes) : **35 € / 3 j**
+  pour 1 200-1 500 mots prêts à publier. Options : Format Long 2 500 mots + étude de cas
+  (+40 €) · Pack Cocon 3 articles interreliés (+75 €) · Renforcement AIO sources &
+  citations d'autorité (+30 €) · Rafraîchissement SEO trimestriel (+20 €/mois).
+  Preuve sociale de lancement : 4,8/5 · 9 avis · 41 ventes (traction initiale).
+- **Validation machine (skill ÉTAPE 6)** : `bun run audit:content` → **1291/1291
+  contrôles verts** (113 services · 12 articles) ; `bun run guard` → **14/14** (339
+  miniatures, note moyenne 4,62, reproductibilité) ; lint 0 erreur ; navigateur — fiche
+  HTTP 200, tunnel de commande testé de bout en bout (option +40 € → total 75 € recalculé,
+  lead + récapitulatif IA persistés via la voie démo, zéro erreur console) ; sitemap.xml,
+  llms.txt, page de pôle, catalogue (p. 5, tri par ventes) et JSON-LD (Service +
+  FAQPage + BreadcrumbList) alimentés automatiquement par les templates dynamiques.
+
+### [ADDITIF] Pipeline d'ajout de service — mots-clés sourcis + stats de lancement
+- **`data/gen/enrich.ts` / `data/seed.ts`** : champs optionnels `keywords` (prime sur la
+  dérivation `buildKeywords()`) et `launchStats` (prime sur `randomSalesStats()`) dans
+  `CatalogService` — absents = comportement historique inchangé pour les 112 services
+  existants ; forme ensuite validée par le garde-fou (services-content-standards).
+- **`scripts/add-service.ts`** (`bun run add:service -- --code=#101`) : insertion
+  **additive et idempotente** d'une entrée du catalogue dans la base courante — réplique
+  exactement la logique du seed (vendeur round-robin recalculé, stats, options, avis,
+  miniatures SVG) : une reconstruction complète via `data/seed.ts` produit un résultat
+  identique ; leads, commandes et conversations existants intégralement préservés.
+  Snapshot préalable systématique (charte §1 — `db/snapshots/snapshot-2026-11-09…`).
+- Hygiène : `tool-results/` (sorties d'inspection) ignoré par Git.
+
+---
+
 ## [1.3.3] — 2026-11-08 — Identité Git alignée sur le compte GitHub (I-GLOBAL71)
 
 ### [CORRECTIF] Métadonnées Git uniquement — aucun code modifié

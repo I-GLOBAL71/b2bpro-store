@@ -16,6 +16,20 @@ export interface CatalogService {
   options: { name: string; priceExtra: number; daysExtra: number; monthly: boolean; description: string }[];
   instructions: string;
   isFounder: boolean;
+  /**
+   * [ADDITIF v1.4.0 — skill ÉTAPE 1/2] Mots-clés SOURCIS À LA MAIN pour un service
+   * phare : prime sur la dérivation automatique de buildKeywords(). Optionnel —
+   * absent = comportement historique inchangé. Validé ensuite par le guard
+   * (services-content-standards) : primaire + ≥ 3 secondaires + ≥ 3 longue traîne
+   * + ≥ 3 aiQueries, sinon la garde d'intégrité échoue.
+   */
+  keywords?: ServiceKeywords;
+  /**
+   * [ADDITIF v1.4.0] Stats de lancement explicites (service réellement NOUVEAU :
+   * traction initiale crédible plutôt que stats aléatoires volumineuses).
+   * Optionnel — absent = randomSalesStats(idx + 17) inchangé.
+   */
+  launchStats?: { salesCount: number; reviewsCount: number; rating: number; views: number };
 }
 
 export interface ServiceKeywords {

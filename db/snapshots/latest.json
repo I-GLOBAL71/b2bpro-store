@@ -1,7 +1,7 @@
 {
   "format": "b2bpro-snapshot",
   "version": 1,
-  "takenAt": "2026-11-08T12:30:29.828Z",
+  "takenAt": "2026-11-09T00:31:22.688Z",
   "counts": {
     "sellers": 33,
     "services": 112,
@@ -9,8 +9,8 @@
     "reviews": 1310,
     "blogPosts": 12,
     "knowledgeItems": 44,
-    "leads": 3,
-    "chatMessages": 5
+    "leads": 5,
+    "chatMessages": 6
   },
   "data": {
     "sellers": [
@@ -32,6 +32,7 @@
         "memberSince": "2019",
         "level": "Légende",
         "avatarColors": "[\"#059669\",\"#34d399\"]",
+        "avatarUrl": null,
         "isTop": true,
         "createdAt": "2026-11-07T19:59:16.972Z"
       },
@@ -53,6 +54,7 @@
         "memberSince": "2018",
         "level": "Légende",
         "avatarColors": "[\"#0891b2\",\"#22d3ee\"]",
+        "avatarUrl": null,
         "isTop": true,
         "createdAt": "2026-11-07T19:59:16.976Z"
       },
@@ -74,6 +76,7 @@
         "memberSince": "2020",
         "level": "Élite",
         "avatarColors": "[\"#7c3aed\",\"#a78bfa\"]",
+        "avatarUrl": null,
         "isTop": true,
         "createdAt": "2026-11-07T19:59:16.977Z"
       },
@@ -95,6 +98,7 @@
         "memberSince": "2020",
         "level": "Élite",
         "avatarColors": "[\"#0d9488\",\"#2dd4bf\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:16.979Z"
       },
@@ -116,6 +120,7 @@
         "memberSince": "2019",
         "level": "Élite",
         "avatarColors": "[\"#db2777\",\"#f472b6\"]",
+        "avatarUrl": null,
         "isTop": true,
         "createdAt": "2026-11-07T19:59:16.980Z"
       },
@@ -137,6 +142,7 @@
         "memberSince": "2017",
         "level": "Légende",
         "avatarColors": "[\"#16a34a\",\"#4ade80\"]",
+        "avatarUrl": null,
         "isTop": true,
         "createdAt": "2026-11-07T19:59:16.982Z"
       },
@@ -158,6 +164,7 @@
         "memberSince": "2021",
         "level": "Confirmé",
         "avatarColors": "[\"#0891b2\",\"#67e8f9\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:16.984Z"
       },
@@ -179,6 +186,7 @@
         "memberSince": "2021",
         "level": "Confirmé",
         "avatarColors": "[\"#2563eb\",\"#60a5fa\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:16.985Z"
       },
@@ -200,6 +208,7 @@
         "memberSince": "2020",
         "level": "Confirmé",
         "avatarColors": "[\"#4f46e5\",\"#818cf8\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:16.987Z"
       },
@@ -221,6 +230,7 @@
         "memberSince": "2022",
         "level": "Confirmé",
         "avatarColors": "[\"#be123c\",\"#fb7185\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:16.988Z"
       },
@@ -242,6 +252,7 @@
         "memberSince": "2021",
         "level": "Confirmé",
         "avatarColors": "[\"#9333ea\",\"#c084fc\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:16.990Z"
       },
@@ -263,6 +274,7 @@
         "memberSince": "2021",
         "level": "Confirmé",
         "avatarColors": "[\"#334155\",\"#94a3b8\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:16.991Z"
       },
@@ -284,6 +296,7 @@
         "memberSince": "2019",
         "level": "Élite",
         "avatarColors": "[\"#dc2626\",\"#f87171\"]",
+        "avatarUrl": null,
         "isTop": true,
         "createdAt": "2026-11-07T19:59:16.992Z"
       },
@@ -305,6 +318,7 @@
         "memberSince": "2020",
         "level": "Élite",
         "avatarColors": "[\"#d97706\",\"#fbbf24\"]",
+        "avatarUrl": null,
         "isTop": true,
         "createdAt": "2026-11-07T19:59:16.993Z"
       },
@@ -326,6 +340,7 @@
         "memberSince": "2021",
         "level": "Confirmé",
         "avatarColors": "[\"#7c3aed\",\"#c4b5fd\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:16.995Z"
       },
@@ -347,6 +362,7 @@
         "memberSince": "2021",
         "level": "Confirmé",
         "avatarColors": "[\"#db2777\",\"#f9a8d4\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:16.997Z"
       },
@@ -368,6 +384,7 @@
         "memberSince": "2022",
         "level": "Confirmé",
         "avatarColors": "[\"#0d9488\",\"#5eead4\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:16.999Z"
       },
@@ -389,6 +406,7 @@
         "memberSince": "2020",
         "level": "Confirmé",
         "avatarColors": "[\"#16a34a\",\"#86efac\"]",
+        "avatarUrl": null,
         "isTop": true,
         "createdAt": "2026-11-07T19:59:17.001Z"
       },
@@ -410,6 +428,7 @@
         "memberSince": "2019",
         "level": "Élite",
         "avatarColors": "[\"#059669\",\"#6ee7b7\"]",
+        "avatarUrl": null,
         "isTop": true,
         "createdAt": "2026-11-07T19:59:17.013Z"
       },
@@ -431,6 +450,7 @@
         "memberSince": "2018",
         "level": "Légende",
         "avatarColors": "[\"#f97316\",\"#fdba74\"]",
+        "avatarUrl": null,
         "isTop": true,
         "createdAt": "2026-11-07T19:59:17.014Z"
       },
@@ -452,6 +472,7 @@
         "memberSince": "2021",
         "level": "Confirmé",
         "avatarColors": "[\"#db2777\",\"#fbcfe8\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:17.015Z"
       },
@@ -473,6 +494,7 @@
         "memberSince": "2020",
         "level": "Confirmé",
         "avatarColors": "[\"#7c3aed\",\"#ddd6fe\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:17.016Z"
       },
@@ -494,6 +516,7 @@
         "memberSince": "2021",
         "level": "Confirmé",
         "avatarColors": "[\"#b45309\",\"#fcd34d\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:17.017Z"
       },
@@ -515,6 +538,7 @@
         "memberSince": "2022",
         "level": "Confirmé",
         "avatarColors": "[\"#334155\",\"#cbd5e1\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:17.018Z"
       },
@@ -536,6 +560,7 @@
         "memberSince": "2022",
         "level": "Confirmé",
         "avatarColors": "[\"#9333ea\",\"#e9d5ff\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:17.018Z"
       },
@@ -557,6 +582,7 @@
         "memberSince": "2022",
         "level": "Confirmé",
         "avatarColors": "[\"#78716c\",\"#d6d3d1\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:17.019Z"
       },
@@ -578,6 +604,7 @@
         "memberSince": "2023",
         "level": "Confirmé",
         "avatarColors": "[\"#ea580c\",\"#fed7aa\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:17.020Z"
       },
@@ -599,6 +626,7 @@
         "memberSince": "2022",
         "level": "Confirmé",
         "avatarColors": "[\"#0891b2\",\"#a5f3fc\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:17.021Z"
       },
@@ -620,6 +648,7 @@
         "memberSince": "2023",
         "level": "Confirmé",
         "avatarColors": "[\"#2563eb\",\"#bfdbfe\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:17.022Z"
       },
@@ -641,6 +670,7 @@
         "memberSince": "2022",
         "level": "Confirmé",
         "avatarColors": "[\"#be123c\",\"#fecdd3\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:17.022Z"
       },
@@ -662,6 +692,7 @@
         "memberSince": "2020",
         "level": "Élite",
         "avatarColors": "[\"#16a34a\",\"#bbf7d0\"]",
+        "avatarUrl": null,
         "isTop": true,
         "createdAt": "2026-11-07T19:59:17.023Z"
       },
@@ -683,6 +714,7 @@
         "memberSince": "2021",
         "level": "Confirmé",
         "avatarColors": "[\"#f43f5e\",\"#fda4af\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:17.024Z"
       },
@@ -704,6 +736,7 @@
         "memberSince": "2023",
         "level": "Confirmé",
         "avatarColors": "[\"#4f46e5\",\"#c7d2fe\"]",
+        "avatarUrl": null,
         "isTop": false,
         "createdAt": "2026-11-07T19:59:17.025Z"
       }
@@ -734,6 +767,7 @@
         "views": 16822,
         "featured": true,
         "isFounder": true,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.028Z",
         "sellerId": "cmw6tu50x0002mn4at2u79l6f"
       },
@@ -762,6 +796,7 @@
         "views": 10850,
         "featured": false,
         "isFounder": true,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.044Z",
         "sellerId": "cmw6tu50s0000mn4a868lk7bl"
       },
@@ -790,6 +825,7 @@
         "views": 4004,
         "featured": true,
         "isFounder": true,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.061Z",
         "sellerId": "cmw6tu50v0001mn4alodt1mup"
       },
@@ -818,6 +854,7 @@
         "views": 22944,
         "featured": false,
         "isFounder": true,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.069Z",
         "sellerId": "cmw6tu5170008mn4a6bl043be"
       },
@@ -846,6 +883,7 @@
         "views": 15102,
         "featured": false,
         "isFounder": true,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.081Z",
         "sellerId": "cmw6tu51c000cmn4aocl6qts0"
       },
@@ -874,6 +912,7 @@
         "views": 16674,
         "featured": true,
         "isFounder": true,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.124Z",
         "sellerId": "cmw6tu50z0004mn4a8q6j2gx5"
       },
@@ -902,6 +941,7 @@
         "views": 3312,
         "featured": false,
         "isFounder": true,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.146Z",
         "sellerId": "cmw6tu51g000fmn4aocktoua4"
       },
@@ -930,6 +970,7 @@
         "views": 7172,
         "featured": true,
         "isFounder": true,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.160Z",
         "sellerId": "cmw6tu5110005mn4a7bzys3c2"
       },
@@ -958,6 +999,7 @@
         "views": 32116,
         "featured": false,
         "isFounder": true,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.176Z",
         "sellerId": "cmw6tu50y0003mn4agzofw0hu"
       },
@@ -986,6 +1028,7 @@
         "views": 8874,
         "featured": false,
         "isFounder": true,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.189Z",
         "sellerId": "cmw6tu5180009mn4ahqj2mme3"
       },
@@ -1014,6 +1057,7 @@
         "views": 10205,
         "featured": false,
         "isFounder": true,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.219Z",
         "sellerId": "cmw6tu520000mmn4agjn42r3m"
       },
@@ -1042,6 +1086,7 @@
         "views": 23296,
         "featured": false,
         "isFounder": true,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.230Z",
         "sellerId": "cmw6tu51w000imn4as0ynzp2w"
       },
@@ -1070,6 +1115,7 @@
         "views": 6390,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.253Z",
         "sellerId": "cmw6tu51x000jmn4a85h0ayub"
       },
@@ -1098,6 +1144,7 @@
         "views": 21281,
         "featured": true,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.265Z",
         "sellerId": "cmw6tu50v0001mn4alodt1mup"
       },
@@ -1126,6 +1173,7 @@
         "views": 12850,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.274Z",
         "sellerId": "cmw6tu51c000cmn4aocl6qts0"
       },
@@ -1154,6 +1202,7 @@
         "views": 23436,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.283Z",
         "sellerId": "cmw6tu51w000imn4as0ynzp2w"
       },
@@ -1182,6 +1231,7 @@
         "views": 9531,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.320Z",
         "sellerId": "cmw6tu51x000jmn4a85h0ayub"
       },
@@ -1210,6 +1260,7 @@
         "views": 20934,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.336Z",
         "sellerId": "cmw6tu50v0001mn4alodt1mup"
       },
@@ -1238,6 +1289,7 @@
         "views": 1488,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.348Z",
         "sellerId": "cmw6tu51c000cmn4aocl6qts0"
       },
@@ -1266,6 +1318,7 @@
         "views": 23569,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.360Z",
         "sellerId": "cmw6tu51w000imn4as0ynzp2w"
       },
@@ -1294,6 +1347,7 @@
         "views": 27860,
         "featured": true,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.375Z",
         "sellerId": "cmw6tu51x000jmn4a85h0ayub"
       },
@@ -1322,6 +1376,7 @@
         "views": 39875,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.387Z",
         "sellerId": "cmw6tu50v0001mn4alodt1mup"
       },
@@ -1350,6 +1405,7 @@
         "views": 1566,
         "featured": true,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.423Z",
         "sellerId": "cmw6tu51d000dmn4adjrr92vp"
       },
@@ -1378,6 +1434,7 @@
         "views": 33048,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.434Z",
         "sellerId": "cmw6tu51x000jmn4a85h0ayub"
       },
@@ -1406,6 +1463,7 @@
         "views": 37191,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.453Z",
         "sellerId": "cmw6tu528000vmn4abl7e2f0p"
       },
@@ -1434,6 +1492,7 @@
         "views": 29978,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.469Z",
         "sellerId": "cmw6tu50s0000mn4a868lk7bl"
       },
@@ -1462,6 +1521,7 @@
         "views": 18940,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.480Z",
         "sellerId": "cmw6tu51d000dmn4adjrr92vp"
       },
@@ -1490,6 +1550,7 @@
         "views": 46110,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.488Z",
         "sellerId": "cmw6tu51x000jmn4a85h0ayub"
       },
@@ -1518,6 +1579,7 @@
         "views": 1872,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.523Z",
         "sellerId": "cmw6tu528000vmn4abl7e2f0p"
       },
@@ -1546,6 +1608,7 @@
         "views": 4234,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.530Z",
         "sellerId": "cmw6tu50s0000mn4a868lk7bl"
       },
@@ -1574,6 +1637,7 @@
         "views": 27715,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.535Z",
         "sellerId": "cmw6tu51d000dmn4adjrr92vp"
       },
@@ -1602,6 +1666,7 @@
         "views": 16070,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.555Z",
         "sellerId": "cmw6tu51x000jmn4a85h0ayub"
       },
@@ -1630,6 +1695,7 @@
         "views": 8030,
         "featured": true,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.574Z",
         "sellerId": "cmw6tu51e000emn4a1v4ij5fj"
       },
@@ -1658,6 +1724,7 @@
         "views": 10440,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.612Z",
         "sellerId": "cmw6tu51z000lmn4a6xwolwok"
       },
@@ -1686,6 +1753,7 @@
         "views": 3388,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.622Z",
         "sellerId": "cmw6tu50x0002mn4at2u79l6f"
       },
@@ -1714,6 +1782,7 @@
         "views": 12990,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.626Z",
         "sellerId": "cmw6tu51e000emn4a1v4ij5fj"
       },
@@ -1742,6 +1811,7 @@
         "views": 5236,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.631Z",
         "sellerId": "cmw6tu51z000lmn4a6xwolwok"
       },
@@ -1770,6 +1840,7 @@
         "views": 10836,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.636Z",
         "sellerId": "cmw6tu50x0002mn4at2u79l6f"
       },
@@ -1798,6 +1869,7 @@
         "views": 24220,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.643Z",
         "sellerId": "cmw6tu51e000emn4a1v4ij5fj"
       },
@@ -1826,6 +1898,7 @@
         "views": 5168,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.653Z",
         "sellerId": "cmw6tu51z000lmn4a6xwolwok"
       },
@@ -1854,6 +1927,7 @@
         "views": 35150,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.659Z",
         "sellerId": "cmw6tu5110005mn4a7bzys3c2"
       },
@@ -1882,6 +1956,7 @@
         "views": 8676,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.671Z",
         "sellerId": "cmw6tu51i000gmn4a7e3mzz5z"
       },
@@ -1910,6 +1985,7 @@
         "views": 10010,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.681Z",
         "sellerId": "cmw6tu50y0003mn4agzofw0hu"
       },
@@ -1938,6 +2014,7 @@
         "views": 15400,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.715Z",
         "sellerId": "cmw6tu5110005mn4a7bzys3c2"
       },
@@ -1966,6 +2043,7 @@
         "views": 29512,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.722Z",
         "sellerId": "cmw6tu51i000gmn4a7e3mzz5z"
       },
@@ -1994,6 +2072,7 @@
         "views": 27056,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.731Z",
         "sellerId": "cmw6tu50y0003mn4agzofw0hu"
       },
@@ -2022,6 +2101,7 @@
         "views": 4810,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.739Z",
         "sellerId": "cmw6tu5110005mn4a7bzys3c2"
       },
@@ -2050,6 +2130,7 @@
         "views": 25728,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.744Z",
         "sellerId": "cmw6tu51i000gmn4a7e3mzz5z"
       },
@@ -2078,6 +2159,7 @@
         "views": 6345,
         "featured": true,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.758Z",
         "sellerId": "cmw6tu51z000kmn4apbtjiio4"
       },
@@ -2106,6 +2188,7 @@
         "views": 8540,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.763Z",
         "sellerId": "cmw6tu528000vmn4abl7e2f0p"
       },
@@ -2134,6 +2217,7 @@
         "views": 37220,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.768Z",
         "sellerId": "cmw6tu50z0004mn4a8q6j2gx5"
       },
@@ -2162,6 +2246,7 @@
         "views": 24174,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.776Z",
         "sellerId": "cmw6tu51g000fmn4aocktoua4"
       },
@@ -2190,6 +2275,7 @@
         "views": 45480,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.785Z",
         "sellerId": "cmw6tu51z000kmn4apbtjiio4"
       },
@@ -2218,6 +2304,7 @@
         "views": 30954,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.818Z",
         "sellerId": "cmw6tu528000vmn4abl7e2f0p"
       },
@@ -2246,6 +2333,7 @@
         "views": 37778,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.828Z",
         "sellerId": "cmw6tu50z0004mn4a8q6j2gx5"
       },
@@ -2274,6 +2362,7 @@
         "views": 5076,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.847Z",
         "sellerId": "cmw6tu5130006mn4abxdpn89x"
       },
@@ -2302,6 +2391,7 @@
         "views": 18525,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.855Z",
         "sellerId": "cmw6tu524000rmn4aga2fpyko"
       },
@@ -2330,6 +2420,7 @@
         "views": 6754,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.869Z",
         "sellerId": "cmw6tu5130006mn4abxdpn89x"
       },
@@ -2358,6 +2449,7 @@
         "views": 4374,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.875Z",
         "sellerId": "cmw6tu524000rmn4aga2fpyko"
       },
@@ -2386,6 +2478,7 @@
         "views": 12166,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.881Z",
         "sellerId": "cmw6tu529000wmn4awzek1pub"
       },
@@ -2414,6 +2507,7 @@
         "views": 17346,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.918Z",
         "sellerId": "cmw6tu5170008mn4a6bl043be"
       },
@@ -2442,6 +2536,7 @@
         "views": 25800,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.925Z",
         "sellerId": "cmw6tu520000mmn4agjn42r3m"
       },
@@ -2470,6 +2565,7 @@
         "views": 1786,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.945Z",
         "sellerId": "cmw6tu51i000gmn4a7e3mzz5z"
       },
@@ -2498,6 +2594,7 @@
         "views": 16434,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.952Z",
         "sellerId": "cmw6tu524000qmn4ahqbh8sv8"
       },
@@ -2526,6 +2623,7 @@
         "views": 36639,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.964Z",
         "sellerId": "cmw6tu524000rmn4aga2fpyko"
       },
@@ -2554,6 +2652,7 @@
         "views": 36075,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.974Z",
         "sellerId": "cmw6tu51i000gmn4a7e3mzz5z"
       },
@@ -2582,6 +2681,7 @@
         "views": 32352,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:17.982Z",
         "sellerId": "cmw6tu524000qmn4ahqbh8sv8"
       },
@@ -2610,6 +2710,7 @@
         "views": 20401,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.016Z",
         "sellerId": "cmw6tu524000rmn4aga2fpyko"
       },
@@ -2638,6 +2739,7 @@
         "views": 12138,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.032Z",
         "sellerId": "cmw6tu51i000gmn4a7e3mzz5z"
       },
@@ -2666,6 +2768,7 @@
         "views": 2880,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.058Z",
         "sellerId": "cmw6tu524000qmn4ahqbh8sv8"
       },
@@ -2694,6 +2797,7 @@
         "views": 3146,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.066Z",
         "sellerId": "cmw6tu526000tmn4a1yz5rifl"
       },
@@ -2722,6 +2826,7 @@
         "views": 28674,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.071Z",
         "sellerId": "cmw6tu529000wmn4awzek1pub"
       },
@@ -2750,6 +2855,7 @@
         "views": 49140,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.080Z",
         "sellerId": "cmw6tu5180009mn4ahqj2mme3"
       },
@@ -2778,6 +2884,7 @@
         "views": 1998,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.089Z",
         "sellerId": "cmw6tu526000tmn4a1yz5rifl"
       },
@@ -2806,6 +2913,7 @@
         "views": 25440,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.093Z",
         "sellerId": "cmw6tu529000wmn4awzek1pub"
       },
@@ -2834,6 +2942,7 @@
         "views": 19992,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.131Z",
         "sellerId": "cmw6tu5180009mn4ahqj2mme3"
       },
@@ -2862,6 +2971,7 @@
         "views": 15060,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.141Z",
         "sellerId": "cmw6tu526000tmn4a1yz5rifl"
       },
@@ -2890,6 +3000,7 @@
         "views": 11100,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.154Z",
         "sellerId": "cmw6tu51a000bmn4apo1jvoz6"
       },
@@ -2918,6 +3029,7 @@
         "views": 39372,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.163Z",
         "sellerId": "cmw6tu51c000cmn4aocl6qts0"
       },
@@ -2946,6 +3058,7 @@
         "views": 4500,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.180Z",
         "sellerId": "cmw6tu51w000imn4as0ynzp2w"
       },
@@ -2974,6 +3087,7 @@
         "views": 24978,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.185Z",
         "sellerId": "cmw6tu521000nmn4a6j6c296a"
       },
@@ -3002,6 +3116,7 @@
         "views": 11580,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.217Z",
         "sellerId": "cmw6tu523000pmn4ajwu6xxab"
       },
@@ -3030,6 +3145,7 @@
         "views": 13494,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.228Z",
         "sellerId": "cmw6tu51a000bmn4apo1jvoz6"
       },
@@ -3058,6 +3174,7 @@
         "views": 13280,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.239Z",
         "sellerId": "cmw6tu51c000cmn4aocl6qts0"
       },
@@ -3086,6 +3203,7 @@
         "views": 7175,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.249Z",
         "sellerId": "cmw6tu51w000imn4as0ynzp2w"
       },
@@ -3114,6 +3232,7 @@
         "views": 44676,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.256Z",
         "sellerId": "cmw6tu5150007mn4a1mytx3lj"
       },
@@ -3142,6 +3261,7 @@
         "views": 17577,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.268Z",
         "sellerId": "cmw6tu51e000emn4a1v4ij5fj"
       },
@@ -3170,6 +3290,7 @@
         "views": 26348,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.277Z",
         "sellerId": "cmw6tu525000smn4a1xt9otm2"
       },
@@ -3198,6 +3319,7 @@
         "views": 7784,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.284Z",
         "sellerId": "cmw6tu5150007mn4a1mytx3lj"
       },
@@ -3226,6 +3348,7 @@
         "views": 12296,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.288Z",
         "sellerId": "cmw6tu51e000emn4a1v4ij5fj"
       },
@@ -3254,6 +3377,7 @@
         "views": 39666,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.318Z",
         "sellerId": "cmw6tu525000smn4a1xt9otm2"
       },
@@ -3282,6 +3406,7 @@
         "views": 24750,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.329Z",
         "sellerId": "cmw6tu5150007mn4a1mytx3lj"
       },
@@ -3310,6 +3435,7 @@
         "views": 21180,
         "featured": true,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.344Z",
         "sellerId": "cmw6tu51k000hmn4aghy13g2d"
       },
@@ -3338,6 +3464,7 @@
         "views": 7616,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.360Z",
         "sellerId": "cmw6tu527000umn4a355r4yai"
       },
@@ -3366,6 +3493,7 @@
         "views": 39396,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.366Z",
         "sellerId": "cmw6tu5110005mn4a7bzys3c2"
       },
@@ -3394,6 +3522,7 @@
         "views": 20026,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.378Z",
         "sellerId": "cmw6tu51k000hmn4aghy13g2d"
       },
@@ -3422,6 +3551,7 @@
         "views": 23256,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.388Z",
         "sellerId": "cmw6tu527000umn4a355r4yai"
       },
@@ -3450,6 +3580,7 @@
         "views": 25770,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.428Z",
         "sellerId": "cmw6tu5110005mn4a7bzys3c2"
       },
@@ -3478,6 +3609,7 @@
         "views": 7995,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.441Z",
         "sellerId": "cmw6tu51k000hmn4aghy13g2d"
       },
@@ -3506,6 +3638,7 @@
         "views": 48978,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.455Z",
         "sellerId": "cmw6tu519000amn4avco0p8t6"
       },
@@ -3534,6 +3667,7 @@
         "views": 7189,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.466Z",
         "sellerId": "cmw6tu522000omn4a0qnpimv2"
       },
@@ -3562,6 +3696,7 @@
         "views": 4619,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.475Z",
         "sellerId": "cmw6tu519000amn4avco0p8t6"
       },
@@ -3590,6 +3725,7 @@
         "views": 54570,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.481Z",
         "sellerId": "cmw6tu522000omn4a0qnpimv2"
       },
@@ -3618,6 +3754,7 @@
         "views": 23309,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.519Z",
         "sellerId": "cmw6tu519000amn4avco0p8t6"
       },
@@ -3646,6 +3783,7 @@
         "views": 1712,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.539Z",
         "sellerId": "cmw6tu522000omn4a0qnpimv2"
       },
@@ -3674,6 +3812,7 @@
         "views": 29832,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.548Z",
         "sellerId": "cmw6tu519000amn4avco0p8t6"
       },
@@ -3702,6 +3841,7 @@
         "views": 22485,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.564Z",
         "sellerId": "cmw6tu51a000bmn4apo1jvoz6"
       },
@@ -3730,6 +3870,7 @@
         "views": 37700,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.575Z",
         "sellerId": "cmw6tu521000nmn4a6j6c296a"
       },
@@ -3758,6 +3899,7 @@
         "views": 20852,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.584Z",
         "sellerId": "cmw6tu523000pmn4ajwu6xxab"
       },
@@ -3786,6 +3928,7 @@
         "views": 8748,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.617Z",
         "sellerId": "cmw6tu51a000bmn4apo1jvoz6"
       },
@@ -3814,6 +3957,7 @@
         "views": 10648,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.632Z",
         "sellerId": "cmw6tu521000nmn4a6j6c296a"
       },
@@ -3842,6 +3986,7 @@
         "views": 15462,
         "featured": false,
         "isFounder": false,
+        "thumbUrls": null,
         "createdAt": "2026-11-07T19:59:18.651Z",
         "sellerId": "cmw6tu523000pmn4ajwu6xxab"
       }
@@ -19437,6 +19582,20 @@
         "name": null,
         "source": "support-ia",
         "createdAt": "2026-11-07T20:21:32.679Z"
+      },
+      {
+        "id": "cmw7trt8b0000oh0t0prapyyn",
+        "email": "test.verif@b2bpro.store",
+        "name": "Vérification Sandbox",
+        "source": "commande",
+        "createdAt": "2026-11-08T12:45:14.555Z"
+      },
+      {
+        "id": "cmw7ttisj0000ohuy7scwm38q",
+        "email": "x@y.zz",
+        "name": null,
+        "source": "commande",
+        "createdAt": "2026-11-08T12:46:34.340Z"
       }
     ],
     "chatMessages": [
@@ -19474,6 +19633,13 @@
         "role": "assistant",
         "content": "Bonjour ! 👋 Pour générer des leads B2B dans le BTP en région parisienne, je vous recommande le service **« Je vais vous fournir un fichier de prospection B2B frais et vérifié »**.  \n\nC’est le service idéal pour cibler précisément les entreprises du BTP (par secteur d’activité ou code APE) et la région parisienne. Vous obtiendrez un fichier qualifié avec contacts pertinents (noms, emails, téléphones), livré en **2 jours ouvrés** pour **25 €**.  \n\nDes options sont disponibles pour enrichir votre base :  \n- **Pack 500 Contacts Qualifiés** (+40 €)  \n- **Pack 1 500 Contacts Vérifiés** (+80 €)  \n- **Enrichissement LinkedIn** des décideurs (+ option sur demande)  \n\n🔒 Garanties : paiement séquestré, ajustements inclus si besoin, et remboursement intégral si non satisfait.  \n\nVous pouvez commander directement ici : [Je vais vous fournir un fichier de prospection B2B frais et vérifié](/services/je-vais-vous-fournir-un-fichier-de-prospection-b2b-frais-et-verifie)  \n\nSouhaitez-vous cibler un sous-secteur du BTP précis (plomberie, gros œuvre, etc.) ou ajouter d’autres critères ?",
         "createdAt": "2026-11-07T20:21:44.283Z"
+      },
+      {
+        "id": "cmw7trt8f0002oh0tczr35lrb",
+        "leadId": "cmw7trt8b0000oh0t0prapyyn",
+        "role": "assistant",
+        "content": "Commande : Je vais auditer si votre marque est recommandée par les moteurs IA\nService : /services/je-vais-auditer-si-votre-marque-est-recommandee-par-les-moteurs-ia\nOffre de base : 45 € (2 j)\nTOTAL : 45 € · livraison 2 jours\nLead : cmw7trt8b0000oh0t0prapyyn",
+        "createdAt": "2026-11-08T12:45:14.559Z"
       }
     ]
   }

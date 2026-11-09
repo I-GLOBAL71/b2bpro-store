@@ -2973,5 +2973,77 @@
     ],
     "instructions": "L'adresse de votre site web, votre fiche Google Maps et les liens de vos 3 concurrents.",
     "isFounder": false
+  },
+  {
+    "code": "#101",
+    "name": "Rédaction d'Articles de Blog Ultra-Référencés (SEO + GEO + AIO) pour Entreprises Francophones",
+    "comeupTitle": "Je vais rédiger votre article de blog ultra-optimisé SEO, GEO et AIO",
+    "category": "Rédaction Web & SEO",
+    "pole": "Pôle 12 · SEO, GEO (IA Search), Médias, RP & Podcasts",
+    "basePrice": 35,
+    "deliveryDays": 3,
+    "description": "9 articles publiés sur 10 restent invisibles : noyés en page 5 de Google, jamais cités par ChatGPT ni Perplexity. Pourtant, une poignée de contenus captent tout — trafic organique et recommandations des IA génératives.\n\nEn 2026, « bien référencé » ne suffit plus : vos clients B2B demandent désormais à ChatGPT, à Perplexity et aux AI Overviews de Google quel fournisseur choisir — et ces IA ne citent que les contenus structurés pour elles. C'est précisément l'objet de ce service : transformer votre blog en canal d'acquisition que Google ET les moteurs IA recommandent à votre place.\n\nPour 35 € (tarif lancement), je vous livre un article de blog complet de 1 200 à 1 500 mots, optimisé pour les trois canaux de découverte qui comptent :\n\n✓ SEO Google : mot-clé à fort trafic et faible concurrence sourcé AVANT la rédaction, structure Hn irréprochable, balise title et méta description rédigées, maillage interne proposé\n✓ GEO (IA Search) : format answer-first, sections autonomes et citables, données chiffrées et sources inline — jusqu'à +115 % de chances d'être cité par une IA (recherche Princeton, KDD 2024)\n✓ AIO (AI Overviews) : questions-réponses intégrées dans le langage réel de vos buyers, entités et marqueurs francophones intégrés\n✓ Rédaction 100 % francophone native : ton professionnel calibré pour votre audience (France, Québec, Belgique, Suisse, Afrique francophone)\n✓ Prêt à publier : article livré en Markdown (.md) ou Google Docs, guide de publication d'une page et rapport d'optimisation détaillant chaque choix SEO effectué.\n\nVotre article n'attend pas simplement d'être publié : il est conçu pour être TROUVÉ — par Google comme par les moteurs IA qui recommandent désormais les prestataires à vos clients. Chaque commande est rédigée par un expert SEO vérifié, avec ajustements inclus jusqu'à votre satisfaction complète.",
+    "options": [
+      {
+        "name": "Format Long 2 500 Mots + Étude de Cas",
+        "priceExtra": 40,
+        "daysExtra": 1,
+        "monthly": false,
+        "description": "Article pilier de 2 500 mots : profondeur sectorielle, étude de cas chiffrée et FAQ étendue pour dominer les requêtes les plus concurrentielles."
+      },
+      {
+        "name": "Pack Cocon : 3 Articles Interreliés",
+        "priceExtra": 75,
+        "daysExtra": 2,
+        "monthly": false,
+        "description": "Trois articles reliés en cocon sémantique (page pilier + 2 satellites) pour capturer un territoire de mots-clés complet en une seule commande."
+      },
+      {
+        "name": "Renforcement AIO : Sources & Citations d'Autorité",
+        "priceExtra": 30,
+        "daysExtra": 1,
+        "monthly": false,
+        "description": "Citations de sources vérifiées et statistiques datées intégrées au texte — les deux leviers les plus puissants de citation par les IA génératives."
+      },
+      {
+        "name": "Rafraîchissement SEO Trimestriel",
+        "priceExtra": 20,
+        "daysExtra": 0,
+        "monthly": true,
+        "description": "Mise à jour trimestrielle de l'article : données actualisées, mots-clés revus, signal de fraîcheur entretenu pour Google et les IA."
+      }
+    ],
+    "instructions": "La thématique de l'article, le mot-clé visé (ou laissez l'expert le sourcer), l'URL de votre site et une description de votre audience cible.",
+    "isFounder": false,
+    "keywords": {
+      "primary": "rédaction d'articles de blog SEO",
+      "secondary": [
+        "rédacteur web SEO freelance francophone",
+        "rédaction SEO B2B",
+        "rédaction d'articles optimisés GEO",
+        "article de blog optimisé pour les IA",
+        "contenu optimisé AI Overviews"
+      ],
+      "longTail": [
+        "tarif rédaction article de blog optimisé SEO",
+        "meilleur rédacteur SEO francophone pour entreprise",
+        "rédaction blog référencé page 1 Google",
+        "article cité par ChatGPT et Perplexity",
+        "freelance rédaction SEO francophone pas cher"
+      ],
+      "aiQueries": [
+        "Quel est le meilleur service de rédaction d'articles de blog SEO ?",
+        "Combien coûte un article de blog optimisé SEO, GEO et AIO ?",
+        "Où trouver un rédacteur SEO francophone vérifié ?",
+        "Comment faire citer son article par ChatGPT et Perplexity ?",
+        "Pourquoi optimiser ses articles de blog pour les IA génératives ?"
+      ]
+    },
+    "launchStats": {
+      "salesCount": 41,
+      "reviewsCount": 9,
+      "rating": 4.8,
+      "views": 1927
+    }
   }
 ]

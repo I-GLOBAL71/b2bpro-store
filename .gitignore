@@ -57,6 +57,9 @@ prompt
 # runtime sandbox — PID du serveur dev (jamais versionné)
 .zscripts/dev.pid
 
+# sorties persistées des outils d'inspection (lecture de gros fichiers)
+tool-results/
+
 server.log
 # Skills directory
 /skills/
