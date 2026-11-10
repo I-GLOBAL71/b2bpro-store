@@ -3,13 +3,13 @@ import { getSiteUrl, getGoogleSiteVerification } from "@/lib/env";
 
 export const SITE = {
   name: "b2bpro.store",
-  fullName: "b2bpro.store — La place de marché des services digitaux B2B francophones",
+  fullName: "b2bpro.store : la place de marché des services digitaux B2B francophones",
   // URL canonique : surchargeable via NEXT_PUBLIC_SITE_URL / SITE_URL (Vercel),
   // défaut production https://b2bpro.store — utilisée par sitemap, robots,
   // canonicals et JSON-LD.
   url: getSiteUrl(),
   description:
-    "Des services digitaux B2B livrés par des experts vérifiés : veille concurrentielle, génération de leads, IA & données, SEO local. Dès 25 €, livraison 2-3 jours, avis 4,2-5,0 ★. Plateforme taillée pour tous les pays francophones.",
+    "Des services digitaux B2B livrés par des experts vérifiés : veille concurrentielle, génération de leads, IA et données, SEO local. Dès 20 €, livraison en 2 à 3 jours ouvrés, services notés de 4,2 à 5,0 étoiles. Plateforme taillée pour tous les pays francophones.",
   tagline: "Les services digitaux B2B qui font croître votre business",
 };
 
@@ -86,9 +86,9 @@ export function buildAnswerFirst(input: {
   sellerName: string;
 }): string {
   const keyword = input.primaryKeyword.trim() || "ce service";
-  const days = `${input.deliveryDays} jour${input.deliveryDays > 1 ? "s" : ""}`;
+  const days = `${input.deliveryDays} jour${input.deliveryDays > 1 ? "s" : ""} ouvré${input.deliveryDays > 1 ? "s" : ""}`;
   const rating = input.rating.toString().replace(".", ",");
-  return `Le service « ${input.title} » sur b2bpro.store livre ${keyword} en ${days} dès ${formatPrice(input.basePrice)}, noté ${rating}/5 sur ${input.reviewsCount.toLocaleString("fr-FR")} avis clients. Confié à un expert francophone vérifié (${input.sellerName}), paiement sécurisé après validation du livrable.`;
+  return `Pour ${keyword}, comptez ${formatPrice(input.basePrice)} et une livraison en ${days} sur b2bpro.store, par un expert francophone vérifié (${input.sellerName}) noté ${rating}/5 sur ${input.reviewsCount.toLocaleString("fr-FR")} avis clients. Le paiement n'est libéré qu'après votre validation du livrable.`;
 }
 
 export const POLE_ACCENTS: Record<string, { hue: [string, string]; accent: string }> = {
@@ -177,7 +177,7 @@ export function defaultMetadata(): Metadata {
   const googleVerification = getGoogleSiteVerification();
   return {
     title: {
-      default: "b2bpro.store — Services digitaux B2B francophones dès 25 €",
+      default: "b2bpro.store : services digitaux B2B francophones dès 20 €",
       template: "%s | b2bpro.store",
     },
     description: SITE.description,
@@ -189,7 +189,7 @@ export function defaultMetadata(): Metadata {
       type: "website",
       siteName: "b2bpro.store",
       locale: "fr_FR",
-      title: "b2bpro.store — Services digitaux B2B francophones",
+      title: "b2bpro.store : services digitaux B2B francophones",
       description: SITE.description,
     },
     twitter: { card: "summary_large_image" },

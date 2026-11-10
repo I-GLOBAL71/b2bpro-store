@@ -64,7 +64,7 @@ export function BestSellersSection({
             <p className="mt-3 max-w-2xl text-[14.5px] leading-7 text-muted-foreground">{sub}</p>
             {rotating && rotation.totalEligible > 0 && (
               <p className="mt-2 text-[12.5px] text-muted-foreground">
-                {rotation.totalEligible} services éligibles se relaient — chacun passe en tête à tour
+                {rotation.totalEligible} services éligibles se relaient : chacun passe en tête à tour
                 de rôle, un cycle complet en{" "}
                 {rotation.fullCycleMinutes >= 60
                   ? `${Math.round((rotation.fullCycleMinutes / 60) * 10) / 10} h`
@@ -123,7 +123,7 @@ export function HowItWorksSection() {
       icon: CreditCard,
       title: "2. Commandez & payez en sécurité",
       detail:
-        "Sélectionnez l'offre de base et vos options : le total s'affiche en direct. Votre paiement est placé en séquestre — le vendeur n'est payé qu'après votre validation.",
+        "Sélectionnez l'offre de base et vos options : le total s'affiche en direct. Votre paiement est placé en séquestre : le vendeur n'est payé qu'après votre validation.",
     },
     {
       icon: PackageCheck,

@@ -111,7 +111,7 @@ export function SupportChat({ welcome }: { welcome?: string }) {
         {
           role: "assistant",
           content:
-            "Je rencontre un souci technique momentané. Merci de réessayer dans quelques secondes — ou de reformuler votre question. Notre équipe humaine prend aussi le relais sur demande.",
+            "Je rencontre un souci technique momentané. Merci de réessayer dans quelques secondes, ou de reformuler votre question. Notre équipe humaine prend aussi le relais sur demande.",
         },
       ]);
     } finally {
@@ -149,7 +149,7 @@ export function SupportChat({ welcome }: { welcome?: string }) {
           </h2>
           <p className="mt-2 text-[13.5px] leading-6 text-muted-foreground">
             Indiquez votre email pour démarrer la conversation. Il vous permet de retrouver
-            l'historique de vos conseils et de recevoir la synthèse de vos échanges — aucune
+            l'historique de vos conseils et de recevoir la synthèse de vos échanges : aucune
             autre utilisation, aucune prospection indésirable.
           </p>
         </div>
@@ -176,7 +176,7 @@ export function SupportChat({ welcome }: { welcome?: string }) {
         </form>
         <p className="inline-flex items-center gap-1.5 text-[12px] text-muted-foreground">
           <Lock className="h-3.5 w-3.5" aria-hidden="true" />
-          Email utilisé uniquement pour votre suivi — 0 spam, conformité RGPD.
+          Email utilisé uniquement pour votre suivi, 0 spam, conformité RGPD.
         </p>
       </div>
     );

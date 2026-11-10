@@ -71,7 +71,7 @@ export default function AdminGeneralPage() {
               value={value.homeTitle}
               onChange={(s) => patch("homeTitle", s)}
               maxLength={120}
-              placeholder="b2bpro.store — Services digitaux B2B francophones dès 25 €…"
+              placeholder="b2bpro.store : services digitaux B2B francophones dès 20 €…"
               id="seo-title"
             />
             <TextAreaField

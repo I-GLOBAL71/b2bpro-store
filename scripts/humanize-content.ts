@@ -46,6 +46,17 @@ function jsonTry<T>(raw: string | null | undefined, fallback: T): T {
   }
 }
 
+/** Contexte vendeur réel (v1.8.0) : skills, réactivité badge, pays, niveau. */
+function sellerContext(s: { seller: { name: string; skills: string; responseTime: string; countryLabel: string; level: string } }) {
+  return {
+    sellerName: s.seller.name,
+    sellerSkills: jsonTry<string[]>(s.seller.skills, []),
+    sellerResponseTime: s.seller.responseTime,
+    sellerCountryLabel: s.seller.countryLabel,
+    sellerLevel: s.seller.level,
+  };
+}
+
 /** UPDATE avec re-essai : le dev server lit la base en parallèle (SQLITE_BUSY possible). */
 async function updateWithRetry(slug: string, data: Record<string, string>, attempts = 5): Promise<void> {
   for (let i = 1; i <= attempts; i++) {
@@ -65,7 +76,10 @@ async function updateWithRetry(slug: string, data: Record<string, string>, attem
 }
 
 async function main() {
-  const services = await db.service.findMany({ orderBy: [{ createdAt: "asc" }, { id: "asc" }] });
+  const services = await db.service.findMany({
+    orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+    include: { seller: true },
+  });
   const options = await db.serviceOption.findMany({ orderBy: { priceExtra: "asc" } });
   const optsByService = new Map<string, { name: string; priceExtra: number }[]>();
   for (const o of options) {
@@ -114,7 +128,7 @@ async function main() {
     }
     const siblings = (poleTitles.get(s.poleSlug) ?? [])
       .filter((t) => t !== s.title)
-      .slice(0, 2)
+      .slice(0, 6)
       .map((t) => t.replace(/^Je vais\s+/, ""));
 
     const manual: ServiceKeywords | undefined =
@@ -130,30 +144,31 @@ async function main() {
           })()
         : undefined;
 
-    try {
-      const bundle = buildHumanizedBundle({
-        slug: s.slug,
-        title: s.title,
-        category: s.category,
-        poleLabel: pole.label,
-        poleSlug: s.poleSlug,
-        poleIndex: poleIndexOf.get(s.slug) ?? 0,
-        poleCount: poleCount.get(s.poleSlug) ?? 1,
-        siblingTitles: siblings,
-        basePrice: s.basePrice,
-        deliveryDays: s.deliveryDays,
-        rating: s.rating,
-        reviewsCount: s.reviewsCount,
-        salesCount: s.salesCount,
-        options: optsByService.get(s.id) ?? [],
-        currentDescription: s.description,
-        currentFeatures: jsonTry<string[]>(s.features, []),
-        currentDeliverables: jsonTry<string[]>(s.deliverables, []),
-        currentProcess: jsonTry<{ step: number; title: string; detail: string }[]>(s.process, []),
-        hotKeywords: pole.hotKeywords,
-        realQueries: REAL_POLE_QUERIES[s.poleSlug] ?? [],
-        manualKeywords: manual,
-      });
+      try {
+        const bundle = buildHumanizedBundle({
+          slug: s.slug,
+          title: s.title,
+          category: s.category,
+          poleLabel: pole.label,
+          poleSlug: s.poleSlug,
+          poleIndex: poleIndexOf.get(s.slug) ?? 0,
+          poleCount: poleCount.get(s.poleSlug) ?? 1,
+          siblingTitles: siblings,
+          basePrice: s.basePrice,
+          deliveryDays: s.deliveryDays,
+          rating: s.rating,
+          reviewsCount: s.reviewsCount,
+          salesCount: s.salesCount,
+          options: optsByService.get(s.id) ?? [],
+          ...sellerContext(s),
+          currentDescription: s.description,
+          currentFeatures: jsonTry<string[]>(s.features, []),
+          currentDeliverables: jsonTry<string[]>(s.deliverables, []),
+          currentProcess: jsonTry<{ step: number; title: string; detail: string }[]>(s.process, []),
+          hotKeywords: pole.hotKeywords,
+          realQueries: REAL_POLE_QUERIES[s.poleSlug] ?? [],
+          manualKeywords: manual,
+        });
 
       const data = {
         description: bundle.description,

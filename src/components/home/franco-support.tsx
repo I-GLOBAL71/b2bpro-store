@@ -42,8 +42,8 @@ export function FrancophonieSection() {
           <p className="mt-4 text-[14.5px] leading-7 text-muted-foreground">
             b2bpro.store n'est pas une traduction de plateforme anglo-saxonne : c'est une place de
             marché pensée en français, pour le français. Nos vendeurs maîtrisent les sources de
-            données locales — INSEE et BODACC en France, registres du réseau des chambres de
-            commerce en Afrique de l'Ouest, registres québécois — et livrent dans les fuseaux
+            données locales : INSEE et BODACC en France, registres du réseau des chambres de
+            commerce en Afrique de l'Ouest, registres québécois ; et ils livrent dans les fuseaux
             horaires de vos marchés.
           </p>
           <ul className="mt-6 space-y-3.5">
@@ -96,7 +96,7 @@ export function SupportCtaSection() {
             <p className="mt-4 max-w-2xl text-[14.5px] leading-7 text-stone-300">
               Quel service choisir pour votre besoin exact ? Quel volume prévoir ? Comment
               fonctionnent les options ? Notre intelligence artificielle connaît tout le catalogue
-              par cœur et vous oriente vers la meilleure décision — avec le sourire et en français.
+              par cœur et vous oriente vers la meilleure décision, avec le sourire et en français.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Button

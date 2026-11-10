@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { POLE_ACCENTS } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Blog B2B — méthodes data, SEO/GEO/AIO et croissance",
+  title: "Blog B2B : méthodes data, SEO/GEO/AIO et croissance",
   description:
     "Le blog b2bpro.store : guides complets SEO/GEO/AIO, veille concurrentielle, génération de leads B2B, immobilier data et influence marketing pour les décideurs francophones.",
   alternates: { canonical: "/blog" },
@@ -38,7 +38,7 @@ export default async function BlogPage() {
         </h1>
         <p className="mt-3 text-[14.5px] leading-7 text-muted-foreground">
           Méthodes data appliquées, benchmarks chiffrés et stratégies SEO/GEO/AIO : tout ce
-          qu'il faut savoir pour garder une longueur d'avance — écrit par nos experts et
+          qu'il faut savoir pour garder une longueur d'avance, écrit par nos experts et
           enrichi chaque semaine.
         </p>
       </header>

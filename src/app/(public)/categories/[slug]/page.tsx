@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const label = POLE_LABELS[slug];
   if (!label) return {};
   return {
-    title: `${label} : services experts dès 25 €`,
+    title: `${label} : services experts dès 20 €`,
     description: `${POLE_DESC[slug]} Notes de 4,2 à 5,0 ★, livraison 2-3 jours, paiement sécurisé.`,
     alternates: { canonical: `/categories/${slug}` },
   };
@@ -35,7 +35,7 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
   const collectionJsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: `${POLE_LABELS[slug]} — b2bpro.store`,
+    name: `${POLE_LABELS[slug]} | b2bpro.store`,
     description: POLE_DESCRIPTIONS[slug],
     numberOfItems: total,
   };
@@ -68,7 +68,7 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
                 {POLE_DESCRIPTIONS[slug]}
               </p>
               <p className="mt-3 text-[13px] text-white/75">
-                {total} services experts · notes 4,2 à 5,0 ★ · livraison 2-3 jours · dès 25 €
+                {total} services experts · notes de 4,2 à 5,0 ★ · livraison en 2 à 3 jours · dès 20 €
               </p>
             </div>
           </div>

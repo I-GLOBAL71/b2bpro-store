@@ -7,7 +7,7 @@
     "pole": "Pôle 3 · IA, RAG & Data Engineering",
     "basePrice": 25,
     "deliveryDays": 2,
-    "description": "Vous voulez créer un Chatbot client, un Custom GPT ou un assistant Claude basé sur votre site ou celui d'un concurrent ? Si vous copiez-collez des pages brutes, le code HTML, les menus, bannières cookies et footers polluent votre IA et provoquent des hallucinations !\n\nPour 25 €, je convertis jusqu'à 30 pages web d'un site en une base de connaissances propre au format Markdown (.md) :\n✓ 100% du texte noble conservé avec structure des titres (H1, H2, H3)\n✓ Suppression intégrale de tout le bruit (menus, footers, bannières de consentement, pubs)\n✓ Fichiers découpés thématiquement + un fichier consolidé unique prêt à glisser directement dans ChatGPT ou votre bot\n✓ Zéro bug d'encodage, lisibilité optimale pour les modèles de langage (LLM).",
+    "description": "Vous voulez créer un Chatbot client, un Custom GPT ou un assistant Claude basé sur votre site ou celui d'un concurrent ? Si vous copiez-collez des pages brutes, le code HTML, les menus, bannières cookies et footers polluent votre IA et provoquent des hallucinations !\n\nPour 25 €, je convertis jusqu'à 30 pages web d'un site en une base de connaissances propre au format Markdown (.md) :\n✓ 100 % du texte noble conservé avec structure des titres (H1, H2, H3)\n✓ Suppression intégrale de tout le bruit (menus, footers, bannières de consentement, pubs)\n✓ Fichiers découpés thématiquement + un fichier consolidé unique prêt à glisser directement dans ChatGPT ou votre bot\n✓ Zéro bug d'encodage, lisibilité optimale pour les modèles de langage (LLM).",
     "options": [
       {
         "name": "Volume Étendu 100 Pages",
@@ -175,7 +175,7 @@
     "pole": "Pôle 5 · Social Media & Influence",
     "basePrice": 25,
     "deliveryDays": 2,
-    "description": "70% des influenceurs ont des abonnés inactifs ou achetés. Pour réussir vos campagnes d'influence, collaborez avec des micro-créateurs (10k à 100k) dont la communauté est ultra-engagée !\n\nPour 25 €, je vous livre une sélection de 40 micro-influenceurs vérifiés de votre thématique :\n✓ Nom du compte et lien direct vers le profil (TikTok ou Instagram)\n✓ Nombre de followers et biographie\n✓ Vrai taux d'engagement calculé sur les 10 dernières publications (vues et likes réels)\n✓ Email professionnel public de contact\n✓ Tableau de bord Excel pour lancer vos envois de produits.",
+    "description": "70 % des influenceurs ont des abonnés inactifs ou achetés. Pour réussir vos campagnes d'influence, collaborez avec des micro-créateurs (10 000 à 100 000 abonnés) dont la communauté est ultra-engagée !\n\nPour 25 €, je vous livre une sélection de 40 micro-influenceurs vérifiés de votre thématique :\n✓ Nom du compte et lien direct vers le profil (TikTok ou Instagram)\n✓ Nombre de followers et biographie\n✓ Vrai taux d'engagement calculé sur les 10 dernières publications (vues et likes réels)\n✓ Email professionnel public de contact\n✓ Tableau de bord Excel pour lancer vos envois de produits.",
     "options": [
       {
         "name": "Pack 100 Influenceurs Qualifiés",
@@ -238,7 +238,7 @@
     "pole": "Pôle 12 · SEO, GEO & Médias",
     "basePrice": 25,
     "deliveryDays": 2,
-    "description": "Découvrez pourquoi vos concurrents locaux occupent les 3 premières places du pack local Google Maps et recevez le plan d'action précis pour les dépasser dans votre ville !\n\nPour 25 €, j'audite les 15 premiers concurrents locaux sur votre mot-clé cible :\n✓ Catégorie principale exacte et catégories secondaires cachées\n✓ Nombre d'avis, note moyenne et régularité des réponses\n✓ Présence du mot-clé local dans le titre et volume de photos\n✓ Tableau comparatif montrant exactement ce qui manque à votre fiche pour remonter.",
+    "description": "Découvrez pourquoi vos concurrents locaux occupent les 3 premières places du pack local Google Maps et recevez le plan d'action précis pour les dépasser dans votre ville !\n\nPour 25 €, j'audite les 20 premiers concurrents locaux sur votre mot-clé cible :\n✓ Catégorie principale exacte et catégories secondaires cachées\n✓ Nombre d'avis, note moyenne et régularité des réponses\n✓ Présence du mot-clé local dans le titre et volume de photos\n✓ Tableau comparatif montrant exactement ce qui manque à votre fiche pour remonter.",
     "options": [
       {
         "name": "Comparatif Visuel Graphique",
@@ -315,7 +315,7 @@
     "pole": "Pôle 7 · Événementiel & Marchés Publics",
     "basePrice": 35,
     "deliveryDays": 2,
-    "description": "Les abonnements aux plateformes de veille de marchés publics coûtent entre 150 € et 300 € par mois. Recevez chaque semaine les appels d'offres publics officiels correspondant exactement à votre spécialité et votre région, sans aucun abonnement logiciel coûteux !\n\nPour 35 €, je réalise une recherche ciblée des marchés publics actuellement ouverts dans votre département :\n✓ Objet du marché, pouvoir adjudicateur et date limite de dépôt\n✓ Liens directs vers les dossiers de consultation (DCE)\n✓ Tableau Excel structuré pour ne plus rater aucun contrat public.",
+    "description": "Les abonnements aux plateformes de veille de marchés publics coûtent entre 150 € et 300 € par mois. Recevez les appels d'offres publics officiels correspondant exactement à votre spécialité et votre région, sans aucun abonnement logiciel coûteux !\n\nPour 35 €, je réalise une recherche ciblée des marchés publics actuellement ouverts dans votre département :\n✓ Objet du marché, pouvoir adjudicateur et date limite de dépôt\n✓ Liens directs vers les dossiers de consultation (DCE)\n✓ Tableau Excel structuré pour ne plus rater aucun contrat public.",
     "options": [
       {
         "name": "Recherche Régionale Élargie",
@@ -350,7 +350,7 @@
     "pole": "Pôle 1 · B2B Sales Intelligence",
     "basePrice": 25,
     "deliveryDays": 2,
-    "description": "Les bases de données vendues sur internet sont souvent vieilles de plusieurs années, avec 40% d'entreprises fermées ou de faux numéros. Pour rentabiliser votre prospection, exigez des données fraîches et vérifiées le jour même !\n\nPour 25 €, je vous livre un fichier de 150 contacts professionnels qualifiés sur votre niche et ville cible :\n✓ Nom de l'établissement, adresse complète et code postal\n✓ Numéro de téléphone direct vérifié\n✓ Site internet officiel et note clients\n✓ Aucun doublon, données extraites en direct\n✓ Tableau Excel & Google Sheets avec colonnes de suivi commercial incluses.",
+    "description": "Les bases de données vendues sur internet sont souvent vieilles de plusieurs années, avec 40 % d'entreprises fermées ou de faux numéros. Pour rentabiliser votre prospection, exigez des données fraîches et vérifiées le jour même !\n\nPour 25 €, je vous livre un fichier de 150 contacts professionnels qualifiés sur votre niche et ville cible :\n✓ Nom de l'établissement, adresse complète et code postal\n✓ Numéro de téléphone direct vérifié\n✓ Site internet officiel et note clients\n✓ Aucun doublon, données extraites en direct\n✓ Tableau Excel & Google Sheets avec colonnes de suivi commercial incluses.",
     "options": [
       {
         "name": "Pack 500 Contacts Qualifiés",
@@ -378,7 +378,7 @@
     "pole": "Pôle 1 · B2B Sales Intelligence & Intent Data",
     "basePrice": 25,
     "deliveryDays": 2,
-    "description": "Saviez-vous que 70% des contrats d'une nouvelle entreprise sont signés dans ses 60 premiers jours ? \nPendant que vos concurrents attendent que les clients viennent à eux, soyez le tout premier prestataire à contacter les créateurs d'entreprise dès leur immatriculation officielle !\n\nPour 25 €, vous obtenez un fichier qualifié et nettoyé des 50 dernières entreprises créées dans votre secteur d'activité et zone géographique :\n✓ Dénomination légale et nom commercial\n✓ Numéro SIRET et date exacte d'immatriculation\n✓ Adresse complète du siège social\n✓ Nom et prénom du dirigeant / président\n✓ Code APE / NAF exact correspondant à votre cible\n✓ Tableau Google Sheets / Excel soigné avec filtres de prospection\n\nFini d'acheter des bases périmées à 500 €. Vous recevez des données fraîches de la semaine, 100% officielles.",
+    "description": "Saviez-vous que 70 % des contrats d'une nouvelle entreprise sont signés dans ses 60 premiers jours ? \nPendant que vos concurrents attendent que les clients viennent à eux, soyez le tout premier prestataire à contacter les créateurs d'entreprise dès leur immatriculation officielle !\n\nPour 25 €, vous obtenez un fichier qualifié et nettoyé des 50 dernières entreprises créées dans votre secteur d'activité et zone géographique :\n✓ Dénomination légale et nom commercial\n✓ Numéro SIRET et date exacte d'immatriculation\n✓ Adresse complète du siège social\n✓ Nom et prénom du dirigeant / président\n✓ Code APE / NAF exact correspondant à votre cible\n✓ Tableau Google Sheets / Excel soigné avec filtres de prospection\n\nFini d'acheter des bases périmées à 500 €. Vous recevez des données fraîches de la semaine, 100 % officielles.",
     "options": [
       {
         "name": "Pack 150 Entreprises",
@@ -616,7 +616,7 @@
     "pole": "Pôle 1 · B2B Sales Intelligence & Intent Data",
     "basePrice": 35,
     "deliveryDays": 2,
-    "description": "Lorsqu'un nouveau Directeur Général ou Président prend ses fonctions dans une PME ou ETI, il audite son organisation et remplace en moyenne 40% de ses prestataires dans ses 100 premiers jours !\n\nPour 35 €, je répertorie pour vous 50 nominations récentes de dirigeants dans votre secteur d'activité (issues des annonces officielles du BODACC) :\n✓ Nom de l'entreprise, SIREN et forme juridique\n✓ Nom, prénom et fonction du nouveau mandataire social\n✓ Date exacte de publication officielle\n✓ Adresse du siège social et activité exercée\n✓ Fichier Excel soigné pour engager un contact commercial au moment parfait.",
+    "description": "Lorsqu'un nouveau Directeur Général ou Président prend ses fonctions dans une PME ou ETI, il audite son organisation et remplace en moyenne 40 % de ses prestataires dans ses 100 premiers jours !\n\nPour 35 €, je répertorie pour vous 50 nominations récentes de dirigeants dans votre secteur d'activité (issues des annonces officielles du BODACC) :\n✓ Nom de l'entreprise, SIREN et forme juridique\n✓ Nom, prénom et fonction du nouveau mandataire social\n✓ Date exacte de publication officielle\n✓ Adresse du siège social et activité exercée\n✓ Fichier Excel soigné pour engager un contact commercial au moment parfait.",
     "options": [
       {
         "name": "Pack 150 Nominations Récentes",
@@ -646,12 +646,12 @@
   {
     "code": "#9",
     "name": "Détection des Commerces Locaux Ayant une Faible Note Google",
-    "comeupTitle": "Je vais lister les commerces locaux ayant une note inférieure à 3.8",
+    "comeupTitle": "Je vais lister les commerces locaux ayant une note inférieure à 3,8",
     "category": "Marketing & E-réputation",
     "pole": "Pôle 1 · B2B Sales Intelligence & Intent Data",
     "basePrice": 30,
     "deliveryDays": 2,
-    "description": "Les agences de marketing digital et consultants en e-réputation ont un défi majeur : trouver des clients qui ont un BESOIN URGENT de leurs services. Un restaurant, artisan ou commerce noté 3.2 sur Google perd 60% de ses clients !\n\nPour 30 €, je vous livre la liste de 60 commerces et entreprises locales dont la note Google est inférieure à 3.8/5 :\n✓ Nom de l'établissement, catégorie et adresse exacte\n✓ Note moyenne actuelle et nombre total d'avis déposés\n✓ Numéro de téléphone direct et lien de la fiche Google Maps\n✓ Résumé du problème principal identifié dans les derniers avis\n✓ Fichier Google Sheets parfait pour votre argumentaire : *\"J'ai analysé vos avis Google et voici comment redresser votre note...\"*",
+    "description": "Les agences de marketing digital et consultants en e-réputation ont un défi majeur : trouver des clients qui ont un BESOIN URGENT de leurs services. Un restaurant, artisan ou commerce noté 3,2 sur Google perd 60 % de ses clients !\n\nPour 30 €, je vous livre la liste de 60 commerces et entreprises locales dont la note Google est inférieure à 3,8/5 :\n✓ Nom de l'établissement, catégorie et adresse exacte\n✓ Note moyenne actuelle et nombre total d'avis déposés\n✓ Numéro de téléphone direct et lien de la fiche Google Maps\n✓ Résumé du problème principal identifié dans les derniers avis\n✓ Fichier Google Sheets parfait pour votre argumentaire : *\"J'ai analysé vos avis Google et voici comment redresser votre note...\"*",
     "options": [
       {
         "name": "Pack 150 Commerces en Alerte",
@@ -742,7 +742,7 @@
     "pole": "Pôle 2 · E-commerce, Retail Arbitrage & Pricing Intelligence",
     "basePrice": 30,
     "deliveryDays": 2,
-    "description": "Quand votre concurrent direct est en rupture de stock sur ses best-sellers, ses clients cherchent immédiatement une alternative : VOUS. C'est le moment d'augmenter votre budget publicitaire pour capter 100% de la demande !\n\nPour 30 €, j'audite 100 références clés chez vos concurrents pour identifier leurs ruptures actuelles :\n✓ Liste des produits indisponibles avec URL directe de la fiche\n✓ Date et heure du relevé\n✓ Votre référence équivalente en stock recommandée à mettre en avant\n✓ Tableau de synthèse avec alertes visuelles immédiates.",
+    "description": "Quand votre concurrent direct est en rupture de stock sur ses best-sellers, ses clients cherchent immédiatement une alternative : VOUS. C'est le moment d'augmenter votre budget publicitaire pour capter 100 % de la demande !\n\nPour 30 €, j'audite 100 références clés chez vos concurrents pour identifier leurs ruptures actuelles :\n✓ Liste des produits indisponibles avec URL directe de la fiche\n✓ Date et heure du relevé\n✓ Votre référence équivalente en stock recommandée à mettre en avant\n✓ Tableau de synthèse avec alertes visuelles immédiates.",
     "options": [
       {
         "name": "Audit de 3 Concurrents (250 produits)",
@@ -791,7 +791,7 @@
     "pole": "Pôle 2 · E-commerce, Retail Arbitrage & Pricing Intelligence",
     "basePrice": 35,
     "deliveryDays": 2,
-    "description": "Sur Amazon, 85% des ventes se font via le bouton \"Ajouter au panier\" (la fameuse Buy Box). Si un vendeur concurrent baisse son prix de 20 centimes, vous perdez immédiatement vos ventes sans vous en rendre compte !\n\nPour 35 €, j'audite 40 de vos références clés (ASIN) face aux vendeurs concurrents :\n✓ Prix actuel du vendeur gagnant de la Buy Box\n✓ Nom de la boutique qui détient la boîte d'achat (et mode d'expédition FBA/FBM)\n✓ Nombre total de vendeurs en concurrence sur chaque fiche\n✓ Écart de prix exact à corriger pour récupérer la Buy Box\n✓ Tableau de bord clair avec code couleur immédiat.",
+    "description": "Sur Amazon, 85 % des ventes se font via le bouton \"Ajouter au panier\" (la fameuse Buy Box). Si un vendeur concurrent baisse son prix de 20 centimes, vous perdez immédiatement vos ventes sans vous en rendre compte !\n\nPour 35 €, j'audite 40 de vos références clés (ASIN) face aux vendeurs concurrents :\n✓ Prix actuel du vendeur gagnant de la Buy Box\n✓ Nom de la boutique qui détient la boîte d'achat (et mode d'expédition FBA/FBM)\n✓ Nombre total de vendeurs en concurrence sur chaque fiche\n✓ Écart de prix exact à corriger pour récupérer la Buy Box\n✓ Tableau de bord clair avec code couleur immédiat.",
     "options": [
       {
         "name": "Pack 100 ASINs",
@@ -819,7 +819,7 @@
     "pole": "Pôle 2 · E-commerce, Retail Arbitrage & Pricing Intelligence",
     "basePrice": 40,
     "deliveryDays": 2,
-    "description": "Changer de plateforme e-commerce (passer de PrestaShop, Wix ou d'un vieux site vers Shopify ou WooCommerce) est souvent un cauchemar technique à cause des formats CSV incompatibles.\n\nPour 40 €, j'extrais et convertis jusqu'à 80 produits au format officiel strict de votre nouvelle plateforme :\n✓ Titres, descriptions propres et références (SKU/Code-barres)\n✓ Prix normaux et prix réduits\n✓ Tailles, couleurs et variantes structurées\n✓ Liens hébergés des photos de produits prêtes pour l'importation\n✓ Test d'importation sans erreur garanti à 100%.",
+    "description": "Changer de plateforme e-commerce (passer de PrestaShop, Wix ou d'un vieux site vers Shopify ou WooCommerce) est souvent un cauchemar technique à cause des formats CSV incompatibles.\n\nPour 40 €, j'extrais et convertis jusqu'à 80 produits au format officiel strict de votre nouvelle plateforme :\n✓ Titres, descriptions propres et références (SKU/Code-barres)\n✓ Prix normaux et prix réduits\n✓ Tailles, couleurs et variantes structurées\n✓ Liens hébergés des photos de produits prêtes pour l'importation\n✓ Test d'importation sans erreur garanti à 100 %.",
     "options": [
       {
         "name": "Jusqu'à 250 Produits",
@@ -924,7 +924,7 @@
     "pole": "Pôle 2 · E-commerce, Retail Arbitrage & Pricing Intelligence",
     "basePrice": 25,
     "deliveryDays": 2,
-    "description": "Vos concurrents proposent-ils 10% avec une pop-up ? Font-ils des ventes privées ou des offres bundles cachées ?\n\nPour 25 €, j'audite les stratégies de remises actives de 5 concurrents directs :\n✓ Codes promo publics et offres d'inscription newsletter\n✓ Mécaniques promotionnelles (remise immédiate, 2e à -50%, cadeau offert)\n✓ Bannières d'accueil et pop-ups de bienvenue capturées\n✓ Tableau récapitulatif pour calibrer vos propres promotions sans brader vos marges.",
+    "description": "Vos concurrents proposent-ils 10 % avec une pop-up ? Font-ils des ventes privées ou des offres bundles cachées ?\n\nPour 25 €, j'audite les stratégies de remises actives de 5 concurrents directs :\n✓ Codes promo publics et offres d'inscription newsletter\n✓ Mécaniques promotionnelles (remise immédiate, 2e à -50 %, cadeau offert)\n✓ Bannières d'accueil et pop-ups de bienvenue capturées\n✓ Tableau récapitulatif pour calibrer vos propres promotions sans brader vos marges.",
     "options": [
       {
         "name": "Audit de 12 Concurrents",
@@ -947,7 +947,7 @@
   {
     "code": "#20",
     "name": "Compilation des Guides des Tailles & Spécifications Produits",
-    "comeupTitle": "Je vais compiler les guides des tailles et fiches techniques marché",
+    "comeupTitle": "Je vais compiler les guides des tailles et fiches techniques du marché",
     "category": "E-commerce & Rédaction",
     "pole": "Pôle 2 · E-commerce, Retail Arbitrage & Pricing Intelligence",
     "basePrice": 25,
@@ -973,7 +973,7 @@
     "pole": "Pôle 3 · IA, RAG & LLM Data Engineering",
     "basePrice": 25,
     "deliveryDays": 2,
-    "description": "Vous voulez créer un Chatbot, un Custom GPT ou un assistant Claude basé sur votre site ou sur une documentation web ? Si vous copiez-collez des pages brutes, les menus, bannières cookies et codes JavaScript font halluciner votre IA !\n\nPour 25 €, j'extrais et nettoie jusqu'à 30 pages web d'un site au format Markdown (`.md`) d'une pureté absolue :\n✓ 100% du texte noble conservé avec structure des titres (H1, H2, H3)\n✓ Suppression intégrale du bruit (navigation, footers, mentions de cookies, pubs)\n✓ Fichiers découpés proprement + un fichier unique consolidé prêt à glisser dans ChatGPT ou votre système RAG.",
+    "description": "Vous voulez créer un Chatbot, un Custom GPT ou un assistant Claude basé sur votre site ou sur une documentation web ? Si vous copiez-collez des pages brutes, les menus, bannières cookies et codes JavaScript font halluciner votre IA !\n\nPour 25 €, j'extrais et nettoie jusqu'à 30 pages web d'un site au format Markdown (`.md`) d'une pureté absolue :\n✓ 100 % du texte noble conservé avec structure des titres (H1, H2, H3)\n✓ Suppression intégrale du bruit (navigation, footers, mentions de cookies, pubs)\n✓ Fichiers découpés proprement + un fichier unique consolidé prêt à glisser dans ChatGPT ou votre système RAG.",
     "options": [
       {
         "name": "Pack 100 Pages Web",
@@ -1059,7 +1059,7 @@
   {
     "code": "#24",
     "name": "Audit Sémantique & Détection des Contenus Obsolètes d'un Blog",
-    "comeupTitle": "Je vais auditer tous les articles de votre blog liens morts et dates",
+    "comeupTitle": "Je vais auditer tous les articles de votre blog : liens morts et dates",
     "category": "SEO & Audit de contenu",
     "pole": "Pôle 3 · IA, RAG & LLM Data Engineering",
     "basePrice": 25,
@@ -1274,7 +1274,7 @@
     "pole": "Pôle 4 · Immobilier, Travaux & Commerce Local",
     "basePrice": 25,
     "deliveryDays": 2,
-    "description": "Démarcher Century 21, Stéphane Plaza ou Orpi est inutile : les décisions sont prises au siège national. En revanche, dans une agence indépendante, le patron est dans son bureau et peut signer un contrat immédiatement !\n\nPour 25 €, je répertorie 80 agences immobilières 100% indépendantes dans votre secteur :\n✓ Nom de l'agence, adresse et téléphone direct\n✓ Nom du gérant / directeur d'agence\n✓ Site web et lien de la fiche Google\n✓ Exclusion stricte de toutes les franchises nationales\n✓ Fichier Excel soigné pour courtiers, photographes, diagnostiqueurs et conciergeries.",
+    "description": "Démarcher Century 21, Stéphane Plaza ou Orpi est inutile : les décisions sont prises au siège national. En revanche, dans une agence indépendante, le patron est dans son bureau et peut signer un contrat immédiatement !\n\nPour 25 €, je répertorie 80 agences immobilières 100 % indépendantes dans votre secteur :\n✓ Nom de l'agence, adresse et téléphone direct\n✓ Nom du gérant / directeur d'agence\n✓ Site web et lien de la fiche Google\n✓ Exclusion stricte de toutes les franchises nationales\n✓ Fichier Excel soigné pour courtiers, photographes, diagnostiqueurs et conciergeries.",
     "options": [
       {
         "name": "Pack 200 Agences Indépendantes",
@@ -1470,7 +1470,7 @@
     "pole": "Pôle 5 · Social Media, Influence & Créateurs de Contenu",
     "basePrice": 25,
     "deliveryDays": 2,
-    "description": "Sur TikTok et Instagram Reels, la viralité dépend à 80% de l'utilisation des sons du moment et des formats tendance de la semaine. Si vous arrivez avec 3 semaines de retard, la tendance est morte !\n\nPour 25 €, je vous livre la sélection des 10 sons et formats en pleine explosion cette semaine dans votre niche :\n✓ Liens directs vers les audios officiels en tendance\n✓ Exemple de vidéo ayant cartonné avec le son\n✓ Explication de la mécanique humoristique ou informative du format\n✓ Idée concrète d'adaptation pour votre propre compte\n✓ Document PDF prêt à être transmis à votre créateur de contenu.",
+    "description": "Sur TikTok et Instagram Reels, la viralité dépend à 80 % de l'utilisation des sons du moment et des formats tendance de la semaine. Si vous arrivez avec 3 semaines de retard, la tendance est morte !\n\nPour 25 €, je vous livre la sélection des 10 sons et formats en pleine explosion cette semaine dans votre niche :\n✓ Liens directs vers les audios officiels en tendance\n✓ Exemple de vidéo ayant cartonné avec le son\n✓ Explication de la mécanique humoristique ou informative du format\n✓ Idée concrète d'adaptation pour votre propre compte\n✓ Document PDF prêt à être transmis à votre créateur de contenu.",
     "options": [
       {
         "name": "Sélection Étendue à 25 Formats",
@@ -1547,7 +1547,7 @@
     "pole": "Pôle 5 · Social Media, Influence & Créateurs de Contenu",
     "basePrice": 35,
     "deliveryDays": 2,
-    "description": "Avec quelles agences, influenceurs ou créateurs vos concurrents travaillent-ils ? Quels sont les codes promos qu'ils leur attribuent ?\n\nPour 35 €, j'audite les collaborations sponsorisées récentes (mentions légales obligatoires #ad, #sponsorisé, #partenariat) associées à 3 marques concurrentes :\n✓ Profils des créateurs partenaires identifiés\n✓ Format du placement (Story, Réel, vidéo dédiée, code promo)\n✓ Estimation de la visibilité générée\n✓ Tableau de bord pour contacter ces mêmes créateurs et leur proposer une collaboration plus avantageuse !",
+    "description": "Avec quelles agences, influenceurs ou créateurs vos concurrents travaillent-ils ? Quels sont les codes promos qu'ils leur attribuent ?\n\nPour 35 €, j'audite les collaborations sponsorisées récentes (mentions légales obligatoires #ad, #sponsorisé, #partenariat) associées à 3 marques concurrentes :\n✓ Profils des créateurs partenaires identifiés\n✓ Format du placement (Story, Reel, vidéo dédiée, code promo)\n✓ Estimation de la visibilité générée\n✓ Tableau de bord pour contacter ces mêmes créateurs et leur proposer une collaboration plus avantageuse !",
     "options": [
       {
         "name": "Veille sur 6 Marques Concurrentes",
@@ -1570,7 +1570,7 @@
   {
     "code": "#44",
     "name": "Radar des Offres d'Emploi Non Pourvues depuis Plus de 60 Jours",
-    "comeupTitle": "Je vais identifier les entreprises avec postes vacants depuis +60j",
+    "comeupTitle": "Je vais identifier les entreprises aux postes vacants depuis 60 jours",
     "category": "Ressources humaines & B2B",
     "pole": "Pôle 6 · Recrutement, RH & Chasse de Têtes",
     "basePrice": 35,
@@ -1666,7 +1666,7 @@
     "pole": "Pôle 6 · Recrutement, RH & Chasse de Têtes",
     "basePrice": 25,
     "deliveryDays": 2,
-    "description": "Le salaire ne fait plus tout : flexibilité du télétravail, semaine de 4 jours, mutuelle prise à 100%, intéressement ou crèche d'entreprise font basculer les meilleurs candidats.\n\nPour 25 €, j'audite les politiques d'attractivité de 8 concurrents directs :\n✓ Relevé exhaustif des avantages mentionnés dans leurs annonces et sites carrières\n✓ Analyse de leurs engagements bien-être et équilibre vie pro/vie perso\n✓ Tableau comparatif pour concevoir une offre employeur irrésistible.",
+    "description": "Le salaire ne fait plus tout : flexibilité du télétravail, semaine de 4 jours, mutuelle prise à 100 %, intéressement ou crèche d'entreprise font basculer les meilleurs candidats.\n\nPour 25 €, j'audite les politiques d'attractivité de 8 concurrents directs :\n✓ Relevé exhaustif des avantages mentionnés dans leurs annonces et sites carrières\n✓ Analyse de leurs engagements bien-être et équilibre vie pro/vie perso\n✓ Tableau comparatif pour concevoir une offre employeur irrésistible.",
     "options": [
       {
         "name": "Benchmark Étendu à 20 Entreprises",
@@ -1848,7 +1848,7 @@
     "pole": "Pôle 8 · Grand Public & Particuliers — Auto, Logement, Travaux & Quotidien",
     "basePrice": 20,
     "deliveryDays": 2,
-    "description": "Saviez-vous qu'un même hôtel ou hébergement de vacances peut avoir 20% à 30% d'écart de prix selon la plateforme où vous le réservez ? Très souvent, réserver directement sur le site de l'établissement évite les commissions de Booking ou Airbnb !\n\nPour 20 €, je compare 15 établissements correspondant à vos dates et critères :\n✓ Prix comparés sur Booking, Airbnb, Expedia et sur le site direct de l'hôtel\n✓ Synthèse des vrais avis récents (propreté, bruit, localisation)\n✓ Détection des frais cachés (taxes de séjour, frais de ménage abusifs)\n✓ Tableau comparatif avec lien de la meilleure offre garantie.",
+    "description": "Saviez-vous qu'un même hôtel ou hébergement de vacances peut avoir 20 % à 30 % d'écart de prix selon la plateforme où vous le réservez ? Très souvent, réserver directement sur le site de l'établissement évite les commissions de Booking ou Airbnb !\n\nPour 20 €, je compare 15 établissements correspondant à vos dates et critères :\n✓ Prix comparés sur Booking, Airbnb, Expedia et sur le site direct de l'hôtel\n✓ Synthèse des vrais avis récents (propreté, bruit, localisation)\n✓ Détection des frais cachés (taxes de séjour, frais de ménage abusifs)\n✓ Tableau comparatif avec lien de la meilleure offre garantie.",
     "options": [
       {
         "name": "Sélection Étendue à 35 Hébergements",
@@ -1918,7 +1918,7 @@
     "pole": "Pôle 8 · Grand Public & Particuliers — Auto, Logement, Travaux & Quotidien",
     "basePrice": 20,
     "deliveryDays": 2,
-    "description": "Passer 4 heures par jour à naviguer entre 6 sites d'emploi (Indeed, LinkedIn, Welcome to the Jungle, France Travail, Monster) est décourageant. Recevez un tableau unique regroupant les meilleures offres adaptées à votre métier !\n\nPour 20 €, je compile pour vous 50 offres d'emploi, de stage ou d'alternance fraîches et filtrées :\n✓ Intitulé exact, nom de l'entreprise et localisation\n✓ Type de contrat (CDI, CDD, Alternance) et télétravail possible\n✓ Filtrage strict pour éliminer les doublons et les annonces de faux cabinets\n✓ Liens directs pour postuler sans intermédiaire\n✓ Tableau de suivi des candidatures inclus (colonnes date d'envoi, relance, statut).",
+    "description": "Passer 4 heures par jour à naviguer entre 6 sites d'emploi (Indeed, LinkedIn, Welcome to the Jungle, France Travail, Monster) est décourageant. Recevez un tableau unique regroupant les meilleures offres adaptées à votre métier !\n\nPour 20 €, je compile pour vous 100 offres d'emploi, de stage ou d'alternance fraîches et filtrées :\n✓ Intitulé exact, nom de l'entreprise et localisation\n✓ Type de contrat (CDI, CDD, Alternance) et télétravail possible\n✓ Filtrage strict pour éliminer les doublons et les annonces de faux cabinets\n✓ Liens directs pour postuler sans intermédiaire\n✓ Tableau de suivi des candidatures inclus (colonnes date d'envoi, relance, statut).",
     "options": [
       {
         "name": "Pack 120 Offres Ciblées",
@@ -1988,7 +1988,7 @@
     "pole": "Pôle 9 · Hôtellerie, Restauration, Tourisme & Loisirs",
     "basePrice": 30,
     "deliveryDays": 2,
-    "description": "Sur Uber Eats et Deliveroo, la concurrence est féroce. Pour être rentable, vous devez savoir quels plats de vos rivaux obtiennent le badge \"Le plus populaire\", à quel prix ils vendent leurs formules et quelles remises ils accordent.\n\nPour 30 €, j'audite les menus de 5 restaurants concurrents de votre ville sur les plateformes :\n✓ Relevé des prix des entrées, plats, desserts et boissons\n✓ Identification des plats best-sellers (\"Populaire\")\n✓ Analyse des offres spéciales (1 acheté = 1 offert, -20% dès 25 €)\n✓ Tableau comparatif pour calibrer votre carte et devenir le choix n°1 des clients affamés !",
+    "description": "Sur Uber Eats et Deliveroo, la concurrence est féroce. Pour être rentable, vous devez savoir quels plats de vos rivaux obtiennent le badge \"Le plus populaire\", à quel prix ils vendent leurs formules et quelles remises ils accordent.\n\nPour 30 €, j'audite les menus de 5 restaurants concurrents de votre ville sur les plateformes :\n✓ Relevé des prix des entrées, plats, desserts et boissons\n✓ Identification des plats best-sellers (\"Populaire\")\n✓ Analyse des offres spéciales (1 acheté = 1 offert, -20 % dès 25 €)\n✓ Tableau comparatif pour calibrer votre carte et devenir le choix n°1 des clients affamés !",
     "options": [
       {
         "name": "Audit de 12 Restaurants Concurrents",
@@ -2046,12 +2046,12 @@
   {
     "code": "#63",
     "name": "Cartographie des Domaines de Mariage & Wedding Planners",
-    "comeupTitle": "Je vais répertorier les domaines de mariage et wedding planners zone",
+    "comeupTitle": "Je vais répertorier les domaines de mariage et wedding planners locaux",
     "category": "Événementiel & Mariage",
     "pole": "Pôle 9 · Hôtellerie, Restauration, Tourisme & Loisirs",
     "basePrice": 35,
     "deliveryDays": 2,
-    "description": "Vous êtes traiteur, photographe de mariage, DJ, décorateur, fleuriste ou loueur de mobilier ? Dans l'industrie du mariage, 80% des prestataires sont recommandés directement par le château ou le wedding planner !\n\nPour 35 €, je répertorie pour vous 50 châteaux, domaines de réception et organisateurs de mariages de votre région :\n✓ Nom du domaine ou de l'agence, commune et adresse exacte\n✓ Numéro de téléphone direct et adresse email de contact\n✓ Capacité d'accueil annoncée et présence d'hébergements sur place\n✓ Liens vers leur site et galerie Instagram\n✓ Tableau Excel structuré pour leur proposer votre partenariat recommandé.",
+    "description": "Vous êtes traiteur, photographe de mariage, DJ, décorateur, fleuriste ou loueur de mobilier ? Dans l'industrie du mariage, 80 % des prestataires sont recommandés directement par le château ou le wedding planner !\n\nPour 35 €, je répertorie pour vous 50 châteaux, domaines de réception et organisateurs de mariages de votre région :\n✓ Nom du domaine ou de l'agence, commune et adresse exacte\n✓ Numéro de téléphone direct et adresse email de contact\n✓ Capacité d'accueil annoncée et présence d'hébergements sur place\n✓ Liens vers leur site et galerie Instagram\n✓ Tableau Excel structuré pour leur proposer votre partenariat recommandé.",
     "options": [
       {
         "name": "Pack 120 Lieux & Wedding Planners",
@@ -2156,7 +2156,7 @@
     "pole": "Pôle 10 · Grandes Entreprises, ETI, Finance, Achats & Supply Chain",
     "basePrice": 45,
     "deliveryDays": 2,
-    "description": "Sécuriser votre chaîne d'approvisionnement en relocalisant des achats industriels en Europe (France, Italie, Espagne, Allemagne, Pologne, Portugal) exige des usines sérieuses et certifiées.\n\nPour 45 €, je source pour vous 40 fabricants industriels européens répondant exactement à votre cahier des charges :\n✓ Spécialités au choix : usinage, injection plastique, tôlerie, emballages, fonderie, textile technique\n✓ Certifications qualité vérifiées (ISO 9001, ISO 14001, IATF automobile)\n✓ Nom de l'usine, pays, ville et site internet officiel\n✓ Coordonnées du service commercial export\n✓ Tableau Excel comparatif prêt pour le lancement de vos demandes de devis (RFP).",
+    "description": "Sécuriser votre chaîne d'approvisionnement en relocalisant des achats industriels en Europe (France, Italie, Espagne, Allemagne, Pologne, Portugal) exige des usines sérieuses et certifiées.\n\nPour 45 €, je source pour vous 50 fabricants industriels européens répondant exactement à votre cahier des charges :\n✓ Spécialités au choix : usinage, injection plastique, tôlerie, emballages, fonderie, textile technique\n✓ Certifications qualité vérifiées (ISO 9001, ISO 14001, IATF automobile)\n✓ Nom de l'usine, pays, ville et site internet officiel\n✓ Coordonnées du service commercial export\n✓ Tableau Excel comparatif prêt pour le lancement de vos demandes de devis (RFP).",
     "options": [
       {
         "name": "Pack 100 Fabricants Certifiés",
@@ -2184,7 +2184,7 @@
     "pole": "Pôle 10 · Grandes Entreprises, ETI, Finance, Achats & Supply Chain",
     "basePrice": 40,
     "deliveryDays": 2,
-    "description": "Pour recruter les cadres et ingénieurs de vos concurrents, vous devez connaître leurs faiblesses internes : management toxique, refus du télétravail, salaires gelés ou manque de perspectives.\n\nPour 40 €, j'extrais et synthétise les avis employés anonymes de 4 de vos concurrents (Glassdoor, Indeed, ChooseMyCompany) :\n✓ Note globale, recommandation de l'entreprise et approbation du PDG\n✓ Top 3 des avantages les plus cités par leurs salariés\n✓ Top 3 des motifs de démission et frustrations internes récurrentes\n✓ Synthèse des salaires réels partagés par poste\n✓ Rapport PDF exécutif pour orienter vos campagnes de chasse de têtes.",
+    "description": "Pour recruter les cadres et ingénieurs de vos concurrents, vous devez connaître leurs faiblesses internes : management toxique, refus du télétravail, salaires gelés ou manque de perspectives.\n\nPour 40 €, j'extrais et synthétise les avis employés anonymes de 5 de vos concurrents (Glassdoor, Indeed, ChooseMyCompany) :\n✓ Note globale, recommandation de l'entreprise et approbation du PDG\n✓ Top 3 des avantages les plus cités par leurs salariés\n✓ Top 3 des motifs de démission et frustrations internes récurrentes\n✓ Synthèse des salaires réels partagés par poste\n✓ Rapport PDF exécutif pour orienter vos campagnes de chasse de têtes.",
     "options": [
       {
         "name": "Audit de 8 Concurrents",
@@ -2205,7 +2205,7 @@
     "pole": "Pôle 10 · Grandes Entreprises, ETI, Finance, Achats & Supply Chain",
     "basePrice": 45,
     "deliveryDays": 2,
-    "description": "Les marchés publics européens (TED - Tenders Electronic Daily) dépassent souvent 500 000 € et concernent les projets d'infrastructures, logiciels, énergie, santé et conseil de toute l'Union Européenne.\n\nPour 45 €, je réalise une recherche ciblée des marchés européens en cours dans votre spécialité :\n✓ Intitulé, pays acheteur et montant estimé\n✓ Date limite de remise des offres et allotissements\n✓ Langue de soumission et critères d'attribution\n✓ Liens officiels directs vers les dossiers de consultation\n✓ Fichier Excel soigné pour positionner votre ETI à l'international.",
+    "description": "Les marchés publics européens (TED - Tenders Electronic Daily) dépassent souvent 500 000 € et concernent les projets d'infrastructures, logiciels, énergie, santé et conseil de toute l'Union européenne.\n\nPour 45 €, je réalise une recherche ciblée des marchés européens en cours dans votre spécialité :\n✓ Intitulé, pays acheteur et montant estimé\n✓ Date limite de remise des offres et allotissements\n✓ Langue de soumission et critères d'attribution\n✓ Liens officiels directs vers les dossiers de consultation\n✓ Fichier Excel soigné pour positionner votre ETI à l'international.",
     "options": [
       {
         "name": "Recherche Multilingue 5 Pays UE",
@@ -2333,12 +2333,12 @@
   {
     "code": "#74",
     "name": "Décryptage des Avis Logiciels Concurrents sur G2, Capterra & TrustRadius",
-    "comeupTitle": "Je vais extraire les critiques de vos concurrents SaaS sur G2 Capterra",
+    "comeupTitle": "Je vais extraire les critiques de vos concurrents SaaS sur G2 et Capterra",
     "category": "Logiciels & SaaS > Études de marché",
     "pole": "Pôle 11 · SaaS, Tech, Logiciels, Startups & Produits Digitaux",
     "basePrice": 35,
     "deliveryDays": 2,
-    "description": "Vous développez un logiciel ou un outil SaaS ? Les utilisateurs de vos concurrents publient chaque jour sur G2, Capterra et TrustRadius exactement ce qu'ils détestent dans leur solution : lenteurs, service client inexistant, tarifs cachés ou fonctionnalités manquantes !\n\nPour 35 €, j'extrais et analyse 80 avis vérifiés (notes 1 à 3 étoiles) de vos 2 principaux concurrents logiciels :\n✓ Problèmes techniques récurrents et bugs les plus cités\n✓ Fonctionnalités indispensables réclamées par les clients et absentes de leur outil\n✓ Ce qui justifie les désabonnements (Churhn)\n✓ Synthèse PDF de 3 pages avec les 5 arguments marketing pour positionner votre logiciel comme l'alternative parfaite.",
+    "description": "Vous développez un logiciel ou un outil SaaS ? Les utilisateurs de vos concurrents publient chaque jour sur G2, Capterra et TrustRadius exactement ce qu'ils détestent dans leur solution : lenteurs, service client inexistant, tarifs cachés ou fonctionnalités manquantes !\n\nPour 35 €, j'extrais et analyse 80 avis vérifiés (notes 1 à 3 étoiles) de vos 2 principaux concurrents logiciels :\n✓ Problèmes techniques récurrents et bugs les plus cités\n✓ Fonctionnalités indispensables réclamées par les clients et absentes de leur outil\n✓ Ce qui justifie les désabonnements (churn)\n✓ Synthèse PDF de 3 pages avec les 5 arguments marketing pour positionner votre logiciel comme l'alternative parfaite.",
     "options": [
       {
         "name": "Volume 200 Avis Analysés sur 4 SaaS",
@@ -2387,7 +2387,7 @@
     "pole": "Pôle 11 · SaaS, Tech, Logiciels, Startups & Produits Digitaux",
     "basePrice": 40,
     "deliveryDays": 2,
-    "description": "Comment fixer le prix de votre logiciel ? Faut-il proposer un forfait Freemium ? Faire payer à l'utilisateur, au volume ou par paliers ? Facturer au mois ou à l'année ?\n\nPour 40 €, j'audite les pages de tarifs (Pricing Pages) de 15 logiciels de référence de votre marché :\n✓ Structure des forfaits (Gratuit, Starter, Pro, Entreprise)\n✓ Prix au mois vs prix annuel (pourcentage de remise consenti)\n✓ Fonctionnalités réservées aux forfaits supérieurs\n✓ Présence d'un essai gratuit (durée, carte bancaire exigée ou non)\n✓ Tableau Excel comparatif pour définir une grille tarifaire ultra-rentable.",
+    "description": "Comment fixer le prix de votre logiciel ? Faut-il proposer un forfait Freemium ? Faire payer à l'utilisateur, au volume ou par paliers ? Facturer au mois ou à l'année ?\n\nPour 40 €, j'audite les pages de tarifs (Pricing Pages) de 20 logiciels de référence de votre marché :\n✓ Structure des forfaits (Gratuit, Starter, Pro, Entreprise)\n✓ Prix au mois vs prix annuel (pourcentage de remise consenti)\n✓ Fonctionnalités réservées aux forfaits supérieurs\n✓ Présence d'un essai gratuit (durée, carte bancaire exigée ou non)\n✓ Tableau Excel comparatif pour définir une grille tarifaire ultra-rentable.",
     "options": [
       {
         "name": "Benchmark Étendu à 30 SaaS",
@@ -2408,7 +2408,7 @@
     "pole": "Pôle 11 · SaaS, Tech, Logiciels, Startups & Produits Digitaux",
     "basePrice": 30,
     "deliveryDays": 2,
-    "description": "Vous développez une application mobile iOS ou Android ? Découvrez exactement pourquoi les utilisateurs désinstallent les applications de vos concurrents !\n\nPour 30 €, j'extrais et catégorise 80 avis négatifs (1 et 2 étoiles) d'une application concurrente :\n✓ Modèles de smartphones et versions d'OS sur lesquels l'app plante\n✓ Bugs d'affichage, lenteurs de chargement ou crashs au démarrage\n✓ Plaintes sur les abonnements automatiques ou pubs intrusives\n✓ Fichier de synthèse pour concevoir une application stable qui récolte immédiatement 5 étoiles sur les stores.",
+    "description": "Vous développez une application mobile iOS ou Android ? Découvrez exactement pourquoi les utilisateurs désinstallent les applications de vos concurrents !\n\nPour 30 €, j'extrais et catégorise 80 avis à 1 étoile d'une application concurrente :\n✓ Modèles de smartphones et versions d'OS sur lesquels l'app plante\n✓ Bugs d'affichage, lenteurs de chargement ou crashs au démarrage\n✓ Plaintes sur les abonnements automatiques ou pubs intrusives\n✓ Fichier de synthèse pour concevoir une application stable qui récolte immédiatement 5 étoiles sur les stores.",
     "options": [
       {
         "name": "Analyse de 3 Applications Concurrentes",
@@ -2445,7 +2445,7 @@
   {
     "code": "#79",
     "name": "Fichier Ciblé de Fonds d'Investissement (VC) & Business Angels Actifs",
-    "comeupTitle": "Je vais lister les fonds investissement et Business Angels actifs",
+    "comeupTitle": "Je vais lister les fonds d'investissement et Business Angels actifs",
     "category": "Levée de fonds & Startups",
     "pole": "Pôle 11 · SaaS, Tech, Logiciels, Startups & Produits Digitaux",
     "basePrice": 45,
@@ -2613,7 +2613,7 @@
   {
     "code": "#86",
     "name": "Extraction de 300 Vraies Questions Internautes (\"People Also Ask\")",
-    "comeupTitle": "Je vais extraire 300 vraies questions posées sur Google dans sa niche",
+    "comeupTitle": "Je vais extraire 300 vraies questions posées sur Google dans votre niche",
     "category": "Rédaction Web & SEO",
     "pole": "Pôle 12 · SEO, GEO (IA Search), Médias, RP & Podcasts",
     "basePrice": 25,
@@ -2634,7 +2634,7 @@
   {
     "code": "#87",
     "name": "Veille d'E-Réputation sur Reddit, Forums Spécialisés & Quora",
-    "comeupTitle": "Je vais recenser toutes les discussions sur votre marque sur forums",
+    "comeupTitle": "Je vais recenser toutes les discussions sur votre marque sur les forums",
     "category": "E-réputation & Veille",
     "pole": "Pôle 12 · SEO, GEO (IA Search), Médias, RP & Podcasts",
     "basePrice": 30,
@@ -2660,7 +2660,7 @@
     "pole": "Pôle 13 · Subventions, Associations, Formation & Santé",
     "basePrice": 40,
     "deliveryDays": 2,
-    "description": "L'État, les Régions, l'Europe et Bpifrance proposent des centaines d'aides financières et subventions pour les créateurs d'entreprise, la transition écologique, l'export ou l'embauche. Mais 80% des PME passent à côté faute d'information !\n\nPour 40 €, j'identifie pour vous jusqu'à 15 dispositifs d'aides publiques correspondant exactement à votre profil et localisation (base Aides-Territoires / BPI) :\n✓ Nom du dispositif et organisme financeur\n✓ Montant maximal de la subvention ou du prêt d'honneur\n✓ Critères d'éligibilité précis et dates limites de candidature\n✓ Liens officiels vers les dossiers de demande\n✓ Synthèse claire pour financer votre projet sans vous endetter.",
+    "description": "L'État, les Régions, l'Europe et Bpifrance proposent des centaines d'aides financières et subventions pour les créateurs d'entreprise, la transition écologique, l'export ou l'embauche. Mais 80 % des PME passent à côté faute d'information !\n\nPour 40 €, j'identifie pour vous jusqu'à 15 dispositifs d'aides publiques correspondant exactement à votre profil et localisation (base Aides-Territoires / BPI) :\n✓ Nom du dispositif et organisme financeur\n✓ Montant maximal de la subvention ou du prêt d'honneur\n✓ Critères d'éligibilité précis et dates limites de candidature\n✓ Liens officiels vers les dossiers de demande\n✓ Synthèse claire pour financer votre projet sans vous endetter.",
     "options": [
       {
         "name": "Recherche Étendue à 35 Dispositifs",
@@ -2676,7 +2676,7 @@
   {
     "code": "#89",
     "name": "Annuaire des Associations Sportives & Culturelles d'un Département",
-    "comeupTitle": "Je vais lister les associations sportives de votre département RNA",
+    "comeupTitle": "Je vais lister les associations sportives de votre département (RNA)",
     "category": "Annuaires professionnels & B2B",
     "pole": "Pôle 13 · Subventions, Associations, Formation & Santé",
     "basePrice": 30,
@@ -2709,7 +2709,7 @@
     "pole": "Pôle 13 · Subventions, Associations, Formation & Santé",
     "basePrice": 35,
     "deliveryDays": 2,
-    "description": "Vous êtes organisme de formation certifié Qualiopi et vous lancez une nouvelle formation éligible au CPF (Mon Compte Formation) ? Découvrez comment vos rivaux se positionnent pour fixer un tarif attractif et maximiser vos inscriptions !\n\nPour 35 €, j'audite 30 formations concurrentes enregistrées sur le catalogue officiel du CPF dans votre thématique :\n✓ Tarifs appliqués (en euros et coût horaire)\n✓ Durée de la formation (heures) et modalité (100% à distance, présentiel, hybride)\n✓ Notes moyennes obtenues et avis stagiaires publics\n✓ Intitulés de certification préparée (RNCP / RS)\n✓ Tableau comparatif pour positionner votre offre de formation en haut du panier.",
+    "description": "Vous êtes organisme de formation certifié Qualiopi et vous lancez une nouvelle formation éligible au CPF (Mon Compte Formation) ? Découvrez comment vos rivaux se positionnent pour fixer un tarif attractif et maximiser vos inscriptions !\n\nPour 35 €, j'audite 30 formations concurrentes enregistrées sur le catalogue officiel du CPF dans votre thématique :\n✓ Tarifs appliqués (en euros et coût horaire)\n✓ Durée de la formation (heures) et modalité (100 % à distance, présentiel, hybride)\n✓ Notes moyennes obtenues et avis stagiaires publics\n✓ Intitulés de certification préparée (RNCP / RS)\n✓ Tableau comparatif pour positionner votre offre de formation en haut du panier.",
     "options": [
       {
         "name": "Benchmark de 80 Formations",
@@ -2725,7 +2725,7 @@
   {
     "code": "#91",
     "name": "Revue & Synthèse de Recherches Scientifiques Officielles (PubMed)",
-    "comeupTitle": "Je vais compiler les études scientifiques sur votre sujet PubMed",
+    "comeupTitle": "Je vais compiler les études scientifiques PubMed sur votre sujet",
     "category": "Rédaction scientifique & Santé",
     "pole": "Pôle 13 · Subventions, Associations, Formation & Santé",
     "basePrice": 45,
@@ -2746,7 +2746,7 @@
   {
     "code": "#92",
     "name": "Fichier de Prospection de Pharmacies & Magasins Bio par Région",
-    "comeupTitle": "Je vais constituer votre fichier de pharmacies et magasins bio région",
+    "comeupTitle": "Je vais constituer votre fichier de pharmacies et magasins bio régionaux",
     "category": "Prospection & Santé/Bio",
     "pole": "Pôle 13 · Subventions, Associations, Formation & Santé",
     "basePrice": 35,
@@ -2795,7 +2795,7 @@
   {
     "code": "#94",
     "name": "Annuaire Qualifié des Mairies & Collectivités par Population",
-    "comeupTitle": "Je vais vous fournir le fichier des mairies ciblées selon population",
+    "comeupTitle": "Je vais vous fournir le fichier des mairies ciblées selon la population",
     "category": "Collectivités & Secteur public",
     "pole": "Pôle 13 · Subventions, Associations, Formation & Santé",
     "basePrice": 30,
@@ -2823,12 +2823,12 @@
   {
     "code": "#95",
     "name": "Comparatif de 30 Réseaux de Franchises d'un Secteur",
-    "comeupTitle": "Je vais comparer 30 franchises de votre secteur apport et rentabilité",
+    "comeupTitle": "Je vais comparer 30 franchises de votre secteur : apport et rentabilité",
     "category": "Franchise & Création d'entreprise",
     "pole": "Pôle 14 · Logistique, Import-Export, Franchise, Énergie & Enchères",
     "basePrice": 40,
     "deliveryDays": 2,
-    "description": "Ouvrir une franchise (boulangerie, restauration rapide, salle de sport, agence immobilière, pressing) engage votre patrimoine personnel. Ne vous fiez pas aux plaquettes publicitaires des franchiseurs : comparez objectivement les chiffres réels !\n\nPour 40 €, j'audite et compare 25 réseaux de franchise de votre secteur d'activité :\n✓ Montant de l'apport personnel exigé et droit d'entrée\n✓ Redevance de fonctionnement et redevance publicitaire (%)\n✓ Chiffre d'affaires moyen annoncé à 2 ans et durée du contrat\n✓ Nombre de points de vente actifs dans le réseau\n✓ Tableau comparatif pour choisir le réseau le plus rentable et sécurisant pour votre avenir.",
+    "description": "Ouvrir une franchise (boulangerie, restauration rapide, salle de sport, agence immobilière, pressing) engage votre patrimoine personnel. Ne vous fiez pas aux plaquettes publicitaires des franchiseurs : comparez objectivement les chiffres réels !\n\nPour 40 €, j'audite et compare 30 réseaux de franchise de votre secteur d'activité :\n✓ Montant de l'apport personnel exigé et droit d'entrée\n✓ Redevance de fonctionnement et redevance publicitaire (%)\n✓ Chiffre d'affaires moyen annoncé à 2 ans et durée du contrat\n✓ Nombre de points de vente actifs dans le réseau\n✓ Tableau comparatif pour choisir le réseau le plus rentable et sécurisant pour votre avenir.",
     "options": [
       {
         "name": "Comparatif de 60 Réseaux de Franchises",
@@ -2844,7 +2844,7 @@
   {
     "code": "#96",
     "name": "Cartographie des Bornes de Recharge Électriques (IRVE) & Zones Blanches",
-    "comeupTitle": "Je vais cartographier les bornes électriques et zones blanches région",
+    "comeupTitle": "Je vais cartographier les bornes de recharge et zones blanches de la région",
     "category": "Électromobilité & Énergie",
     "pole": "Pôle 14 · Logistique, Import-Export, Franchise, Énergie & Enchères",
     "basePrice": 40,
@@ -2872,7 +2872,7 @@
   {
     "code": "#97",
     "name": "Veille Réglementaire des Rappels Produits Officiels (RappelConso)",
-    "comeupTitle": "Je vais mettre en place votre veille sur les rappels de produits flux",
+    "comeupTitle": "Je vais mettre en place votre veille sur le flux des rappels de produits",
     "category": "Qualité & Conformité réglementaire",
     "pole": "Pôle 14 · Logistique, Import-Export, Franchise, Énergie & Enchères",
     "basePrice": 35,
@@ -2905,7 +2905,7 @@
     "pole": "Pôle 14 · Logistique, Import-Export, Franchise, Énergie & Enchères",
     "basePrice": 50,
     "deliveryDays": 2,
-    "description": "Le moyen le plus rapide de bâtir un empire de distribution e-commerce ou physique est de trouver une marque qui cartonne déjà aux États-Unis, au Japon, en Corée ou en Allemagne, et de devenir son importateur exclusif pour la France !\n\nPour 50 €, je sélectionne pour vous 25 marques indépendantes à fort succès dans votre niche non encore distribuées en France :\n✓ Nom de la marque, pays d'origine et site internet officiel\n✓ Type de produits et arguments de différenciation\n✓ Évaluation de l'engouement sur leurs réseaux sociaux\n✓ Contact du responsable des partenariats internationaux (export)\n✓ Fichier prêt pour envoyer vos demandes d'exclusivité de distribution territoriale.",
+    "description": "Le moyen le plus rapide de bâtir un empire de distribution e-commerce ou physique est de trouver une marque qui cartonne déjà aux États-Unis, au Japon, en Corée ou en Allemagne, et de devenir son importateur exclusif pour la France !\n\nPour 50 €, je sélectionne pour vous 30 marques indépendantes à fort succès dans votre niche non encore distribuées en France :\n✓ Nom de la marque, pays d'origine et site internet officiel\n✓ Type de produits et arguments de différenciation\n✓ Évaluation de l'engouement sur leurs réseaux sociaux\n✓ Contact du responsable des partenariats internationaux (export)\n✓ Fichier prêt pour envoyer vos demandes d'exclusivité de distribution territoriale.",
     "options": [
       {
         "name": "Pack 60 Marques Étrangères",
@@ -2926,7 +2926,7 @@
     "pole": "Pôle 14 · Logistique, Import-Export, Franchise, Énergie & Enchères",
     "basePrice": 35,
     "deliveryDays": 2,
-    "description": "Chaque semaine, lors de liquidations judiciaires d'entreprises, des matériels professionnels récents (véhicules utilitaires, engins BTP, fours à pizza, machines d'usinage, stocks de vêtements) sont vendus aux enchères à -60% voire -80% de leur valeur marchande !\n\nPour 35 €, je répertorie pour vous 40 ventes aux enchères judiciaires à venir dans votre région et spécialité :\n✓ Date et lieu de la vente (en salle ou en ligne sur Interencheres)\n✓ Nature des lots vendus (matériel de restauration, outillage, informatique, camions)\n✓ Estimations de départ des enchères et commissaire-priseur en charge\n✓ Liens directs vers les catalogues officiels de vente.",
+    "description": "Chaque semaine, lors de liquidations judiciaires d'entreprises, des matériels professionnels récents (véhicules utilitaires, engins BTP, fours à pizza, machines d'usinage, stocks de vêtements) sont vendus aux enchères à -60 % voire -80 % de leur valeur marchande !\n\nPour 35 €, je répertorie pour vous 40 ventes aux enchères judiciaires à venir dans votre région et spécialité :\n✓ Date et lieu de la vente (en salle ou en ligne sur Interencheres)\n✓ Nature des lots vendus (matériel de restauration, outillage, informatique, camions)\n✓ Estimations de départ des enchères et commissaire-priseur en charge\n✓ Liens directs vers les catalogues officiels de vente.",
     "options": [
       {
         "name": "Pack 100 Ventes à Venir sur 3 Régions",

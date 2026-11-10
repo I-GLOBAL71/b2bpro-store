@@ -7,6 +7,103 @@
 
 ---
 
+## [1.8.0] — 2026-11-10 — Tour d'experts anti-traces d'IA : la voix remise au propre
+
+Mandat utilisateur : déployer tous les experts pour vérifier profondément que chaque service
+et chaque article de blog ne porte aucune trace d'écriture automatique ; effectuer les
+vérifications et corriger, sans revendiquer d'état absolu.
+
+### Méthode — 6 agents d'audit (T2-a à T2-f) puis correctifs vagues T3
+- **Scanner dédié** : `scripts/audit-ai-traces.ts` (nouveau) — cinq familles de signatures
+  (duplication transverse de phrases/H2/FAQ/puces/process, typographie mécanique [cadratins,
+  décimales à point, pourcentages collés, guillemets droits], lexique téléguidé, rythme
+  uniforme, répétitions inter-articles), rapport versionné `docs/audits/`, code sortie non
+  nul en cas de signature. Audit initial : **58 familles de répétitions transverses**
+  (phrases partagées jusqu'à 113×, H2 jusqu'à 27×, FAQ jusqu'à 45×), 173 cadratins dans les
+  12 articles, 15 bios vendeurs fautives, ~230 défauts éditoriaux cités par les experts.
+- **Experts 1-4 (fiches)** : ~240 défauts confirmés avec corrections prêtes (expertises
+  hors-sujet [mots-clés d'autres fiches injectés], livrables génériques contradictoires
+  [« Tableau Excel » promis par un service Markdown], chiffres contradictoires titre ↔
+  description [100/50, 20/15, 30/25, 5/4], « Réponse du vendeur en moins de 2 h » contredisant
+  le badge vendeur, casses de marques, élisions manquantes).
+- **Expert 5 (blog)** : 173 cadratins localisés ligne par ligne, balanciers binaires, triades
+  systématiques, intervalles anglo-saxons (« 25-50 € »), ouvertures/conclusions clones.
+- **Expert 6 (rendu)** : buildAnswerFirst à double verbe (« livre formater votre catalogue »)
+  sur les 113 fiches + 113 lignes llms-full.txt, « dès 25 € » contredit par 4 services à 20 €,
+  notes vendeurs confondues avec les notes services, décimales à point, « 7j/7 » collé.
+
+### [FORCE MAJEURE] (protocole §5) — Couche rédactionnelle humanize.ts v2
+**Justification** : les six experts ont confirmé que les coutures de gabarits (phrases
+identiques sur des dizaines de fiches) et les faux savoir-faire (mots-clés du pôle injectés
+comme « expertises ») sont visibles à la lecture de deux onglets ; irrecevable pour un
+contenu qui doit lire comme une fiche rédigée à la main. Le fond métier de chaque fiche
+(intro, cœur, closing business) reste conservé à l'identique ; seule la voix est reconstruite.
+- **Expertise fondée sur le vendeur réel** : les phrases « Deux domaines structurent… »
+  s'appuient désormais sur `seller.skills` (les VRAIES compétences du vendeur), plus jamais
+  sur les mots-clés d'autres fiches du pôle.
+- **Chaque bloc partagé porte un paramètre propre au service** (prix, délai, note, avis,
+  ventes, réactivité vendeur, pays, pôle, catégorie [107 valeurs], mot-clé primaire) :
+  20 accroches, 15 combinaisons de garanties, 14+14+14+14 titres H2, 14 blocs garanties/géo,
+  9 puces par garantie, 12+8+10+8 gabarits de process (dont le temps de réponse RÉEL du
+  vendeur en étape 1), 9+8 livrables (livrable principal reformulé par pôle : plus aucun
+  « Tableau Excel » sur un service Markdown), questions de FAQ paramétriques (0 question
+  partagée), hash à avalanche pour éliminer les grappes de sélection.
+- **Idempotence réparée** : `decompose()` reconnaît désormais le format humanisé v1/v2
+  (une ré-exécution ne peut plus incruster d'anciennes sections — défaut constaté et corrigé
+  pendant la validation).
+
+### [CORRECTIF] — Pré-passes de contenu (base + catalogue source)
+- 17 titres agrammaticaux corrigés (décimales, déterminants, possessifs, sigles plaqués),
+  resserrés au plafond SGA™ de 75 caractères ; 9 incohérences de chiffres titre ↔ description
+  alignées ; typographie normalisée (espaces avant %, décimales à la virgule, casses de
+  marques : Buy Box, Uber Eats, Qualiopi, EHPAD, NAF, SIREN, CPV, Glassdoor…) ;
+  « Churhn » → churn, « 10k » → « 10 000 », « Réel » → Reel, élisions manquantes.
+
+### [DONNÉES] — Blog, vendeurs, avis, base de connaissances
+- **12 articles** : 173 cadratins typographiés (incises → parenthèses, appositions →
+  deux-points/virgules, « Étape N — » → « Étape N : »), balanciers binaires reformulés,
+  intervalles francisés (« 25 à 50 € », « ×4 »), cohérence chiffrée réparée (horaires BOAMP,
+  fourchettes prospection), ouvertures/conclusions diversifiées SANS toucher au pattern
+  answer-first GEO. Sources `data/blog/*.md` + `scripts/sync-blog.ts` (nouveau) pour
+  resynchroniser la base servie.
+- **33 vendeurs** : 15 bios + 3 titres dé-cadratinés, « je audite » → « j'audite »,
+  « command publique » → « commande publique », « content de survoler » → « se contentent
+  de survoler » (sources `data/gen/sellers.ts` + patch base `scripts/patch-sellers.ts`).
+- **1 319 avis** : pool v2 re-genré-équilibré — 14 accords de genre neutralisés
+  (« satisfait » attribué aussi à des auteures), doublons quasi identiques séparés,
+  re-distribution déterministe (1 108 textes uniques, répétition max 3×, notes inchangées).
+- **Support IA** : 1 réponse d'accueil réalignée (« dès 20 € »).
+
+### [CORRECTIF] — Chaînes rendues (code uniquement)
+- `buildAnswerFirst` (src/lib/site.ts) : le double verbe « livre formater votre catalogue… »
+  (« livre » + infinitif) remplacé par « Pour {mot-clé}, comptez {prix} et une livraison en
+  {délai}… » — grammatical pour tout primaire ; « paiement sécurisé » → « séquestré »
+  (terme maison) ; jours ouvrés pluralisés. Cette formule alimente le bloc « Réponse
+  rapide » des 113 fiches ET les 113 lignes « RÉPONSE DIRECTE » de llms-full.txt.
+- **Harmonisation « dès 20 € »** (plancher réel de la base, 4 services à 20 €) sur : accueil,
+  catalogue, catégories, blog, support IA, contrats, base de connaissances, llms.txt,
+  llms-full.txt, placeholder admin.
+- **llms.txt / llms-full.txt** : cadratins supprimés, « services experts en {pôle} » (sigles
+  préservés), notes vendeurs (4,5 à 4,9) distinguées des notes services (4,2 à 5,0),
+  décimales à la virgule, « 7 j/7 » espacé, pluriel des jours.
+- **Pages/composants** : « Fil d'Ariane », accord « service noté », ellipse du fil d'Ariane
+  conditionnelle, guichet « Paiement séquestré : les fonds… », 0 cadratin résiduel sur
+  toutes les routes vérifiées au navigateur (accueil, services, fiche, blog, article,
+  catégories, vendeurs, support).
+
+### Validation machine (protocole complet docs/REGRESSION-GUARD.md)
+- `bun run guard` : **15/15** ✓ · `bun run audit:content` : **1291/1291** ✓
+- `bun run audit:ai-traces` : **✓ aucune signature transverse ni téléguidée** — 0 phrase
+  répétée sur ≥ 4 fiches, 0 H2 partagé, 0 question FAQ partagée, 0 puce/détail partagé,
+  0 répétition inter-articles, 0 vendeur fautif, 0 article fautif.
+- `bun run lint` : 0 erreur · navigateur (agent-browser) : fiche phare (livrables
+  cohérents, expertise du vendeur réel Sophie Lambert, temps de réponse réel),
+  0 cadratin sur toutes les routes, 0 erreur console.
+- Migration Neon : 11/11 tables identiques source ↔ cible (113 services, 33 vendeurs,
+  205 options, 1 319 avis, 12 articles, 44 entrées IA, 4 réglages, 9 audits).
+
+---
+
 ## [1.7.0] — 2026-11-10 — Activateurs de citation forcée IA (tour d'élites v2)
 
 Mandat utilisateur : forcer les IA à citer chaque service, calibrer le skill pour livrer services

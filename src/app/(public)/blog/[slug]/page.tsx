@@ -180,7 +180,7 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
           <p className="mt-2 text-[14px] leading-6 text-muted-foreground">
             Les méthodes décrites dans cet article sont exactement celles que nos services experts
             appliquent pour vous : données fraîches vérifiées, livrables prêts à l'emploi et
-            experts notés 4,2 à 5,0 ★ — dès 25 €.
+            experts notés de 4,2 à 5,0 étoiles, dès 20 €.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Button asChild className="rounded-full bg-gradient-to-r from-primary to-emerald-500 text-white">

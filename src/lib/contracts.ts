@@ -533,7 +533,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettingsDTO = {
     minRating: 4,
     title: "La vitrine qui tourne pour tous les talents",
     subtitle:
-      "Rotation automatique et équitable : chaque service s'affiche ici à tour de rôle — aucune fiche ne monopolise la première place plus de 10 minutes.",
+      "Rotation automatique et équitable : chaque service s'affiche ici à tour de rôle : aucune fiche ne monopolise la première place plus de 10 minutes.",
     badge: "Rotation équitable",
     showCountdown: true,
     autoRefresh: true,
@@ -543,7 +543,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettingsDTO = {
     titleStart: "Les services digitaux B2B qui font",
     titleHighlight: "croître votre business",
     subtitle:
-      "Veille concurrentielle, génération de leads, bases de connaissances IA, SEO local… Des experts vérifiés livrent vos données prêtes à l'emploi en 2-3 jours, dès 25 €. Paiement sécurisé : vous ne payez qu'après validation du livrable.",
+      "Veille concurrentielle, génération de leads, bases de connaissances IA, SEO local… Des experts vérifiés livrent vos données prêtes à l'emploi en 2 à 3 jours, dès 20 €. Paiement séquestré : vous ne payez qu'après validation du livrable.",
     searchPlaceholder: "Ex : surveiller les prix de mes concurrents…",
     popularKeywords: [
       "veille concurrentielle",

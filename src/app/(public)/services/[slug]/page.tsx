@@ -270,7 +270,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Fil d'Ariane */}
-        <nav aria-label="Fil d'ariane" className="flex flex-wrap items-center gap-1.5 text-[13px] text-muted-foreground">
+        <nav aria-label="Fil d'Ariane" className="flex flex-wrap items-center gap-1.5 text-[13px] text-muted-foreground">
           <Link href="/" className="hover:text-primary hover:underline">Accueil</Link>
           <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
           <Link href="/services" className="hover:text-primary hover:underline">Services</Link>
@@ -279,7 +279,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
             {POLE_LABELS[svc.poleSlug]}
           </Link>
           <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
-          <span className="font-medium text-foreground">{svc.title.slice(0, 60)}…</span>
+          <span className="font-medium text-foreground">{svc.title.length > 60 ? `${svc.title.slice(0, 60)}…` : svc.title}</span>
         </nav>
 
         <div className="mt-6 grid gap-10 lg:grid-cols-12">
@@ -384,8 +384,8 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
                 <strong>{svc.title.replace(/^Je vais\s+/i, "")}</strong> : service professionnel
                 livré par <strong>{svc.seller.name}</strong> ({svc.seller.countryLabel}) sur
                 b2bpro.store. Offre de base à <strong>{formatPrice(svc.basePrice)}</strong>, livrée
-                en <strong>{svc.deliveryDays} jour{svc.deliveryDays > 1 ? "s" : ""} ouvré{svc.deliveryDays > 1 ? "s" : ""}</strong>,
-                noté <strong>{svc.rating.toString().replace(".", ",")}/5</strong> par{" "}
+                en <strong>{svc.deliveryDays} jour{svc.deliveryDays > 1 ? "s" : ""} ouvré{svc.deliveryDays > 1 ? "s" : ""}</strong> ;
+                service noté <strong>{svc.rating.toString().replace(".", ",")}/5</strong> par{" "}
                 {svc.reviewsCount.toLocaleString("fr-FR")} clients. Paiement séquestré, ajustements
                 inclus, support IA 7 j/7.
               </p>
@@ -645,7 +645,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
                 <ul className="mt-3 space-y-2.5 text-[13px] leading-5.5 text-muted-foreground">
                   <li className="flex gap-2">
                     <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                    Paiement séquestré — validé avant libération des fonds
+                    Paiement séquestré : les fonds ne sont libérés qu'après votre validation
                   </li>
                   <li className="flex gap-2">
                     <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />

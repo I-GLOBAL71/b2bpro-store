@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const seller = await getSellerBySlug(slug);
   if (!seller) return {};
   return {
-    title: `${seller.name} — ${seller.title}`.slice(0, 68),
+    title: `${seller.name} : ${seller.title}`.slice(0, 68),
     description: `${seller.name}, ${seller.countryLabel} : ${seller.title}. Note ${seller.rating.toString().replace(".", ",")}/5, ${seller.totalSales} livraisons, ${seller.responseTime}. Découvrez ses services sur b2bpro.store.`,
     alternates: { canonical: `/vendeurs/${seller.slug}` },
   };

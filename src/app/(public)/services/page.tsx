@@ -11,7 +11,7 @@ import { POLE_LABELS, POLE_ICONS, POLE_ACCENTS, SITE } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Catalogue complet des services digitaux B2B — dès 25 €",
+  title: "Catalogue complet des services digitaux B2B, dès 20 €",
   description:
     "Explorez tous les services B2B de b2bpro.store : veille concurrentielle, génération de leads, IA & RAG, SEO local, immobilier, e-commerce… Filtrez par pôle, prix et note. Livraison 2-3 jours, paiement sécurisé.",
   alternates: { canonical: "/services" },

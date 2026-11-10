@@ -264,7 +264,7 @@ export function OptionSelector({
         const ok = (await res.json()) as { reference: string; total: number; payerEmail: string | null };
         setPaid({ reference: ok.reference, total: ok.total, payerEmail: ok.payerEmail });
         setStep("done");
-        toast.success(`Paiement confirmé — commande ${ok.reference}.`);
+        toast.success(`Paiement confirmé : commande ${ok.reference}.`);
       },
       onError: () => {
         setPaying(false);
@@ -399,7 +399,7 @@ export function OptionSelector({
                     : "Finaliser votre commande"}
               </DialogTitle>
               <DialogDescription>
-                {serviceTitle} — <span className="font-semibold text-foreground">{fmt(total)}</span> ·
+                {serviceTitle} : <span className="font-semibold text-foreground">{fmt(total)}</span> ·
                 livraison {totalDays} j.{" "}
                 {payPal
                   ? "Paiement par carte ou compte PayPal, fonds sécurisés."
@@ -412,7 +412,7 @@ export function OptionSelector({
               <div className="rounded-xl border border-primary/30 bg-accent/30 p-5 text-center">
                 <p className="text-[15px] font-bold">Paiement confirmé ✓</p>
                 <p className="mt-1 text-[13px] font-semibold text-primary">
-                  Commande {paid.reference} — {fmt(paid.total)} réglés
+                  Commande {paid.reference} : {fmt(paid.total)} réglés
                 </p>
                 <p className="mt-2 text-[13.5px] leading-6 text-muted-foreground">
                   Le paiement a été encaissé via PayPal

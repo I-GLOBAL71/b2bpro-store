@@ -41,7 +41,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <Link href="/" className="flex items-center gap-2.5" aria-label="b2bpro.store — accueil">
+            <Link href="/" className="flex items-center gap-2.5" aria-label="b2bpro.store : accueil">
               <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-300 text-[15px] font-black text-stone-950">
                 B
               </span>
@@ -122,7 +122,7 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-stone-900 pt-6 text-[12.5px] text-stone-500 sm:flex-row">
-          <p>© {new Date().getFullYear()} b2bpro.store — Tous droits réservés.</p>
+          <p>© {new Date().getFullYear()} b2bpro.store : tous droits réservés.</p>
           <p className="flex flex-wrap justify-center gap-x-4 gap-y-1">
             <span>France</span><span>Québec</span><span>Belgique</span><span>Suisse</span>
             <span>Sénégal</span><span>Côte d'Ivoire</span><span>Cameroun</span>

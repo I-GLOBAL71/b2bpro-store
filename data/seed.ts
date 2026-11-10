@@ -147,13 +147,24 @@ async function main() {
       poleCount: poleCounts.get(pole.slug) ?? 1,
       siblingTitles: (poleAllTitles.get(pole.slug) ?? [])
         .filter((t) => t !== displayTitle.replace(/^Je vais\s+/, ""))
-        .slice(0, 2),
+        .slice(0, 6),
       basePrice: svc.basePrice,
       deliveryDays: svc.deliveryDays,
       rating: stats.rating,
       reviewsCount: stats.reviewsCount,
       salesCount: stats.salesCount,
       options: svc.options.map((o) => ({ name: o.name, priceExtra: o.priceExtra })),
+      // [ADDITIF v1.8.0] Contexte vendeur réel : expertise issue des skills du
+      // vendeur, réactivité exacte du badge, pays pour le bloc francophonie.
+      ...(sellerMap.get(sellerSlug)
+        ? {
+            sellerName: sellerMap.get(sellerSlug)!.db.name,
+            sellerSkills: sellerMap.get(sellerSlug)!.db.skills,
+            sellerResponseTime: sellerMap.get(sellerSlug)!.db.responseTime,
+            sellerCountryLabel: sellerMap.get(sellerSlug)!.db.countryLabel,
+            sellerLevel: sellerMap.get(sellerSlug)!.db.level,
+          }
+        : {}),
       currentDescription: optimizeDescription(enriched, keywords, pole, stats),
       currentFeatures: features,
       currentDeliverables: deliverables,

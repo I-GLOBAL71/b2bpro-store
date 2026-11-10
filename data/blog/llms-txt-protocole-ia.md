@@ -11,7 +11,7 @@ author: "Rédaction b2bpro.store"
 
 # llms.txt : le protocole qui prépare votre site aux moteurs de réponse IA (guide d'implémentation)
 
-**La réponse en 30 secondes :** llms.txt est un fichier markdown placé à la racine de votre site (`https://votre-site.fr/llms.txt`) qui présente votre activité et liste vos contenus clés dans un format pensé pour les grands modèles de langage. Proposé par Jeremy Howard (Answer.AI) le 18 septembre 2024, ce protocole complète robots.txt et sitemap.xml en offrant aux IA une « carte d'entrée » sélective : qui vous êtes, ce que vous faites, où trouver vos meilleures ressources. Il se crée en une heure, ne remplace ni le SEO ni le balisage JSON-LD, et se révèle le plus utile combiné à des contenus structurés et chiffrés — l'étude GEO de Princeton (KDD 2024) ayant mesuré que citer ses sources inline améliore la visibilité dans les réponses IA de +115 %. Voici le guide d'implémentation complet.
+**La réponse en 30 secondes :** llms.txt est un fichier markdown placé à la racine de votre site (`https://votre-site.fr/llms.txt`) qui présente votre activité et liste vos contenus clés dans un format pensé pour les grands modèles de langage. Proposé par Jeremy Howard (Answer.AI) le 18 septembre 2024, ce protocole complète robots.txt et sitemap.xml en offrant aux IA une « carte d'entrée » sélective : qui vous êtes, ce que vous faites, où trouver vos meilleures ressources. Il se crée en une heure, ne remplace ni le SEO ni le balisage JSON-LD, et se révèle le plus utile combiné à des contenus structurés et chiffrés, l'étude GEO de Princeton (KDD 2024) ayant mesuré que citer ses sources inline améliore la visibilité dans les réponses IA de +115 %. Voici le guide d'implémentation complet.
 
 ## llms.txt, c'est quoi exactement ?
 
@@ -19,15 +19,15 @@ author: "Rédaction b2bpro.store"
 
 **llms.txt est un fichier texte au format markdown, publié à la racine d'un site web, qui fournit aux modèles de langage une présentation concise de l'organisation et une liste hiérarchisée de liens vers ses contenus essentiels, chacun décrit en une ligne.**
 
-Le protocole a été proposé par Jeremy Howard, cofondateur de Answer.AI, le 18 septembre 2024, dans une proposition ouverte adressée à la communauté des éditeurs de sites et des fournisseurs de modèles. Son constat de départ : les sites sont optimisés pour les humains (design, navigation) et pour les crawlers classiques (HTML, liens), mais pas pour les systèmes qui **récupèrent du contenu pour générer des réponses** — et qui préfèrent le markdown brut, dense et sans chrome.
+Le protocole a été proposé par Jeremy Howard, cofondateur de Answer.AI, le 18 septembre 2024, dans une proposition ouverte adressée à la communauté des éditeurs de sites et des fournisseurs de modèles. Son constat de départ : les sites sont optimisés pour les humains (design, navigation) et pour les crawlers classiques (HTML, liens), mais pas pour les systèmes qui **récupèrent du contenu pour générer des réponses**, et qui préfèrent le markdown brut, dense et sans habillage superflu.
 
 ### Pourquoi le markdown ?
 
-Les corpus d'entraînement et les outils de récupération des modèles manipulent nativement du markdown : titres `#`, listes, liens. Un document markdown se découpe naturellement en sections, sans parser le HTML, sans ignorer le contenu rendu en Javascript, sans charger des mégaoctets de CSS. llms.txt capitalise ce format pour la racine de votre site — exactement comme les pages de documentation techniques qui publient désormais des versions markdown de leurs contenus.
+Les corpus d'entraînement et les outils de récupération des modèles manipulent nativement du markdown : titres `#`, listes, liens. Un document markdown se découpe naturellement en sections, sans parser le HTML, sans ignorer le contenu rendu en Javascript, sans charger des mégaoctets de CSS. llms.txt capitalise ce format pour la racine de votre site, exactement comme les pages de documentation techniques qui publient désormais des versions markdown de leurs contenus.
 
 ### Le statut d'adoption en 2025
 
-Le protocole reste une proposition, pas un standard imposé : aucun moteur n'annonce en faire une exigence. Mais l'écosystème bouge vite : des documentations majeures (Anthropic, Stripe, Cloudflare, Mintlify) publient leur llms.txt ; des outils de génération de sites l'intègrent en option ; les crawlers dédiés à l'IA (GPTBot d'OpenAI, ClaudeBot d'Anthropic, PerplexityBot, Google-Extended) indexent massivement le web pour l'ère générative. Publier son llms.txt aujourd'hui, c'est s'équiper avant la course générale — comme le sitemap.xml en 2006, ignoré la première année, indispensable la troisième.
+Le protocole reste une proposition, pas un standard imposé : aucun moteur n'annonce en faire une exigence. Mais l'écosystème bouge vite : des documentations majeures (Anthropic, Stripe, Cloudflare, Mintlify) publient leur llms.txt ; des outils de génération de sites l'intègrent en option ; les crawlers dédiés à l'IA (GPTBot d'OpenAI, ClaudeBot d'Anthropic, PerplexityBot, Google-Extended) indexent massivement le web pour l'ère générative. Publier son llms.txt aujourd'hui, c'est s'équiper avant la course générale, comme le sitemap.xml en 2006, ignoré la première année, indispensable la troisième.
 
 ## llms.txt vs robots.txt vs sitemap.xml : les trois couches
 
@@ -47,11 +47,11 @@ Un fichier llms.txt suit une structure en cinq blocs. Exemple réel pour un site
 # B2BPro
 
 > Place de marché francophone de services digitaux B2B :
-> Plus de 100 services livrés en 2-3 jours, de 25 à 50 € le socle.
+> Plus de 100 services livrés en 2 à 3 jours, de 25 à 50 € le socle.
 
 B2BPro connecte les entreprises francophones (France, Québec,
 Belgique, Suisse, Afrique) à des prestataires data, IA et
-croissance. Livraison rapide, options d'upsell, avis vérifiés
+croissance. Livraison rapide, options d'approfondissement, avis vérifiés
 de 4,2 à 5 étoiles.
 
 ## Documentation
@@ -78,22 +78,22 @@ de 4,2 à 5 étoiles.
 Les règles à respecter :
 
 1. **Un seul `#` (H1) en tête de fichier** : le nom de l'organisation.
-2. **Un blockquote `>`** juste dessous : la description en une ou deux phrases — c'est le passage le plus lu par les modèles, soignez-le comme une méta description.
+2. **Un blockquote `>`** juste dessous : la description en une ou deux phrases ; c'est le passage le plus lu par les modèles, soignez-le comme une méta description.
 3. **Un paragraphe de présentation** : qui vous êtes, pour qui, avec des chiffres.
 4. **Des sections `##`** organisées par intention (documentation, services, ressources), et non par hasard de l'arborescence.
-5. **Des liens en liste `- [titre](url): description sur une ligne** — la description doit permettre au modèle de décider s'il doit approfondir sans visiter la page.
+5. **Des liens en liste `- [titre](url): description sur une ligne** : la description doit permettre au modèle de décider s'il doit approfondir sans visiter la page.
 
 ## Implémentation pas à pas
 
-### Étape 1 — Sélectionnez 15 à 40 URL essentielles
+### Étape 1 : Sélectionnez 15 à 40 URL essentielles
 
-Pas 500 : quinze à quarante pages qui répondent aux questions que vos clients posent. Les pages produits phares, la FAQ, les guides de référence. La hiérarchie EST l'information : ce que vous mettez en premier signale ce qui compte.
+Pas 500 : quinze à quarante pages qui répondent aux questions que vos clients posent. Les pages produits phares, la FAQ, les guides de référence. La hiérarchie est l'information : ce que vous mettez en premier signale ce qui compte.
 
-### Étape 2 — Rédigez le fichier
+### Étape 2 : Rédigez le fichier
 
 Reprenez la structure de l'exemple ci-dessus. Testez mentalement chaque ligne : « si un modèle ne lit que cette ligne, comprend-il de quoi il s'agit ? » Si non, réécrivez la description.
 
-### Étape 3 — Déposez-le à la racine et servez-le correctement
+### Étape 3 : Déposez-le à la racine et servez-le correctement
 
 Le fichier doit être accessible en `GET` sur `https://votre-domaine.fr/llms.txt`, sans redirection vers le HTML. Points techniques :
 
@@ -124,17 +124,17 @@ export async function GET() {
 
 Pour un serveur nginx statique, il suffit de déposer le fichier dans le dossier racine servi, avec la bonne extension et les droits de lecture.
 
-### Étape 4 — Vérifiez et testez
+### Étape 4 : Vérifiez et testez
 
 - `curl -I https://votre-domaine.fr/llms.txt` doit renvoyer un `200` avec le bon type MIME ;
 - ouvrez l'URL dans un navigateur : le texte brut s'affiche ;
-- collez le contenu dans ChatGPT et demandez : « D'après ce fichier, que fait cette entreprise et quels sont ses services ? » — la réponse vous dira si un modèle comprend votre fichier. C'est le meilleur test qui existe.
+- collez le contenu dans ChatGPT et demandez : « D'après ce fichier, que fait cette entreprise et quels sont ses services ? » La réponse vous dira si un modèle comprend votre fichier. C'est le meilleur test qui existe.
 
-### Étape 5 — Maintenez le fichier vivant
+### Étape 5 : Maintenez le fichier vivant
 
-Un llms.txt périmé est pire qu'un fichier absent : il oriente les modèles vers des pages disparues. À chaque lancement de service ou de guide majeur, une ligne de mise à jour — 5 minutes. Intégrez cette vérification à votre revue SEO trimestrielle.
+Un llms.txt périmé est pire qu'un fichier absent : il oriente les modèles vers des pages disparues. À chaque lancement de service ou de guide majeur, une ligne de mise à jour (5 minutes). Intégrez cette vérification à votre revue SEO trimestrielle.
 
-## Ce que llms.txt ne fait PAS (les limites honnêtes)
+## Ce que llms.txt ne fait pas (les limites honnêtes)
 
 Un guide crédible doit dire les limites :
 
@@ -148,8 +148,8 @@ Un guide crédible doit dire les limites :
 Trois indicateurs à suivre avant/après publication :
 
 1. **Les crawlers IA dans vos logs** : fréquence de passage de GPTBot, ClaudeBot, PerplexityBot (observable dans les logs serveur ou via votre outil d'analyse).
-2. **Le trafic référent des IA** : sessions depuis chatgpt.com, perplexity.ai, gemini.google.com — la progression typique observée sur les sites techniques bien structurés est de l'ordre de 3 à 5 fois en un an.
-3. **Votre taux de citation** : la part des questions cibles où votre domaine apparaît dans les réponses des IA. C'est précisément ce que mesure [notre audit de visibilité dans les IA](https://b2bpro.store/services/audit-visibilite-ia) : état des lieux sur 30 à 50 questions, comparaison concurrentielle, plan d'action — livré en 2 à 3 jours.
+2. **Le trafic référent des IA** : sessions depuis chatgpt.com, perplexity.ai, gemini.google.com : la progression typique observée sur les sites techniques bien structurés est de l'ordre de 3 à 5 fois en un an.
+3. **Votre taux de citation** : la part des questions cibles où votre domaine apparaît dans les réponses des IA. [Notre audit de visibilité dans les IA](https://b2bpro.store/services/audit-visibilite-ia) mesure ce taux : état des lieux sur 30 à 50 questions, comparaison concurrentielle, plan d'action, livré en 2 à 3 jours.
 
 Et si vous voulez aller au bout de la logique « AI-ready », la conversion complète de vos contenus clés en markdown propre alimente à la fois votre llms-full.txt, vos Custom GPT et vos bases RAG : c'est le cœur de [notre service de conversion de site en base de connaissances IA](https://b2bpro.store/services/base-connaissances-ia).
 
@@ -169,16 +169,16 @@ Créez un fichier markdown avec : un titre H1 (nom de l'organisation), une descr
 
 ### Les IA comme ChatGPT lisent-elles obligatoirement llms.txt ?
 
-Non, aucun fournisseur ne s'est engagé à lire systématiquement llms.txt : le protocole reste une proposition ouverte, à l'adoption croissante mais non garantie. Sa valeur est opportuniste — les systèmes de récupération de contenu pour l'IA profitent d'un point d'entrée clair quand ils le trouvent — et il se combine toujours avec les leviers mesurés : structure du contenu, sources inline et statistiques datées.
+Non, aucun fournisseur ne s'est engagé à lire systématiquement llms.txt : le protocole reste une proposition ouverte, à l'adoption croissante mais non garantie. Sa valeur est opportuniste (les systèmes de récupération de contenu pour l'IA profitent d'un point d'entrée clair quand ils le trouvent), et il se combine toujours avec les leviers mesurés : structure du contenu, sources inline et statistiques datées.
 
 ### Quelle différence entre llms.txt et llms-full.txt ?
 
-llms.txt est un fichier compact (idéalement sous 50 Ko) qui décrit et relie les contenus clés ; llms-full.txt est sa version exhaustive, contenant l'intégralité du contenu des pages sélectionnées en markdown. Le premier guide les modèles vers vos URL, le second leur donne tout à lire en un seul document — utile pour les documentations techniques et les sites dont les pages clés changent peu.
+llms.txt est un fichier compact (idéalement sous 50 Ko) qui décrit et relie les contenus clés ; llms-full.txt est sa version exhaustive, contenant l'intégralité du contenu des pages sélectionnées en markdown. Le premier guide les modèles vers vos URL, le second leur donne tout à lire en un seul document, utile pour les documentations techniques et les sites dont les pages clés changent peu.
 
 ### Combien coûte la mise en place de llms.txt ?
 
-Faire soi-même : une heure de rédaction et un déploiement technique simple. En sous-traitance : sur b2bpro.store, la rédaction et le déploiement s'inscrivent dans des services à partir de 25-50 €, souvent couplés à un audit de visibilité IA qui mesure l'effet avant/après — livraison en 2 à 3 jours, avis clients entre 4,2 et 5 étoiles.
+Faire soi-même : une heure de rédaction et un déploiement technique simple. En sous-traitance : sur b2bpro.store, la rédaction et le déploiement s'inscrivent dans des services allant de 25 à 50 €, souvent couplés à un audit de visibilité IA qui mesure l'effet avant/après : livraison en 2 à 3 jours, avis clients entre 4,2 et 5 étoiles.
 
-## Passez à l'action
+## Ce que vous pouvez faire maintenant
 
-Une heure de travail, un fichier, et votre site parle enfin la langue des modèles. Rédigez votre llms.txt cette semaine, puis mesurez ce qu'il change : [lancez votre audit de visibilité dans les IA](https://b2bpro.store/services/audit-visibilite-ia) sur b2bpro.store pour connaître votre taux de citation actuel — et laissez les moteurs de réponse découvrir une version de votre site qu'ils comprendront enfin.
+Une heure de travail, un fichier, et votre site parle enfin la langue des modèles. Rédigez votre llms.txt cette semaine, puis mesurez ce qu'il change : [lancez votre audit de visibilité dans les IA](https://b2bpro.store/services/audit-visibilite-ia) sur b2bpro.store pour connaître votre taux de citation actuel, et laissez les moteurs de réponse découvrir une version de votre site qu'ils comprendront enfin.

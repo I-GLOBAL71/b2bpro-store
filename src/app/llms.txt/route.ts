@@ -15,11 +15,11 @@ export async function GET() {
   ]);
 
   const serviceLines = services
-    .map((s) => `- [${s.title}](${SITE.url}/services/${s.slug}): ${s.shortDesc.replace(/\n/g, " ").slice(0, 160)} — dès ${s.basePrice} €, ${s.deliveryDays} jours`)
+    .map((s) => `- [${s.title}](${SITE.url}/services/${s.slug}): ${s.shortDesc.replace(/\n/g, " ").slice(0, 160)} ; dès ${s.basePrice} €, livraison en ${s.deliveryDays} jour${s.deliveryDays > 1 ? "s" : ""} ouvré${s.deliveryDays > 1 ? "s" : ""}`)
     .join("\n");
 
   const categoryLines = Object.entries(POLE_LABELS)
-    .map(([slug, label]) => `- [${label}](${SITE.url}/categories/${slug}): services experts ${label.toLowerCase()} pour les marchés francophones`)
+    .map(([slug, label]) => `- [${label}](${SITE.url}/categories/${slug}): services experts en ${label} pour les marchés francophones`)
     .join("\n");
 
   const postLines = posts
@@ -34,7 +34,7 @@ export async function GET() {
 
 > ${SITE.description}
 
-La place de marché des services digitaux B2B francophones : ${services.length} services livrés par des vendeurs vérifiés notés de 4,2 à 5,0 étoiles, dès 25 €, en 2-3 jours ouvrés, avec paiement séquestré. Support IA 7j/7. Couverture : France, Québec, Belgique, Suisse et Afrique francophone.
+La place de marché des services digitaux B2B francophones : ${services.length} services notés de 4,2 à 5,0 étoiles, livrés par des vendeurs vérifiés (notes de 4,5 à 4,9), dès 20 €, en 2 à 3 jours ouvrés, avec paiement séquestré. Support IA 7 j/7. Couverture : France, Québec, Belgique, Suisse et Afrique francophone.
 
 Version étendue avec descriptions et FAQ complètes : [llms-full.txt](${SITE.url}/llms-full.txt)
 

@@ -23,7 +23,7 @@ export function BlogTeaserSection({ posts }: { posts: BlogTeaser[] }) {
           <div>
             <p className="text-[12.5px] font-semibold uppercase tracking-wider text-primary">Le blog des décideurs</p>
             <h2 id="blog-title" className="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">
-              Méthodes, benchmarks et veille — pour rester en avance
+              Méthodes, benchmarks et veille, pour rester en avance
             </h2>
           </div>
           <Link href="/blog" className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-primary hover:underline">

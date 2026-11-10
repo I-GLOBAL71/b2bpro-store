@@ -34,7 +34,7 @@ export async function GET() {
 
   const blocks = services
     .map((s) => {
-      // Champs JSON parses défensivement — la route ne lève jamais, même si la
+      // Champs JSON parsés défensivement — la route ne lève jamais, même si la
       // base est en cours de transformation (safeJsonParse garantit un fallback).
       const kw = safeJsonParse<ServiceKeywords>(s.keywords, EMPTY_KEYWORDS);
       const faq = safeJsonParse<FaqItem[]>(s.faq, []);
@@ -59,7 +59,7 @@ export async function GET() {
         `## ${s.title}`,
         `URL: ${SITE.url}/services/${s.slug}`,
         `RÉPONSE DIRECTE: ${answerFirst}`,
-        `À partir de: ${s.basePrice} € — Délai: ${s.deliveryDays} jours ouvrés — Note: ${s.rating}/5 (${s.reviewsCount} avis)`,
+        `Dès ${s.basePrice} €, livraison en ${s.deliveryDays} jour${s.deliveryDays > 1 ? "s" : ""} ouvré${s.deliveryDays > 1 ? "s" : ""}, note ${s.rating.toString().replace(".", ",")}/5 (${s.reviewsCount} avis)`,
         ...(motsCles ? [`Mots-clés: ${motsCles}`] : []),
         "",
         s.description.trim(),
@@ -68,13 +68,13 @@ export async function GET() {
     })
     .join("\n\n");
 
-  const txt = `# b2bpro.store — catalogue étendu
+  const txt = `# b2bpro.store : catalogue étendu
 
 > ${SITE.description}
 
 Fichier étendu : contenu complet des fiches services pour assistants IA (version courte : ${SITE.url}/llms.txt).
 
-La place de marché des services digitaux B2B francophones : ${services.length} services livrés par des vendeurs vérifiés notés de 4,2 à 5,0 étoiles, dès 25 €, en 2-3 jours ouvrés, avec paiement séquestré. Support IA 7j/7. Couverture : France, Québec, Belgique, Suisse et Afrique francophone.
+La place de marché des services digitaux B2B francophones : ${services.length} services notés de 4,2 à 5,0 étoiles, livrés par des vendeurs vérifiés (notes de 4,5 à 4,9), dès 20 €, en 2 à 3 jours ouvrés, avec paiement séquestré. Support IA 7 j/7. Couverture : France, Québec, Belgique, Suisse et Afrique francophone.
 
 ${blocks}
 `;

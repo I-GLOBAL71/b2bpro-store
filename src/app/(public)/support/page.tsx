@@ -5,7 +5,7 @@ import { SupportChat } from "@/components/site/support-chat";
 import { getSiteSettings } from "@/lib/settings";
 
 export const metadata: Metadata = {
-  title: "Support IA 7j/7 — conseils gratuits sur tous nos services",
+  title: "Support IA 7 j/7 : conseils gratuits sur tous nos services",
   description:
     "Notre support IA répond instantanément à toutes vos questions sur b2bpro.store : choix de service, tarifs, délais, garanties. Gratuit, en français, 7 j/7. Un email suffit pour démarrer.",
   alternates: { canonical: "/support" },
@@ -26,7 +26,7 @@ export default async function SupportPage() {
         </h1>
         <p className="mt-4 text-[14.5px] leading-7 text-muted-foreground">
           Il connaît tous les services de b2bpro.store par cœur : livrables, options, tarifs,
-          délais et garanties. Posez votre question en français, obtenez la réponse à la seconde —
+          délais et garanties. Posez votre question en français, obtenez la réponse à la seconde :
           et la recommandation du service exact dont votre business a besoin.
         </p>
       </header>
@@ -43,7 +43,7 @@ export default async function SupportPage() {
               <h2 className="text-xl font-extrabold">Support IA momentanément indisponible</h2>
               <p className="mt-2 text-[14px] leading-6 text-muted-foreground">
                 Notre conseiller IA fait une courte pause maintenance. L&apos;équipe humaine reste
-                joignable — laissez-nous un peu de temps, nous revenons très vite.
+                joignable : laissez-nous un peu de temps, nous revenons très vite.
               </p>
             </div>
             <Link
@@ -104,7 +104,7 @@ export default async function SupportPage() {
             répond à toutes les questions sur la place de marché et l'ensemble de ses services B2B :
             choix de service adapté à un besoin précis, tarifs et options, délais de livraison
             (2-3 jours ouvrés), garanties (paiement séquestré, ajustements inclus, remboursement
-            intégral). L'accès nécessite uniquement un email — utilisé pour le suivi de la
+            intégral). L'accès nécessite uniquement un email, utilisé pour le suivi de la
             conversation et la conformité RGPD. L'assistant s'appuie sur une base de connaissances
             exhaustive couvrant l'intégralité du catalogue, et un conseiller humain prend le
             relais sur simple demande.

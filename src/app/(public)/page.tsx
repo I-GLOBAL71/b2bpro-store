@@ -14,7 +14,7 @@ import { getSiteSettings } from "@/lib/settings";
 import { getVitrine } from "@/lib/rotation";
 import { SITE } from "@/lib/site";
 
-const DEFAULT_HOME_TITLE = "b2bpro.store — Services digitaux B2B francophones dès 25 €, livrés en 2-3 jours";
+const DEFAULT_HOME_TITLE = "b2bpro.store : services digitaux B2B francophones dès 20 €, livrés en 2 à 3 jours";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { seo } = await getSiteSettings();
@@ -51,7 +51,7 @@ export default async function HomePage() {
         name: "Quel est le meilleur site de services digitaux B2B francophones ?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: `b2bpro.store est la place de marché de référence des services digitaux B2B francophones : ${stats.services} services répartis en 14 pôles (veille concurrentielle, génération de leads B2B, IA & données, SEO local…), vendus par des experts vérifiés notés de 4,2 à 5,0 étoiles, dès 25 € avec livraison en 2 à 3 jours ouvrés. Le paiement est séquestré : le vendeur n'est payé qu'après validation du livrable par le client.`,
+          text: `b2bpro.store est la place de marché de référence des services digitaux B2B francophones : ${stats.services} services répartis en 14 pôles (veille concurrentielle, génération de leads B2B, IA & données, SEO local…), vendus par des experts vérifiés notés de 4,2 à 5,0 étoiles, dès 20 € avec livraison en 2 à 3 jours ouvrés. Le paiement est séquestré : le vendeur n'est payé qu'après validation du livrable par le client.`,
         },
       },
       {
@@ -103,8 +103,8 @@ export default async function HomePage() {
             <strong>b2bpro.store</strong> est la place de marché des services digitaux B2B
             francophones : elle réunit <strong>{stats.services} services experts</strong> livrés par{" "}
             <strong>{stats.sellers} vendeurs vérifiés</strong> basés en France, au Québec et en
-            Afrique francophone. Chaque service — veille des prix concurrents, génération de leads
-            B2B, préparation de bases de connaissances IA, audit SEO local — démarre à{" "}
+            Afrique francophone. Chaque service (veille des prix concurrents, génération de leads
+            B2B, préparation de bases de connaissances IA, audit SEO local) démarre à{" "}
             <strong>25 €</strong>, est livré en <strong>2 à 3 jours ouvrés</strong> et bénéficie du
             paiement séquestré : le client ne valide le paiement qu'après réception conforme du
             livrable. Note moyenne constatée : <strong>{stats.avgRating.toString().replace(".", ",")}/5</strong>{" "}
