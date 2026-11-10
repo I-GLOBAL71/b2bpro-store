@@ -7,6 +7,31 @@
 
 ---
 
+## [1.6.4] — 2026-11-10 — Ordre d'inversion corrigé : la cible de redirection n'accepte pas un domaine redirigé
+
+Retour opérateur (capture d'écran) : dans l'Edit de `www.b2bpro.store`, la cible
+`b2bpro.store` **n'apparaît pas** dans la liste des redirections (seul
+`b2bpro-store.vercel.app` est proposé). Cause : **Vercel interdit de rediriger vers un
+domaine qui est lui-même une redirection** — tant que l'apex est en ↪ 308 www, il est
+exclu de la liste des cibles. La procédure v1.6.3 supposait qu'on pouvait directement
+choisir l'apex depuis l'Edit de www : ordre incorrect.
+
+### [CORRECTIF] Procédure d'inversion réordonnée (runbook §2.3 + §9)
+1. **d'abord** l'apex `b2bpro.store` (ligne ↪ 308) → Edit → radio **« Connect to an
+   environment »** → **Production** → Save (état intermédiaire : apex ET www servent
+   tous deux le site — normal) ;
+2. **puis** `www.b2bpro.store` → Edit → **« Redirect to Another Domain »** →
+   `b2bpro.store` **apparaît alors dans la liste** → code **308 Permanent Redirect** →
+   Save ;
+3. rappel : ne jamais *Remove* les lignes de domaine (DNS inchangé, reste Valid).
+- §9 FAQ : nouvelle ligne « la cible `b2bpro.store` n'apparaît pas dans la liste des
+  redirections » + ligne GSC enrichie de l'ordre imposé.
+
+Validation : diagnostic confirmé par la capture (liste limitée à
+`b2bpro-store.vercel.app` tant que l'apex redirige) · lint 0.
+
+---
+
 ## [1.6.3] — 2026-11-10 — Domaine branché : sens de redirection inversé détecté et documenté
 
 Constat opérateur : domaine connecté la veille (Vercel affiche les 3 domaines en **Valid

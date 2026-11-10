@@ -178,13 +178,27 @@ Catalogue complet de référence : `.env.example` (racine du repo).
 > GSC `https://b2bpro.store`) pointe vers une URL **qui redirige** : la
 > **vérification GSC par fichier HTML échoue** (Google reçoit une 308 au lieu du
 > fichier — il ne suit pas les redirections pour cette méthode) alors même que
-> Vercel affiche « Valid Configuration ». **Inverser** (2 minutes, DNS inchangé) :
-> 1. ligne `www.b2bpro.store` → **Edit** → champ *Redirect To* → choisir
->    `b2bpro.store` ;
-> 2. ligne `b2bpro.store` → **Edit** → **vider** son *Redirect To* (elle devient
->    la cible Production).
+> Vercel affiche « Valid Configuration ».
+>
+> **Inverser — ordre imposé par Vercel** (⚠️ *une redirection ne peut pas cibler
+> un domaine qui est lui-même une redirection* : tant que l'apex est en « Redirect
+> to Another Domain », il **n'apparaît pas** dans la liste des cibles possibles —
+> l'Edit de `www` ne propose alors que `b2bpro-store.vercel.app`. Il faut donc
+> d'abord convertir l'apex en Production, puis rediriger www vers elle) :
+> 1. **d'abord** ligne `b2bpro.store` (celle marquée ↪ 308) → **Edit** →
+>    sélectionner **« Connect to an environment »** (radio) → environnement
+>    **Production** → **Save** — l'apex devient la cible qui sert le site (à ce
+>    stade, apex ET www servent tous deux le site : état intermédiaire normal) ;
+> 2. **puis** ligne `www.b2bpro.store` → **Edit** → radio **« Redirect to Another
+>    Domain »** → champ de recherche → **`b2bpro.store` apparaît maintenant dans
+>    la liste** → le sélectionner → code **308 Permanent Redirect** → **Save**.
+> 3. **ne jamais supprimer** les lignes de domaine (bouton *Remove*) — uniquement
+>    les éditer : le DNS reste inchangé et Valid.
+>
 > Contrôle immédiat : `curl -I https://b2bpro.store/google…html` doit répondre
 > **HTTP 200 direct** (plus de 308) — puis re-cliquer « Vérifier » dans GSC.
+> État final attendu sur la page Domains : `b2bpro.store ↑ Production` et
+> `www.b2bpro.store ↪ 308 b2bpro.store`.
 
 > **Premier déploiement sans variables : comportement attendu** — le build
 > **réussit**, mais toutes les pages dynamiques affichent la **page d'erreur**
@@ -445,7 +459,8 @@ Réflexe : **snapshot local avant toute manipulation risquée** (charte §1).
 | Symptôme | Cause probable | Remède |
 |---|---|---|
 | GSC : *« Votre fichier HTML est introuvable / vérification échouée »* | (a) domaine `b2bpro.store` non encore branché (NXDOMAIN — Google ne peut pas interroger l'URL) ; (b) fichier pas encore déployé sur Vercel | Vérifier `https://b2bpro-store.vercel.app/google…html` → 200 ; brancher le domaine (§2.3) ; patienter la propagation DNS (jusqu'à 48 h) puis re-cliquer « Vérifier » ; en attendant, vérifier la propriété `https://b2bpro-store.vercel.app` avec le même fichier |
-| Domaine en **Valid Configuration** mais GSC reste « comme si rien n'était connecté » / vérification en échec persistant | **Sens de redirection inversé** : `https://b2bpro.store/*` renvoie **308 vers `www.b2bpro.store`** (www = cible Production, apex redirigé) — Google ne suit pas les redirections pour la vérification par fichier HTML, et canonicals/sitemap (apex) divergent des URLs servies (www) | Inverser dans Vercel → Domains → *Edit* (`www` → *Redirect To* `b2bpro.store` ; vider le *Redirect To* de l'apex), cf. §2.3 — DNS inchangé. Contrôle : `curl -I https://b2bpro.store/google…html` → **200 direct**, puis re-cliquer « Vérifier » |
+| Domaine en **Valid Configuration** mais GSC reste « comme si rien n'était connecté » / vérification en échec persistant | **Sens de redirection inversé** : `https://b2bpro.store/*` renvoie **308 vers `www.b2bpro.store`** (www = cible Production, apex redirigé) — Google ne suit pas les redirections pour la vérification par fichier HTML, et canonicals/sitemap (apex) divergent des URLs servies (www) | Inverser dans Vercel → Domains → *Edit* — **ordre imposé** : (1) apex → radio *Connect to an environment* → Production → Save ; (2) www → *Redirect to Another Domain* → `b2bpro.store` (apparaît une fois l'apex non-redirigé) → 308 → Save, cf. §2.3 — DNS inchangé. Contrôle : `curl -I https://b2bpro.store/google…html` → **200 direct**, puis re-cliquer « Vérifier » |
+| Dans l'Edit d'un domaine, la cible `b2bpro.store` **n'apparaît pas** dans la liste des redirections | Vercel interdit de rediriger vers un domaine **qui est lui-même une redirection** — tant que l'apex est en ↪, il est exclu de la liste (seul `b2bpro-store.vercel.app` est proposé) | Convertir **d'abord** l'apex en *Connect to an environment* → Production (§2.3, étape 1), **puis** éditer www : `b2bpro.store` apparaît alors dans la liste |
 | *« Settings → Domains » introuvable dans Vercel* | Interface Vercel 2025 : **Domains** est une entrée **directe de la barre latérale du projet** (juste sous *Environment Variables*) — l'onglet *Settings* n'existe plus | Ouvrir **Domains** depuis la barre latérale du projet puis suivre §2.3 (bouton *Add*) |
 | Alerte rouge « **Keep This Value Private** » à la création d'une variable `NEXT_PUBLIC_*` | Variable enregistrée en type **Secret** : le préfixe `NEXT_PUBLIC_` expose la valeur au navigateur — Vercel l'avertit (ce n'est pas un refus d'enregistrer) | Cliquer **« Change to Config »** (une URL publique n'est pas un secret), ou renommer en `SITE_URL` sans préfixe (type Secret), ou passer — la variable est optionnelle (défaut codé) |
 | **Toutes les pages affichent la page d'erreur** en production (« An error occurred in the Server Components render ») | `DATABASE_URL` absente ou invalide sur Vercel — le build réussit, mais la base est injoignable à l'exécution | Créer le projet Neon (§1), migrer les données (`db:migrate:neon`), définir `DATABASE_URL` (§3) puis **Redeploy** |
