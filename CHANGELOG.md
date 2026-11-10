@@ -7,6 +7,34 @@
 
 ---
 
+## [1.6.3] — 2026-11-10 — Domaine branché : sens de redirection inversé détecté et documenté
+
+Constat opérateur : domaine connecté la veille (Vercel affiche les 3 domaines en **Valid
+Configuration**) mais GSC « se comporte comme si rien n'était connecté ». Diagnostic live :
+`https://b2bpro.store/*` renvoie **308 → `https://www.b2bpro.store/*`** — le sens de
+redirection est **inversé** (www = cible Production, apex redirigé), alors que tout
+l'échafaudage SEO (canonicals, sitemap, llms.txt, JSON-LD, propriété GSC) est **apex**.
+
+### [CORRECTIF] Documentation du piège « apex ↪ 308 www »
+- Runbook §2.3 : nouvelle étape 5 « vérifier le sens de la redirection » + encadré dédié —
+  Google ne suit pas les redirections pour la vérification GSC par fichier HTML : un apex
+  qui redirige fait échouer la vérification malgré un domaine « Valid Configuration ».
+  Procédure d'inversion (www → *Redirect To* apex ; vider le *Redirect To* de l'apex,
+  DNS inchangé) + contrôle `curl -I …/google…html` → **200 direct**.
+- Runbook §9 FAQ : ligne « Valid Configuration mais GSC comme si rien n'était connecté ».
+- Runbook §2.3 : l'IP A de l'apex documentée comme « celle affichée par Vercel »
+  (76.76.21.21 ou 216.198.79.1 — la configuration réelle utilise 216.198.79.1, valide).
+- `scripts/gen-gsc-urls.ts` + `docs/GSC-SOUMISSION-SERVICES.md` régénéré (223 lignes) :
+  le prérequis « 200 direct sur l'apex, sans redirection » est explicite en §1.
+
+Note : l'inversion se fait dans l'UI Vercel par l'opérateur (aucun changement de code ni de
+DNS requis — les deux enregistrements restent Valid).
+
+Validation : diagnostic live curl (308 apex→www confirmé, www sert le site en 200,
+fichier GSC 200 sur www) · lint 0.
+
+---
+
 ## [1.6.2] — 2026-11-10 — Vérification GSC par fichier HTML + soumission individuelle des 113 fiches
 
 Mandat utilisateur : concentrer le effort sur la soumission robuste et correcte du site à

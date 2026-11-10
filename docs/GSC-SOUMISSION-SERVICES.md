@@ -25,7 +25,17 @@ cliquer **« Vérifier »**.
 > branché sur Vercel** (barre latérale → Domains + DNS registrar, runbook §2.3) :
 > Google doit pouvoir interroger `https://b2bpro.store/google…html`. En attendant,
 > le même fichier vérifie la propriété `https://b2bpro-store.vercel.app` à tout moment.
-> Alternative sans fichier : la balise META (`GOOGLE_SITE_VERIFICATION`, runbook §6.3).
+> Alternative sans fichier : la balise META (`GOOGLE_SITE_VERIFICATION`, runbook §6.2).
+>
+> ⚠️ **Prérequis absolu — 200 direct sur l'apex, sans redirection** : si
+> `https://b2bpro.store/*` renvoie une **redirection 308 vers `www.b2bpro.store`**
+> (sens inversé dans Vercel : www = cible Production, apex ↪ www), la vérification
+> **échoue** : Google ne suit pas les redirections pour la méthode fichier HTML.
+> Symptôme typique : domaine en « Valid Configuration » dans Vercel mais GSC
+> « se comporte comme si rien n'était connecté ». **Inverser** dans Vercel →
+> Domains → *Edit* (www → *Redirect To* `b2bpro.store` ; vider le *Redirect To*
+> de l'apex — runbook §2.3), puis re-cliquer « Vérifier ».
+> Contrôle : `curl -I https://b2bpro.store/googlec5dc6c64480779bb.html` → **200 direct**.
 
 ## 2. Soumission groupée — le sitemap (les 113 fiches d'un coup)
 

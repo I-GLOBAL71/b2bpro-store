@@ -158,13 +158,33 @@ Catalogue complet de référence : `.env.example` (racine du repo).
    2. ajouter **aussi** `www.b2bpro.store` → Vercel propose de le faire
       **redirect to `b2bpro.store`** → accepter (**l'apex est la cible finale**) ;
    3. chez le registrar du domaine, créer les deux enregistrements indiqués :
-      - apex : **`A @ 76.76.21.21`** ;
+      - apex : **`A @` l'IP affichée par Vercel** (ex. `76.76.21.21` ou
+        `216.198.79.1` selon la période — l'IP de Vercel fait foi) ;
       - www : **`CNAME www → cname.vercel-dns.com`** (simple redirection vers
         l'apex) ;
-   4. attendre la propagation (quelques minutes à 48 h).
+   4. attendre la propagation (quelques minutes à 48 h) ;
+   5. **vérifier le sens de la redirection** : sur la page Domains, la flèche « ↪ »
+      doit être sur la ligne **`www.b2bpro.store`** (www redirige vers l'apex) et
+      la mention **« ↑ Production »** sur la ligne **`b2bpro.store`** — l'apex
+      doit servir le site en **200 direct**.
    ✓ Vous devez voir `b2bpro.store` et `www.b2bpro.store` en **Valid
    Configuration**, et le site répondre en HTTPS sur `https://b2bpro.store`
    (`https://b2bpro-store.vercel.app` reste valable en parallèle).
+
+> ⚠️ **Sens de redirection inversé (apex ↪ 308 www) — piège GSC** : si la page
+> Domains affiche `b2bpro.store ↪ 308 www.b2bpro.store` et `www ↑ Production`
+> (c'est-à-dire **www servi comme cible finale** et l'apex redirigé), tout
+> l'échafaudage SEO du site (canonicals, sitemap, llms.txt, JSON-LD, propriété
+> GSC `https://b2bpro.store`) pointe vers une URL **qui redirige** : la
+> **vérification GSC par fichier HTML échoue** (Google reçoit une 308 au lieu du
+> fichier — il ne suit pas les redirections pour cette méthode) alors même que
+> Vercel affiche « Valid Configuration ». **Inverser** (2 minutes, DNS inchangé) :
+> 1. ligne `www.b2bpro.store` → **Edit** → champ *Redirect To* → choisir
+>    `b2bpro.store` ;
+> 2. ligne `b2bpro.store` → **Edit** → **vider** son *Redirect To* (elle devient
+>    la cible Production).
+> Contrôle immédiat : `curl -I https://b2bpro.store/google…html` doit répondre
+> **HTTP 200 direct** (plus de 308) — puis re-cliquer « Vérifier » dans GSC.
 
 > **Premier déploiement sans variables : comportement attendu** — le build
 > **réussit**, mais toutes les pages dynamiques affichent la **page d'erreur**
@@ -425,6 +445,7 @@ Réflexe : **snapshot local avant toute manipulation risquée** (charte §1).
 | Symptôme | Cause probable | Remède |
 |---|---|---|
 | GSC : *« Votre fichier HTML est introuvable / vérification échouée »* | (a) domaine `b2bpro.store` non encore branché (NXDOMAIN — Google ne peut pas interroger l'URL) ; (b) fichier pas encore déployé sur Vercel | Vérifier `https://b2bpro-store.vercel.app/google…html` → 200 ; brancher le domaine (§2.3) ; patienter la propagation DNS (jusqu'à 48 h) puis re-cliquer « Vérifier » ; en attendant, vérifier la propriété `https://b2bpro-store.vercel.app` avec le même fichier |
+| Domaine en **Valid Configuration** mais GSC reste « comme si rien n'était connecté » / vérification en échec persistant | **Sens de redirection inversé** : `https://b2bpro.store/*` renvoie **308 vers `www.b2bpro.store`** (www = cible Production, apex redirigé) — Google ne suit pas les redirections pour la vérification par fichier HTML, et canonicals/sitemap (apex) divergent des URLs servies (www) | Inverser dans Vercel → Domains → *Edit* (`www` → *Redirect To* `b2bpro.store` ; vider le *Redirect To* de l'apex), cf. §2.3 — DNS inchangé. Contrôle : `curl -I https://b2bpro.store/google…html` → **200 direct**, puis re-cliquer « Vérifier » |
 | *« Settings → Domains » introuvable dans Vercel* | Interface Vercel 2025 : **Domains** est une entrée **directe de la barre latérale du projet** (juste sous *Environment Variables*) — l'onglet *Settings* n'existe plus | Ouvrir **Domains** depuis la barre latérale du projet puis suivre §2.3 (bouton *Add*) |
 | Alerte rouge « **Keep This Value Private** » à la création d'une variable `NEXT_PUBLIC_*` | Variable enregistrée en type **Secret** : le préfixe `NEXT_PUBLIC_` expose la valeur au navigateur — Vercel l'avertit (ce n'est pas un refus d'enregistrer) | Cliquer **« Change to Config »** (une URL publique n'est pas un secret), ou renommer en `SITE_URL` sans préfixe (type Secret), ou passer — la variable est optionnelle (défaut codé) |
 | **Toutes les pages affichent la page d'erreur** en production (« An error occurred in the Server Components render ») | `DATABASE_URL` absente ou invalide sur Vercel — le build réussit, mais la base est injoignable à l'exécution | Créer le projet Neon (§1), migrer les données (`db:migrate:neon`), définir `DATABASE_URL` (§3) puis **Redeploy** |
