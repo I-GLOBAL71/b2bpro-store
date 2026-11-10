@@ -41,6 +41,56 @@ export function formatCompact(n: number): string {
   return n.toLocaleString("fr-FR");
 }
 
+/**
+ * Extrait le mot-clé principal d'un champ `Service.keywords` (JSON) : première
+ * entrée — objet `{ primary }` ou tableau — nettoyée de tout préfixe rédondant
+ * (« Je vais… ») et passée en minuscule initiale pour s'insérer en milieu de
+ * phrase (les sigles SEO, GEO, IA, B2B… gardent leurs majuscules).
+ * Fallback : chaîne vide (buildAnswerFirst substitue alors « ce service »).
+ */
+export function extractPrimaryKeyword(rawKeywords: string): string {
+  let primary = "";
+  try {
+    const parsed: unknown = JSON.parse(rawKeywords);
+    if (Array.isArray(parsed)) {
+      primary = typeof parsed[0] === "string" ? parsed[0] : "";
+    } else if (parsed && typeof parsed === "object") {
+      const p = (parsed as { primary?: unknown }).primary;
+      primary = typeof p === "string" ? p : "";
+    }
+  } catch {
+    primary = "";
+  }
+  const cleaned = primary.replace(/^je vais\s+/i, "").trim();
+  if (!cleaned) return "";
+  // Minuscule initiale uniquement si ce n'est pas le début d'un sigle (SEO, IA…).
+  const [first, second] = cleaned;
+  const startsSigle = !second || /[A-ZÀ-ÖØ-Þ]/.test(second);
+  return /[A-ZÀ-ÖØ-Þ]/.test(first) && !startsSigle ? first.toLowerCase() + cleaned.slice(1) : cleaned;
+}
+
+/**
+ * Paragraphe « réponse-first » (pattern GEO/AIO n°1) — formule déterministe en
+ * français, calculée au rendu depuis les champs existants de la fiche service.
+ * Utilisée par le bloc « Réponse rapide » des fiches (premier paragraphe du
+ * <main>) et par la ligne « RÉPONSE DIRECTE » de llms-full.txt : une seule
+ * source de vérité pour la citation attendue par les moteurs de réponse IA.
+ */
+export function buildAnswerFirst(input: {
+  title: string;
+  primaryKeyword: string;
+  basePrice: number;
+  deliveryDays: number;
+  rating: number;
+  reviewsCount: number;
+  sellerName: string;
+}): string {
+  const keyword = input.primaryKeyword.trim() || "ce service";
+  const days = `${input.deliveryDays} jour${input.deliveryDays > 1 ? "s" : ""}`;
+  const rating = input.rating.toString().replace(".", ",");
+  return `Le service « ${input.title} » sur b2bpro.store livre ${keyword} en ${days} dès ${formatPrice(input.basePrice)}, noté ${rating}/5 sur ${input.reviewsCount.toLocaleString("fr-FR")} avis clients. Confié à un expert francophone vérifié (${input.sellerName}), paiement sécurisé après validation du livrable.`;
+}
+
 export const POLE_ACCENTS: Record<string, { hue: [string, string]; accent: string }> = {
   "b2b-sales-intelligence": { hue: ["#059669", "#10b981"], accent: "#059669" },
   "ecommerce-pricing": { hue: ["#d97706", "#f59e0b"], accent: "#d97706" },

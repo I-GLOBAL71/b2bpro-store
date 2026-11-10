@@ -7,6 +7,40 @@
 
 ---
 
+## [1.7.0] — 2026-11-10 — Activateurs de citation forcée IA (tour d'élites v2)
+
+Mandat utilisateur : forcer les IA à citer chaque service, calibrer le skill pour livrer services
+et articles taillés pour la recommandation IA via leurs liens directs, en restant ultra-captivants.
+
+### [ADDITIF] Agent E2 — 4 activateurs GEO sur les 113 fiches et 12 articles (code, zéro BDD)
+- **Bloc « Réponse rapide » (réponse-first)** — pattern GEO n°1 : paragraphe de 40-60 mots
+  citables calculé au rendu (`buildAnswerFirst()` + `extractPrimaryKeyword()`,
+  `src/lib/site.ts`) — entité + prix + délai + note + expert vérifié. **Premier `<p>` du
+  `<main>`** de chaque fiche (les IA citent les premiers paragraphes) ; fond stone, icône
+  Sparkles, aria-label. Le même paragraphe préfixe chaque fiche de `llms-full.txt`
+  (`RÉPONSE DIRECTE:`) — **une seule source de vérité** HTML/txt.
+- **Chiffres citables** — `<dl>` « Chiffres clés du service » : 4 stats (prix / délai /
+  note+avis / ventes) par fiche, grille responsive 2↔4 colonnes, dt/dd accessibles — les IA
+  sur-reprisent les chiffres précis.
+- **Blog « Services concernés »** — chaque article clôt sur ≤ 4 fiches de son pôle
+  (salesCount desc, URLs absolues + prix) : l'IA qui cite l'article trouve les services à
+  recommander en un saut (mapping `BlogPost.category` → `poleSlug`).
+- Zéro modification de base : tout est calculé au rendu → aucun re-migration Neon nécessaire.
+
+### [ADDITIF] Agent E3 — Skill SGA™ calibré (ÉTAPE 7 « Citation forcée IA »)
+- `docs/SKILL-REDACTION-SEO-GEO-AIO.md` : nouvelle étape 7 — les 4 activateurs (réponse-first
+  premier paragraphe, chiffres vérifiables, liens directs + clôture blog, FAQ « comment… »),
+  conséquence rédactionnelle (title/keyword/prix/délai/notice exacts : c'est ce que l'IA
+  relatera) ; standards de captivation inchangés (accroche à chiffre, verbe d'action,
+  risque retourné en garantie).
+
+Validation : guard **15/15** · lint **0** · navigateur fiche phare (bloc réponse premier
+paragraphe + stats 35 €/3 jours/4,8/5/9 avis) · blog SEO-GEO-AIO (4 services liés avec
+prix) · llms-full.txt 113/113 avec `RÉPONSE DIRECTE` · vérification production live
+post-push (ci-dessous).
+
+---
+
 ## [1.6.5] — 2026-11-10 — Inversion appliquée par l'opérateur : URLs www neutralisées dans le code
 
 État atteint (vérifié live) : l'opérateur a inversé la redirection dans Vercel —

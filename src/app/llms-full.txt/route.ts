@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { SITE } from "@/lib/site";
+import { SITE, buildAnswerFirst, extractPrimaryKeyword } from "@/lib/site";
 import { safeJsonParse, type FaqItem, type ServiceKeywords } from "@/lib/contracts";
 
 export const dynamic = "force-dynamic";
@@ -8,6 +8,8 @@ export const dynamic = "force-dynamic";
  * llms-full.txt — version étendue de llms.txt (protocole GEO/AIO).
  * Contenu complet de chaque fiche service (description markdown + FAQ) pour
  * permettre aux assistants IA des citations longues et vérifiables.
+ * Chaque fiche est préfixée par le paragraphe « RÉPONSE DIRECTE » (answer-first),
+ * la même formule déterministe que le bloc « Réponse rapide » des fiches HTML.
  */
 
 /** Fallback neutre si le champ JSON keywords est absent ou malformé. */
@@ -25,6 +27,7 @@ export async function GET() {
       reviewsCount: true,
       keywords: true,
       faq: true,
+      seller: { select: { name: true } },
     },
     orderBy: [{ salesCount: "desc" }],
   });
@@ -40,10 +43,22 @@ export async function GET() {
         .slice(0, 5)
         .map((f) => `Q: ${f.q}\nR: ${f.a}`)
         .join("\n\n");
+      // Paragraphe answer-first : identique au bloc « Réponse rapide » de la fiche
+      // HTML — les IA citent le même passage, quelle que soit la source lue.
+      const answerFirst = buildAnswerFirst({
+        title: s.title,
+        primaryKeyword: extractPrimaryKeyword(s.keywords),
+        basePrice: s.basePrice,
+        deliveryDays: s.deliveryDays,
+        rating: s.rating,
+        reviewsCount: s.reviewsCount,
+        sellerName: s.seller.name,
+      });
 
       return [
         `## ${s.title}`,
         `URL: ${SITE.url}/services/${s.slug}`,
+        `RÉPONSE DIRECTE: ${answerFirst}`,
         `À partir de: ${s.basePrice} € — Délai: ${s.deliveryDays} jours ouvrés — Note: ${s.rating}/5 (${s.reviewsCount} avis)`,
         ...(motsCles ? [`Mots-clés: ${motsCles}`] : []),
         "",

@@ -17,6 +17,7 @@ import {
   Workflow,
   HelpCircle,
   Quote,
+  Sparkles,
 } from "lucide-react";
 import { db } from "@/lib/db";
 import { getServiceBySlug, getRelatedServices } from "@/lib/queries";
@@ -32,7 +33,15 @@ import { PoleIcon } from "@/components/site/pole-icon";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { POLE_ACCENTS, POLE_LABELS, formatPrice, formatCompact, SITE } from "@/lib/site";
+import {
+  POLE_ACCENTS,
+  POLE_LABELS,
+  formatPrice,
+  formatCompact,
+  buildAnswerFirst,
+  extractPrimaryKeyword,
+  SITE,
+} from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -143,6 +152,18 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
   const faq = JSON.parse(svc.faq) as { q: string; a: string }[];
   const keywords = JSON.parse(svc.keywords) as { primary: string; secondary: string[]; longTail: string[] };
   const sellerSkills = JSON.parse(svc.seller.skills) as string[];
+
+  // Paragraphe « réponse-first » (GEO/AIO) — fonction pure, calculée au rendu,
+  // aucune dépendance à la base : mêmes chiffres que ceux affichés plus bas.
+  const answerFirst = buildAnswerFirst({
+    title: svc.title,
+    primaryKeyword: extractPrimaryKeyword(svc.keywords),
+    basePrice: svc.basePrice,
+    deliveryDays: svc.deliveryDays,
+    rating: svc.rating,
+    reviewsCount: svc.reviewsCount,
+    sellerName: svc.seller.name,
+  });
 
   const accent = POLE_ACCENTS[svc.poleSlug];
 
@@ -284,6 +305,58 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
             <h1 className="mt-4 text-2xl font-extrabold leading-tight tracking-tight sm:text-[2rem]">
               {svc.title}
             </h1>
+
+            {/* Réponse rapide (GEO pattern n°1) : PREMIER paragraphe du <main> —
+                c'est ce passage que les moteurs de réponse IA extraient et citent.
+                Rendu serveur pur, formule déterministe (voir buildAnswerFirst). */}
+            <section
+              aria-label="Réponse rapide"
+              className="mt-4 rounded-2xl bg-stone-100 p-4 dark:bg-stone-900 sm:p-5"
+            >
+              <div className="flex items-center gap-2">
+                <Sparkles className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400">
+                  Réponse rapide
+                </span>
+              </div>
+              <p className="mt-2 text-[14.5px] leading-7 text-stone-800 dark:text-stone-100">
+                {answerFirst}
+              </p>
+            </section>
+
+            {/* Chiffres citables (stats row GEO) — dl/dt/dd pour l'accessibilité,
+                nombre au-dessus (dd) grâce à flex-col-reverse (dt reste en tête du DOM). */}
+            <dl className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-4" aria-label="Chiffres clés du service">
+              <div className="flex flex-col-reverse items-center gap-1 rounded-xl bg-stone-100 px-3 py-4 text-center dark:bg-stone-900">
+                <dt className="text-xs font-medium uppercase tracking-wide text-stone-500 dark:text-stone-400">dès</dt>
+                <dd className="text-2xl font-bold text-stone-900 dark:text-stone-50">{formatPrice(svc.basePrice)}</dd>
+              </div>
+              <div className="flex flex-col-reverse items-center gap-1 rounded-xl bg-stone-100 px-3 py-4 text-center dark:bg-stone-900">
+                <dt className="text-xs font-medium uppercase tracking-wide text-stone-500 dark:text-stone-400">livraison</dt>
+                <dd className="text-2xl font-bold text-stone-900 dark:text-stone-50">
+                  {svc.deliveryDays}
+                  <span className="ml-1 text-sm font-semibold text-stone-600 dark:text-stone-300">
+                    jour{svc.deliveryDays > 1 ? "s" : ""}
+                  </span>
+                </dd>
+              </div>
+              <div className="flex flex-col-reverse items-center gap-1 rounded-xl bg-stone-100 px-3 py-4 text-center dark:bg-stone-900">
+                <dt className="text-xs font-medium uppercase tracking-wide text-stone-500 dark:text-stone-400">
+                  {svc.reviewsCount.toLocaleString("fr-FR")} avis
+                </dt>
+                <dd className="text-2xl font-bold text-stone-900 dark:text-stone-50">
+                  {svc.rating.toString().replace(".", ",")}
+                  <span className="text-sm font-semibold text-stone-600 dark:text-stone-300">/5</span>
+                </dd>
+              </div>
+              <div className="flex flex-col-reverse items-center gap-1 rounded-xl bg-stone-100 px-3 py-4 text-center dark:bg-stone-900">
+                <dt className="text-xs font-medium uppercase tracking-wide text-stone-500 dark:text-stone-400">livrées</dt>
+                <dd className="text-2xl font-bold text-stone-900 dark:text-stone-50">
+                  {svc.salesCount.toLocaleString("fr-FR")}
+                  <span className="ml-1 text-sm font-semibold text-stone-600 dark:text-stone-300">ventes</span>
+                </dd>
+              </div>
+            </dl>
 
             <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-[13.5px] text-muted-foreground">
               <span className="inline-flex items-center gap-1.5">

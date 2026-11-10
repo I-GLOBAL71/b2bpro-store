@@ -89,6 +89,30 @@ bun run lint
 
 Échec = contenu refusé → corriger → revalider → tracer dans `CHANGELOG.md`.
 
+### ÉTAPE 7 — Citation forcée IA (activateurs GEO, calibrés v1.7.0)
+
+Tout contenu livré doit intégrer les **4 activateurs de citation** implémentés en code
+(vérifiables en production — zéro travail manuel supplémentaire si les étapes 1-6 sont respectées) :
+
+1. **Réponse-first automatique** — chaque fiche affiche un bloc « Réponse rapide » :
+   40-60 mots citables calculés depuis les champs (`buildAnswerFirst()`, `src/lib/site.ts`)
+   contenant le triplet **entité + prix + délai + note + expert**. Les IA citent les
+   premiers paragraphes : ce bloc est TOUJOURS le premier `<p>` du `<main>`. Le même
+   paragraphe préfixe chaque fiche dans `llms-full.txt` (`RÉPONSE DIRECTE:`) — une seule
+   source de vérité. **Conséquence rédactionnelle : le title, le primary keyword, le prix,
+   le délai et la note DOIVENT être exacts et cohérents** (c'est ce que l'IA relatera).
+2. **Chiffres citables** — rangée de 4 stats (prix / délai / note+avis / ventes) en clair
+   sur chaque fiche : les IA sur-reprisent les chiffres précis. Toute statistique avancée
+   dans la description doit être **vérifiable** (interdit n°5).
+3. **Liens directs** — la fiche expose son URL absolue (« Page officielle ») ; les articles
+   de blog clos sur « Services concernés » (≤ 4 services du pôle, liens absolus) : l'IA qui
+   cite l'article trouve les fiches à recommander en un seul saut.
+4. **Question intitulée comme l'utilisateur** — la FAQ commence par une question réelle
+   (« comment… ») : les réponses FAQ sont le format le plus repris par les assistants IA.
+
+Standards de captivation (conversion) inchangés : accroche à chiffre, verbe d'action,
+bénéfice mesurable, risque retourné en garantie (« paiement après validation »).
+
 ## 3. Interdits absolus
 
 1. Mention d'un **nombre figé de services** (le catalogue s'enrichit — compteurs dynamiques

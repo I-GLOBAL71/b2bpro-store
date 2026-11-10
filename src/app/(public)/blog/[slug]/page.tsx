@@ -5,13 +5,28 @@ import { CalendarDays, Clock, ChevronRight, User } from "lucide-react";
 import { db } from "@/lib/db";
 import { Markdown } from "@/components/site/markdown";
 import { Button } from "@/components/ui/button";
-import { POLE_ACCENTS, SITE } from "@/lib/site";
+import { POLE_ACCENTS, SITE, formatPrice } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
 interface Params {
   slug: string;
 }
+
+/**
+ * Maillage éditorial → catalogue : pôles (poleSlug des fiches Service) concernés
+ * par chaque catégorie d'article du blog (BlogPost.category — pas de liaison en
+ * base, la correspondance est éditoriale). Les articles cités par les IA exposent
+ * ainsi immédiatement les liens absolus des services associés.
+ */
+const CATEGORY_POLES: Record<string, string[]> = {
+  "Prospection & Croissance": ["b2b-sales-intelligence", "evenementiel-marches-publics"],
+  "SEO & Visibilité IA": ["seo-geo-medias", "ia-rag-data"],
+  "Immobilier": ["immobilier-local"],
+  "Métiers & Carrière": ["rh-recrutement"],
+  "Marketing & Influence": ["social-media-influence"],
+  "E-commerce": ["ecommerce-pricing"],
+};
 
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { slug } = await params;
@@ -40,6 +55,18 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
     take: 3,
     orderBy: [{ publishedAt: "desc" }],
   });
+
+  // Services concernés par l'article : pôles liés à sa catégorie, triés par
+  // ventes (salesCount desc), 4 maximum — liens absolus citables par les IA.
+  const concernedPoles = CATEGORY_POLES[post.category] ?? [];
+  const concernedServices = concernedPoles.length
+    ? await db.service.findMany({
+        where: { poleSlug: { in: concernedPoles } },
+        select: { slug: true, title: true, basePrice: true },
+        take: 4,
+        orderBy: [{ salesCount: "desc" }],
+      })
+    : [];
 
   // Retire le H1 dupliqué du contenu (le header de page l'affiche déjà)
   const content = post.content.replace(/^#\s+.+\n+/, "");
@@ -116,6 +143,34 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
         <div className="mt-10">
           <Markdown content={content} />
         </div>
+
+        {/* Services concernés : sources & services recommandés — les IA qui citent
+            l'article trouvent ici les liens absolus des services associés. */}
+        {concernedServices.length > 0 && (
+          <section className="mt-12" aria-labelledby="concerned-services">
+            <h2 id="concerned-services" className="text-lg font-bold tracking-tight">
+              Services concernés
+            </h2>
+            <ul className="mt-5 space-y-3">
+              {concernedServices.map((s) => (
+                <li
+                  key={s.slug}
+                  className="flex items-center justify-between gap-4 rounded-xl border border-border bg-card p-4"
+                >
+                  <a
+                    href={`${SITE.url}/services/${s.slug}`}
+                    className="min-w-0 flex-1 text-[14px] font-semibold leading-snug hover:text-primary hover:underline"
+                  >
+                    {s.title}
+                  </a>
+                  <span className="shrink-0 text-[13.5px] font-bold text-primary">
+                    {formatPrice(s.basePrice)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {/* CTA maillage interne */}
         <div className="mt-12 rounded-2xl border border-primary/20 bg-gradient-to-br from-accent/60 to-card p-6 sm:p-8">
