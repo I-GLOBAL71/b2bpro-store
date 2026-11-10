@@ -64,7 +64,7 @@ Catalogue complet de référence : `.env.example` (racine du repo).
 |---|---|---|---|
 | `DATABASE_URL` | Connexion base : SQLite en local ; **chaîne Neon « Pooled connection » avec `sslmode=require`** sur Vercel | ✅ `file:/home/z/my-project/db/custom.db` | ✅ chaîne Neon pooled |
 | `NEON_DATABASE_URL` | Cible de `db:migrate:neon` (migration lancée **depuis la machine locale** ; ne remplace jamais `DATABASE_URL`, qui pointe vers le SQLite local) | ⭕ migration | ❌ inutile |
-| `NEXT_PUBLIC_SITE_URL` (ou `SITE_URL`) | URL canonique publique — pilote sitemap, robots, canonicals, JSON-LD (défaut `https://b2bpro.store`) | ❌ (défaut) | ✅ `https://b2bpro.store` |
+| `NEXT_PUBLIC_SITE_URL` (ou `SITE_URL`) | URL canonique publique — pilote sitemap, robots, canonicals, JSON-LD (défaut `https://b2bpro.store` ; sur Vercel, type **Config** — cf. §3) | ❌ (défaut) | ⭕ facultative (défaut déjà `https://b2bpro.store`) |
 | `BLOB_READ_WRITE_TOKEN` | Token du Blob Store (upload miniatures/avatars WebP) | ⭕ pour `thumbs:blob` | ⭕ recommandé |
 | `PAYPAL_CLIENT_ID` / `PAYPAL_CLIENT_SECRET` | Clés de l'app REST PayPal — le **secret ne quitte jamais le serveur** | ❌ (mode démo) | ⭕ paiement réel |
 | `PAYPAL_ENV` | `sandbox` (défaut) ou `live` | ❌ | ⭕ `live` en production |
@@ -148,11 +148,23 @@ Catalogue complet de référence : `.env.example` (racine du repo).
    ✓ Le premier build doit réussir : la génération du client Prisma **Postgres**
    précède `next build` — c'est ce qui fait tourner la production sur le schéma Neon.
 
-3. **Domaine** — Vercel → *Settings* → *Domains* → ajouter `b2bpro.store` : si le
-   domaine est chez un registrar externe, ajouter l'enregistrement `A` (ou `CNAME`
-   pour `www`) indiqué par Vercel dans la zone DNS, puis attendre la propagation
-   (quelques minutes à 48 h). ✓ Vous devez voir `b2bpro.store` en **Valid
-   Configuration** et le site répondre en HTTPS.
+3. **Domaine** — dans la **barre latérale du projet** (nouvelle interface Vercel
+   2025, celle où vous voyez *Environment Variables*), l'entrée **Domains** se
+   trouve **directement sous *Environment Variables*** — l'ancien chemin
+   *Settings → Domains* n'existe plus (URL directe :
+   `vercel.com/<équipe>/b2bpro-store/domains`) :
+   1. bouton **Add** (ou *Add Domain*) → saisir `b2bpro.store` → *Add* → Vercel
+      affiche les enregistrements DNS à créer ;
+   2. ajouter **aussi** `www.b2bpro.store` → Vercel propose de le faire
+      **redirect to `b2bpro.store`** → accepter (**l'apex est la cible finale**) ;
+   3. chez le registrar du domaine, créer les deux enregistrements indiqués :
+      - apex : **`A @ 76.76.21.21`** ;
+      - www : **`CNAME www → cname.vercel-dns.com`** (simple redirection vers
+        l'apex) ;
+   4. attendre la propagation (quelques minutes à 48 h).
+   ✓ Vous devez voir `b2bpro.store` et `www.b2bpro.store` en **Valid
+   Configuration**, et le site répondre en HTTPS sur `https://b2bpro.store`
+   (`https://b2bpro-store.vercel.app` reste valable en parallèle).
 
 > **Premier déploiement sans variables : comportement attendu** — le build
 > **réussit**, mais toutes les pages dynamiques affichent la **page d'erreur**
@@ -165,12 +177,13 @@ Catalogue complet de référence : `.env.example` (racine du repo).
 
 ## §3. Variables d'environnement Vercel
 
-Vercel → *Settings* → *Environment Variables* → environnement **Production** :
+Vercel → barre latérale du projet → **Environment Variables** → onglet *Project* →
+bouton *Add* / `?create=true` → environnement **Production** :
 
 | Variable | Valeur Production | Commentaire |
 |---|---|---|
 | `DATABASE_URL` | `postgresql://user:password@ep-xxxx-pooler.eu-central-1.aws.neon.tech/neondb?sslmode=require` | chaîne Neon **« Pooled connection »** (cf. §1.2) |
-| `NEXT_PUBLIC_SITE_URL` | `https://b2bpro.store` | URL canonique (sitemap, robots, canonicals, JSON-LD) |
+| `NEXT_PUBLIC_SITE_URL` | `https://b2bpro.store` | URL canonique (sitemap, robots, canonicals, JSON-LD) — **type `Config`** (voir l'encadré ci-dessous) |
 | `BLOB_READ_WRITE_TOKEN` | `vercel_blob_rw_…` | copié depuis Vercel → Storage (§4) |
 | `PAYPAL_CLIENT_ID` | `AeA1QIZX…` | §5 — clés **sandbox** d'abord |
 | `PAYPAL_CLIENT_SECRET` | `EGnHDxD_…` | §5 — secret côté serveur uniquement |
@@ -184,8 +197,26 @@ Vercel → *Settings* → *Environment Variables* → environnement **Production
    `https://b2bpro.store/api/integrity` en HTTP 200 avec `"ok": true` (§7).
 
 > Les variables peuvent être ajoutées progressivement : le site démarre **sans**
-> PayPal (mode démo, §0) et sans GSC ; seules `DATABASE_URL` et
-> `NEXT_PUBLIC_SITE_URL` sont indispensables au premier lancement utile.
+> PayPal (mode démo, §0) et sans GSC ; seule `DATABASE_URL` est **indispensable**
+> au premier lancement utile — `NEXT_PUBLIC_SITE_URL` est **optionnelle** : la
+> valeur par défaut `https://b2bpro.store` est déjà codée en dur côté serveur
+> (`src/lib/env.ts` → `getSiteUrl()`).
+
+> **Alerte « Keep This Value Private » (NEXT_PUBLIC_ + Secret)** : si une
+> variable préfixée `NEXT_PUBLIC_` est créée en type **Secret**, Vercel affiche un
+> avertissement (bordure rouge sur la clé + infobulle « The NEXT_PUBLIC_ prefix
+> exposes this value to the browser. Remove the prefix, or change the variable
+> to Config if it's safe to expose. »). Ce n'est **pas un échec** — c'est un
+> rappel de bon sens : tout ce qui est préfixé `NEXT_PUBLIC_` finit dans le
+> navigateur, donc ça n'a pas vocation à être un secret. Pour `NEXT_PUBLIC_SITE_URL`
+> (une URL publique), trois issues, toutes valides :
+> 1. cliquer **« Change to Config »** dans l'infobulle (ou choisir la carte
+>    **Config** au lieu de **Secret** dès la création) — recommandé ;
+> 2. renommer la variable en **`SITE_URL`** (sans préfixe) et garder le type
+>    Secret — le code lit les deux (`getSiteUrl()`), et l'URL n'est utilisée que
+>    côté serveur (sitemap, robots, canonicals, JSON-LD) ;
+> 3. **ne pas la créer du tout** : le défaut `https://b2bpro.store` est déjà
+>    intégré au code.
 
 ---
 
@@ -379,6 +410,8 @@ Réflexe : **snapshot local avant toute manipulation risquée** (charte §1).
 
 | Symptôme | Cause probable | Remède |
 |---|---|---|
+| *« Settings → Domains » introuvable dans Vercel* | Interface Vercel 2025 : **Domains** est une entrée **directe de la barre latérale du projet** (juste sous *Environment Variables*) — l'onglet *Settings* n'existe plus | Ouvrir **Domains** depuis la barre latérale du projet puis suivre §2.3 (bouton *Add*) |
+| Alerte rouge « **Keep This Value Private** » à la création d'une variable `NEXT_PUBLIC_*` | Variable enregistrée en type **Secret** : le préfixe `NEXT_PUBLIC_` expose la valeur au navigateur — Vercel l'avertit (ce n'est pas un refus d'enregistrer) | Cliquer **« Change to Config »** (une URL publique n'est pas un secret), ou renommer en `SITE_URL` sans préfixe (type Secret), ou passer — la variable est optionnelle (défaut codé) |
 | **Toutes les pages affichent la page d'erreur** en production (« An error occurred in the Server Components render ») | `DATABASE_URL` absente ou invalide sur Vercel — le build réussit, mais la base est injoignable à l'exécution | Créer le projet Neon (§1), migrer les données (`db:migrate:neon`), définir `DATABASE_URL` (§3) puis **Redeploy** |
 | **503** *« Paiement PayPal non configuré »* | `PAYPAL_CLIENT_ID`/`PAYPAL_CLIENT_SECRET` absents de Vercel (mode démo actif) ou non redéployés | Définir les deux variables (§5) puis **Redeploy** ; sans clés, la voie `POST /api/orders` reste le comportement par défaut |
 | Fiches servant des **SVG locaux** au lieu du WebP Blob | Migration Blob non faite (`thumbUrls` absent → fallback SVG, aucune image cassée) | Exécuter `bun run thumbs:blob --with-avatars` (§4) |

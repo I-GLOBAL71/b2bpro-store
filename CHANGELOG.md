@@ -7,6 +7,39 @@
 
 ---
 
+## [1.6.1] — 2026-11-10 — Runbook aligné sur l'interface Vercel 2025 + routes parasites purgées
+
+Suite au blocage de l'opérateur sur la console Vercel (capture d'écran à l'appui) : le runbook
+renvoyait vers une navigation qui n'existe plus, et une variable créée en type Secret déclenchait
+l'alerte « Keep This Value Private » sans explication.
+
+### [CORRECTIF] Runbook vs interface Vercel réelle (docs/DEPLOIEMENT-VERCEL.md)
+- **§2.3 Domaine réécrit** pour l'interface 2025 : **Domains** est une entrée **directe de la
+  barre latérale du projet** (juste sous *Environment Variables*) — l'ancien chemin
+  « Settings → Domains » n'existe plus. Procédure complète : ajout de `b2bpro.store` puis
+  `www.b2bpro.store` en **redirect to apex** (l'apex reste la cible finale), DNS registrar
+  `A @ 76.76.21.21` + `CNAME www → cname.vercel-dns.com`, attente **Valid Configuration**.
+- **§3 Alerte « Keep This Value Private » documentée** : `NEXT_PUBLIC_*` en type **Secret**
+  déclenche l'avertissement Vercel (bordure rouge + infobulle) — ce n'est pas un échec. Trois
+  issues valides : **Change to Config** (recommandé pour une URL publique), renommage en
+  `SITE_URL` (sans préfixe, lu par `getSiteUrl()`), ou pas de variable du tout.
+- **§3 + §0 exactitude** : seule `DATABASE_URL` est indispensable au premier lancement ;
+  `NEXT_PUBLIC_SITE_URL` est **optionnelle** (défaut `https://b2bpro.store` codé dans
+  `src/lib/env.ts`) — correction de l'affirmation antérieure « indispensable ».
+- **§9 FAQ +2 lignes** : « Settings → Domains introuvable » et « alerte rouge NEXT_PUBLIC_* ».
+
+### [CORRECTIF] Routes parasites locales purgées (dev seulement, production intacte)
+- Copies non suivies antérieures à la restructuration `(public)/` (`src/app/page.tsx`,
+  `blog/`, `categories/`, `services/`, `support/`, `vendeurs/` au premier niveau) provoquaient
+  « You cannot have two parallel pages that resolve to the same path » → **500 sur `/`** en dev
+  local. Supprimées (jamais committées : **la production Vercel n'a jamais été affectée**).
+- Normalisation des modes de fichiers (bruit chmod 755 → 644, 48 fichiers, 0 ligne modifiée).
+
+Validation : `GET /` **200** local · rendu navigateur complet (annonce, hero, stats 113/33) ·
+`git status` propre (hors captures d'écran utilisateur).
+
+---
+
 ## [1.6.0] — 2026-11-10 — Triple conquête : citabilité IA maximale, humanisation intégrale, mots-clés réels
 
 Mandat utilisateur : trois chantiers menés par des agents dédiés — (1) vérifier et corriger tout
