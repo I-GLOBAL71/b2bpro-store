@@ -64,7 +64,7 @@ Catalogue complet de référence : `.env.example` (racine du repo).
 |---|---|---|---|
 | `DATABASE_URL` | Connexion base : SQLite en local ; **chaîne Neon « Pooled connection » avec `sslmode=require`** sur Vercel | ✅ `file:/home/z/my-project/db/custom.db` | ✅ chaîne Neon pooled |
 | `NEON_DATABASE_URL` | Cible de `db:migrate:neon` (migration lancée **depuis la machine locale** ; ne remplace jamais `DATABASE_URL`, qui pointe vers le SQLite local) | ⭕ migration | ❌ inutile |
-| `NEXT_PUBLIC_SITE_URL` (ou `SITE_URL`) | URL canonique publique — pilote sitemap, robots, canonicals, JSON-LD (défaut `https://b2bpro.store` ; sur Vercel, type **Config** — cf. §3) | ❌ (défaut) | ⭕ facultative (défaut déjà `https://b2bpro.store`) |
+| `NEXT_PUBLIC_SITE_URL` (ou `SITE_URL`) | URL canonique publique — pilote sitemap, robots, canonicals, JSON-LD (défaut `https://b2bpro.store` ; sur Vercel, type **Config** — cf. §3). ⚠️ Le préfixe `www.` est **neutralisé** par le code (v1.6.5) : le canonique est l'apex | ❌ (défaut) | ⭕ facultative (défaut déjà `https://b2bpro.store` ; toute valeur www est ramenée à l'apex) |
 | `BLOB_READ_WRITE_TOKEN` | Token du Blob Store (upload miniatures/avatars WebP) | ⭕ pour `thumbs:blob` | ⭕ recommandé |
 | `PAYPAL_CLIENT_ID` / `PAYPAL_CLIENT_SECRET` | Clés de l'app REST PayPal — le **secret ne quitte jamais le serveur** | ❌ (mode démo) | ⭕ paiement réel |
 | `PAYPAL_ENV` | `sandbox` (défaut) ou `live` | ❌ | ⭕ `live` en production |
@@ -217,7 +217,7 @@ bouton *Add* / `?create=true` → environnement **Production** :
 | Variable | Valeur Production | Commentaire |
 |---|---|---|
 | `DATABASE_URL` | `postgresql://user:password@ep-xxxx-pooler.eu-central-1.aws.neon.tech/neondb?sslmode=require` | chaîne Neon **« Pooled connection »** (cf. §1.2) |
-| `NEXT_PUBLIC_SITE_URL` | `https://b2bpro.store` | URL canonique (sitemap, robots, canonicals, JSON-LD) — **type `Config`** (voir l'encadré ci-dessous) |
+| `NEXT_PUBLIC_SITE_URL` | `https://b2bpro.store` | URL canonique (sitemap, robots, canonicals, JSON-LD) — **type `Config`** (voir l'encadré ci-dessous). ⚠️ **Sans les www** : le canonique est l'apex ; une valeur `https://www.b2bpro.store` est automatiquement ramenée à l'apex par le code (v1.6.5) |
 | `BLOB_READ_WRITE_TOKEN` | `vercel_blob_rw_…` | copié depuis Vercel → Storage (§4) |
 | `PAYPAL_CLIENT_ID` | `AeA1QIZX…` | §5 — clés **sandbox** d'abord |
 | `PAYPAL_CLIENT_SECRET` | `EGnHDxD_…` | §5 — secret côté serveur uniquement |
@@ -388,6 +388,16 @@ canonicals par page.
    **Core Web Vitals**. La présence de `llms.txt` et des crawlers IA autorisés
    dans `robots.txt` prépare la citation par les IA génératives (GEO/AIO).
 
+> **Plusieurs propriétés GSC (www + apex) — pas de double emploi** : GSC traite
+> chaque propriété *Préfixe URL* comme un silo indépendant : avoir à la fois
+> `https://www.b2bpro.store/` et `https://b2bpro.store/` ne crée **aucun conflit**
+> ni doublon. Depuis l'inversion de la redirection (www ↪ 308 apex), **travailler
+> sur la propriété apex** `https://b2bpro.store/` : vérification, sitemap,
+> inspections d'URL — c'est elle qui collecte les données. La propriété www garde
+> l'historique de la période de transition (observatoire, inoffensif) et peut être
+> supprimée après quelques mois si souhaité. Le message « Traitement des données
+> en cours » pendant ~24 h sur une nouvelle propriété est normal.
+
 ---
 
 ## §7. Vérifications post-déploiement (checklist)
@@ -461,6 +471,8 @@ Réflexe : **snapshot local avant toute manipulation risquée** (charte §1).
 | GSC : *« Votre fichier HTML est introuvable / vérification échouée »* | (a) domaine `b2bpro.store` non encore branché (NXDOMAIN — Google ne peut pas interroger l'URL) ; (b) fichier pas encore déployé sur Vercel | Vérifier `https://b2bpro-store.vercel.app/google…html` → 200 ; brancher le domaine (§2.3) ; patienter la propagation DNS (jusqu'à 48 h) puis re-cliquer « Vérifier » ; en attendant, vérifier la propriété `https://b2bpro-store.vercel.app` avec le même fichier |
 | Domaine en **Valid Configuration** mais GSC reste « comme si rien n'était connecté » / vérification en échec persistant | **Sens de redirection inversé** : `https://b2bpro.store/*` renvoie **308 vers `www.b2bpro.store`** (www = cible Production, apex redirigé) — Google ne suit pas les redirections pour la vérification par fichier HTML, et canonicals/sitemap (apex) divergent des URLs servies (www) | Inverser dans Vercel → Domains → *Edit* — **ordre imposé** : (1) apex → radio *Connect to an environment* → Production → Save ; (2) www → *Redirect to Another Domain* → `b2bpro.store` (apparaît une fois l'apex non-redirigé) → 308 → Save, cf. §2.3 — DNS inchangé. Contrôle : `curl -I https://b2bpro.store/google…html` → **200 direct**, puis re-cliquer « Vérifier » |
 | Dans l'Edit d'un domaine, la cible `b2bpro.store` **n'apparaît pas** dans la liste des redirections | Vercel interdit de rediriger vers un domaine **qui est lui-même une redirection** — tant que l'apex est en ↪, il est exclu de la liste (seul `b2bpro-store.vercel.app` est proposé) | Convertir **d'abord** l'apex en *Connect to an environment* → Production (§2.3, étape 1), **puis** éditer www : `b2bpro.store` apparaît alors dans la liste |
+| Sitemap / canonicals / JSON-LD / llms.txt pointent vers **`www.b2bpro.store`** alors que le domaine sert l'apex | `NEXT_PUBLIC_SITE_URL` définie sur Vercel avec la valeur `https://www.b2bpro.store` (configurée pendant la période où www servait le site) | Corrigé par le code depuis v1.6.5 (`getSiteUrl()` neutralise le préfixe `www.`) — déployer la version ≥ v1.6.5 ; idéalement, mettre à jour la variable Vercel à `https://b2bpro.store` (ou la supprimer) |
+| Deux propriétés GSC (`www` + apex) — risque de double emploi ? | Aucun : propriétés *Préfixe URL* indépendantes (silos distincts), aucun conflit | Travailler sur la propriété **apex** (vérification, sitemap, inspections) ; garder www comme observatoire de transition — supprimable après quelques mois (cf. §6) |
 | *« Settings → Domains » introuvable dans Vercel* | Interface Vercel 2025 : **Domains** est une entrée **directe de la barre latérale du projet** (juste sous *Environment Variables*) — l'onglet *Settings* n'existe plus | Ouvrir **Domains** depuis la barre latérale du projet puis suivre §2.3 (bouton *Add*) |
 | Alerte rouge « **Keep This Value Private** » à la création d'une variable `NEXT_PUBLIC_*` | Variable enregistrée en type **Secret** : le préfixe `NEXT_PUBLIC_` expose la valeur au navigateur — Vercel l'avertit (ce n'est pas un refus d'enregistrer) | Cliquer **« Change to Config »** (une URL publique n'est pas un secret), ou renommer en `SITE_URL` sans préfixe (type Secret), ou passer — la variable est optionnelle (défaut codé) |
 | **Toutes les pages affichent la page d'erreur** en production (« An error occurred in the Server Components render ») | `DATABASE_URL` absente ou invalide sur Vercel — le build réussit, mais la base est injoignable à l'exécution | Créer le projet Neon (§1), migrer les données (`db:migrate:neon`), définir `DATABASE_URL` (§3) puis **Redeploy** |

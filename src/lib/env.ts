@@ -15,13 +15,24 @@
  *  Références : docs/DEPLOIEMENT-VERCEL.md (runbook), .env.example (catalogue).
  */
 
-/** URL publique canonique du site (trailing slash retiré). */
+/**
+ * URL publique canonique du site (trailing slash retiré, préfixe www neutralisé).
+ *
+ * Le canonique de b2bpro.store est **l'apex** (`https://b2bpro.store`, sans www) :
+ * c'est lui qui porte la propriété GSC, les canonicals, le sitemap, les JSON-LD et
+ * llms.txt — les www redirigent en 308 vers l'apex. Une variable d'environnement
+ * configurée avec `www.` (ex. `NEXT_PUBLIC_SITE_URL=https://www.b2bpro.store`)
+ * produirait des URLs canoniques contraires au sens de la redirection : toute
+ * valeur est donc ramenée à l'apex ici (source unique, `src/lib/site.ts` → SITE.url).
+ */
 export function getSiteUrl(): string {
   const raw =
     process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
     process.env.SITE_URL?.trim() ||
     "https://b2bpro.store";
-  return raw.replace(/\/+$/, "");
+  return raw
+    .replace(/\/+$/, "")
+    .replace(/^(https?:\/\/)www\./i, "$1");
 }
 
 /** Code de vérification Google Search Console (méthode balise META), si défini. */

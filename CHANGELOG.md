@@ -7,6 +7,38 @@
 
 ---
 
+## [1.6.5] — 2026-11-10 — Inversion appliquée par l'opérateur : URLs www neutralisées dans le code
+
+État atteint (vérifié live) : l'opérateur a inversé la redirection dans Vercel —
+`https://b2bpro.store` sert le site en **200 direct**, `www ↪ 308 apex`. Contrôle complet :
+intégrité 200/ok, sitemap 176 URLs, fichier GSC 200, llms.txt 200, robots IA.
+
+### [FORCE MAJEURE §5] `getSiteUrl()` neutralise le préfixe www
+- **Constat** : `NEXT_PUBLIC_SITE_URL` avait été définie sur Vercel avec
+  `https://www.b2bpro.store` (pendant la période où www servait le site) → tout
+  l'échafaudage SEO émettait des URLs www (sitemap 176 URLs, llms.txt 177, canonicals +
+  JSON-LD par fiche) alors que www redirige désormais vers l'apex — signaux contradictoires,
+  et sitemap refusé par la propriété GSC apex (« URLs hors propriété »).
+- **Correctif** (`src/lib/env.ts`) : toute valeur (`NEXT_PUBLIC_SITE_URL` ou `SITE_URL`)
+  voit son préfixe `www.` retiré (`https://www.b2bpro.store` → `https://b2bpro.store`) —
+  le canonique de b2bpro.store est l'apex, par architecture (GSC, sitemap, canonicals,
+  JSON-LD, llms.txt). Tests unitaires : www → apex, www+slash → apex, défaut → apex.
+- **Bénéfice** : plus aucune action requise sur la variable Vercel (mise à jour de la
+  valeur ou suppression demeurent conseillées pour l'exactitude, cf. runbook §9).
+
+### [ADDITIF] Runbook : coexistence des propriétés GSC + FAQ
+- §6 : encadré « Plusieurs propriétés GSC (www + apex) — pas de double emploi » —
+  propriétés indépendantes (silos) ; travailler sur l'apex ; www = observatoire de
+  transition ; « Traitement des données en cours » ~24 h = normal.
+- §0/§3 : la valeur conseillée de `NEXT_PUBLIC_SITE_URL` précise « sans les www,
+  neutralisée par le code ».
+- §9 FAQ : +2 lignes (URLs www dans sitemap/canonicals ; double emploi de propriétés).
+
+Validation : unitaire www→apex ✅ · lint 0 · déploiement vérifié live post-push
+(sitemap/canonicals/llms.txt/JSON-LD tous passés à l'apex).
+
+---
+
 ## [1.6.4] — 2026-11-10 — Ordre d'inversion corrigé : la cible de redirection n'accepte pas un domaine redirigé
 
 Retour opérateur (capture d'écran) : dans l'Edit de `www.b2bpro.store`, la cible
