@@ -7,6 +7,44 @@
 
 ---
 
+## [1.6.2] — 2026-11-10 — Vérification GSC par fichier HTML + soumission individuelle des 113 fiches
+
+Mandat utilisateur : concentrer le effort sur la soumission robuste et correcte du site à
+Google Search Console, en s'assurant que **chaque service est soumis individuellement sur sa
+propre page**. Le fichier de vérification GSC téléchargé par l'opérateur
+(`googlec5dc6c64480779bb.html`) est déployé et la chaîne complète de soumission est documentée.
+
+### [ADDITIF] Fichier de vérification GSC servi en production
+- **`public/googlec5dc6c64480779bb.html`** (53 octets, contenu exact Google) : servi à la
+  racine de **chaque déploiement** — `https://b2bpro.store/google…html` (une fois le domaine
+  branché) **et** `https://b2bpro-store.vercel.app/google…html` (dès maintenant). HTTP 200,
+  `text/html`, `robots.txt` sans `Disallow` → librement récupérable par Google.
+- Constat vérifié en local : GET `/googlec5dc6c64480779bb.html` → 200 + contenu exact.
+
+### [ADDITIF] Chaque service, individuellement soumis — preuves et outillage
+- **Sitemap** : 176 URLs dont **113 fiches service individuelles** (`/services/<slug>`,
+  priorité 0.9, `lastmod` = `createdAt` réel) — vérifié en live sur `/sitemap.xml`.
+- **Indexabilité par fiche** (vérifiée sur la fiche phare) : `robots: index, follow`,
+  canonical absolue, title et meta description uniques.
+- **`scripts/gen-gsc-urls.ts` + `docs/GSC-SOUMISSION-SERVICES.md`** (213 lignes) : la liste
+  exhaustive des **113 URLs directes** classées par ventes décroissantes et par pôle, prête à
+  coller dans l'**Inspection d'URL GSC** (soumission individuelle, « Demander l'indexation »,
+  ~10-12/jour) — régénérable via `bun run gen:gsc-urls` (alias package.json ajouté).
+
+### [ADDITIF] Runbook §6 réécrit (runbook de vérification GSC)
+- Méthode **« Fichier HTML » documentée en premier** (celle choisie par l'opérateur) : le
+  fichier est déjà déployé, il reste à cliquer « Vérifier » — prérequis : domaine branché
+  (§2.3) ; le même fichier couvre la propriété `b2bpro-store.vercel.app` en attendant.
+- Nouvelles étapes : soumission du sitemap (176 URLs / 113 fiches individuelles) et
+  **soumission individuelle des fiches** via Inspection d'URL avec référence au document.
+- §7 checklist : ligne 9 réécrite pour le fichier HTML + ligne 9b (méthode META) ;
+  §9 FAQ : ligne « fichier HTML introuvable / vérification échouée » (NXDOMAIN, propagation).
+
+Validation : GET fichier 200 (text/html, contenu exact) · sitemap 176 URLs/113 services
+· fiche phare `index, follow` + canonical + title/description uniques · lint 0.
+
+---
+
 ## [1.6.1] — 2026-11-10 — Runbook aligné sur l'interface Vercel 2025 + routes parasites purgées
 
 Suite au blocage de l'opérateur sur la console Vercel (capture d'écran à l'appui) : le runbook

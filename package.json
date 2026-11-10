@@ -20,7 +20,8 @@
     "migrate:content-v12": "bun run scripts/migrate-content-v12.ts",
     "db:snapshot": "bun run scripts/db-snapshot.ts",
     "db:restore": "bun run scripts/db-restore.ts",
-    "add:service": "bun run scripts/add-service.ts"
+    "add:service": "bun run scripts/add-service.ts",
+    "gen:gsc-urls": "bun run scripts/gen-gsc-urls.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

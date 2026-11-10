@@ -321,25 +321,38 @@ canonicals par page.
 1. **Ajouter la propriété** — [Google Search Console](https://search.google.com/search-console)
    → *Ajouter une propriété* → **Préfixe URL** → `https://b2bpro.store`.
 
-2. **Méthode « Balise META »** — GSC affiche
+2. **Vérification — méthode « Fichier HTML » (déjà déployée)** — GSC → *Autres
+   méthodes de vérification* → **Fichier HTML** (ex. `googlec5dc6c64480779bb.html`).
+   Ce fichier est **committé à la racine `public/`** et donc servi à la racine de
+   **chaque déploiement** : `https://b2bpro.store/google…html` → réponse HTTP 200,
+   contenu `google-site-verification: google…html`. Cliquer **« Vérifier »**.
+   ✓ *« Propriété vérifiée »*. Le même fichier couvre la propriété
+   `https://b2bpro-store.vercel.app` (utilisable avant le branchement du domaine).
+   > ⚠️ Prérequis : le domaine doit être branché sur Vercel (§2.3) — Google doit
+   > pouvoir interroger l'URL sur `https://b2bpro.store`.
+
+   **Variante « Balise META »** — GSC affiche
    `<meta name="google-site-verification" content="…CODE…" />` → copier uniquement
-   le **code** (valeur de `content`).
+   le **code** (valeur de `content`) → définir `GOOGLE_SITE_VERIFICATION = CODE`
+   (Production) → **Redeploy**. La balise est déjà câblée dans les métadonnées.
+   ✓ Dans le source de `https://b2bpro.store`, la balise apparaît dans le `<head>`.
 
-3. **Définir la variable Vercel** — `GOOGLE_SITE_VERIFICATION = CODE` (Production) →
-   **Redeploy**. La balise est **déjà câblée** dans les métadonnées : rien à coder.
-   ✓ Dans le source de `https://b2bpro.store`, la balise
-   `<meta name="google-site-verification" content="CODE" />` apparaît dans le `<head>`.
+3. **Soumettre le sitemap** — GSC → *Sitemaps* → saisir `sitemap.xml` → *Envoyer*.
+   ✓ Statut « Réussi », pages découvertes > 0 (montée en charge progressive sur
+   quelques jours). Le sitemap liste **176 URLs** dont **chaque fiche service
+   individuellement** (113 × `/services/<slug>`, priorité 0.9, `lastmod` réel).
 
-4. **Vérifier** — GSC → cliquer **« Vérifier »**. ✓ *« Propriété vérifiée »*.
+4. **Soumission individuelle des fiches** — GSC → *Inspection d'URL* → coller
+   l'URL d'une fiche → *Tester la diffusion* → **Demander l'indexation**
+   (~10-12 demandes/jour). La liste exhaustive des 113 URLs directes, classées par
+   ventes et par pôle, est maintenue dans
+   **`docs/GSC-SOUMISSION-SERVICES.md`** (régénérer :
+   `bun run scripts/gen-gsc-urls.ts`).
 
-5. **Soumettre le sitemap** — GSC → *Sitemaps* → `https://b2bpro.store/sitemap.xml`
-   → *Envoyer*. ✓ Statut « Réussi », pages découvertes > 0 (montée en charge
-   progressive sur quelques jours).
-
-6. **Suivi** — rapports GSC : **Performances** (requêtes, clics, position),
-   **Couverture** (indexation), **Core Web Vitals**. La présence de `llms.txt` et des
-   crawlers IA autorisés dans `robots.txt` prépare la citation par les IA génératives
-   (GEO/AIO).
+5. **Suivi** — rapports GSC : **Performances** (requêtes, clics, position),
+   **Couverture** (indexation — viser les 113 fiches service en « Indexées »),
+   **Core Web Vitals**. La présence de `llms.txt` et des crawlers IA autorisés
+   dans `robots.txt` prépare la citation par les IA génératives (GEO/AIO).
 
 ---
 
@@ -358,7 +371,8 @@ avant d'annoncer la mise en production :
 | ☐ | 6 | `https://b2bpro.store/sitemap.xml` | Sitemap XML complet (services, pôles, blog, vendeurs) |
 | ☐ | 7 | `https://b2bpro.store/robots.txt` | Crawlers IA autorisés (GPTBot, ClaudeBot, PerplexityBot…) |
 | ☐ | 8 | `https://b2bpro.store/llms.txt` | Sommaire de contenu pour IA |
-| ☐ | 9 | Source de l'accueil | `<meta name="google-site-verification" content="…">` présente |
+| ☐ | 9 | `https://b2bpro.store/googlec5dc6c64480779bb.html` (ou `…vercel.app/…`) | HTTP **200** + contenu `google-site-verification: …` (méthode fichier HTML, §6.2) |
+| ☐ | 9b | Source de l'accueil | `<meta name="google-site-verification" content="…">` présente (si méthode META, §6.2) |
 | ☐ | 10 | GSC | Propriété **vérifiée**, sitemap soumis (Réussi) |
 | ☐ | 11 | Un paiement test (sandbox, puis live à faible montant) | Commande `PAID` + transaction dans le dashboard PayPal |
 | ☐ | 12 | Guard local `bun run guard` | **15 contrôles verts** |
@@ -410,6 +424,7 @@ Réflexe : **snapshot local avant toute manipulation risquée** (charte §1).
 
 | Symptôme | Cause probable | Remède |
 |---|---|---|
+| GSC : *« Votre fichier HTML est introuvable / vérification échouée »* | (a) domaine `b2bpro.store` non encore branché (NXDOMAIN — Google ne peut pas interroger l'URL) ; (b) fichier pas encore déployé sur Vercel | Vérifier `https://b2bpro-store.vercel.app/google…html` → 200 ; brancher le domaine (§2.3) ; patienter la propagation DNS (jusqu'à 48 h) puis re-cliquer « Vérifier » ; en attendant, vérifier la propriété `https://b2bpro-store.vercel.app` avec le même fichier |
 | *« Settings → Domains » introuvable dans Vercel* | Interface Vercel 2025 : **Domains** est une entrée **directe de la barre latérale du projet** (juste sous *Environment Variables*) — l'onglet *Settings* n'existe plus | Ouvrir **Domains** depuis la barre latérale du projet puis suivre §2.3 (bouton *Add*) |
 | Alerte rouge « **Keep This Value Private** » à la création d'une variable `NEXT_PUBLIC_*` | Variable enregistrée en type **Secret** : le préfixe `NEXT_PUBLIC_` expose la valeur au navigateur — Vercel l'avertit (ce n'est pas un refus d'enregistrer) | Cliquer **« Change to Config »** (une URL publique n'est pas un secret), ou renommer en `SITE_URL` sans préfixe (type Secret), ou passer — la variable est optionnelle (défaut codé) |
 | **Toutes les pages affichent la page d'erreur** en production (« An error occurred in the Server Components render ») | `DATABASE_URL` absente ou invalide sur Vercel — le build réussit, mais la base est injoignable à l'exécution | Créer le projet Neon (§1), migrer les données (`db:migrate:neon`), définir `DATABASE_URL` (§3) puis **Redeploy** |
