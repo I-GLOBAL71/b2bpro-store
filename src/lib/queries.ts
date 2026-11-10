@@ -88,12 +88,25 @@ export const getServiceBySlug = cache(async (slug: string) => {
 });
 
 export const getRelatedServices = cache(async (poleSlug: string, excludeId: string, limit = 4) => {
-  return db.service.findMany({
+  // Maillage interne : 3 services du même pôle (comme avant) + 1 best-seller
+  // d'un AUTRE pôle — le plus grand salesCount hors pôle courant, ex æquo
+  // départagés par id asc pour un résultat déterministe (liaison cross-pôle).
+  const samePoleCount = Math.max(1, limit - 1);
+  const samePole = await db.service.findMany({
     where: { poleSlug, id: { not: excludeId } },
-    take: limit,
+    take: samePoleCount,
     orderBy: [{ salesCount: "desc" }],
     include: { seller: { select: { name: true, countryLabel: true } } },
   });
+  const crossPole = await db.service.findFirst({
+    where: {
+      poleSlug: { not: poleSlug },
+      id: { notIn: [excludeId, ...samePole.map((s) => s.id)] },
+    },
+    orderBy: [{ salesCount: "desc" }, { id: "asc" }],
+    include: { seller: { select: { name: true, countryLabel: true } } },
+  });
+  return crossPole ? [...samePole, crossPole] : samePole;
 });
 
 export const getSellerBySlug = cache(async (slug: string) => {

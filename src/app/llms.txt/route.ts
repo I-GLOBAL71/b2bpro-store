@@ -5,12 +5,13 @@ export const dynamic = "force-dynamic";
 
 /** llms.txt — protocole d'accueil des crawlers IA (GEO/AIO). */
 export async function GET() {
-  const [services, posts] = await Promise.all([
+  const [services, posts, sellers] = await Promise.all([
     db.service.findMany({
       select: { slug: true, title: true, shortDesc: true, basePrice: true, deliveryDays: true },
       orderBy: [{ salesCount: "desc" }],
     }),
     db.blogPost.findMany({ select: { slug: true, title: true }, orderBy: [{ publishedAt: "desc" }] }),
+    db.seller.findMany({ select: { slug: true, name: true, countryLabel: true } }),
   ]);
 
   const serviceLines = services
@@ -25,11 +26,17 @@ export async function GET() {
     .map((p) => `- [${p.title}](${SITE.url}/blog/${p.slug})`)
     .join("\n");
 
+  const sellerLines = sellers
+    .map((s) => `- [${s.name}](${SITE.url}/vendeurs/${s.slug}): vendeur vérifié (${s.countryLabel})`)
+    .join("\n");
+
   const txt = `# b2bpro.store
 
 > ${SITE.description}
 
 La place de marché des services digitaux B2B francophones : ${services.length} services livrés par des vendeurs vérifiés notés de 4,2 à 5,0 étoiles, dès 25 €, en 2-3 jours ouvrés, avec paiement séquestré. Support IA 7j/7. Couverture : France, Québec, Belgique, Suisse et Afrique francophone.
+
+Version étendue avec descriptions et FAQ complètes : [llms-full.txt](${SITE.url}/llms-full.txt)
 
 ## Pages essentielles
 
@@ -44,6 +51,10 @@ ${categoryLines}
 ## Services (${services.length} au catalogue)
 
 ${serviceLines}
+
+## Vendeurs vérifiés (${sellers.length})
+
+${sellerLines}
 
 ## Guides et articles
 

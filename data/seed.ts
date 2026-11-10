@@ -21,6 +21,7 @@ import {
 import { generateReviews } from "./gen/reviews";
 import { KNOWLEDGE } from "./gen/knowledge";
 import { generateThumb, generateAvatar } from "./gen/thumbs";
+import { buildHumanizedBundle, REAL_POLE_QUERIES } from "./gen/humanize";
 
 async function main() {
   console.log("→ Lecture du catalogue…");
@@ -75,6 +76,20 @@ async function main() {
   // file d'attente globale pour les vendeurs peu sollicités
   const allSellerSlugs = SELLERS.map((s) => s.slug);
 
+  // [ADDITIF v1.6.0] Contextes de pôle pour la couche d'humanisation — mêmes
+  // générateurs que scripts/humanize-content.ts : un seed neuf produit
+  // EXACTEMENT le format de la base migrée (accroches/H2 variés, mots-clés V2
+  // avec requêtes réelles à fort trafic, FAQ contextuelle).
+  const poleCounts = new Map<string, number>();
+  const poleAllTitles = new Map<string, string[]>();
+  for (const svc of catalog) {
+    const p = resolvePole(svc.pole);
+    poleCounts.set(p.slug, (poleCounts.get(p.slug) ?? 0) + 1);
+    if (!poleAllTitles.has(p.slug)) poleAllTitles.set(p.slug, []);
+    poleAllTitles.get(p.slug)!.push((svc.comeupTitle || svc.name).replace(/^Je vais\s+/, ""));
+  }
+  const poleSeen = new Map<string, number>();
+
   const serviceIds: { id: string; slug: string; rating: number; reviewsCount: number; options: { name: string; priceExtra: number }[]; poleSlug: string; sellerSlug: string; title: string; basePrice: number }[] = [];
 
   let idx = 0;
@@ -115,6 +130,46 @@ async function main() {
     const shortDesc = buildShortDesc(enriched);
     const meta = buildMeta(enriched, keywords);
 
+    // [ADDITIF v1.6.0] Couche d'humanisation par-dessus les builders legacy :
+    // accroches answer-first naturelles, titres H2 variés (pools rotationnels
+    // par hash de slug), mots-clés V2 (primary grammatical + requêtes réelles
+    // des pôles), FAQ autonome contextuelle. Identique à la base migrée.
+    const poleIdx = poleSeen.get(pole.slug) ?? 0;
+    poleSeen.set(pole.slug, poleIdx + 1);
+    const displayTitle = svc.comeupTitle || svc.name;
+    const bundle = buildHumanizedBundle({
+      slug,
+      title: displayTitle,
+      category: svc.category,
+      poleLabel: pole.label,
+      poleSlug: pole.slug,
+      poleIndex: poleIdx,
+      poleCount: poleCounts.get(pole.slug) ?? 1,
+      siblingTitles: (poleAllTitles.get(pole.slug) ?? [])
+        .filter((t) => t !== displayTitle.replace(/^Je vais\s+/, ""))
+        .slice(0, 2),
+      basePrice: svc.basePrice,
+      deliveryDays: svc.deliveryDays,
+      rating: stats.rating,
+      reviewsCount: stats.reviewsCount,
+      salesCount: stats.salesCount,
+      options: svc.options.map((o) => ({ name: o.name, priceExtra: o.priceExtra })),
+      currentDescription: optimizeDescription(enriched, keywords, pole, stats),
+      currentFeatures: features,
+      currentDeliverables: deliverables,
+      currentProcess: process,
+      hotKeywords: pole.hotKeywords,
+      realQueries: REAL_POLE_QUERIES[pole.slug] ?? [],
+      manualKeywords: svc.keywords
+        ? {
+            primary: "",
+            secondary: [svc.keywords.primary, ...svc.keywords.secondary].filter(Boolean),
+            longTail: svc.keywords.longTail,
+            aiQueries: svc.keywords.aiQueries,
+          }
+        : undefined,
+    });
+
     const created = await db.service.create({
       data: {
         slug,
@@ -127,13 +182,13 @@ async function main() {
         poleIcon: pole.icon,
         basePrice: svc.basePrice,
         deliveryDays: svc.deliveryDays,
-        description: optimizeDescription(enriched, keywords, pole, stats),
-        shortDesc,
-        keywords: JSON.stringify(keywords),
-        faq: JSON.stringify(faq),
-        features: JSON.stringify(features),
-        deliverables: JSON.stringify(deliverables),
-        process: JSON.stringify(process),
+        description: bundle.description,
+        shortDesc: bundle.shortDesc,
+        keywords: JSON.stringify(bundle.keywords),
+        faq: JSON.stringify(bundle.faq),
+        features: JSON.stringify(bundle.features),
+        deliverables: JSON.stringify(bundle.deliverables),
+        process: JSON.stringify(bundle.process),
         rating: stats.rating,
         reviewsCount: stats.reviewsCount,
         salesCount: stats.salesCount,

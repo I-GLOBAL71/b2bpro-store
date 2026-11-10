@@ -40,6 +40,76 @@ interface Params {
   slug: string;
 }
 
+/** Longueur cible de la partie titre (le gabarit racine ajoute « | b2bpro.store »). */
+const TITLE_MAX = 65;
+/** Longueur maximale totale de la meta description (cahier SEO). */
+const DESCRIPTION_MAX = 165;
+
+/** Mots vides sur lesquels une fin de titre/description ne doit jamais rester. */
+const DANGLING_WORDS = new Set([
+  "de", "des", "du", "la", "le", "les", "un", "une", "et", "ou", "à", "au", "aux", "en",
+  "pour", "vers", "avec", "sans", "sur", "dans", "par", "que", "qui", "est", "sont",
+  "vos", "votre", "nos", "notre", "leur", "leurs", "plus", "très",
+]);
+
+/** Retire la ponctuation traînante puis les mots vides finaux (coupe propre). */
+function stripDangling(text: string): string {
+  let out = text.trimEnd();
+  while (out.length > 40) {
+    const stripped = out.replace(/[\s,:;—-]+$/, "");
+    const lastWord = stripped.split(/\s+/).pop()?.toLowerCase() ?? "";
+    if (lastWord && DANGLING_WORDS.has(lastWord)) {
+      out = stripped.slice(0, stripped.length - lastWord.length).trimEnd();
+    } else if (stripped !== out) {
+      out = stripped;
+    } else {
+      break;
+    }
+  }
+  return out;
+}
+
+/**
+ * Titre SEO de fiche : « {titre} dès {prix} € » — troncature intelligente :
+ * coupe au dernier espace complet puis nettoie les mots vides finaux, JAMAIS
+ * dans « dès N € », et laisse la place au suffixe « | b2bpro.store » du gabarit.
+ */
+function buildServiceTitle(title: string, basePrice: number): string {
+  const pricePart = ` dès ${basePrice} €`;
+  const rawTitle = title.replace(/^Je vais\s+/i, "");
+  const full = `${rawTitle}${pricePart}`;
+  if (full.length <= TITLE_MAX) return full;
+  // Budget restant pour la seule partie titre — le prix reste intouchable.
+  const budget = Math.max(0, TITLE_MAX - pricePart.length);
+  const window = rawTitle.slice(0, budget);
+  const lastSpace = window.lastIndexOf(" ");
+  const cut = stripDangling(lastSpace > 10 ? window.slice(0, lastSpace) : window);
+  return `${cut}${pricePart}`;
+}
+
+/**
+ * Meta description : shortDesc coupée à la dernière phrase COMPLÈTE tenant
+ * dans le budget, puis suffixe info (livraison, note, paiement) jamais tronqué.
+ * Sans phrase complète dans le budget : coupe au dernier espace, nettoyage des
+ * mots vides et ellipse « … » (jamais de mot coupé, jamais de suffixe coupé).
+ * Total ≤ 165 caractères par construction (budget = 165 − longueur du suffixe).
+ */
+function buildServiceDescription(shortDesc: string, deliveryDays: number, rating: number): string {
+  const info = ` Livré en ${deliveryDays} jours, note ${rating.toString().replace(".", ",")}/5, paiement sécurisé.`;
+  const budget = DESCRIPTION_MAX - info.length;
+  const raw = shortDesc.trim();
+  if (raw.length <= budget) return `${raw}${info}`;
+  // −1 caractère réservé à l'ellipse si aucune phrase complète ne tient.
+  const window = raw.slice(0, budget - 1);
+  // Dernière fin de phrase complète (point/exclamation/question conservé).
+  const sentenceEnd = Math.max(window.lastIndexOf("."), window.lastIndexOf("!"), window.lastIndexOf("?"));
+  if (sentenceEnd >= 40) return `${window.slice(0, sentenceEnd + 1)}${info}`;
+  // Pas de phrase complète : coupe au dernier espace, fin propre + ellipse.
+  const lastSpace = window.lastIndexOf(" ");
+  const body = stripDangling(lastSpace > 0 ? window.slice(0, lastSpace) : window);
+  return `${body}…${info}`;
+}
+
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { slug } = await params;
   const svc = await db.service.findUnique({ where: { slug } });
@@ -48,8 +118,8 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   // Miniature principale : WebP Vercel Blob si migrée, sinon SVG local (résolu via metadataBase).
   const ogImage = parseThumbUrls(svc.thumbUrls)?.[0] ?? `/thumbs/${svc.slug}-1.svg`;
   return {
-    title: `${svc.title.replace(/^Je vais\s+/i, "")} dès ${svc.basePrice} €`.slice(0, 68),
-    description: `${svc.shortDesc.slice(0, 140)} Livré en ${svc.deliveryDays} jours, note ${svc.rating.toString().replace(".", ",")}/5, paiement sécurisé.`.slice(0, 165),
+    title: buildServiceTitle(svc.title, svc.basePrice),
+    description: buildServiceDescription(svc.shortDesc, svc.deliveryDays, svc.rating),
     keywords: [kw.primary, ...kw.secondary.slice(0, 4), "service B2B", "freelance francophone"],
     alternates: { canonical: `/services/${svc.slug}` },
     openGraph: {
@@ -99,6 +169,10 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
       "@type": "Service",
       name: svc.title,
       description: svc.shortDesc,
+      // URL + image canoniques : ancre de citation pour les moteurs de réponse IA.
+      url: `${SITE.url}/services/${svc.slug}`,
+      image: primaryThumb,
+      sameAs: [`${SITE.url}/llms.txt`, `${SITE.url}/services`],
       serviceType: svc.category,
       provider: {
         "@type": "Organization",
@@ -137,6 +211,8 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
         price: svc.basePrice,
         priceCurrency: "EUR",
         availability: "https://schema.org/InStock",
+        // Lien vers la fiche : boucle Offer → Product → page canonique.
+        url: `${SITE.url}/services/${svc.slug}`,
       },
       aggregateRating: {
         "@type": "AggregateRating",
@@ -239,6 +315,10 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
                 noté <strong>{svc.rating.toString().replace(".", ",")}/5</strong> par{" "}
                 {svc.reviewsCount.toLocaleString("fr-FR")} clients. Paiement séquestré, ajustements
                 inclus, support IA 7 j/7.
+              </p>
+              {/* Source canonique : aide les moteurs IA à associer le passage cité à l'URL. */}
+              <p className="mt-2.5 break-all text-[12px] leading-5 text-muted-foreground">
+                {`Page officielle : ${SITE.url}/services/${svc.slug}`}
               </p>
             </div>
 
@@ -521,8 +601,9 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
         {/* Services associés */}
         {related.length > 0 && (
           <section className="mt-16 border-t border-border pt-10" aria-labelledby="related-title">
+            {/* Maillage interne : même pôle + best-seller cross-pôle (voir getRelatedServices). */}
             <h2 id="related-title" className="text-xl font-bold tracking-tight">
-              Services complémentaires dans « {POLE_LABELS[svc.poleSlug]} »
+              Services complémentaires dans « {POLE_LABELS[svc.poleSlug]} » et au-delà
             </h2>
             <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {related.map((r, i) => (

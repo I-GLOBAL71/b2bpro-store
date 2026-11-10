@@ -7,7 +7,7 @@ import { PoleIcon } from "@/components/site/pole-icon";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { getServices, getPolesWithCounts } from "@/lib/queries";
-import { POLE_LABELS, POLE_ICONS, POLE_ACCENTS } from "@/lib/site";
+import { POLE_LABELS, POLE_ICONS, POLE_ACCENTS, SITE } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -70,6 +70,27 @@ export default async function ServicesPage({
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      {/* JSON-LD ItemList : le catalogue citable en un bloc par les moteurs de réponse IA. */}
+      {items.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ItemList",
+              name: "Catalogue des services digitaux B2B",
+              numberOfItems: items.length,
+              itemListElement: items.map((s, i) => ({
+                "@type": "ListItem",
+                position: i + 1,
+                name: s.title,
+                url: `${SITE.url}/services/${s.slug}`,
+              })),
+            }),
+          }}
+        />
+      )}
+
       <nav aria-label="Fil d'ariane" className="text-[13px] text-muted-foreground">
         <Link href="/" className="hover:text-primary hover:underline">Accueil</Link>
         <span className="mx-2">/</span>
