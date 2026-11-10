@@ -7,6 +7,39 @@
 
 ---
 
+## [1.8.1] — 2026-11-10 — Échec de déploiement v1.8.0 « Integration provisioning » : diagnostic + procédure (docs)
+
+Mandat : trois déploiements production consécutifs en échec (3caf1b5 · 3a14d8a · e244dc2),
+chacun avec « Integration provisioning error — Resource provisioning timed out ».
+
+### Diagnostic (rien à corriger côté dépôt)
+- L'échec survient **avant** « Installing/Building » : Vercel provisionne les ressources des
+  intégrations attachées au projet (Storage / marketplace) et l'une d'elles expire — ni le
+  code, ni GitHub, ni le contenu v1.8.0 ne sont en cause (e244dc2 est un commit vide de
+  changement, même échec). Suspect le plus probable : intégration **Neon** connectée au
+  projet pendant la phase de migration v1.8.0 — superflue car `DATABASE_URL` (§3 du runbook)
+  pointe déjà manuellement sur la base réelle.
+- Production **inchangée** : apex 200 · www 308 · llms.txt 200 · sitemap 200 · fichier GSC
+  200 — le dernier déploiement vert (v1.7.0) sert toujours le site, les soumissions GSC ne
+  sont pas affectées.
+- Base **Neon vérifiée en lecture seule** : 113 services · 33 vendeurs · 1 319 avis ·
+  12 articles, 0 cadratin résiduel dans les 12 articles — le contenu humanisé v1.8.0 est
+  migré et prêt, aucune action de données requise.
+- Code **sain** : `bun run lint` 0 erreur ; aucune nouvelle erreur de typage introduite par
+  v1.8.0 (erreurs `tsc` résiduelles toutes pré-existantes dans des fichiers non-contraints,
+  build tolérant déjà en place — `typescript.ignoreBuildErrors` — pour les déploiements verts
+  v1.5 → v1.7).
+
+### [ADDITIF] Runbook §9 — ligne « Déploiement échoue avant le build »
+- Procédure en 4 pas (test Redeploy → retrait de l'intégration superflue depuis
+  *Storage*/*Integrations* → vérification `DATABASE_URL`/`BLOB_READ_WRITE_TOKEN` →
+  Redeploy final), garde-fous : conserver le store Blob (miniatures), ne rien supprimer
+  dans la console Neon, ne pas toucher aux domaines.
+- Commit préparé **sans poussée immédiate** (ne pas déclencher un 4e échec avant le retrait
+  de l'intégration) ; poussé après confirmation du déploiement vert.
+
+---
+
 ## [1.8.0] — 2026-11-10 — Tour d'experts anti-traces d'IA : la voix remise au propre
 
 Mandat utilisateur : déployer tous les experts pour vérifier profondément que chaque service
