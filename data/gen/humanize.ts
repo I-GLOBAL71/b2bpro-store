@@ -1498,7 +1498,7 @@ export function humanizeFaq(ctx: HumanizeInput, kw: ServiceKeywords, features: s
 
   // phrase options (réelles) pour Q2 — 3 cadres de phrase
   const opts = ctx.options.slice(0, 2);
-  const optsFrames: string[] = [
+  const optsFrames: ((n1: string, p1: number, n2: string, p2: number) => string)[] = [
     (n1: string, p1: number, n2: string, p2: number) =>
       ` Les options les plus demandées : « ${n1} » (+${p1} €) et « ${n2} » (+${p2} €).`,
     (n1: string, p1: number, n2: string, p2: number) =>
