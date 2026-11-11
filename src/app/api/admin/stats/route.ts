@@ -19,6 +19,25 @@ async function probeAuthTable(count: Promise<number>): Promise<AuthTableHealth> 
   }
 }
 
+/**
+ * Sonde « Account » RENFORCÉE : reproduit EXACTEMENT l'appel getUserByAccount
+ * de l'adaptateur NextAuth (l'interpolation provider_providerAccountId exige
+ * l'index unique @@unique([provider, providerAccountId]) — le défaut qui a fait
+ * échouer toute connexion Google en ?error=Callback avant v2.1.3). Si cette
+ * sonde est verte, le rappel Google trouvera ses marques ; si elle échoue,
+ * l'index manque encore → Redeploy (le rattrapage DDL du build le crée).
+ */
+async function probeAccountLinking(): Promise<AuthTableHealth> {
+  try {
+    await db.account.findUnique({
+      where: { provider_providerAccountId: { provider: "probe", providerAccountId: "probe" } },
+    });
+    return { ok: true, count: await db.account.count() };
+  } catch {
+    return { ok: false, count: -1 };
+  }
+}
+
 export async function GET() {
   const denied = await ensureAdmin();
   if (denied) return denied;
@@ -44,7 +63,7 @@ export async function GET() {
     // pas casser l'affichage du tableau de bord qui la signale justement).
     const [users, accounts, sessions, verificationTokens] = await Promise.all([
       probeAuthTable(db.user.count()),
-      probeAuthTable(db.account.count()),
+      probeAccountLinking(),
       probeAuthTable(db.session.count()),
       probeAuthTable(db.verificationToken.count()),
     ]);
