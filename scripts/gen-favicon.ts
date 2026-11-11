@@ -13,8 +13,6 @@
  *
  * Sources : SVG vectoriels rendus via sharp (librsvg) à haute densité puis
  * redimensionnés Lanczos — traits et dégradés exacts à toutes les tailles.
- * Le favicon « Z » (environnement de développement, public/favicon-z.svg)
- * reste vectoriel : aucun fichier dérivé n'est nécessaire.
  */
 import sharp from "sharp";
 
