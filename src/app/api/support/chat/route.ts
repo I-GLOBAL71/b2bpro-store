@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import ZAI from "z-ai-web-dev-sdk";
 import { db } from "@/lib/db";
+import { generateChatReply, type ChatProviderMessage } from "@/lib/ai-provider";
 
 function norm(s: string): string {
   return s
@@ -114,6 +114,29 @@ function buildSystemPrompt(nbServices: number, nbPoles: number): string {
 Quand tu recommandes un service : « [nom du service](/services/slug) » — le nom doit être explicite et le slug exact.`;
 }
 
+/** Réponse de repli déterministe (v1.10.1) : DeepSeek ET z-ai injoignables →
+ *  recommandations réellement issues de la base (matching lexical déjà calculé),
+ *  zéro invention — le conseiller IA ne laisse jamais une question sans réponse. */
+function buildLocalSupportReply(
+  question: string,
+  services: { slug: string; title: string; basePrice: number; deliveryDays: number; rating: number }[],
+  catalog: { services: number; poles: number }
+): string {
+  const intro = "Voici ce que je vous propose d'explorer sans plus attendre :";
+  if (services.length > 0) {
+    const recos = services.slice(0, 2).map((s) => {
+      const prix = s.basePrice.toString().replace(".", ",");
+      const note = s.rating.toString().replace(".", ",");
+      return `« ${s.title} » — ${prix} €, livré en ${s.deliveryDays} j, noté ${note}/5 (/services/${s.slug})`;
+    });
+    return `${intro} ${recos.join(" ; ")}. Chaque prestation est protégée par le paiement séquestré (vous validez avant le déblocage des fonds) et les ajustements restent gratuits jusqu'au résultat conforme. Vous pouvez aussi parcourir nos ${catalog.services} services répartis en ${catalog.poles} pôles — ou me préciser votre besoin ("${question.slice(0, 80)}…") pour affiner.`;
+  }
+  return `Merci pour votre demande — pour y répondre au mieux, parcourez le catalogue (/services, ${catalog.services} services en ${catalog.poles} pôles d'expertise) ou décrivez-moi précisément votre objectif. Rappel : paiement séquestré, ajustements gratuits jusqu'à validation, remboursement intégral si non conforme, et l'équipe humaine répond sous 4 h.`;
+}
+
+// Vercel : marge pour la chaîne complète DeepSeek → repli (défaut ~10 s trop court).
+export const maxDuration = 30;
+
 export async function POST(req: NextRequest) {
   try {
     const { email, history = [] } = await req.json();
@@ -161,18 +184,26 @@ export async function POST(req: NextRequest) {
       content: String(m.content).slice(0, 1500),
     }));
 
-    const zai = await ZAI.create();
-    const completion = await zai.chat.completions.create({
-      messages: [
-        { role: "assistant", content: buildSystemPrompt(catalog.services, catalog.poles) },
-        { role: "assistant", content: contextBlock },
-        ...trimmed,
-      ],
-      thinking: { type: "disabled" },
-    });
+    // Fournisseur robuste : DeepSeek → z-ai → repli local déterministe (jamais 500).
+    const providerMessages: ChatProviderMessage[] = [
+      { role: "system", content: `${buildSystemPrompt(catalog.services, catalog.poles)}\n\n${contextBlock}` },
+      ...trimmed.map((m: { role: string; content: string }) => ({
+        role: (m.role === "user" ? "user" : "assistant") as "user" | "assistant",
+        content: m.content,
+      })),
+    ];
 
-    const reply = completion.choices[0]?.message?.content?.trim();
-    if (!reply) throw new Error("Réponse vide du modèle");
+    const { reply: llmReply, error } = await generateChatReply(providerMessages, {
+      temperature: 0.7,
+      maxTokens: 700,
+    });
+    const reply = llmReply ?? buildLocalSupportReply(question, services, catalog);
+    if (llmReply === null) {
+      console.warn(
+        "[support/chat] Fournisseurs LLM indisponibles — repli local déterministe. Dernier échec :",
+        error ?? "(aucun détail)"
+      );
+    }
 
     // Sauvegarde des messages
     await db.chatMessage.createMany({

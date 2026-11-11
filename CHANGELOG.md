@@ -7,6 +7,69 @@
 
 ---
 
+## [1.10.1] — 2026-11-11 — Correctif de production : le chat IA ne renvoie plus jamais d'erreur 500
+
+Défaut constaté par l'utilisateur : `POST /api/service-chat` renvoyait **500** en
+production (Vercel) malgré l'ajout de la clé DeepSeek et un redéploiement.
+
+### [CORRECTIF] — Cause racine de l'erreur 500
+- `ZAI.create()` (SDK z-ai-web-dev-sdk) lit sa configuration depuis un FICHIER
+  `.z-ai-config` (cwd / home / /etc) — **aucune variable d'environnement**. Ce
+  fichier n'existe que dans l'environnement de développement : sur Vercel,
+  `ZAI.create()` lève TOUJOURS « Configuration file not found ».
+- Enchaînement fatal : appel DeepSeek en échec (clé absente, mal nommée, mal
+  collée, invalide, solde insuffisant…) → repli z-ai → exception z-ai non
+  interceptée dans `generateChatReply` (v1.10.0) → catch de la route → 500.
+
+### [FORCE MAJEURE] — `src/lib/ai-provider.ts` : chaîne incassable
+- `generateChatReply` ne lève **jamais** d'exception : DeepSeek puis z-ai sont
+  chacun enveloppés ; si les deux échouent, la fonction renvoie
+  `{ reply: null, provider: "indisponible", error }` — l'appelant sert son
+  propre repli déterministe. Chaque échec est journalisé (`console.error`) et
+  mémorisé pour le diagnostic.
+- Timeout DeepSeek resserré à **12 s** (l'ancien 30 s pouvait dépasser la limite
+  des fonctions Vercel et provoquer un 500 de plateforme avant le repli).
+- Nouveau `getChatProviderDiagnostics()` : présence/format de la clé DeepSeek,
+  modèle, disponibilité z-ai — **aucun secret divulgué** (booléens uniquement).
+- Nouveau `pingDeepSeek()` : vérification LIVE de la clé (1 token consommé) —
+  distingue clé invalide (401), solde insuffisant (402), réseau bloqué.
+
+### [FORCE MAJEURE] — `POST /api/service-chat` : plus jamais de 500 au visiteur
+- Si DeepSeek ET z-ai sont tous deux injoignables, la route répond **200** avec
+  une réponse locale **déterministe** construite sur les chiffres exacts de la
+  fiche : FAQ de la fiche d'abord (réponse vérifiée), puis matching lexical par
+  intention (prix, délais, inclus/livrables, garanties, options, vendeur), puis
+  réponse générique orientée gains — persona identique au prompt système
+  (convivial, rassurant, bref, gain chiffré, invitation douce), zéro invention.
+- `export const maxDuration = 30` : marge Vercel pour la chaîne complète
+  DeepSeek → repli (le défaut ~10 s coupait la route avant la fin du repli).
+- **Nouveau GET /api/service-chat** : diagnostic public de configuration
+  (`diagnostics.deepseek.keyPresent`, `keyFormatOk`, `model`, z-ai…) +
+  `?ping=1` pour tester la clé DeepSeek en direct — permet de qualifier en dix
+  secondes une panne de production (nom d'environnement, collé de clé, solde).
+
+### [FORCE MAJEURE] — `POST /api/support/chat` : même durcissement
+- Même défaut de production (appel z-ai direct, sans repli) : migré vers
+  `generateChatReply` (DeepSeek → z-ai → repli local déterministe recommandant
+  les services du matching lexical déjà calculé) + `maxDuration = 30`.
+
+### [CORRECTIF] — 404 /favicon.ico (console du navigateur)
+- `src/app/favicon.ico` (conteneur ICO valide embarquant un PNG 32 px du logo)
+  + `src/app/icon.png` (192 px, convention app router) générés via sharp à
+  partir de `public/logo.svg` — le navigateur ne demande plus un favicon absent.
+
+### [DONNÉES/DOC]
+- `.env.example` : section « Chat IA » réécrite — nom EXACT de la variable,
+  environnement **Production** (pas Preview) + Redeploy obligatoire, lecture
+  des codes du ping, chaîne de repli v1.10.1 documentée.
+
+> Procédure de qualification en production : GET `https://b2bpro.store/api/service-chat`
+> (`keyPresent: false` → variable absente/mal nommée/mal scopée) puis
+> `?ping=1` (`401` → clé invalide · `402` → solde DeepSeek insuffisant ·
+> `200` → opérationnelle). Après correction Vercel, **Redeploy** est requis.
+
+---
+
 ## [1.10.0] — 2026-11-11 — Chat IA flottant par service : l'assistant du vendeur (DeepSeek)
 
 Mandat utilisateur : une fonctionnalité robuste de réponse par l'IA alimentée par l'API
