@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "buildCommand": "bunx prisma generate --schema prisma/schema.postgres.prisma && next build",
+  "buildCommand": "bun scripts/ensure-neon-schema.ts && bunx prisma generate --schema prisma/schema.postgres.prisma && next build",
   "installCommand": "bun install"
 }
