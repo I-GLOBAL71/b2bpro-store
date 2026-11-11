@@ -7,6 +7,46 @@
 
 ---
 
+## [2.1.0] — 2026-11-12 — Authentification imposée à la finalisation de commande
+
+> Faisait suite au constat client : « j'ai pu finaliser une commande sans que
+> l'authentification ne me soit imposée ». Déployée APRÈS la réparation de
+> l'auth en production (v2.0.2 : tables Neon créées au build Vercel) — jamais
+> l'inverse, pour ne pas fermer la porte sans avoir la clé.
+
+### [FORCE MAJEURE] — La commande exige un client connecté (serveur-autoritaire)
+- `src/lib/auth.ts` — `isAuthRequiredForOrders()` : true dès que l'auth est
+  configurée sur l'environnement (Google ou lien magique). Escape hatch de
+  test : `ORDER_ALLOW_GUEST=true` rétablit les commandes invité SUR CET
+  environnement uniquement.
+- `POST /api/orders` et `POST /api/paypal/create-order` : session exigée
+  AVANT toute logique — sans session → **401** avec message FR actionnable.
+  L'email du lead devient l'email de **SESSION** (identité vérifiée par Google
+  ou par clic sur le lien email) : plus d'email fantôme saisi à main levée,
+  plus de lead impossible à tracer. Le nom de session prime pareillement.
+- Justification : traçabilité des commandes + protection séquestre (on ne
+  séquestre que des paiements dont on connaît le propriétaire) + suivi
+  garanti dans `/account`.
+
+### [ADDITIF] — Panneau « connexion requise » dans le tunnel (face UI du garde)
+- `order-dock.tsx` : à l'étape coordonnées, si session absente, le formulaire
+  est remplacé par un panneau « Une connexion protège votre commande » (bouton
+  → dialogue de connexion empilé, sélection conservée, retour arrière vers
+  les options). Garde local doublon dans `placeOrder`/`goToPayment`.
+- `auth-menu.tsx` : `SignInDialog` exporté (réutilisé par le tunnel).
+
+### [CORRECTIF] — Diagnostic/production
+- `scripts/ensure-neon-schema.ts` + `vercel.json` : le schéma Postgres est
+  appliqué à Neon au DÉBUT de chaque build Vercel (idempotent, sans
+  `--accept-data-loss`, échec non bloquant, réveil P1001 ×3) — répare
+  l'oubli historique qui cassait `/api/auth/signin/email` (500) et le
+  callback Google en production.
+- `command.tsx` : `DialogHeader` (titre + description sr-only) déplacé DANS
+  `DialogContent` — Radix lie enfin `aria-describedby` (fin du warning
+  « Missing Description for DialogContent »).
+
+---
+
 ## [2.0.0] — 2026-11-11 — Commande persistante, tunnel à options, authentification Google + email
 
 ### [ADDITIF] — Barre de commande persistante sur les fiches service

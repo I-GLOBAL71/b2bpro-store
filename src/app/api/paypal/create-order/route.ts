@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions, isAuthRequiredForOrders } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getPayPalConfig } from "@/lib/env";
 import { createPayPalOrder, PayPalError } from "@/lib/paypal";
@@ -11,16 +13,38 @@ import {
  * POST /api/paypal/create-order
  *
  * Crée la commande PayPal (intent CAPTURE) pour un service + options choisies.
+ *   • v2.1.0 — Gating d'authentification : dès que l'auth est configurée sur
+ *     l'environnement, une SESSION est exigée AVANT toute logique — l'email
+ *     du lead devient l'email de SESSION (identité vérifiée, serveur-
+ *     autoritaire ; le champ email du corps est ignoré). Sans session → 401.
+ *     Escape hatch : ORDER_ALLOW_GUEST=true (env de test uniquement).
  *   • Le montant est TOUJOURS recalculé serveur depuis la base — le client ne
  *     transmet AUCUN total (différence assumée avec /api/orders, qui vérifie
  *     un total transmis : ici, source d'autorité unique = serveur).
  *   • Persiste une commande locale `Order` (paymentStatus CREATED) reliée au
  *     lead, avec slugs/titres dénormalisés (traçabilité SEO).
  *   • Réponses : 200 {paypalOrderId, reference, total, currency} · 400 payload
- *     invalide · 404 service inconnu · 503 PayPal non configuré · 502 erreur
- *     API PayPal · 500 erreur serveur.
+ *     invalide · 401 non connecté · 404 service inconnu · 503 PayPal non
+ *     configuré · 502 erreur API PayPal · 500 erreur serveur.
  */
 export async function POST(req: NextRequest) {
+  // ── Auth exigée ? Identité serveur-autoritaire (v2.1.0) — AVANT tout ──────
+  const requireAuth = isAuthRequiredForOrders();
+  const session = requireAuth ? await getServerSession(authOptions) : null;
+  const sessionEmail =
+    (typeof session?.user?.email === "string"
+      ? session.user.email.toLowerCase().trim()
+      : "") || null;
+  if (requireAuth && !sessionEmail) {
+    return NextResponse.json(
+      {
+        error:
+          "Connexion requise pour finaliser votre paiement. Identifiez-vous (Google ou lien email) puis reprenez votre panier — aucun montant n'a été débité.",
+      },
+      { status: 401 }
+    );
+  }
+
   const cfg = getPayPalConfig();
   if (!cfg.enabled) {
     return NextResponse.json(
@@ -34,7 +58,10 @@ export async function POST(req: NextRequest) {
     if (!parsed.success) {
       return NextResponse.json({ error: "Requête invalide" }, { status: 400 });
     }
-    const { email, name, brief, serviceId, optionIds } = parsed.data;
+    const { email: bodyEmail, name, brief, serviceId, optionIds } = parsed.data;
+    // Identité serveur-autoritaire : email (et nom) de session si connecté.
+    const email = sessionEmail ?? bodyEmail;
+    const effName = session?.user?.name ?? name;
 
     // ── Autorité serveur : service + options + total recalculé ──────────────
     const service = await db.service.findUnique({
@@ -53,10 +80,10 @@ export async function POST(req: NextRequest) {
     // ── Lead (même logique que /api/orders : upsert par email) ─────────────
     const lead = await db.lead.upsert({
       where: { email: email.toLowerCase().trim() },
-      update: name ? { name } : {},
+      update: {},
       create: {
         email: email.toLowerCase().trim(),
-        name: typeof name === "string" && name ? name : null,
+        name: typeof effName === "string" && effName ? effName : null,
         source: "commande",
       },
     });

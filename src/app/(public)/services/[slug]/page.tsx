@@ -22,6 +22,7 @@ import {
 import { db } from "@/lib/db";
 import { getServiceBySlug, getRelatedServices } from "@/lib/queries";
 import { getPayPalConfig } from "@/lib/env";
+import { getAuthProvidersStatus, isAuthRequiredForOrders } from "@/lib/auth";
 import { parseThumbUrls } from "@/lib/contracts";
 import { ServiceGallery } from "@/components/site/service-gallery";
 import { OptionSelector } from "@/components/site/option-selector";
@@ -203,6 +204,13 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
   const payPal = payPalCfg.enabled
     ? { clientId: payPalCfg.clientId, currency: payPalCfg.currency }
     : undefined;
+
+  // v2.1.0 — Finalisation protégée : la commande exige un client connecté dès
+  // que l'auth est configurée sur l'environnement (le serveur refuse tout POST
+  // invité par 401 — ce prop pilote la face UI du garde, l'escape hatch
+  // ORDER_ALLOW_GUEST=true reste disponible pour les tests).
+  const authStatus = getAuthProvidersStatus();
+  const requireAuth = isAuthRequiredForOrders();
 
   // Répartition des notes
   const dist = [5, 4.5, 4, 3.5, 3].map((star) => {
@@ -746,6 +754,9 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
             monthly: o.monthly,
           }))}
           payPal={payPal}
+          requireAuth={requireAuth}
+          googleEnabled={authStatus.google}
+          emailEnabled={authStatus.email}
         />
       </div>
 

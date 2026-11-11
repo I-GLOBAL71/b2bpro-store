@@ -58,8 +58,10 @@ function GoogleGlyph() {
 // ═══════════════════════════════════════════════════════════════════════════
 //  Dialogue de connexion — Google (1 clic) ou lien magique email (zéro mot
 //  de passe). Aucune friction : pas d'inscription, pas de formulaire long.
+//  Exporté depuis v2.1.0 : réutilisé par le tunnel de commande (OrderDock)
+//  quand la finalisation exige un client connecté.
 // ═══════════════════════════════════════════════════════════════════════════
-function SignInDialog({
+export function SignInDialog({
   open,
   onOpenChange,
   googleEnabled,

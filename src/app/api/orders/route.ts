@@ -1,21 +1,42 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions, isAuthRequiredForOrders } from "@/lib/auth";
 import { db } from "@/lib/db";
 
-/** Enregistre une commande (lead + récapitulatif). Le paiement réel est simulé côté front. */
+/**
+ * Enregistre une commande (lead + récapitulatif). Le paiement réel est simulé côté front.
+ *
+ * v2.1.0 — Gating d'authentification : dès que l'auth est configurée (Google/
+ * lien magique) sur cet environnement, la finalisation EXIGE une session ;
+ * l'email du lead est alors l'email de SESSION (identité vérifiée, serveur-
+ * autoritaire — le champ email du corps est ignoré). Sans session → 401.
+ * Escape hatch : ORDER_ALLOW_GUEST=true (env) rétablit les commandes invité.
+ */
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const {
-      email,
-      name,
-      brief,
-      serviceId,
-      serviceSlug,
-      serviceTitle,
-      optionIds = [],
-      total,
-    } = body;
+    // ── Auth exigée ? Identité serveur-autoritaire (v2.1.0) — garde serveur ────
+    const requireAuth = isAuthRequiredForOrders();
+    const session = requireAuth ? await getServerSession(authOptions) : null;
+    const sessionEmail =
+      (typeof session?.user?.email === "string"
+        ? session.user.email.toLowerCase().trim()
+        : "") || null;
+    if (requireAuth && !sessionEmail) {
+      return NextResponse.json(
+        {
+          error:
+            "Connexion requise pour finaliser une commande. Identifiez-vous (Google ou lien email) puis reprenez votre panier — votre sélection est conservée.",
+        },
+        { status: 401 }
+      );
+    }
 
+    const body = await req.json();
+    const { name, brief, serviceId, serviceSlug, serviceTitle, optionIds = [], total } = body;
+
+    // Email du lead : identité de session si commande connectée ; sinon email
+    // saisi (mode invité explicite — ORDER_ALLOW_GUEST=true uniquement).
+    const email = sessionEmail ?? (typeof body.email === "string" ? body.email : "");
     if (typeof email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json({ error: "Email invalide" }, { status: 400 });
     }
@@ -35,7 +56,7 @@ export async function POST(req: NextRequest) {
 
     const lead = await db.lead.upsert({
       where: { email: email.toLowerCase().trim() },
-      update: name ? { name } : {},
+      update: {},
       create: {
         email: email.toLowerCase().trim(),
         name: typeof name === "string" && name ? name : null,

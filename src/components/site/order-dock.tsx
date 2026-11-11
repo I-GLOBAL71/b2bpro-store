@@ -9,6 +9,7 @@ import {
   Clock,
   CreditCard,
   Lock,
+  LogIn,
   PackageCheck,
   ShieldCheck,
   ShoppingCart,
@@ -30,6 +31,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { API_ROUTES, type OptionDTO, type PayPalClientConfig } from "@/lib/contracts";
 import { useOrderStore } from "@/lib/order-store";
+import { SignInDialog } from "@/components/site/auth-menu";
 
 function fmt(n: number) {
   return `${n.toLocaleString("fr-FR")} €`;
@@ -71,6 +73,11 @@ export interface OrderDockProps {
   options: OptionDTO[];
   /** Configuration PayPal (clientId public + devise) — absente = mode démo. */
   payPal?: PayPalClientConfig;
+  /** v2.1.0 : la finalisation exige un client connecté (décidé par la page serveur). */
+  requireAuth?: boolean;
+  /** Méthodes de connexion disponibles (pour le panneau « connexion requise »). */
+  googleEnabled?: boolean;
+  emailEnabled?: boolean;
 }
 
 /**
@@ -101,6 +108,9 @@ export function OrderDock({
   baseDays,
   options,
   payPal,
+  requireAuth = false,
+  googleEnabled = false,
+  emailEnabled = false,
 }: OrderDockProps) {
   // ── État partagé (carte latérale ↔ dock ↔ tunnel) ──
   const selectedIds = useOrderStore((s) => s.selectedIds);
@@ -125,10 +135,16 @@ export function OrderDock({
   const [paid, setPaid] = useState<{ reference: string; total: number; payerEmail: string | null } | null>(null);
   const paypalContainerRef = useRef<HTMLDivElement>(null);
 
-  // ── Session : préremplissage sans friction ──
+  // ── Session : préremplissage sans friction (et AUTH exigée si requireAuth) ──
   const { data: session } = useSession();
   const sessionEmail = session?.user?.email ?? null;
   const sessionName = session?.user?.name ?? null;
+
+  // v2.1.0 — Panneau « connexion requise » empilé sur le tunnel (session absente).
+  const [authOpen, setAuthOpen] = useState(false);
+
+  /** Gating local : la finalisation est-elle bloquée par l'absence de session ? */
+  const authGate = requireAuth && !sessionEmail;
 
   // Changement de fiche → sélection et tunnel remis à zéro.
   useEffect(() => {
@@ -183,9 +199,16 @@ export function OrderDock({
     setStep("form");
   }
 
-  // ── Voie démo historique (POST /api/orders) — strictement inchangée ──
+  // ── Voie démo historique (POST /api/orders) — strictement inchangée, à
+  // ceci près que le serveur exige une session quand l'auth est configurée
+  // (v2.1.0) : le garde local évite même la tentative. ──
   async function placeOrder(e: React.FormEvent) {
     e.preventDefault();
+    if (authGate) {
+      setAuthOpen(true);
+      toast.info("Connectez-vous pour finaliser votre commande — 30 secondes suffisent.");
+      return;
+    }
     const effEmail = sessionEmail ?? email;
     if (!effEmail || !effEmail.includes("@")) {
       toast.error("Veuillez saisir un email valide pour recevoir votre commande.");
@@ -221,6 +244,11 @@ export function OrderDock({
   // ── Étape coordonnées → paiement PayPal ──
   function goToPayment(e: React.FormEvent) {
     e.preventDefault();
+    if (authGate) {
+      setAuthOpen(true);
+      toast.info("Connectez-vous pour finaliser votre paiement — 30 secondes suffisent.");
+      return;
+    }
     const effEmail = sessionEmail ?? email;
     if (!effEmail || !effEmail.includes("@")) {
       toast.error("Veuillez saisir un email valide pour recevoir votre commande.");
@@ -395,9 +423,11 @@ export function OrderDock({
               {step === "options"
                 ? "Composez votre commande"
                 : step === "form"
-                  ? payPal
-                    ? "Vos coordonnées"
-                    : "Finaliser votre commande"
+                  ? authGate
+                    ? "Connexion requise"
+                    : payPal
+                      ? "Vos coordonnées"
+                      : "Finaliser votre commande"
                   : step === "payment"
                     ? "Paiement sécurisé PayPal"
                     : paid
@@ -606,6 +636,54 @@ export function OrderDock({
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
                 Modifier mes options
               </Button>
+            </div>
+          ) : authGate ? (
+            /* ── Étape 2 GELÉE (v2.1.0) : la finalisation exige un client connecté.
+               Le formulaire de coordonnées est remplacé par un panneau de
+               connexion — le serveur refuse de toute façon un POST invité
+               (401) : ce panneau n'est que la face lisible du garde. ── */
+            <div className="mt-3 space-y-4">
+              <div className="rounded-xl border-2 border-primary/50 bg-accent/30 p-5 text-center">
+                <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-full bg-primary/15 text-primary">
+                  <UserCheck className="h-5.5 w-5.5" aria-hidden="true" />
+                </span>
+                <p className="mt-2.5 text-[15px] font-bold">
+                  Une connexion protège votre commande
+                </p>
+                <p className="mt-1.5 text-[13px] leading-6 text-muted-foreground">
+                  Google ou un simple lien email : 30 secondes. Vos coordonnées
+                  seront préremplies, votre paiement séquestré jusqu'à
+                  validation du livrable, et votre suivi garanti dans votre
+                  espace « Mes commandes ».
+                </p>
+                <Button
+                  type="button"
+                  onClick={() => setAuthOpen(true)}
+                  className="mt-4 h-11 w-full gap-2 rounded-full bg-gradient-to-r from-primary to-emerald-500 text-[14.5px] font-bold text-white"
+                >
+                  <LogIn className="h-4.5 w-4.5" aria-hidden="true" />
+                  Se connecter pour finaliser
+                </Button>
+                <p className="mt-2 text-center text-[11.5px] text-muted-foreground">
+                  Votre sélection ({fmt(total)}) est conservée pendant la connexion.
+                </p>
+              </div>
+              <Button
+                type="button"
+                variant="ghost"
+                className="h-9 w-full gap-1.5 text-[13px] text-muted-foreground"
+                onClick={() => setStep("options")}
+              >
+                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                Revoir mes options
+              </Button>
+              {/* Dialogue de connexion empilé (composant partagé du header) */}
+              <SignInDialog
+                open={authOpen}
+                onOpenChange={setAuthOpen}
+                googleEnabled={googleEnabled}
+                emailEnabled={emailEnabled}
+              />
             </div>
           ) : (
             /* ── Étape 2 : coordonnées (PayPal) / formulaire unique (démo) ── */

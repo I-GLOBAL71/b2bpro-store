@@ -60,6 +60,27 @@ export function getAuthProvidersStatus() {
   };
 }
 
+/**
+ * v2.1.0 — La finalisation d'une commande EXIGE un client connecté dès que
+ * l'authentification est configurée (Google ou lien magique email).
+ *
+ *   • Serveur-autorité : l'email de SESSION devient l'identité du lead (vérifié
+ *     par Google ou par clic sur le lien email) — plus d'email fantôme saisi
+ *     à main levée, plus de commande « anonyme » impossible à tracer.
+ *   • Front : le tunnel de commande remplace le formulaire par un panneau
+ *     « connexion requise » tant que la session est absente.
+ *
+ * Escape hatch (environnement de test uniquement) : ORDER_ALLOW_GUEST=true
+ * rétablit les commandes invité SUR CET ENVIRONNEMENT — sans jamais toucher
+ * aux autres déploiements.
+ */
+export function isAuthRequiredForOrders(): boolean {
+  if (process.env.ORDER_ALLOW_GUEST?.trim().toLowerCase() === "true") {
+    return false;
+  }
+  return isGoogleAuthConfigured() || isEmailAuthAvailable();
+}
+
 // ─── Lien magique : envoi réel via SMTP, ou trace console en dev ────────────
 
 /** Expéditeur lisible : « b2bpro.store » en face du compte Gmail configuré. */
