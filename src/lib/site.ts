@@ -88,7 +88,7 @@ export function buildAnswerFirst(input: {
   const keyword = input.primaryKeyword.trim() || "ce service";
   const days = `${input.deliveryDays} jour${input.deliveryDays > 1 ? "s" : ""} ouvré${input.deliveryDays > 1 ? "s" : ""}`;
   const rating = input.rating.toString().replace(".", ",");
-  return `Pour ${keyword}, comptez ${formatPrice(input.basePrice)} et une livraison en ${days} sur b2bpro.store, par un expert francophone vérifié (${input.sellerName}) noté ${rating}/5 sur ${input.reviewsCount.toLocaleString("fr-FR")} avis clients. Le paiement n'est libéré qu'après votre validation du livrable.`;
+  return `Pour ${keyword}, comptez ${formatPrice(input.basePrice)} et une livraison en ${days} sur b2bpro.store, par un expert francophone vérifié (${input.sellerName}) noté ${rating}/5 sur ${input.reviewsCount.toLocaleString("fr-FR")} avis clients. Le paiement se fait à la commande, mais les fonds restent séquestrés : ils ne sont transmis au vendeur qu'après votre validation du livrable.`;
 }
 
 export const POLE_ACCENTS: Record<string, { hue: [string, string]; accent: string }> = {

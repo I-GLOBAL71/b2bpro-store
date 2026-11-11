@@ -21,6 +21,7 @@
     "migrate:elite": "bun run scripts/migrate-elite-seo.ts",
     "add:blog": "bun run scripts/add-blog.ts",
     "migrate:content-v12": "bun run scripts/migrate-content-v12.ts",
+    "migrate:content-v13": "bun run scripts/migrate-content-v13.ts",
     "db:snapshot": "bun run scripts/db-snapshot.ts",
     "db:restore": "bun run scripts/db-restore.ts",
     "add:service": "bun run scripts/add-service.ts",

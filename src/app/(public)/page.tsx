@@ -106,9 +106,10 @@ export default async function HomePage() {
             Afrique francophone. Chaque service (veille des prix concurrents, génération de leads
             B2B, préparation de bases de connaissances IA, audit SEO local) démarre à{" "}
             <strong>25 €</strong>, est livré en <strong>2 à 3 jours ouvrés</strong> et bénéficie du
-            paiement séquestré : le client ne valide le paiement qu'après réception conforme du
-            livrable. Note moyenne constatée : <strong>{stats.avgRating.toString().replace(".", ",")}/5</strong>{" "}
-            sur {stats.reviews.toLocaleString("fr-FR")} avis clients.
+            paiement séquestré : le client règle à la commande, mais les fonds ne sont libérés au
+            vendeur qu'après réception et validation conforme du livrable. Note moyenne constatée :{" "}
+            <strong>{stats.avgRating.toString().replace(".", ",")}/5</strong> sur{" "}
+            {stats.reviews.toLocaleString("fr-FR")} avis clients.
           </p>
         </div>
       </section>

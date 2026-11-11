@@ -9,13 +9,13 @@ import {
 
 /**
  * ═══════════════════════════════════════════════════════════════════════════
- *  POST /api/service-chat — assistant IA par service (v1.10.1 robuste)
+ *  POST /api/service-chat — assistant IA par service (v1.10.2 robuste)
  * ═══════════════════════════════════════════════════════════════════════════
  *
  *  Corps attendu : { slug: string, history: [{ role: "user"|"assistant",
  *  content: string }] } — le dernier message doit être celui du visiteur.
  *
- *  Robustesse (v1.10.1 — jamais d'erreur 500 au visiteur) :
+ *  Robustesse (v1.10.2 — jamais d'erreur 500 au visiteur) :
  *   - slug validé puis chargé depuis la base (jamais de données client inversées) ;
  *   - historique assaini (rôles filtrés, 14 messages max, 2 000 car. par message) ;
  *   - anti-abus mémoire par IP (20 messages / minute) ;
@@ -164,7 +164,7 @@ function buildLocalFallbackReply(svc: ServiceRow, question: string): string {
     const opt = options[0]
       ? ` Pour aller plus loin, l'option « ${options[0].name} » est à +${fr(options[0].priceExtra)} €.`
       : "";
-    return `L'offre de base de « ${svc.title} » est à ${fr(svc.basePrice)} €, livrée en ${svc.deliveryDays} jours ouvrés — un coût dérisoire au regard du temps qu'elle vous fait gagner.${opt} Vous ne payez qu'après validation (paiement séquestré), donc zéro risque. Souhaitez-vous que je détaille une option ?`;
+    return `L'offre de base de « ${svc.title} » est à ${fr(svc.basePrice)} €, livrée en ${svc.deliveryDays} jours ouvrés — un coût dérisoire au regard du temps qu'elle vous fait gagner.${opt} Vous payez à la commande et les fonds restent séquestrés : le vendeur n'est payé qu'après votre validation du livrable — zéro risque. Souhaitez-vous que je détaille une option ?`;
   }
   if (has(q, "delai", "livraison", "livre", "rapide", "urgent", "quand", "recevoir", "combien de temps", "temps")) {
     return `Tout arrive en ${svc.deliveryDays} jours ouvrés après votre commande — et ${s.name} (${s.responseTime}) reste disponible pour peaufiner votre demande. C'est précisément ce délai court qui vous donne l'avance : vous agissez quand vos concurrents cherchent encore. Un besoin plus pressant ? Dites-le-moi.`;
@@ -173,8 +173,8 @@ function buildLocalFallbackReply(svc: ServiceRow, question: string): string {
     const liste = [...(features.length ? features : deliverables)].slice(0, 3).join(" ; ");
     return `${liste ? `Sont inclus : ${liste}.` : `La prestation « ${svc.title} » est complète, prête à l'emploi dès réception.`} Le tout arrive en ${svc.deliveryDays} jours ouvrés, avec ajustements gratuits jusqu'à votre validation — vous gardez la main du début à la fin. Voulez-vous le détail d'une option ?`;
   }
-  if (has(q, "garanti", "rembours", "secur", "securis", "confianc", "fiable", "risqu", "escro", "arnaque", "protege", "protections")) {
-    return `Soyez rassuré : le paiement est séquestré (fonds libérés seulement après votre validation), les ajustements sont gratuits jusqu'au résultat conforme, et le remboursement est intégral si ce n'était pas le cas. ${s.name} compte ${s.totalSales} ventes et une note de ${fr(s.rating)}/5 (${s.responseTime}) — vous êtes entre de bonnes mains. Que puis-je éclaircir pour vous ?`;
+  if (has(q, "garanti", "rembours", "secur", "securis", "confianc", "fiable", "risqu", "escro", "arnaque", "protege", "protections", "pai", "paye", "pay", "sequestre", "regl", "reglement", "deblo")) {
+    return `Soyez rassuré : vous payez à la commande, mais les fonds restent séquestrés — le vendeur ne les reçoit qu'après votre validation du livrable. Ajustements gratuits jusqu'au résultat conforme, remboursement intégral sinon. ${s.name} compte ${s.totalSales} ventes et une note de ${fr(s.rating)}/5 (${s.responseTime}) — vous êtes entre de bonnes mains. Que puis-je éclaircir pour vous ?`;
   }
   if (has(q, "option", "supplement", "complement", "ajout")) {
     const liste = options
@@ -224,7 +224,7 @@ RÈGLES ABSOLUES :
 2. Reste BREF : 2 à 4 phrases, 90 mots maximum, texte brut sans markdown ni listes. Jamais bavard.
 3. Convivial et rassurant : ton naturel tient de la confiance — sourire au bout des phrases, zéro jargon inutile.
 4. Chaque réponse met en avant un GAIN exceptionnel et concret du service (temps gagné, revenus débloqués, risque évité, avance concurrentielle) en t'appuyant sur les chiffres exacts ci-dessus.
-5. Rassure en une phrase quand c'est utile : paiement séquestré (fonds libérés seulement après validation), ajustements gratuits jusqu'à validation, remboursement intégral si non conforme.
+5. Process de paiement EXACT (à énoncer tel quel dès qu'une question porte sur le paiement) : le client règle à la commande, AVANT le démarrage du travail ; les fonds restent ensuite séquestrés par la plateforme ; ils ne sont transmis au vendeur qu'une fois la prestation livrée ET approuvée par le client. Interdiction absolue de dire que le client « paie après la livraison » — il paie d'avance, mais l'argent n'arrive au vendeur qu'après son feu vert (et remboursement intégral si non conforme, ajustements gratuits jusqu'à validation).
 6. Termine par une invitation douce et naturelle (commander, poser une question, choisir une option) — jamais de pression.
 7. Reste strictement fidèle à la fiche : n'invente JAMAIS un prix, délai, chiffre ou engagement. Info manquante ? Dis-le simplement et propose le support humain 7 j/7 (page /support).
 8. Hors de ce service (autre besoin, réclamation, sujet personnel) : redirige en une phrase vers /support ou le catalogue /services.
@@ -250,7 +250,7 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({
     route: "/api/service-chat",
-    version: "v1.10.1",
+    version: "v1.10.2",
     mode: process.env.NODE_ENV,
     diagnostics,
     ...(ping ? { ping } : {}),

@@ -755,7 +755,7 @@ const H2_SLOT4: ((c: H2Ctx) => string)[] = [
   (c) => `Le cadre de confiance pour ${c.cat}`,
   (c) => `Ce que ${c.prix} € achètent en ${c.cat}, garanties comprises`,
   (c) => `Garanties : le cadre d'une commande de ${c.cat}`,
-  (c) => `Sans risque du paiement de ${c.prix} € à la livraison`,
+  (c) => `Sans risque : paiement séquestré jusqu'à votre validation`,
   (c) => `Pourquoi la plateforme protège votre commande de ${c.cat}`,
 ];
 
@@ -796,13 +796,13 @@ const GEO_GUARANTEES: ((g: GuaranteeCtx & { countryLabel: string }) => string)[]
   (g) =>
     `Séquestre du paiement jusqu'à validation, contrôle qualité avant envoi, suivi de 7 jours : les règles ne varient ni selon le pays (France, Belgique, Suisse, Québec, Afrique francophone), ni selon la taille de la commande, la vôtre comprise, tout comme les ${g.ventes} commandes déjà passées.`,
   (g) =>
-    `Le paiement part après votre validation, le livrable passe le contrôle qualité avant l'envoi et le suivi s'étend sur 7 jours après la livraison, comme pour les ${g.ventes} commandes déjà traitées. La plateforme couvre toute la francophonie, du client de ${g.countryLabel} au Québécois, ce que les ${g.avis} avis vérifiés confirment.`,
+    `Le paiement est débloqué au vendeur après votre validation, le livrable passe le contrôle qualité avant l'envoi et le suivi s'étend sur 7 jours après la livraison, comme pour les ${g.ventes} commandes déjà traitées. La plateforme couvre toute la francophonie, du client de ${g.countryLabel} au Québécois, ce que les ${g.avis} avis vérifiés confirment.`,
   (g) =>
     `Achat protégé de bout en bout : paiement bloqué jusqu'à votre feu vert, contrôle qualité avant expédition, suivi de 7 jours après réception, comme sur les ${g.ventes} commandes déjà livrées. Les ${g.avis} avis de toute la francophonie en rendent compte.`,
   (g) =>
-    `Votre commande bénéficie du séquestre de paiement, du contrôle qualité préalable à l'envoi et de 7 jours de suivi, exactement comme les ${g.ventes} précédentes. France, Belgique, Suisse, Québec, Afrique francophone : le cadre est identique partout, du paiement de ${g.prix} € à la livraison en ${g.delai}.`,
+    `Votre commande bénéficie du séquestre de paiement, du contrôle qualité préalable à l'envoi et de 7 jours de suivi, exactement comme les ${g.ventes} précédentes. France, Belgique, Suisse, Québec, Afrique francophone : le cadre est identique partout, du règlement à la commande jusqu'à la livraison en ${g.delai}.`,
   (g) =>
-    `Le circuit est verrouillé : validation de votre part avant tout paiement, contrôle qualité avant tout envoi, 7 jours de suivi après toute livraison, sur les ${g.ventes} commandes déjà passées. Et il l'est pour chaque acheteur francophone, de ${g.countryLabel} au Canada (${g.avis} avis vérifiés).`,
+    `Le circuit est verrouillé : paiement à la commande mais déblocage au vendeur après votre validation, contrôle qualité avant tout envoi, 7 jours de suivi après toute livraison, sur les ${g.ventes} commandes déjà passées. Et il l'est pour chaque acheteur francophone, de ${g.countryLabel} au Canada (${g.avis} avis vérifiés).`,
   (g) =>
     `Paiement séquestré, livrable contrôlé avant envoi, suivi de 7 jours : les protections accompagnent les ${g.ventes} commandes déjà livrées comme toutes les autres. La francophonie entière est servie, et les ${g.avis} avis vérifiés en témoignent.`,
 ];
@@ -813,11 +813,11 @@ const SLOT4_INTROS: ((c: Slot4Ctx) => string)[] = [
   (c) => `Ce que la plateforme garantit quand vous commandez (${c.avis} avis vérifiés à l'appui) :`,
   (c) => `Cinq protections encadrent chaque commande, dont les ${c.ventes} déjà livrées :`,
   (c) => `Vous n'achetez pas à l'aveugle, ${c.ventes} commandes en témoignent :`,
-  (c) => `L'esprit tranquille sur « ${c.shortP} », du paiement à la livraison en ${c.delai} :`,
+  (c) => `L'esprit tranquille sur « ${c.shortP} », du règlement à la commande jusqu'à la livraison en ${c.delai} :`,
   (c) => `Commander ici, c'est activer des protections concrètes, vérifiées sur ${c.avis} avis :`,
   (c) => `Les garanties qui couvrent « ${c.shortP} » (${c.prix} €, ${c.delai}) :`,
   (c) => `Ce que b2bpro.store garantit sur les commandes du pôle ${c.poleLabel} :`,
-  (c) => `Garanties de bout en bout sur « ${c.shortP} », du paiement de ${c.prix} € à la livraison :`,
+  (c) => `Garanties de bout en bout sur « ${c.shortP} », du règlement de ${c.prix} € à la commande jusqu'à la validation :`,
   (c) => `Votre achat de ${c.prix} € voyage avec ces protections :`,
   (c) => `Rien n'arrive sans garanties, et ${c.avis} avis vérifiés le constatent :`,
   (c) => `Avant de payer ${c.prix} € en ${c.cat}, lisez ce qui vous couvre :`,
@@ -1590,12 +1590,12 @@ export function humanizeFaq(ctx: HumanizeInput, kw: ServiceKeywords, features: s
   }
 
   const q2a: string[] = [
-    `L'offre de base est à ${prix} €, tarif ferme et sans frais caché : vous ne payez qu'une fois le livrable validé, le montant restant séquestré jusqu'à votre feu vert.${optsSentence}`,
+    `L'offre de base est à ${prix} €, tarif ferme et sans frais caché : vous payez à la commande, le montant restant séquestré jusqu'à votre feu vert — le vendeur ne touche rien avant votre validation du livrable.${optsSentence}`,
     `Comptez ${prix} € pour l'offre de départ. Le paiement est mis en séquestre et n'est libéré qu'après votre validation du livrable, comme pour les ${ventes} commandes déjà passées.${optsSentence}`,
     `Le tarif de base s'établit à ${prix} €, options non comprises.${optsSentence}`,
     `Pour ${prix} €, le socle est ferme : pas de frais caché, le solde reste sous séquestre jusqu'à votre validation.${optsSentence}`,
     `Le prix affiché, ${prix} €, est celui que vous payez : le vendeur ne touche rien avant votre feu vert (${avis} avis vérifiés).${optsSentence}`,
-    `Base tarifaire : ${prix} €. Le paiement part uniquement après validation du livrable, règle appliquée sur les ${ventes} commandes déjà livrées.${optsSentence}`,
+    `Base tarifaire : ${prix} €. Le paiement se fait à la commande et n'est transmis au vendeur qu'après validation du livrable, règle appliquée sur les ${ventes} commandes déjà livrées.${optsSentence}`,
   ];
 
   const q3a: string[] = [

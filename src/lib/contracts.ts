@@ -543,7 +543,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettingsDTO = {
     titleStart: "Les services digitaux B2B qui font",
     titleHighlight: "croître votre business",
     subtitle:
-      "Veille concurrentielle, génération de leads, bases de connaissances IA, SEO local… Des experts vérifiés livrent vos données prêtes à l'emploi en 2 à 3 jours, dès 20 €. Paiement séquestré : vous ne payez qu'après validation du livrable.",
+      "Veille concurrentielle, génération de leads, bases de connaissances IA, SEO local… Des experts vérifiés livrent vos données prêtes à l'emploi en 2 à 3 jours, dès 20 €. Paiement à la commande puis séquestré : le vendeur n'est payé qu'après votre validation du livrable.",
     searchPlaceholder: "Ex : surveiller les prix de mes concurrents…",
     popularKeywords: [
       "veille concurrentielle",
