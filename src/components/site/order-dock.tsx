@@ -44,7 +44,8 @@ interface PayPalButtonsInstance {
 }
 
 interface PayPalButtonsConfig {
-  style?: Record<string, string>;
+  /** height est un NOMBRE de pixels — le SDK PayPal/React rejette "45" (chaîne). */
+  style?: Record<string, string | number>;
   createOrder: () => Promise<string>;
   onApprove: (data: { orderID: string }) => Promise<void>;
   onError?: (err: unknown) => void;
@@ -303,7 +304,7 @@ export function OrderDock({
     let instance: PayPalButtonsInstance | null = null;
 
     sdk.Buttons({
-      style: { layout: "vertical", color: "gold", shape: "pill", label: "paypal", height: "45" },
+      style: { layout: "vertical", color: "gold", shape: "pill", label: "paypal", height: 45 },
       createOrder: async () => {
         const f = formRef.current;
         setPaying(true);

@@ -322,6 +322,16 @@ Les miniatures SVG locales (1200×750) sont converties en **WebP qualité 82** v
    cocher les **scopes par défaut (checkout)**. ✓ Vous devez voir `Client ID` et
    `Secret` sandbox sur la fiche de l'app.
 
+   > ⚠️ **Piège classique (vécu en v2.1.0) :** la page *Apps & Credentials* a
+   > **deux onglets — « Sandbox » et « Live »**. Une app créée dans l'onglet
+   > *Live* fournit des clés qui **échouent en 401 `invalid_client`** contre
+   > l'API sandbox (et inversement). Vérifier en 5 s, sans rien débiter :
+   > `curl -s -X POST https://api-m.sandbox.paypal.com/v1/oauth2/token \
+   >   -u "CLIENT_ID:SECRET" -d grant_type=client_credentials`
+   > — 200 = clé sandbox ; 401 = pas une clé sandbox (refaire contre
+   > `https://api-m.paypal.com` : 200 = clé **live**). `PAYPAL_ENV` doit
+   > **correspondre au type réel de la clé**, sinon le paiement échoue.
+
 2. **Alimenter Vercel** (§3) : `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` (sandbox),
    `PAYPAL_ENV=sandbox` → **Redeploy**.
 
