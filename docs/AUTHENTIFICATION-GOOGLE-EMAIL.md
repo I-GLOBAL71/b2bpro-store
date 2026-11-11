@@ -162,6 +162,8 @@ Copiez le résultat dans :
 | Aucun email reçu | SMTP non configuré / spams | Vérifier `SMTP_*` + regarder les indésirables |
 | `EmailSigninError` serveur | Mot de passe applicatif faux (espaces, ancien) | Régénérer un mot de passe d'application |
 | Bouton email absent en prod | SMTP absent en production | Ajouter les 5 variables `SMTP_*` sur Vercel |
+| `?error=Callback` après Google (v2.1.3) | Tables/index d'auth absents de Neon — l'adaptateur exige notamment `@@unique([provider, providerAccountId])` sur `Account` | **Redeploy** : le garant de schéma du build (`scripts/ensure-neon-schema.ts`, visible `[neon-schema]` dans le log Vercel) crée tables et index. Vérifier ensuite la sonde « Tables d'authentification » du tableau de bord `/admin` |
+| `?error=OAuthAccountNotLinked` | Email déjà utilisé en lien magique puis Google | Corrigé en v2.1.3 (`allowDangerousEmailAccountLinking` — sûr : les deux méthodes prouvent la propriété de l'email) |
 
 En **développement sans SMTP**, le lien magique est tracé dans la console du
 serveur (`dev.log`) — le parcours complet reste testable sans aucune clé.

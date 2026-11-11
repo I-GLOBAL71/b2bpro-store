@@ -204,6 +204,13 @@ export const authOptions: NextAuthOptions = {
           GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+            // Liaison de comptes par email : Google vérifie lui-même la propriété
+            // de l'adresse (impossible de créer un compte Google sur un email
+            // dont on ne possède pas la boîte), et notre lien magique exige
+            // l'accès à cette même boîte. Autoriser la liaison évite le
+            // cul-de-sac « OAuthAccountNotLinked » à un client qui a d'abord
+            // utilisé le lien magique puis tente Google avec la même adresse.
+            allowDangerousEmailAccountLinking: true,
             authorization: {
               // Sélecteur de compte systématique : indispensable pour les
               // comptes professionnels multi-profils Google.

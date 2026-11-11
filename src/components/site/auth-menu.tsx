@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSession, signIn, signOut } from "next-auth/react";
 import {
@@ -231,6 +231,37 @@ export function SignInDialog({
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
+//  Erreurs d'authentification — traduction FR + signalée une seule fois.
+//  NextAuth redirige les échecs de connexion vers / avec ?error=… : sans ce
+//  garde, le client atterrit MUET sur l'accueil sans comprendre (v2.1.3).
+// ═══════════════════════════════════════════════════════════════════════════
+const AUTH_ERROR_MESSAGES: Record<string, string> = {
+  Callback:
+    "La connexion n'a pas abouti (erreur technique côté serveur). Réessayez — si cela persiste, utilisez le lien magique email, tout aussi rapide.",
+  OAuthCallback:
+    "La session Google a expiré en route. Réessayez — l'écran de choix de compte s'affichera à nouveau.",
+  OAuthAccountNotLinked:
+    "Un compte existe déjà avec cette adresse via une autre méthode. Utilisez le lien magique email pour cette adresse.",
+  OAuthSignin: "Google a refusé de démarrer la connexion. Réessayez dans un instant.",
+  OAuthCreateAccount:
+    "La création de votre compte a échoué. Réessayez — ou utilisez le lien magique email.",
+  EmailCreateAccount:
+    "La création de votre compte a échoué. Redemandez un lien de connexion.",
+  Verification:
+    "Ce lien de connexion est expiré ou déjà utilisé. Demandez-en un nouveau — ils sont valables 24 heures.",
+  AccessDenied: "Connexion refusée. Contactez le support si vous pensez que c'est une erreur.",
+  Configuration:
+    "La configuration de connexion est momentanément indisponible. Réessayez dans quelques minutes.",
+};
+
+function authErrorMessage(code: string): string {
+  return (
+    AUTH_ERROR_MESSAGES[code] ??
+    "La connexion n'a pas abouti. Réessayez — ou utilisez le lien magique email."
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 //  Zone « compte » du header — bouton Connexion ou menu utilisateur.
 // ═══════════════════════════════════════════════════════════════════════════
 export function AuthMenu({
@@ -242,6 +273,27 @@ export function AuthMenu({
 }) {
   const { data: session, status } = useSession();
   const [signInOpen, setSignInOpen] = useState(false);
+  const errorSignaled = useRef(false);
+
+  // ── Échec de connexion signalé (une seule fois, URL nettoyée ensuite) ──────
+  useEffect(() => {
+    if (errorSignaled.current) return;
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("error");
+    if (!code || !/^[A-Za-z]{3,40}$/.test(code)) return;
+    errorSignaled.current = true;
+    toast.error(authErrorMessage(code), { duration: 9000 });
+    // Nettoyage silencieux : ni ?error ni ?callbackUrl ne restent dans l'URL
+    // (évite re-signalement au rafraîchissement et liens partagés bruités).
+    params.delete("error");
+    params.delete("callbackUrl");
+    const qs = params.toString();
+    window.history.replaceState(
+      {},
+      "",
+      window.location.pathname + (qs ? `?${qs}` : "") + window.location.hash,
+    );
+  }, []);
 
   const anyMethod = googleEnabled || emailEnabled;
 

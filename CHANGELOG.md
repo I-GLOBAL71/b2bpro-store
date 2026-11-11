@@ -7,6 +7,53 @@
 
 ---
 
+## [2.1.3] — 2026-11-12 — Connexion Google réparée en production (?error=Callback)
+
+> Constat client : « l'authentification par Google tourne et revient non
+> authentifiée » avec `/?…&error=Callback`. Cause racine trouvée et PROUVÉE :
+> l'index unique composé `@@unique([provider, providerAccountId])` manquait
+> sur le modèle `Account` des DEUX schémas Prisma — l'adaptateur NextAuth
+> interpole `provider_providerAccountId` dès `getUserByAccount` (premier geste
+> du rappel Google) → `PrismaClientValidationError` → NextAuth redirige en
+> `?error=Callback`. Reproduit localement puis corrigé et re-testé.
+
+### [CORRECTIF] — Index unique composé sur Account (la cause racine)
+- `prisma/schema.prisma` + `prisma/schema.postgres.prisma` —
+  `@@unique([provider, providerAccountId])` ajouté (l'exigeance de
+  l'adaptateur officiel `@next-auth/prisma-adapter`). Le lien magique
+  n'était pas touché (il n'utilise jamais `Account`) — d'où un symptôme
+  « Google seul » qui a guidé le diagnostic.
+
+### [CORRECTIF] — Rattrapage DDL sans `--accept-data-loss` (production)
+- `scripts/ensure-neon-schema.ts` (v2.1.3) — avant le `db push` du build,
+  `CREATE UNIQUE INDEX IF NOT EXISTS` via `prisma db execute` : purement
+  additif, idempotent. `db push` voit ensuite le schéma conforme et n'exige
+  JAMAIS la confirmation interactive (qui échouerait sur Vercel) — le flag
+  `--accept-data-loss` reste proscrit (risque destructif sur des données réelles).
+
+### [ADDITIF] — Liaison de comptes Google ↔ email
+- `src/lib/auth.ts` — `allowDangerousEmailAccountLinking: true` sur Google :
+  sûr ici (Google vérifie lui-même la propriété de l'adresse ; notre lien
+  magique exige l'accès à la même boîte) — supprime le cul-de-sac
+  `OAuthAccountNotLinked` pour un client qui a d'abord utilisé le lien magique.
+
+### [ADDITIF] — Les erreurs d'auth parlent français
+- `src/components/site/auth-menu.tsx` — un échec de connexion atterrit
+  désormais avec un toast FR actionnable (9 codes traduits) + URL nettoyée
+  (`?error`/`?callbackUrl` retirés). Avant : retour MUET sur l'accueil.
+
+### [ADDITIF] — Sonde « Tables d'authentification » dans /admin
+- `/api/admin/stats` + bandeau du tableau de bord : état des 4 tables
+  NextAuth (vert = conforme ; rouge = Redeploy requis, le garant du build
+  répare). Visible en production via `/admin`.
+
+> Traçabilité des versions intermédiaires : [2.1.1] correctif tunnel PayPal
+> (hauteur de bouton en NOMBRE — le SDK/React 19 rejetait `"45"` chaîne,
+> crash vérifié au navigateur puis corrigé) · [2.1.2] doc PayPal (piège
+> Sandbox/Live, test curl = juge de paix).
+
+---
+
 ## [2.1.0] — 2026-11-12 — Authentification imposée à la finalisation de commande
 
 > Faisait suite au constat client : « j'ai pu finaliser une commande sans que

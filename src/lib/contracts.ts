@@ -731,6 +731,13 @@ export const adminServicePatchSchema = z.object({
 });
 
 /** GET /api/admin/stats — réponse du tableau de bord. */
+/** Santé d'une table d'authentification (sonde /api/admin/stats — v2.1.3). */
+export interface AuthTableHealth {
+  /** false = table absente/inaccessible (la connexion Google échouera en ?error=Callback). */
+  ok: boolean;
+  count: number;
+}
+
 export interface AdminStatsResponse {
   counts: {
     services: number;
@@ -745,6 +752,13 @@ export interface AdminStatsResponse {
   avgRating: number;
   rotation: RotationInfoDTO | null;
   topService: { slug: string; title: string; salesCount: number } | null;
+  /** Sonde des 4 tables NextAuth — false = Redeploy requis (garant de schéma). */
+  authTables: {
+    users: AuthTableHealth;
+    accounts: AuthTableHealth;
+    sessions: AuthTableHealth;
+    verificationTokens: AuthTableHealth;
+  };
 }
 
 /** GET /api/admin/logs — entrée du journal d'audit. */

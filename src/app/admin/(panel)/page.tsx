@@ -14,6 +14,7 @@ import {
   Bot,
   ArrowRight,
   TriangleAlert,
+  ShieldCheck,
 } from "lucide-react";
 import type { AdminStatsResponse } from "@/lib/contracts";
 import { apiGet } from "@/components/admin/api";
@@ -155,6 +156,54 @@ export default function AdminDashboardPage() {
               hint={stats.topService ? `ventes — ${stats.topService.title.slice(0, 34)}…` : undefined}
             />
           </div>
+
+          {/* Santé des tables d'authentification (v2.1.3) — sonde du garant de schéma */}
+          {(() => {
+            const t = stats.authTables;
+            const entries = [
+              ["Comptes clients (User)", t.users],
+              ["Connexions Google (Account)", t.accounts],
+              ["Sessions", t.sessions],
+              ["Liens magiques (Token)", t.verificationTokens],
+            ] as const;
+            const failing = entries.filter(([, h]) => !h.ok);
+            if (failing.length === 0) {
+              return (
+                <div className="mt-6 flex items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-[13px] leading-6 text-emerald-800">
+                  <ShieldCheck className="h-4.5 w-4.5 shrink-0" aria-hidden="true" />
+                  <p>
+                    <strong>Tables d&apos;authentification conformes</strong> — Google et lien
+                    magique peuvent créer des sessions ({t.users.count.toLocaleString("fr-FR")} compte
+                    {t.users.count > 1 ? "s" : ""} client{t.users.count > 1 ? "s" : ""}, {" "}
+                    {t.accounts.count.toLocaleString("fr-FR")} connexion
+                    {t.accounts.count > 1 ? "s" : ""} externe
+                    {t.accounts.count > 1 ? "s" : ""}).
+                  </p>
+                </div>
+              );
+            }
+            return (
+              <div
+                className="mt-6 flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-[13px] leading-6 text-red-700"
+                role="alert"
+              >
+                <TriangleAlert className="mt-0.5 h-4.5 w-4.5 shrink-0" aria-hidden="true" />
+                <div>
+                  <strong>Tables d&apos;authentification défaillantes</strong> — la connexion Google
+                  échouera en <code className="rounded bg-red-100 px-1.5 py-0.5 font-mono text-[12px]">?error=Callback</code> :
+                  <ul className="mt-1 list-inside list-disc">
+                    {failing.map(([label]) => (
+                      <li key={label}>{label}</li>
+                    ))}
+                  </ul>
+                  <p className="mt-1">
+                    Remède : <strong>Deployments → Redeploy</strong> — le garant de schéma du build
+                    recrée automatiquement les tables manquantes.
+                  </p>
+                </div>
+              </div>
+            );
+          })()}
 
           <div className="mt-8 space-y-6">
             <RotationLive />

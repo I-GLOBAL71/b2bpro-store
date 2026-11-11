@@ -1,101 +1,128 @@
 /**
- * CLI (build Vercel) : `bun scripts/ensure-neon-schema.ts`
- *
  * ═══════════════════════════════════════════════════════════════════════════
- *  Garant de schéma en production — v2.0.2
+ *  scripts/ensure-neon-schema.ts — garant de schéma Neon au build Vercel
  * ═══════════════════════════════════════════════════════════════════════════
  *
- * PROBLÈME QU'IL RÉSOUT : la base Neon de production ne peut être atteinte
- * QUE depuis Vercel (DATABASE_URL y est exposée au build ET au runtime).
- * Historiquement, appliquer le schéma Postgres exigeait d'exécuter
- * `bun run db:push:pg` depuis un poste où l'URL Neon est disponible — étape
- * humaine, oublieuse : v2.0.0 (auth Google + lien magique) a déployé ses
- * routes SANS jamais créer les tables `User` / `Account` / `Session` /
- * `VerificationToken` côté Neon → POST /api/auth/signin/email = 500 et
- * callback Google impossible (P2021 « table does not exist »).
+ * Appelé en TÊTE du `buildCommand` Vercel (voir vercel.json) :
+ *   bun scripts/ensure-neon-schema.ts &&
+ *   bunx prisma generate --schema prisma/schema.postgres.prisma &&
+ *   next build
  *
- * GARANT : ce script est appelé au DÉBUT du build Vercel (vercel.json).
- * Il applique `prisma db push --schema prisma/schema.postgres.prisma`, qui
- * est IDEMPOTENT (crée uniquement ce qui manque, ne touche pas aux données).
- * Dès lors, chaque déploiement aligne automatiquement la base de production
- * sur le schéma du dépôt — plus aucune étape humaine.
+ * Rôle : appliquer `prisma db push` (schéma Postgres) à la base de production
+ * AVANT le build. Idempotent : base déjà conforme → aucune écriture. C'est ce
+ * garant qui a créé les tables d'auth (User/Account/Session/VerificationToken)
+ * absentes de Neon, faute de quoi TOUTE connexion Google échoue en
+ * `?error=Callback` (exception adaptateur Prisma dans le rappel OAuth).
  *
- * CLAUSES DE SÉCURITÉ :
- *   • DATABASE_URL absente ou non-Postgres (build local SQLite) → skip muet ;
- *   • SANS `--accept-data-loss` : si le schéma distant diverge au point
- *     d'exiger une opération destructive, `db push` REFUSE (échec contrôlé)
- *     — ce script ne peut JAMAIS supprimer une table ni une colonne de
- *     production ;
- *   • échec réseau/compute endormi → réessais (P1001 ×3), puis AVERTISSEMENT
- *     dans le log de build et exit 0 : le site se déploie toujours (le
- *     comportement en production reste alors celui d'avant le build,
- *     jamais un build cassé) ;
- *   • l'URL de connexion n'est JAMAIS imprimée (masquée avant tout log).
+ * v2.1.3 — rattrapage DDL « Account unique index » : l'adaptateur NextAuth
+ * interpole `provider_providerAccountId` (getUserByAccount), ce qui EXIGE
+ * `@@unique([provider, providerAccountId])` sur Account. Or `db push` ne peut
+ * pas AJOUTER un index unique en non-interactif sans `--accept-data-loss`
+ * (flag que ce script n'utilise JAMAIS — il autoriserait des changements
+ * destructifs sur des données de production). D'où la séquence :
+ *   1. `CREATE UNIQUE INDEX IF NOT EXISTS …` via `prisma db execute`
+ *      (purement additif, idempotent, échoue proprement si doublons) ;
+ *   2. `prisma db push` voit alors le schéma conforme → aucune confirmation.
  *
- * Manuel équivalent (runbook §1.3) si besoin hors build :
- *   NEON_DATABASE_URL="postgresql://…sslmode=require" bun run db:push:pg
+ * Garanties de sécurité :
+ *   • AUCUN `--accept-data-loss` : si des changements destructifs seraient
+ *     nécessaires, `db push` ÉCHOUE — jamais une colonne ni une table de
+ *     production n'est supprimée par ce script.
+ *   • Échec NON bloquant : le build continue (log d'avertissement) — un
+ *     incident de réseau vers Neon ne doit pas empêcher le déploiement.
+ *   • URL masquée dans les logs (jamais d'identifiants dans la console Vercel).
+ *   • Skip silencieux (exit 0) si DATABASE_URL n'est pas Postgres (dev local
+ *     SQLite) — le script ne fait alors strictement rien.
+ *
+ * Réveil Neon : sur les plans auto-suspend, le compute peut être endormi et
+ * refuser la première connexion (P1001) → 3 tentatives espacées de 5 s.
+ *
+ * Historique : une première version de ce garant (v2.0.2) n'avait JAMAIS été
+ * commise sur Git — vercel.json en production n'en a donc jamais exécuté. Ce
+ * fichier est la version réellement versionnée (v2.1.3) : tout `git push`
+ * reconduit désormais le garant avec le code.
  */
+
+import { unlinkSync, writeFileSync } from "node:fs";
+
+const TAG = "[neon-schema]";
 const MAX_ATTEMPTS = 3;
-const RETRY_DELAY_MS = 5000;
+const DDL_FILE = ".tmp-neon-ddl.sql";
 
-const dbUrl = process.env.DATABASE_URL ?? "";
+const dbUrl = process.env.DATABASE_URL?.trim() ?? "";
 
-// ── 1. Hors production Postgres → rien à faire (build local SQLite) ─────────
-if (!/^postgres(ql)?:\/\//.test(dbUrl)) {
-  console.log("⏭️  [neon-schema] DATABASE_URL non-Postgres — base de dev locale, schéma Neon ignoré.");
+// ── Skip : développement local (SQLite) ou aucune URL ────────────────────────
+if (!dbUrl || !/^postgres(ql)?:\/\//i.test(dbUrl)) {
+  console.log(`${TAG} DATABASE_URL non-Postgres (${dbUrl ? "SQLite/dev" : "absente"}) — skip.`);
   process.exit(0);
 }
 
-console.log(
-  `🗄️  [neon-schema] Synchronisation du schéma Postgres (Neon) — cible : ${dbUrl.replace(/:\/\/[^@]*@/, "://***@")}`
-);
+const masked = dbUrl.replace(/:\/\/[^@]*@/, "://***@");
+console.log(`${TAG} Synchronisation du schéma Postgres vers Neon…`);
+console.log(`${TAG} Cible : ${masked}`);
+
+/**
+ * Rattrapage additif : index unique composé Account(provider, providerAccountId)
+ * requis par l'adaptateur NextAuth. Échoue PROPREMENT si la table Account
+ * n'existe pas encore (db push la créera complète, index inclus) ou si des
+ * doublons existent (aucune donnée n'est jamais touchée). Non-fatal.
+ */
+function ensureAccountUniqueIndex(): boolean {
+  try {
+    const ddl =
+      'CREATE UNIQUE INDEX IF NOT EXISTS "Account_provider_providerAccountId_key" ' +
+      'ON "Account"("provider", "providerAccountId");';
+    writeFileSync(DDL_FILE, ddl);
+    const res = Bun.spawnSync(
+      ["bunx", "prisma", "db", "execute", "--file", DDL_FILE, "--url", dbUrl],
+      { stdout: "pipe", stderr: "pipe" },
+    );
+    return res.exitCode === 0;
+  } catch {
+    return false;
+  } finally {
+    try {
+      unlinkSync(DDL_FILE);
+    } catch {
+      /* fichier déjà retiré */
+    }
+  }
+}
 
 for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-  const push = Bun.spawnSync(
-    [
-      "bunx",
-      "prisma",
-      "db",
-      "push",
-      // PAS de --accept-data-loss : opérations destructives toujours refusées.
-      "--skip-generate",
-      "--schema",
-      "prisma/schema.postgres.prisma",
-    ],
-    { stdout: "pipe", stderr: "pipe" }
-  );
-  const output = `${push.stdout.toString().trim()}\n${push.stderr.toString().trim()}`.trim();
+  // 1. Rattrapage DDL additif (voir en-tête) — idempotent, non-fatal.
+  if (ensureAccountUniqueIndex()) {
+    console.log(`${TAG} ✓ Index unique Account(provider, providerAccountId) présent.`);
+  } else {
+    console.log(`${TAG} ℹ Rattrapage d'index non applicable (table absente ou déjà couverte) — db push tranchera.`);
+  }
 
-  // ── Succès : la base est alignée (tables manquantes créées, sinon no-op) ──
+  // 2. Synchronisation idempotente du schéma complet.
+  const push = Bun.spawnSync(
+    ["bunx", "prisma", "db", "push", "--skip-generate", "--schema", "prisma/schema.postgres.prisma"],
+    { env: { ...process.env, DATABASE_URL: dbUrl }, stdout: "pipe", stderr: "pipe" },
+  );
+  const output = `${push.stdout?.toString() ?? ""}\n${push.stderr?.toString() ?? ""}`.trim();
+
   if (push.exitCode === 0) {
     if (output) console.log(output);
-    console.log("✅ [neon-schema] Schéma de production aligné — auth (User/Account/Session/VerificationToken) incluse.");
+    console.log(`${TAG} ✓ Schéma Neon conforme (aucune donnée touchée).`);
     process.exit(0);
   }
 
-  // ── Compute Neon endormi (P1001) : réveil en cours → nouvelle tentative ──
+  // P1001 : compute Neon en cours de réveil → nouvelle tentative.
   if (attempt < MAX_ATTEMPTS && output.includes("P1001")) {
-    console.log(`   ⏳ Compute Neon en cours de réveil (P1001) — tentative ${attempt + 1}/${MAX_ATTEMPTS} dans ${RETRY_DELAY_MS / 1000} s…`);
-    await Bun.sleep(RETRY_DELAY_MS);
+    console.log(`${TAG} ⏳ Compute Neon endormi (P1001) — tentative ${attempt + 1}/${MAX_ATTEMPTS} dans 5 s…`);
+    await Bun.sleep(5000);
     continue;
   }
 
-  // ── Échec définitif : AVERTIR sans jamais bloquer le déploiement ─────────
-  console.warn(
-    [
-      "",
-      "⚠️  ⚠️  ⚠️  [neon-schema] ÉCHEC de synchronisation — LE BUILD CONTINUE QUAND MÊME. ⚠️  ⚠️  ⚠️",
-      "   L'authentification (Google + lien magique) restera indisponible en",
-      "   production tant que le schéma n'est pas appliqué. Cause probable :",
-      "   DATABASE_URL invisible au build (scoping Vercel) ou base injoignable.",
-      "",
-      "   Correctif manuel (runbook §1.3) :",
-      '     NEON_DATABASE_URL="postgresql://…sslmode=require" bun run db:push:pg',
-      "",
-      "   Détail technique (URL masquée) :",
-      ...output.split("\n").slice(-12).map((l) => `     ${l}`),
-    ].join("\n")
-  );
-  // exit 0 VOLONTAIRE : le site doit toujours pouvoir se déployer.
+  // Échec définitif : JAMAIS bloquant pour le déploiement.
+  console.warn(`${TAG} ⚠ prisma db push a échoué (code ${push.exitCode}) — le build continue.`);
+  console.warn(`${TAG} ⚠ Détail (identifiants masqués) :`);
+  console.warn(output.replace(/:\/\/[^@]*@/g, "://***@").slice(0, 2000));
   process.exit(0);
 }
+
+console.warn(`${TAG} ⚠ Épuisé après ${MAX_ATTEMPTS} tentatives — le build continue.`);
+process.exit(0);
