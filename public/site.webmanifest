@@ -1,0 +1,24 @@
+{
+  "name": "b2bpro.store — services digitaux B2B francophones",
+  "short_name": "b2bpro.store",
+  "description": "Des services digitaux B2B livrés par des experts vérifiés : veille concurrentielle, génération de leads, IA et données, SEO local. Dès 20 €, livraison en 2 à 3 jours ouvrés.",
+  "lang": "fr",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#059669",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

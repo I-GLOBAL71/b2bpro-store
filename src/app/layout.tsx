@@ -18,6 +18,23 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = defaultMetadata();
 
 /**
+ * Icônes du site (v2.0.1) — servies via <link> React 19 (remontés dans le
+ * <head>), avec des URLs RELATIVES : le navigateur les résout selon l'origine
+ * réelle (localhost, passerelle de prévisualisation ou https://b2bpro.store),
+ * ce qui évite toute dépendance à metadataBase.
+ *
+ *   • Production : la marque b2bpro.store (« b2b » blanc sur émeraude) ;
+ *   • Développement/sandbox : la marque « Z » (graphite + pastille émeraude) —
+ *     l'onglet de prévisualisation se distingue ainsi du site en ligne.
+ *
+ * Inverser l'affectation en permutant les deux valeurs ci-dessous.
+ * favicon.ico (16/32/48) reste le repli legacy/ Safari ; apple-touch-icon et
+ * site.webmanifest complètent (iOS, Android « Ajouter à l'écran d'accueil »).
+ */
+const isProduction = process.env.NODE_ENV === "production";
+const iconHref = isProduction ? "/favicon.svg" : "/favicon-z.svg";
+
+/**
  * Layout racine — socle commun (polices, JSON-LD Organisation, toasts).
  * Le chrome public (header/footer/annonce/maintenance) vit dans
  * src/app/(public)/layout.tsx ; le panneau d'administration a son propre
@@ -45,6 +62,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col bg-background font-sans text-foreground antialiased`}
       >
+        {/* Icônes du site (remontées dans le <head> par React 19) */}
+        <link rel="icon" href="/favicon.ico" sizes="48x48" />
+        <link rel="icon" type="image/svg+xml" href={iconHref} />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
