@@ -23,6 +23,8 @@
  *  1. Types
  * ═══════════════════════════════════════════════════════════════════════════ */
 
+import { ELITE_PRIMARIES } from "./elite-keywords";
+
 export interface ServiceKeywords {
   primary: string;
   secondary: string[];
@@ -356,6 +358,34 @@ export function cleanPrimary(title: string): string {
   return kwCase(t);
 }
 
+/**
+ * [ADDITIF v1.9.0 — skill ÉTAPE 2] Contrainte contractuelle : le primaire est
+ * une TÊTE commerciale de 3 à 5 mots significatifs (mots > 2 lettres).
+ * cleanPrimary() borne en caractères ; ce clamp borne en MOTS — cause racine
+ * des 113 primaires de 6-10 mots constatée par l'audit élite 2026-11-11.
+ * Troncature à la frontière du 5e mot significatif, repli sur la catégorie
+ * si le résultat descend sous 3 mots significatifs.
+ */
+export function clampPrimaryToSkill(primary: string, category = ""): string {
+  const sigCount = (s: string) => s.split(/\s+/).filter((w) => w.length > 2).length;
+  if (sigCount(primary) <= 5) return primary;
+  const words = primary.split(/\s+/);
+  let count = 0;
+  let cut = words.length;
+  for (let i = 0; i < words.length; i++) {
+    if (words[i].length > 2) count++;
+    if (count === 5) {
+      cut = i + 1;
+      break;
+    }
+  }
+  let out = words.slice(0, cut).join(" ").trim();
+  if (sigCount(out) < 3 && category) {
+    out = `${out} ${categoryKeyword(category)}`.replace(/\s+/g, " ").trim();
+  }
+  return out;
+}
+
 /** Titre sans « Je vais » (gardé pour les citations et la FAQ). */
 function stripJeVais(title: string): string {
   return title
@@ -410,7 +440,7 @@ export function buildKeywordsV2(input: {
   realQueries: string[];
   manual?: ServiceKeywords;
 }): ServiceKeywords & { v: number } {
-  const primary = cleanPrimary(input.title);
+  const primary = clampPrimaryToSkill(cleanPrimary(input.title), input.category);
   const catKw = categoryKeyword(input.category);
 
   // requêtes réelles : d'abord celles du tableau cohérentes avec la fiche,
@@ -457,22 +487,31 @@ export function buildKeywordsV2(input: {
   ];
   const manualLT = (input.manual?.longTail ?? []).map((s) => s.trim()).filter(Boolean);
   const longTail = dedupeByNorm([`comment ${primary}`]);
+  // [CORRECTIF v1.9.0] dédoublonnage normatif de TOUTES les poussées
+  // (bug reproduit : doublons « comment rédiger… » ×2 et « podcasts invités
+  // actifs » ×2 sur la fiche #101 — audit E3).
+  const ltSeen = new Set(longTail.map(normKw));
+  const pushLt = (x: string) => {
+    const k = normKw(x);
+    if (x && !ltSeen.has(k)) {
+      ltSeen.add(k);
+      longTail.push(x);
+    }
+  };
   for (const r of remainingReal) {
     if (longTail.length >= 3) break;
-    if (!usedNorm.has(normKw(r))) longTail.push(r);
+    if (!usedNorm.has(normKw(r))) pushLt(r);
   }
   for (const mlt of manualLT) {
     if (longTail.length >= 5) break;
-    longTail.push(mlt);
+    pushLt(mlt);
   }
   for (const p of patterns) {
     if (longTail.length >= 7) break;
-    longTail.push(p);
+    pushLt(p);
   }
   let pi = 0;
-  while (longTail.length < 6 && pi < patterns.length) {
-    longTail.push(patterns[pi++]);
-  }
+  while (longTail.length < 6 && pi < patterns.length) pushLt(patterns[pi++]);
 
   // aiQueries : questions grammaticalement correctes (élisions incluses)
   const catP = categoryProse(input.category);
@@ -1589,10 +1628,13 @@ export function humanizeFaq(ctx: HumanizeInput, kw: ServiceKeywords, features: s
   ];
 
   return [
+    // [ADDITIF v1.9.0 — activateur GEO v1.7.0 n°4] La FAQ COMMENCE par la
+    // question « comment… » intitulée comme l'utilisateur la pose (la Q4
+    // historique passe en tête) — citée en priorité par les moteurs de réponse.
+    { q: q4q, a: q4a[rot(ctx.slug, "/r4", q4a.length)] },
     { q: FAQ_Q1_Q[rot(ctx.slug, "/q1", FAQ_Q1_Q.length)](faqCtx), a: q1a[rot(ctx.slug, "/r1", q1a.length)] },
     { q: FAQ_Q2_Q[rot(ctx.slug, "/q2", FAQ_Q2_Q.length)](faqCtx), a: q2a[rot(ctx.slug, "/r2", q2a.length)] },
     { q: FAQ_Q3_Q[rot(ctx.slug, "/q3", FAQ_Q3_Q.length)](faqCtx), a: q3a[rot(ctx.slug, "/r3", q3a.length)] },
-    { q: q4q, a: q4a[rot(ctx.slug, "/r4", q4a.length)] },
     { q: FAQ_Q5_Q[rot(ctx.slug, "/q5", FAQ_Q5_Q.length)](faqCtx), a: q5a[rot(ctx.slug, "/r5", q5a.length)] },
   ];
 }
@@ -1813,6 +1855,16 @@ export function buildHumanizedBundle(input: HumanizeInput): HumanizedBundle {
     realQueries: input.realQueries,
     manual: input.manualKeywords,
   });
+  // [ADDITIF v1.9.0 — tour d'élites E1] Primaires curatés (data/gen/elite-keywords.ts) :
+  // la tête commerciale validée à la main remplace la dérivation ; l'ancienne
+  // phrase verbale part en tête de longue traîne (dédoublonnée). Même source de
+  // vérité que scripts/migrate-elite-seo.ts — le seed reproduit la base migrée.
+  const elite = ELITE_PRIMARIES[input.slug];
+  if (elite && normKw(keywords.primary) !== normKw(elite)) {
+    const ancienne = keywords.primary;
+    keywords.longTail = dedupeByNorm([ancienne, ...keywords.longTail]).slice(0, 8);
+    keywords.primary = elite;
+  }
   const features = humanizeFeatures(input.currentFeatures, input);
   const deliverables = humanizeDeliverables(input.currentDeliverables, input);
   const process = humanizeProcess(input.currentProcess, input);

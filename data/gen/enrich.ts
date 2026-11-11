@@ -83,7 +83,12 @@ export function buildKeywords(svc: CatalogService, pole: PoleDef): ServiceKeywor
     .replace(/\bde |des |du |la |le |les |un |une |à |au |aux |en |dans |pour |sur |qui |ce |cette |ces |est |sont |plus |par |avec\b/g, " ")
     .replace(/\s+/g, " ")
     .trim();
-  const primary = (kw.split(" ").slice(0, 5).join(" ") || cat).replace(/^\s+|\s+$/g, "");
+  let primary = (kw.split(" ").slice(0, 5).join(" ") || cat).replace(/^\s+|\s+$/g, "");
+  // [ADDITIF v1.9.0 — skill ÉTAPE 2] Ceinture v1 : ≥ 3 mots significatifs
+  // (repli sur la catégorie si le titre est trop court pour une tête commerciale).
+  if (primary.split(/\s+/).filter((w) => w.length > 2).length < 3 && cat) {
+    primary = `${primary} ${cat}`.replace(/\s+/g, " ").trim();
+  }
 
   const secondary: string[] = [
     ...new Set([

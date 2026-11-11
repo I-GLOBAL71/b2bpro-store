@@ -1,5 +1,5 @@
 ---
-title: "Veille concurrentielle : la méthode complète pour surveiller vos concurrents (prix, stocks, publicités, avis)"
+title: "Veille concurrentielle : la méthode pour surveiller prix, stocks et avis"
 slug: "veille-concurrentielle-efficace"
 excerpt: "Prix, stocks, publicités, avis : découvrez la méthode complète de veille concurrentielle e-commerce, avec des cas d'usage chiffrés et les bons outils 2025."
 category: "E-commerce"
@@ -9,7 +9,7 @@ readMinutes: 9
 author: "Rédaction b2bpro.store"
 ---
 
-# Veille concurrentielle : la méthode complète pour surveiller vos concurrents (prix, stocks, publicités, avis)
+# Veille concurrentielle : la méthode pour surveiller prix, stocks et avis
 
 **En bref :** une veille concurrentielle efficace en 2025 consiste à surveiller en continu cinq dimensions (les prix, les stocks, les promotions et publicités, les avis clients et le contenu) chez 5 à 15 concurrents directs, avec une fréquence quotidienne et des alertes automatiques. Les gains sont massifs et mesurés : un e-commerçant qui ajuste ses prix dans les 24 heures qui suivent un mouvement du marché protège en moyenne 9 % de marge brute, et la détection d'une rupture de stock chez un concurrent ouvre une fenêtre de 48 à 72 heures pour capter une demande prête à acheter. La méthode ci-dessous fonctionne aussi bien pour une boutique Shopify que pour une marque vendant sur Amazon.
 

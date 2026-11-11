@@ -42,6 +42,7 @@ import {
   FULL_DESCRIPTIONS,
   type CatalogService,
 } from "../data/gen/enrich";
+import { buildHumanizedBundle, REAL_POLE_QUERIES } from "../data/gen/humanize";
 import { generateReviews } from "../data/gen/reviews";
 import { generateThumb } from "../data/gen/thumbs";
 
@@ -111,6 +112,62 @@ async function main() {
   const process = buildProcess(enriched);
   const shortDesc = buildShortDesc(enriched);
 
+  // [CORRECTIF v1.9.0 — audit E4 B3] Ce script passait par les builders v1 sans
+  // la couche humanisée : double pipeline divergent. Désormais le MÊME funnel
+  // que data/seed.ts (buildKeywordsV2 + primaires curatés + FAQ « comment… »
+  // en tête + accroches contextuelles vendeur) — un nouveau service est conforme
+  // au skill SGA™ dès l'insertion, ou REFUSÉ par la garde d'intégrité ensuite.
+  const poleSiblings = await db.service.findMany({
+    where: { poleSlug: pole.slug },
+    select: { title: true },
+  });
+  const poleCount = poleSiblings.length + 1;
+  const poleIndex = poleSiblings.length;
+  let sellerSkills: string[] = [];
+  try {
+    sellerSkills = JSON.parse(seller.skills) as string[];
+  } catch {
+    sellerSkills = [];
+  }
+  const bundle = buildHumanizedBundle({
+    slug,
+    title: svc.comeupTitle || svc.name,
+    category: svc.category,
+    poleLabel: pole.label,
+    poleSlug: pole.slug,
+    poleIndex,
+    poleCount,
+    siblingTitles: poleSiblings
+      .map((p) => p.title.replace(/^Je vais\s+/, ""))
+      .slice(0, 6),
+    basePrice: svc.basePrice,
+    deliveryDays: svc.deliveryDays,
+    rating: stats.rating,
+    reviewsCount: stats.reviewsCount,
+    salesCount: stats.salesCount,
+    options: svc.options.map((o) => ({ name: o.name, priceExtra: o.priceExtra })),
+    sellerName: seller.name,
+    sellerSkills,
+    sellerResponseTime: seller.responseTime,
+    sellerCountryLabel: seller.countryLabel,
+    sellerLevel: seller.level,
+    currentDescription: optimizeDescription(enriched, keywords, pole, stats),
+    currentFeatures: features,
+    currentDeliverables: deliverables,
+    currentProcess: process,
+    hotKeywords: pole.hotKeywords,
+    realQueries: REAL_POLE_QUERIES[pole.slug] ?? [],
+    manualKeywords: svc.keywords
+      ? {
+          primary: "",
+          secondary: [svc.keywords.primary, ...svc.keywords.secondary].filter(Boolean),
+          longTail: svc.keywords.longTail,
+          aiQueries: svc.keywords.aiQueries,
+        }
+      : undefined,
+  });
+  void shortDesc; // remplacé par bundle.shortDesc (conservé pour la lisibilité du funnel v1)
+
   // ── 6. Insertion (service → options → avis → miniatures) ──────────────────
   const created = await db.service.create({
     data: {
@@ -124,13 +181,13 @@ async function main() {
       poleIcon: pole.icon,
       basePrice: svc.basePrice,
       deliveryDays: svc.deliveryDays,
-      description: optimizeDescription(enriched, keywords, pole, stats),
-      shortDesc,
-      keywords: JSON.stringify(keywords),
-      faq: JSON.stringify(faq),
-      features: JSON.stringify(features),
-      deliverables: JSON.stringify(deliverables),
-      process: JSON.stringify(process),
+      description: bundle.description,
+      shortDesc: bundle.shortDesc,
+      keywords: JSON.stringify(bundle.keywords),
+      faq: JSON.stringify(bundle.faq),
+      features: JSON.stringify(bundle.features),
+      deliverables: JSON.stringify(bundle.deliverables),
+      process: JSON.stringify(bundle.process),
       rating: stats.rating,
       reviewsCount: stats.reviewsCount,
       salesCount: stats.salesCount,
@@ -201,7 +258,7 @@ async function main() {
   console.log(`  Prix       : ${svc.basePrice} € · ${svc.deliveryDays} j · ${svc.options.length} options`);
   console.log(`  Preuve     : ${stats.rating}/5 · ${stats.reviewsCount} avis · ${stats.salesCount} ventes`);
   console.log(`  Miniatures : public/thumbs/${slug}-{1,2,3}.svg`);
-  console.log("  Prochaine étape : bun run audit:content && bun run guard");
+  console.log("  Prochaine étape : bun run audit:content && bun run audit:seo && bun run guard");
 }
 
 main()

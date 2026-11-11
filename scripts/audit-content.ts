@@ -28,6 +28,11 @@ function norm(s: string): string {
   return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
+/** Normalisation stricte pour l'ancrage titre ↔ primaire (apostrophes unifiées). */
+function n2(s: string): string {
+  return norm(s).replace(/['’]/g, "'").replace(/\s+/g, " ");
+}
+
 async function main() {
   const services = await db.service.findMany();
   const posts = await db.blogPost.findMany();
@@ -62,6 +67,23 @@ async function main() {
       { id: "aio-aiqueries", ok: Array.isArray(kw.aiQueries) && kw.aiQueries.length >= 3, detail: `${kw.aiQueries?.length ?? 0} requêtes IA` },
       { id: "content-richness", ok: features.length >= 4 && deliverables.length >= 3 && process.length >= 3, detail: `${features.length} points forts, ${deliverables.length} livrables, ${process.length} étapes` },
       { id: "social-proof", ok: s.salesCount > 0 && s.reviewsCount > 0 && s.rating >= 4.2 && s.rating <= 5, detail: `${s.salesCount} ventes, ${s.reviewsCount} avis, ${s.rating}/5` },
+      // [ADDITIF v1.9.0 — tour d'élites, audit E4 P0-6] standards renforcés :
+      // primaire 3-5 mots (É2), primaire ancré dans le titre, FAQ « comment… » d'ouverture.
+      {
+        id: "seo-primary-words",
+        ok: !!kw && kw.primary.trim().split(/\s+/).filter((w) => w.length > 2).length >= 3 && kw.primary.trim().split(/\s+/).filter((w) => w.length > 2).length <= 5,
+        detail: kw ? `${kw.primary.trim().split(/\s+/).filter((w) => w.length > 2).length} mots significatifs` : "primaire absent",
+      },
+      {
+        id: "seo-title-keyword",
+        ok: !!kw && n2(s.title).includes(n2(kw.primary)),
+        detail: kw && n2(s.title).includes(n2(kw.primary)) ? "primaire ancré dans le titre" : `primaire absent du titre (« ${kw?.primary} »)`,
+      },
+      {
+        id: "geo-faq-first-comment",
+        ok: /^comment/i.test((faq[0]?.q ?? "").trim()),
+        detail: faq.length ? `« ${faq[0].q.slice(0, 60)} »` : "aucune FAQ",
+      },
     ];
     results.push({ slug: s.slug, code: s.code, checks });
     totalChecks += checks.length;
@@ -72,17 +94,23 @@ async function main() {
   const blogResults: { slug: string; checks: { id: string; ok: boolean; detail: string }[] }[] = [];
   for (const p of posts) {
     const h2 = (p.content.match(/^##\s/gm) || []).length;
-    blogResults.push({
-      slug: p.slug,
-      checks: [
-        { id: "seo-excerpt", ok: p.excerpt.length >= 80 && p.excerpt.length <= 200, detail: `${p.excerpt.length} car.` },
-        { id: "seo-content", ok: p.content.length >= 1500, detail: `${p.content.length} car.` },
-        { id: "geo-h2", ok: h2 >= 3, detail: `${h2} sections H2` },
-        { id: "no-fixed-count", ok: !p.content.includes("112 services"), detail: p.content.includes("112 services") ? "mention de nombre fixe" : "aucun nombre figé" },
-      ],
-    });
-    totalChecks += 4;
-    failedChecks += blogResults[blogResults.length - 1].checks.filter((c) => !c.ok).length;
+    const svcLinks = (p.content.match(/https:\/\/b2bpro\.store\/services\//g) ?? []).length;
+    const emdash = (p.content.match(/—/g) ?? []).length;
+    const fixedCount = (p.content.match(/\b\d{2,3}\s+services\b/g) ?? []).length;
+    const checks: { id: string; ok: boolean; detail: string }[] = [
+      { id: "seo-excerpt", ok: p.excerpt.length >= 80 && p.excerpt.length <= 200, detail: `${p.excerpt.length} car.` },
+      { id: "seo-content", ok: p.content.length >= 1500, detail: `${p.content.length} car.` },
+      { id: "geo-h2", ok: h2 >= 3, detail: `${h2} sections H2` },
+      // [ADDITIF v1.9.0 — tour d'élites] : nombre figé généralisé (regex),
+      // titre ≤ 75, liens internes ≥ 3, zéro cadratin.
+      { id: "no-fixed-count", ok: fixedCount === 0, detail: fixedCount ? `${fixedCount} mention(s) d'un nombre figé` : "aucun nombre figé" },
+      { id: "blog-title-len", ok: p.title.length <= 75, detail: `${p.title.length} car.` },
+      { id: "blog-internal-links", ok: svcLinks >= 3, detail: `${svcLinks} lien(s) absolu(s) vers /services/` },
+      { id: "blog-emdash", ok: emdash === 0, detail: `${emdash} cadratin(s)` },
+    ];
+    blogResults.push({ slug: p.slug, checks });
+    totalChecks += checks.length;
+    failedChecks += checks.filter((x) => !x.ok).length;
   }
 
   // ── Rapport console ────────────────────────────────────────────────────────

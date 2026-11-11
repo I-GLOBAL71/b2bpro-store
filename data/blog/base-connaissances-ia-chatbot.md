@@ -1,5 +1,5 @@
 ---
-title: "Pourquoi votre chatbot IA hallucine (et comment une base de connaissances propre le fixe définitivement)"
+title: "Chatbot IA qui hallucine : la base de connaissances qui le rend fiable"
 slug: "base-connaissances-ia-chatbot"
 excerpt: "Votre chatbot IA hallucine ? Découvrez pourquoi jusqu'à 46 % des réponses sans base de connaissances sont fausses et comment le RAG corrige le problème."
 category: "SEO & Visibilité IA"
@@ -9,7 +9,7 @@ readMinutes: 9
 author: "Rédaction b2bpro.store"
 ---
 
-# Pourquoi votre chatbot IA hallucine (et comment une base de connaissances propre le fixe définitivement)
+# Chatbot IA qui hallucine : la base de connaissances qui le rend fiable
 
 **L'essentiel en 30 secondes :** un chatbot IA hallucine parce qu'il répond avec sa seule mémoire d'entraînement (généraliste et datée) au lieu de répondre avec **vos** informations à jour. Inutile de changer de modèle : branchez-le sur une **base de connaissances propre et structurée** via le RAG (Retrieval-Augmented Generation). Le système recherche d'abord les passages pertinents dans vos documents, puis fait rédiger la réponse à partir d'eux uniquement. Les déploiements RAG sérieux font chuter les réponses erronées de 50 à 80 %, parce que l'IA passe du statut de « devine » à celui de « lit ». Et la qualité du résultat dépend à 80 % de la propreté de la base, pas du modèle choisi.
 

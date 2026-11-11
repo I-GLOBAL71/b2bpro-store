@@ -1,5 +1,5 @@
 ---
-title: "Micro-influenceurs : comment détecter le vrai taux d'engagement (et éviter les faux abonnés)"
+title: "Micro-influenceurs : le vrai taux d'engagement et les faux abonnés"
 slug: "micro-influenceurs-engagement"
 excerpt: "Micro-influenceurs : apprenez à calculer le vrai taux d'engagement, à repérer les faux abonnés et à choisir des créateurs qui convertissent vraiment en 2025."
 category: "Marketing & Influence"
@@ -9,7 +9,7 @@ readMinutes: 9
 author: "Rédaction b2bpro.store"
 ---
 
-# Micro-influenceurs : comment détecter le vrai taux d'engagement (et éviter les faux abonnés)
+# Micro-influenceurs : le vrai taux d'engagement et les faux abonnés
 
 **La méthode en 30 secondes :** le vrai taux d'engagement d'un micro-influenceur (10 000 à 100 000 abonnés) se situe entre **2,5 % et 5 %** (contre moins de 1,5 % pour les comptes à plus d'un million d'abonnés) et se calcule en divisant la moyenne des likes et commentaires de ses 12 derniers posts par son nombre d'abonnés. Or **9 à 15 % des abonnés des comptes influenceurs seraient des bots ou des comptes dormants** (estimations indépendantes 2024), et la fraude de l'influence a coûté aux annonceurs environ **1,3 milliard de dollars** par an. La méthode de vérification ci-dessous (formule, 7 signaux de faux abonnés, analyse qualitative) prend 15 minutes par créateur et évite de financer des audiences fantômes.
 

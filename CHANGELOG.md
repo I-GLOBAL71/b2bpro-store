@@ -7,6 +7,98 @@
 
 ---
 
+## [1.9.0] — 2026-11-11 — Tour d'élites SEO/GEO/AIO : scrutage intégral + skill verrouillé machine
+
+Mandat utilisateur : scruter chaque service et article (critères SEO + GEO + AIO),
+vérifier que les mots-clés à fort trafic sont véritablement sourcés et ajoutés, que la
+longueur minimale est respectée, et rendre le skill assez robuste pour que les PROCHAINS
+services/articles soient parfaitement optimaux pour le référencement et les réponses d'IA.
+
+### Méthode — 4 experts en parallèle (T2-b à T2-e) + scanner élite
+- **Scanner dédié** : `scripts/audit-seo-geo-aio.ts` (`bun run audit:seo`, nouveau) —
+  1 799 contrôles sur 113 fiches + 12 articles : titre ↔ primaire (ancrage), structure
+  mots-clés (3-5 mots), unicité (anti-cannibalisation), answer-first, 1ère question FAQ
+  « comment… », faits chiffrés liftables, densité, hygiène typographique, maillage interne
+  blog, llms.txt/llms-full.txt/sitemap/robots. Rapport versionné
+  `docs/audits/audit-seo-geo-aio-2026-11-11.md`.
+- **E1 (fiches)** : 113/113 primaires de 6-10 mots (le contrat exige 3-5 : personne ne
+  tape ces phrases verbales), 3 fiches à primaire hors titre (ponctuation), ~15 défauts
+  de langue systémiques (« Confiez analyser… », « de analyser », sigles en minuscules).
+- **E2 (blog)** : 12/12 titres hors standard (82-114 car. pour ≤ 75), 1 nombre figé
+  (« Plus de 100 services »), 3 extraits sans chiffre citable.
+- **E3 (mots-clés)** : sourçage prouvé au niveau des pôles (113/113 fiches portent 2-5
+  hotKeywords sourcés, 0 cannibalisation), MAIS le slot primaire — le plus pondéré du
+  SEO — n'était jamais sourcé ; bug de dédoublonnage LT reproduit sur la fiche #101.
+- **E4 (skill)** : clauses non verrouillées (primaire 3-5 mots, FAQ « comment », unicité,
+  titre blog ≤ 75, liens internes) ; **causes racines générateur** : `cleanPrimary()`
+  bornait en caractères (pas en mots), pool FAQ sans variante « comment », `add-service`
+  divergent du seed, littéral « 112 services » codé en dur.
+
+### [DONNÉES] — Migration élite (`scripts/migrate-elite-seo.ts`, idempotente)
+- **113 primaires commerciaux curés** (`data/gen/elite-keywords.ts`, audit E1) : tête de
+  3-5 mots, sous-chaîne contiguë du titre, requête plausible d'acheteur, unique entre
+  fiches ; l'ancienne phrase verbale basculée en tête de longue traîne (dédoublonnage
+  normatif — bug #101 corrigé au passage).
+- **113 FAQ réordonnées** : la question « comment… » (activateur GEO v1.7.0 n°4) passe
+  en tête — c'est le format le plus repris par les assistants IA.
+- **21 fiches corrigées langue** : élisions (« de analyser » → « d'analyser »,
+  « prestation de intelligence » → « d'intelligence »), sigles/marques (EHPAD, BTP,
+  Glassdoor, Uber Eats, CPF, RNA), 12 nominalisations curées (« Confiez analyser… » →
+  « Confiez l'analyse de… »).
+- **12 titres d'articles raccourcis ≤ 75 car.** (66-73, mot-clé en tête, anglicismes et
+  promesses non tenables purgés) + 3 extraits renforcés d'un chiffre citable (+115 %
+  Princeton, 215 Md€, 89 %) + mention figée reformulée en ouvert (« Un catalogue qui
+  s'enrichit chaque semaine… ») — sources `data/blog/*.md` → `bun run scripts/sync-blog.ts`.
+
+### [FORCE MAJEURE] (protocole §5) — Générateur et portes existantes
+**Justification** : aucune approche purement additive ne pouvait garantir les clauses
+contractuelles existantes (activateur n°4 « la FAQ commence par comment… » et primaire
+3-5 mots) — les défauts étaient reproductibles par le seed lui-même.
+- `humanizeFaq()` : la question « comment… » générée en TÊTE (réordonnancement, pools
+  et réponses inchangés).
+- `buildKeywordsV2()` : primaire borné en MOTS via `clampPrimaryToSkill()` (3-5 mots
+  significatifs, repli catégorie) — `cleanPrimary()` reste utilisé pour les citations.
+- `guard` 8bis/8ter durcis : borne basse title 40 (alignement sur audit:content),
+  littéral « 112 services » → regex `\d{2,3} services` (périmètre réel).
+
+### [ADDITIF] — Verrouillage machine (le skill devient auto-exécutant)
+- **Guard : 15 → 19 contrôles** (extensions additives, ids stables) :
+  `services-primary-wordcount` (3-5 mots + ancré dans le titre), `services-primary-unique`
+  (anti-cannibalisation), `services-faq-first-comment` (1ère question « comment… »),
+  `blog-seo-standards` (titre ≤ 75, ≥ 3 liens /services/, zéro cadratin).
+- **audit:content étendu** : 1 291 → 1 666 contrôles (primaire mots/titre, FAQ
+  « comment », blog titre/liens/cadratins, nombre figé généralisé).
+- **Pipeline futur scellé** : `add-service` bascule sur le funnel unique
+  `buildHumanizedBundle` (fin de la divergence E4-B3) ; `add-blog` (nouveau) crée un
+  article AVEC porte de qualité pré-insertion ; `sync-blog` refuse tout article non
+  conforme AVANT écriture ; `buildHumanizedBundle` applique les primaires curés
+  (parité seed ↔ base migrée, source unique `elite-keywords.ts`).
+- **Preuves de sourçage** : `data/keyword-sources.json` (registre : pools par pôle,
+  2 volumes documentés, sourçage manuel #101, primaires curés, veille GSC planifiée).
+- **Skill d'environnement créé** : `skills/redaction-seo-geo-aio/SKILL.md` (le miroir
+  référencé par le contrat n'existait pas — E4).
+- Contrat `docs/SKILL-REDACTION-SEO-GEO-AIO.md` v1.9.0 (tableau quantitatif étendu,
+  ÉTAPE 6 avec `audit:seo`) ; `docs/REGRESSION-GUARD.md` synchronisé (19 contrôles).
+- `not-found.tsx` : dernier cadratin UI du payload supprimé (« vérifiés, ou demandez… »).
+
+### Validation machine (protocole complet)
+- `bun run audit:seo` : **0 échec / 1 799 contrôles** ✓ · `bun run audit:content` :
+  **1 666/1 666** ✓ · `bun run guard` : **19/19** ✓ · `audit:ai-traces` : ✓ aucune
+  signature transverse · `bun run lint` : 0 erreur.
+- Navigateur (agent-browser) : accueil 200 sans erreur, fiche phare (FAQ « Comment
+  analyser 100 annonces auto… » en tête + answer-first « comptez 25 € »), article
+  llms.txt (nouveau titre 68 car., reformulation ouverte, 0 cadratin), 0 erreur console.
+- Migration Neon : 11/11 tables identiques (113 services, 33 vendeurs, 205 options,
+  1 319 avis, 12 articles, 44 entrées IA, 4 réglages, 9 audits).
+
+### Suivi (E3, documenté dans data/keyword-sources.json)
+- Ligne de base GSC (impressions/positions par primaire) dès les premières données ;
+  volumes des 140 hotKeywords à documenter en priorité ; réévaluation trimestrielle
+  des primaires MOYENNES ; filtrage sémantique des hotKeywords plaqués hors-sujet
+  (247 placements constatés) en prochaine itération.
+
+---
+
 ## [1.8.1] — 2026-11-10 — Échec de déploiement v1.8.0 « Integration provisioning » : diagnostic + procédure (docs)
 
 Mandat : trois déploiements production consécutifs en échec (3caf1b5 · 3a14d8a · e244dc2),

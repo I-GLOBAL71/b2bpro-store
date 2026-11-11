@@ -491,7 +491,7 @@ export async function runIntegrityChecks(): Promise<IntegrityReport> {
         if (deliverables.length < 3) problems.push(`${deliverables.length} livrables (< 3)`);
         if (process.length < 3) problems.push(`${process.length} étapes (< 3)`);
         if (s.shortDesc.length < 100 || s.shortDesc.length > 230) problems.push(`shortDesc ${s.shortDesc.length} car. (hors 100-230)`);
-        if (s.title.length > 75) problems.push(`title ${s.title.length} car. (> 75)`);
+        if (s.title.length > 75 || s.title.length < 40) problems.push(`title ${s.title.length} car. (hors 40-75)`);
         if (problems.length) issues.push({ ref: `services/${s.slug}`, problem: problems.join(" ; ") });
       }
       checks.push(
@@ -514,7 +514,7 @@ export async function runIntegrityChecks(): Promise<IntegrityReport> {
         if ((b.content ?? "").length < 1500) problems.push(`contenu ${b.content.length} car. (< 1500)`);
         if (h2 < 3) problems.push(`${h2} H2 (< 3)`);
         if ((b.excerpt ?? "").length < 80 || (b.excerpt ?? "").length > 200) problems.push(`extrait ${b.excerpt.length} car. (hors 80-200)`);
-        if (b.content.includes("112 services")) problems.push("mention d'un nombre figé de services (future-robustesse)");
+        if (/\b\d{2,3}\s+services\b/.test(b.content ?? "")) problems.push("mention d'un nombre figé de services (future-robustesse)");
         if (problems.length) issues.push({ ref: `blog/${b.slug}`, problem: problems.join(" ; ") });
       }
       checks.push(
@@ -524,6 +524,108 @@ export async function runIntegrityChecks(): Promise<IntegrityReport> {
           issues.length ? "fail" : "pass",
           `${counts.blogPosts} articles vérifiés contre le skill rédactionnel obligatoire.`,
           issues
+        )
+      );
+    }
+
+    // ── 8quater. [ADDITIF v1.9.0 — tour d'élites] Primaire 3-5 mots + ancré dans le titre ──
+    // Skill ÉTAPE 2 : le primaire est une TÊTE commerciale de 3 à 5 mots
+    // significatifs, sous-chaîne du titre (H1/title) — audit E4 P0-3.
+    {
+      const issues: IntegrityIssue[] = [];
+      const n2 = (x: string) => norm(x).replace(/['’]/g, "'");
+      for (const s of services) {
+        const kw = safeJsonParse<{ primary?: string } | null>(s.keywords, null);
+        if (!kw?.primary) {
+          issues.push({ ref: `services/${s.slug}`, problem: "mot-clé primaire absent" });
+          continue;
+        }
+        const words = kw.primary.trim().split(/\s+/).filter((w) => w.length > 2);
+        const problems: string[] = [];
+        if (words.length < 3 || words.length > 5) problems.push(`primaire ${words.length} mots significatifs (hors 3-5)`);
+        if (!n2(s.title).includes(n2(kw.primary))) problems.push("primaire absent du titre (ancrage H1/title)");
+        if (problems.length) issues.push({ ref: `services/${s.slug}`, problem: problems.join(" ; ") });
+      }
+      checks.push(
+        makeCheck(
+          "services-primary-wordcount",
+          "Skill SGA™ É2 : primaire = tête commerciale 3-5 mots ancrée dans le titre",
+          issues.length ? "fail" : "pass",
+          `${counts.services} fiches : primaire 3-5 mots + présent dans le titre.`,
+          issues.slice(0, 15)
+        )
+      );
+    }
+
+    // ── 8quinquies. [ADDITIF v1.9.0] Unicité des primaires (anti-cannibalisation) ──
+    // Skill ÉTAPE 1 : une intention de recherche = une page — audit E4 P0-3.
+    {
+      const issues: IntegrityIssue[] = [];
+      const vus = new Map<string, string>();
+      for (const s of services) {
+        const kw = safeJsonParse<{ primary?: string } | null>(s.keywords, null);
+        const primary = kw?.primary ?? "";
+        const key = primary ? norm(primary).replace(/['’]/g, "'") : "";
+        if (!key) continue;
+        if (vus.has(key)) {
+          issues.push({ ref: `services/${s.slug}`, problem: `cannibalisation : « ${primary} » déjà porté par services/${vus.get(key)}` });
+        } else {
+          vus.set(key, s.slug);
+        }
+      }
+      checks.push(
+        makeCheck(
+          "services-primary-unique",
+          "Skill SGA™ É1 : un primaire = une intention = une fiche (anti-cannibalisation)",
+          issues.length ? "fail" : "pass",
+          `${vus.size} primaires distincts pour ${counts.services} fiches.`,
+          issues.slice(0, 15)
+        )
+      );
+    }
+
+    // ── 8sexies. [ADDITIF v1.9.0] FAQ : la 1ère question commence par « comment… » ──
+    // Activateur GEO v1.7.0 n°4 : les réponses FAQ sont le format le plus repris
+    // par les assistants IA — la question d'ouverture doit être un « comment… » réel.
+    {
+      const issues: IntegrityIssue[] = [];
+      for (const s of services) {
+        const faq = safeJsonParse<{ q?: string }[] | null>(s.faq, null) ?? [];
+        const first = (faq[0]?.q ?? "").trim();
+        if (!/^comment/i.test(first)) {
+          issues.push({ ref: `services/${s.slug}`, problem: `1ère question sans « comment… » : « ${first.slice(0, 50)} »` });
+        }
+      }
+      checks.push(
+        makeCheck(
+          "services-faq-first-comment",
+          "Activateur GEO v1.7.0 n°4 : la FAQ s'ouvre sur la question « comment… »",
+          issues.length ? "fail" : "pass",
+          `${counts.services} fiches : question d'ouverture « comment… ».`,
+          issues.slice(0, 15)
+        )
+      );
+    }
+
+    // ── 8septies. [ADDITIF v1.9.0] Blog : titre ≤ 75, liens internes ≥ 3, zéro cadratin ──
+    {
+      const issues: IntegrityIssue[] = [];
+      for (const b of blogPosts) {
+        const problems: string[] = [];
+        if ((b.title ?? "").length > 75) problems.push(`titre ${b.title.length} car. (> 75)`);
+        const links = ((b.content ?? "").match(/https:\/\/b2bpro\.store\/services\//g) ?? []).length;
+        if (links < 3) problems.push(`${links} liens absolus vers /services/ (< 3)`);
+        const em = (((b.title ?? "") + (b.excerpt ?? "") + (b.content ?? "")).match(/—/g) ?? []).length;
+        if (em > 0) problems.push(`${em} cadratin(s)`);
+        if (problems.length) issues.push({ ref: `blog/${b.slug}`, problem: problems.join(" ; ") });
+      }
+      checks.push(
+        makeCheck(
+          "blog-seo-standards",
+          "Skill SGA™ É4/É7 blog : titre ≤ 75 car., ≥ 3 liens vers /services/, zéro cadratin",
+          issues.length ? "fail" : "pass",
+          `${counts.blogPosts} articles : titre, maillage interne, hygiène typographique.`,
+          issues.slice(0, 15)
         )
       );
     }

@@ -15,7 +15,7 @@
 | # | Ligne de défense | Outil | Quand l'utiliser |
 |---|---|---|---|
 | 1 | **Contrats typés** | `src/lib/contracts.ts` — types DTO, schémas Zod des API, constantes `API_ROUTES`, invariants `BUSINESS_RULES` | Importer depuis là ; ne jamais redéclarer un type, un schéma ou une URL d'API ailleurs |
-| 2 | **Garde d'intégrité** | `bun run guard` (12 contrôles) et `GET /api/integrity` (HTTP 503 = alarme) | **Avant ET après** chaque implémentation, avant chaque commit |
+| 2 | **Garde d'intégrité** | `bun run guard` (19 contrôles) et `GET /api/integrity` (HTTP 503 = alarme) | **Avant ET après** chaque implémentation, avant chaque commit |
 | 3 | **Snapshots de données** | `bun run db:snapshot` → `db/snapshots/*.json` (committés) | Avant toute manipulation de données, migration, ou implémentation risquée |
 | 4 | **Restauration** | `bun run db:restore [fichier]` | Après incident ou manipulation erronée (reconstruit la base à l'identique, IDs et slugs préservés) |
 | 5 | **Frontières d'erreur** | `src/app/error.tsx`, `global-error.tsx`, `not-found.tsx`, `loading.tsx` | Déjà actives — une page cassée n'affiche jamais un écran blanc, le site reste navigable |
@@ -170,8 +170,9 @@ fonctionnalité ne peut techniquement pas exister autrement**. Étapes obligatoi
 ## 7. Commandes de référence
 
 ```bash
-bun run guard            # Garde d'intégrité complète — 14 contrôles (exit 1 si régression)
+bun run guard            # Garde d'intégrité complète — 19 contrôles (exit 1 si régression)
 bun run audit:content    # Audit INDIVIDUEL SEO/GEO/AIO de chaque service et article
+bun run audit:seo        # Scanner élite SEO/GEO/AIO (passe profonde, exit 1 si échec)
 bun run db:snapshot      # Sauvegarde totale de la base (à committer)
 bun run db:restore       # Restaure la dernière sauvegarde (ou un fichier donné)
 bun run lint             # Qualité du code
@@ -193,8 +194,18 @@ trafic AVANT d'écrire → structurer selon le template SGA™ → valider par m
 Le non-respect est **détecté automatiquement** :
 - contrôle guard `services-content-standards` (answer-first, ≥ 3 H2, mots-clés complets,
   aiQueries ≥ 3, FAQ ≥ 4 citables, richesse des livrables, aucun nombre figé) ;
+- contrôle guard `services-primary-wordcount` (primaire 3-5 mots, ancré dans le titre) ;
+- contrôle guard `services-primary-unique` (anti-cannibalisation) ;
+- contrôle guard `services-faq-first-comment` (1ère question « comment… ») ;
 - contrôle guard `blog-content-standards` (structure, extraits, aucun nombre figé) ;
-- audit individuel `bun run audit:content` (rapport par service/article, exit 1 si échec).
+- contrôle guard `blog-seo-standards` (titre ≤ 75, ≥ 3 liens vers /services/, zéro cadratin) ;
+- audit individuel `bun run audit:content` (rapport par service/article, exit 1 si échec) ;
+- scanner élite `bun run audit:seo` (passe profonde : titre ↔ primaire, densité, faits
+  chiffrés liftables, hygiène typographique, llms.txt/llms-full.txt/sitemap/robots).
+
+*(Les quatre contrôles « élite » ont été ajoutés en v1.9.0 — extensions ADDITIVES
+respectant la zone protégée du garde-fou, ids stables : `services-primary-wordcount`,
+`services-primary-unique`, `services-faq-first-comment`, `blog-seo-standards`.)*
 
 **Interdits rédactionnels absolus** (détail au §3 du contrat) : nombre figé de services,
 modification de slug existant, prix/délai hors catalogue, retrait de JSON-LD/llms.txt,

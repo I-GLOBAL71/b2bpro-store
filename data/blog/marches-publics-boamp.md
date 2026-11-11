@@ -1,7 +1,7 @@
 ---
-title: "Marchés publics : comment gagner votre premier appel d'offres (BOAMP, TED, DCE expliqués)"
+title: "Marchés publics : gagnez votre premier appel d'offres (BOAMP, DCE, TED)"
 slug: "marches-publics-boamp"
-excerpt: "Marchés publics : comprenez BOAMP, TED et DCE, et suivez la méthode complète pour décrocher votre premier appel d'offres, même face aux grands groupes."
+excerpt: "La commande publique pèse 215 milliards d'euros par an et une procédure sur trois n'attire qu'un ou deux candidats : suivez la méthode complète pour décrocher votre premier appel d'offres."
 category: "Prospection & Croissance"
 keywords: "marchés publics appels d'offres, BOAMP, TED, DCE réponse appel d'offres, gagner marché public PME"
 coverTheme: "marches-publics"
@@ -9,7 +9,7 @@ readMinutes: 9
 author: "Rédaction b2bpro.store"
 ---
 
-# Marchés publics : comment gagner votre premier appel d'offres (BOAMP, TED, DCE expliqués)
+# Marchés publics : gagnez votre premier appel d'offres (BOAMP, DCE, TED)
 
 **La réponse en 30 secondes :** la commande publique française représente environ **215 milliards d'euros par an**, et les PME remportent environ 30 % de cette valeur : un marché plus accessible qu'il n'y paraît, car **une procédure sur trois environ n'attire qu'un ou deux candidats**. Gagner son premier appel d'offres ne demande pas d'être le moins cher : 60 à 70 % des mises à l'écart proviennent d'erreurs de forme (dossier incomplet, pièce manquante, offre hors délai), pas de prix. La méthode : cibler les petites procédures adaptées (MAPA, inférieures à 40 000 € HT), lire le DCE en entier jusqu'à sa dernière annexe, répondre point par point au règlement de consultation, et surveiller le BOAMP chaque matin. Suivez le guide.
 

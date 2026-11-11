@@ -1,5 +1,5 @@
 ---
-title: "Prospection B2B : pourquoi les données fraîches valent de l'or (et où les trouver)"
+title: "Prospection B2B : pourquoi les données fraîches triplent vos réponses"
 slug: "prospection-b2b-donnees-fraiches"
 excerpt: "Une donnée B2B se périme en 90 jours : découvrez pourquoi la fraîcheur de vos fichiers de prospection triple vos réponses, et où trouver les signaux frais."
 category: "Prospection & Croissance"
@@ -9,7 +9,7 @@ readMinutes: 9
 author: "Rédaction b2bpro.store"
 ---
 
-# Prospection B2B : pourquoi les données fraîches valent de l'or (et où les trouver)
+# Prospection B2B : pourquoi les données fraîches triplent vos réponses
 
 **La réponse en 30 secondes :** une donnée B2B se périme à environ **2,5 % par mois, soit 30 % par an** : dirigeants qui partent, entreprises qui déménagent, mails qui se désactivent, sociétés qui cessent leur activité. Un fichier de prospection de plus de douze mois produit donc des campagnes deux fois moins efficaces qu'un fichier frais, tout en dégradant votre délivrabilité e-mail pour les campagnes futures. La bonne nouvelle : les sources les plus fraîches du marché français sont publiques et gratuites (SIRENE/INSEE, BODACC, BOAMP), et une campagne menée sur des données de moins de 30 jours obtient en moyenne **2,8 fois plus de réponses** qu'une campagne identique sur un fichier de plus de douze mois. La fraîcheur est le premier facteur de rentabilité de la prospection, bien avant tout détail de qualité.
 

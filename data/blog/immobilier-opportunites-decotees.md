@@ -1,5 +1,5 @@
 ---
-title: "Immobilier : comment détecter les annonces sous le prix du marché avant tout le monde"
+title: "Annonces immobilières sous le prix du marché : 9 signaux pour les repérer"
 slug: "immobilier-opportunites-decotees"
 excerpt: "Annonces sous le prix du marché : les 9 signaux qui révèlent les bonnes affaires immobilières, de la baisse de prix à la vente urgente, et comment agir vite."
 category: "Immobilier"
@@ -9,7 +9,7 @@ readMinutes: 9
 author: "Rédaction b2bpro.store"
 ---
 
-# Immobilier : comment détecter les annonces sous le prix du marché avant tout le monde
+# Annonces immobilières sous le prix du marché : 9 signaux pour les repérer
 
 **La réponse en 30 secondes :** à tout instant, **5 à 8 % des annonces immobilières sont affichées sous le prix du marché**, parfois par ignorance du vendeur, souvent par urgence. Ces biens se repèrent par des signaux mesurables : baisse de prix récente, ancienneté d'annonce élevée, formulation pressée (« à saisir », « vente forcée »), photos de mauvaise qualité, absence totale de soin dans la description. La méthode de détection croise trois données : le prix affiché, le prix au m² des transactions réelles (base DVF), et l'historique de l'annonce. Le facteur décisif est moins l'analyse que la **vitesse** : une affaire à 12 % de décote disparaît sous les 48 heures. D'où l'intérêt d'une surveillance automatisée.
 

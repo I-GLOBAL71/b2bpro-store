@@ -1,10 +1,12 @@
 # 📝 SKILL RÉDACTIONNEL OBLIGATOIRE — Méthode SGA™ (SEO + GEO + AIO)
 
-> **CONTRAT b2bpro.store v1.2.0** — Ce document est le miroir versionné du skill
-> `skills/redaction-seo-geo-aio/SKILL.md` (skill d'environnement auto-déclenché).
+> **CONTRAT b2bpro.store v1.9.0** — Ce document est le miroir versionné du skill
+> d'environnement auto-déclenché `skills/redaction-seo-geo-aio/SKILL.md`.
 > Il est **rendu exécutable par machine** : les standards ci-dessous sont vérifiés par
-> `bun run guard` (contrôles `services-content-standards` et `blog-content-standards`) et
-> audités service par service par `bun run audit:content`.
+> `bun run guard` (contrôles `services-content-standards`, `services-primary-wordcount`,
+> `services-primary-unique`, `services-faq-first-comment`, `blog-content-standards`,
+> `blog-seo-standards` — 19 contrôles) et audités service par service par
+> `bun run audit:content` puis en passe profonde par `bun run audit:seo`.
 >
 > **Règle absolue : AUCUNE rédaction — fiche de service, article de blog, page, mise à jour
 > de contenu — n'est accomplie sans passer par ce skill.** Un contenu sous-standard fait
@@ -41,7 +43,12 @@ et positionnés en page 1 Google — la fiche comme **preuve d'expertise** citab
 
 ### ÉTAPE 2 — Champ `keywords` (structure obligatoire)
 
-`{ primary (3-5 mots), secondary (≥ 3), longTail (≥ 3), aiQueries (≥ 3 questions IA) }`
+`{ primary (3-5 mots — TÊTE COMMERCIALE sous-chaîne du titre, requête plausible
+   d'un acheteur), secondary (≥ 3), longTail (≥ 3), aiQueries (≥ 3 questions IA) }`
+
+Le primaire est **unique entre fiches** (une intention = une page). Les 113 têtes
+curées de référence vivent dans `data/gen/elite-keywords.ts` ; le générateur
+borne désormais en mots (`clampPrimaryToSkill`), plus seulement en caractères.
 
 ### ÉTAPE 3 — Template SGA™ de fiche (structure exacte)
 
@@ -58,32 +65,40 @@ citable par une IA. FAQ ≥ 4 Q/R dans le langage réel (canal n°1 de recommand
 
 | Élément | Standard | Vérifié par |
 |---|---|---|
-| title | 40–75 car. (voix « Je vais… ») | guard + audit |
+| title | 40–75 car. (voix « Je vais… ») **et contient le primaire** | guard + audit |
 | shortDesc | 100–230 car. | guard + audit |
 | description | ≥ 1000 car., ≥ 3 H2, ≥ 1 liste | guard + audit |
 | Answer-first | primaire dans les 250 premiers car. | guard + audit |
-| keywords | primaire + ≥ 3 secondaires + ≥ 3 LT | guard + audit |
+| keywords | **primaire 3-5 mots + unique entre fiches** + ≥ 3 secondaires + ≥ 3 LT | guard (2 contrôles) + audit |
 | aiQueries | ≥ 3 | guard + audit |
-| faq | ≥ 4 Q/R, réponses ≥ 80 car. | guard + audit |
+| faq | ≥ 4 Q/R, réponses ≥ 80 car., **1ère question en « comment… »** | guard + audit + audit:seo |
 | features / deliverables / process | ≥ 4 / ≥ 3 / ≥ 3 | guard + audit |
 | Preuve sociale | 4,2–5,0 ★, ventes > 0, avis > 0 | guard |
-| Nombre figé de services | **INTERDIT** (dynamique ou formulation ouverte) | guard (blog) + skill |
-| Blog : titre / extrait / contenu / H2 | ≤ 75 / 80–200 / ≥ 1500 / ≥ 3 | audit |
+| Hygiène | zéro cadratin (—), décimales à la virgule, pas d'intervalle anglo-saxon | audit:seo + guard (blog) |
+| Densité | primaire ≥ 2 occurrences dans la description | audit:seo (avertissement) |
+| Nombre figé de services | **INTERDIT** (dynamique ou formulation ouverte) — regex `\d{2,3} services` | guard (blog) + audit + audit:seo |
+| Blog : titre / extrait / contenu / H2 | ≤ 75 / 80–200 / ≥ 1500 / ≥ 3 | guard + audit |
+| Blog : liens internes | ≥ 3 liens absolus vers `/services/` | guard + audit + audit:seo |
+| Sourçage ÉTAPE 1 | preuve enregistrée (source + date) dans `data/keyword-sources.json` | revue par fiche |
 
 ### ÉTAPE 5 — Intégration technique
 
-- Nouveau service : `data/catalog.json` → pipeline `enrich.ts` (génère keywords, FAQ,
-  description optimisée via `optimizeDescription()`) → insertion base → 3 miniatures SVG
-  (`public/thumbs/<slug>-{1,2,3}.svg` via `data/gen/thumbs.ts`) → vendeur unique.
-- Nouvel article : `data/blog/<slug>.md` + entrée BlogPost (slug unique, excerpt 80–200).
-- Les templates de pages fournissent déjà metadata, JSON-LD, sitemap, llms.txt, answer-first —
-  ne JAMAIS les dupliquer ni les retirer.
+- Nouveau service : `data/catalog.json` → `bun run add:service -- --code=<code>`
+  (funnel humanisé unique `buildHumanizedBundle` : mots-clés v2 + primaires
+  bornés + FAQ « comment… » en tête + accroches contextuelles) → insertion base
+  → 3 miniatures SVG (`public/thumbs/<slug>-{1,2,3}.svg`) → vendeur unique.
+- Nouvel article : `data/blog/<slug>.md` → `bun run add:blog -- --slug=<slug>`
+  (porte de qualité SGA™ AVANT insertion) ; retouche d'un article existant :
+  éditer le `.md` puis `bun run sync-blog` (validation bloquante pré-écriture).
+- Les templates de pages fournissent déjà metadata, JSON-LD, sitemap, llms.txt,
+  answer-first — ne JAMAIS les dupliquer ni les retirer.
 
 ### ÉTAPE 6 — Validation finale (porte de qualité)
 
 ```bash
 bun run audit:content   # audit individuel de chaque service et article
-bun run guard           # 14 contrôles dont standards rédactionnels
+bun run audit:seo       # scanner élite SEO/GEO/AIO (passe profonde)
+bun run guard           # 19 contrôles dont 6 standards rédactionnels
 bun run lint
 ```
 
@@ -128,9 +143,13 @@ bénéfice mesurable, risque retourné en garantie (« paiement après validatio
 - Étude des meilleurs skills GitHub : `data/RECHERCHE_GITHUB_SEO_GEO_AIO.md`
 - Skill d'environnement (auto-déclenché) : `skills/redaction-seo-geo-aio/SKILL.md`
 - Charte anti-régression : `docs/REGRESSION-GUARD.md` (§ Règle du skill obligatoire)
-- Implémentation machine : `src/lib/guard.ts`, `scripts/audit-content.ts`
-- Générateur : `data/gen/enrich.ts` (`optimizeDescription`, `buildKeywords`, `buildFaq`…)
+- Implémentation machine : `src/lib/guard.ts`, `scripts/audit-content.ts`,
+  `scripts/audit-seo-geo-aio.ts`
+- Générateur : `data/gen/enrich.ts` + `data/gen/humanize.ts` (et
+  `data/gen/elite-keywords.ts` — 113 primaires curés du tour d'élites)
+- Preuves de sourçage des mots-clés : `data/keyword-sources.json`
 
-*Contrat établi le 2026-11-08 (v1.2.0). Toute évolution de ce contrat suit le protocole
-force majeure de la charte et doit rester synchronisée entre le skill, ce document et le
-garde-fou.*
+*Contrat établi le 2026-11-08 (v1.2.0) · consolidé le 2026-11-11 (v1.9.0, tour
+d'élites SEO/GEO/AIO). Toute évolution de ce contrat suit le protocole force
+majeure de la charte et doit rester synchronisée entre le skill, ce document et
+le garde-fou.*

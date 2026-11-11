@@ -1,0 +1,44 @@
+{
+  "_meta": {
+    "objet": "Registre de preuves de sourçage des mots-clés (skill SGA™ ÉTAPE 1 renforcée, v1.9.0 — tour d'élites E3).",
+    "regle": "Tout mot-clé promu en tête (primaire/secondaire) doit pouvoir être rattaché à une entrée de ce registre : pool documenté, requête réelle du tableau d'audit, ou sourçage manuel par fiche.",
+    "limites": "Les volumes ne sont documentés que lorsqu'ils ont été mesurés lors de la recherche initiale (aucun volume inventé). Les entrées sans volume restent à documenter en priorité lors de la prochaine veille.",
+    "miseAJour": "2026-11-11"
+  },
+  "poolsParPole": {
+    "source": "data/gen/poles.ts (champ hotKeywords, 14 pôles × 10 requêtes) — curation manuelle établie lors des tours v1.5.0/v1.6.0, croisée avec l'étude data/RECHERCHE_GITHUB_SEO_GEO_AIO.md (best-aeo-skill, awesome-GEO, seo-geo-claude-skills) et le tableau REAL_POLE_QUERIES de data/gen/humanize.ts (4-5 requêtes réelles par pôle).",
+    "dateEtablissement": "2026-11-08",
+    "methode": "Sélection éditoriale pôle par pôle des requêtes à intention commerciale des acheteurs B2B francophones (France, Québec, Belgique, Suisse, Afrique francophone) ; cohérence croisée avec les intitulés de services du catalogue."
+  },
+  "volumesDocumentes": [
+    {
+      "motCle": "calcul rentabilité locative",
+      "volumeFrMois": 2900,
+      "source": "Recherche initiale v1.6.0 (tracée dans CHANGELOG.md [1.6.0])",
+      "date": "2026-11-09"
+    },
+    {
+      "motCle": "BOAMP",
+      "volumeFrMois": 6000,
+      "source": "Recherche initiale v1.6.0 (tracée dans CHANGELOG.md [1.6.0])",
+      "date": "2026-11-09"
+    }
+  ],
+  "sourcageManuelParFiche": [
+    {
+      "code": "#101",
+      "fiche": "je-vais-rediger-votre-article-de-blog-ultra-optimise-seo-geo-et-aio",
+      "source": "Champ keywords sourci à la main dans data/catalog.json (additif v1.4.0) : rédaction d'articles de blog SEO, rédaction SEO B2B, article de blog optimisé pour les IA, contenu optimisé AI Overviews, rédacteur web SEO freelance francophone",
+      "note": "Fusion dans la base via buildKeywordsV2 (secondaires/longTail/aiQueries) — le primaire curé v1.9.0 est porté par data/gen/elite-keywords.ts."
+    }
+  ],
+  "primairesCurates": {
+    "source": "data/gen/elite-keywords.ts (113 fiches) — tour d'élites v1.9.0, expert E1 : tête commerciale de 3-5 mots, sous-chaîne contiguë du titre, requête plausible d'un acheteur B2B francophone, unique entre fiches.",
+    "validation": "scripts/migrate-elite-seo.ts (assertions) puis guard services-primary-wordcount + services-primary-unique + audit:seo seo-title-keyword.",
+    "date": "2026-11-11"
+  },
+  "veille": {
+    "prochaineEtape": "Établir la ligne de base GSC (impressions/positions par primaire) dans docs/audits/keywords-gsc-<date>.md dès que les soumissions GSC fourniront des données, puis réévaluation trimestrielle pour arbitrer les primaires MOYENNES (audit E3, échantillon 30).",
+    "aDocumenterEnPriorite": "Volumes FR/mois des 140 hotKeywords des 14 pôles (source + date de collecte) — aucun n'est mesuré à ce jour."
+  }
+}

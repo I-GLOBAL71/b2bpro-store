@@ -1,5 +1,5 @@
 ---
-title: "SEO local : comment dominer le pack local Google Maps dans votre ville (plan d'action 10 étapes)"
+title: "SEO local : le plan en 10 étapes pour dominer le pack local Google Maps"
 slug: "seo-local-google-maps"
 excerpt: "Le plan d'action en 10 étapes pour dominer le pack local de Google Maps : fiche Google Business Profile optimisée, avis, citations et signaux de proximité."
 category: "SEO & Visibilité IA"
@@ -9,7 +9,7 @@ readMinutes: 9
 author: "Rédaction b2bpro.store"
 ---
 
-# SEO local : comment dominer le pack local Google Maps dans votre ville (plan d'action 10 étapes)
+# SEO local : le plan en 10 étapes pour dominer le pack local Google Maps
 
 **La réponse en 30 secondes :** dominer le pack local de Google Maps se joue sur trois facteurs que Google affiche lui-même (la pertinence, la distance et la notoriété) et sur un levier opérationnel : les avis clients. Le pack local (les 3 premières fiches affichées avec la carte) capte environ 60 % des clics des recherches locales, et 46 % des recherches sur Google portent une intention locale. Le plan d'action en 10 étapes ci-dessous optimise ces facteurs dans l'ordre de rentabilité : fiche Google Business Profile irréprochable, flux d'avis régulier, citations locales cohérentes et pages de service géolocalisées. La plupart des étapes demandent moins d'une heure chacune ; les résultats mesurables arrivent en 4 à 12 semaines.
 

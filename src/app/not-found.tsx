@@ -28,7 +28,7 @@ export default function NotFound() {
       </h1>
       <p className="mt-3 max-w-md text-[14.5px] leading-7 text-muted-foreground">
         Le lien a peut-être changé ou le service a été retiré du catalogue.
-        Explorez tous les services de nos experts vérifiés — ou demandez
+        Explorez tous les services de nos experts vérifiés, ou demandez
         directement à notre conseiller IA.
       </p>
 

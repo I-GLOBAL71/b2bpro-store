@@ -1,7 +1,7 @@
 ---
-title: "SEO, GEO et AIO : le guide complet 2025 pour être recommandé par les IA (ChatGPT, Perplexity, Google AI Overviews)"
+title: "SEO, GEO et AIO : le guide complet 2025 pour être recommandé par les IA"
 slug: "seo-geo-aio-guide-complet"
-excerpt: "SEO, GEO, AIO : comprenez les trois disciplines de la visibilité en ligne et appliquez la méthode qui fait recommander votre site par ChatGPT et Perplexity."
+excerpt: "Citer ses sources en ligne vaut +115 % de visibilité dans les réponses IA (étude Princeton, KDD 2024) : comprenez SEO, GEO et AIO, et devenez la source que ChatGPT recommande."
 category: "SEO & Visibilité IA"
 keywords: "GEO génération engine optimization, AIO answer engine optimization, SEO vs GEO différences, être cité par ChatGPT Perplexity, audit de visibilité dans les IA"
 coverTheme: "seo-geo-aio-guide"
@@ -9,7 +9,7 @@ readMinutes: 10
 author: "Rédaction b2bpro.store"
 ---
 
-# SEO, GEO et AIO : le guide complet 2025 pour être recommandé par les IA (ChatGPT, Perplexity, Google AI Overviews)
+# SEO, GEO et AIO : le guide complet 2025 pour être recommandé par les IA
 
 **La réponse en 30 secondes :** pour être recommandé par les IA génératives en 2025, vous devez faire coexister trois disciplines complémentaires : le SEO classique (votre fondation technique), le GEO (l'optimisation de vos contenus pour les moteurs génératifs) et l'AIO (votre présence dans tous les moteurs de réponse). L'étude GEO menée par des chercheurs de l'université de Princeton et présentée à la conférence KDD 2024 a quantifié les leviers qui déclenchent une citation par une IA : citer ses sources directement dans le texte améliore la visibilité de +115 %, mobiliser des sources d'autorité de +40 %, et intégrer des statistiques précises de +30 à +40 %. La méthode gagnante tient en trois verbes : structurer, sourcer, chiffrer.
 

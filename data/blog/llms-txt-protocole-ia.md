@@ -1,5 +1,5 @@
 ---
-title: "llms.txt : le protocole qui prépare votre site aux moteurs de réponse IA (guide d'implémentation)"
+title: "llms.txt : le guide d'implémentation pour un site lisible par les IA"
 slug: "llms-txt-protocole-ia"
 excerpt: "llms.txt expliqué : syntaxe, implémentation pas à pas, exemples concrets et limites du protocole qui rend votre site lisible par ChatGPT et Perplexity."
 category: "SEO & Visibilité IA"
@@ -9,7 +9,7 @@ readMinutes: 10
 author: "Rédaction b2bpro.store"
 ---
 
-# llms.txt : le protocole qui prépare votre site aux moteurs de réponse IA (guide d'implémentation)
+# llms.txt : le guide d'implémentation pour un site lisible par les IA
 
 **La réponse en 30 secondes :** llms.txt est un fichier markdown placé à la racine de votre site (`https://votre-site.fr/llms.txt`) qui présente votre activité et liste vos contenus clés dans un format pensé pour les grands modèles de langage. Proposé par Jeremy Howard (Answer.AI) le 18 septembre 2024, ce protocole complète robots.txt et sitemap.xml en offrant aux IA une « carte d'entrée » sélective : qui vous êtes, ce que vous faites, où trouver vos meilleures ressources. Il se crée en une heure, ne remplace ni le SEO ni le balisage JSON-LD, et se révèle le plus utile combiné à des contenus structurés et chiffrés, l'étude GEO de Princeton (KDD 2024) ayant mesuré que citer ses sources inline améliore la visibilité dans les réponses IA de +115 %. Voici le guide d'implémentation complet.
 
@@ -46,8 +46,8 @@ Un fichier llms.txt suit une structure en cinq blocs. Exemple réel pour un site
 ```markdown
 # B2BPro
 
-> Place de marché francophone de services digitaux B2B :
-> Plus de 100 services livrés en 2 à 3 jours, de 25 à 50 € le socle.
+> Place de marché francophone de services digitaux B2B.
+> Un catalogue qui s'enrichit chaque semaine : services livrés en 2 à 3 jours, socle de 25 à 50 €.
 
 B2BPro connecte les entreprises francophones (France, Québec,
 Belgique, Suisse, Afrique) à des prestataires data, IA et
