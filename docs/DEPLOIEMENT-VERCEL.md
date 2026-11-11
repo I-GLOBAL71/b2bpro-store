@@ -336,7 +336,12 @@ Les miniatures SVG locales (1200×750) sont converties en **WebP qualité 82** v
    `PAYPAL_ENV=sandbox` → **Redeploy**.
 
 3. **Tester en sandbox** — utiliser un **compte buyer sandbox** (*Sandbox* →
-   *Accounts*) : choisir un service → remplir le formulaire → payer.
+   *Accounts* — un compte `personal` y est pré-créé, avec email
+   `sb-…@personal.example.com` et mot de passe visibles sur place) : choisir un
+   service → remplir le formulaire → payer. Les transactions factices se
+   retrouvent sur [sandbox.paypal.com](https://sandbox.paypal.com) en se
+   connectant avec le compte **business** de test lié à l'app (visible sur la
+   fiche de l'app, section *Sandbox account info*).
    ✓ Boutons PayPal visibles, puis confirmation avec la **référence `CMD-XXXXXXXX`** ;
    commande `PAID` en base et récapitulatif écrit dans la conversation du lead.
 
