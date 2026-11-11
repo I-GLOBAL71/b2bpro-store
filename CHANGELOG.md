@@ -7,6 +7,40 @@
 
 ---
 
+## [1.10.0] — 2026-11-11 — Chat IA flottant par service : l'assistant du vendeur (DeepSeek)
+
+Mandat utilisateur : une fonctionnalité robuste de réponse par l'IA alimentée par l'API
+DeepSeek, avec pour chaque service un bouton flottant de chat portant les initiales du
+vendeur ; réponses conviviales, rassurantes, mettant en avant les gains exceptionnels
+offerts par le service, tout en restant brèves (jamais bavardes).
+
+### [ADDITIF] — Assistant IA de chaque fiche service
+- **`src/lib/ai-provider.ts`** (nouveau) : couche fournisseur LLM unique — routage
+  DeepSeek (`DEEPSEEK_API_KEY`/`DEEPSEEK_MODEL`, endpoint compatible OpenAI, timeout
+  30 s) avec **repli automatique sur la passerelle z-ai** (celle du support IA) : clé
+  absente ou échec réseau = la conversation continue, jamais de panne visible.
+- **`POST /api/service-chat`** (nouveau) : slug validé + fiche rechargée depuis la
+  base (titre, prix, délais, note, inclus, livrables, options, FAQ, identité vendeur),
+  historique assaini (14 messages max, 2 000 car.), anti-abus mémoire par IP
+  (20 msg/min), prompt système incarnant l'assistant du vendeur — règles absolues :
+  français impeccable, vouvoiement, **2 à 4 phrases / 90 mots max**, gain
+  exceptionnel chiffré à chaque réponse, réassurance (séquestre, ajustements,
+  remboursement), invitation finale douce, zéro invention de chiffre.
+- **`ServiceChatWidget`** (nouveau) : bouton flottant en bas à droite de chaque fiche
+  portant **les initiales du vendeur sur son dégradé d'avatar** (couleurs uniques par
+  vendeur, repli emerald), pastille de discussion + halo pulsant ; panneau de
+  conversation (rôle dialog, Échap pour refermer) : message d'accueil déterministe
+  sans appel réseau, suggestions tirées de la FAQ de la fiche, indicateur de frappe,
+  persistance par service (sessionStorage), message de repli rassurant en cas d'échec,
+  mention de transparence IA + garanties sous le champ de saisie.
+- **`page.tsx` des services** : calcul serveur des initiales/couleurs/suggestions et
+  rendu du widget (aucune donnée client inversée — tout vient de la fiche rendue).
+- **`.env.example`** : section « Chat IA par service » (DEEPSEEK_API_KEY, DEEPSEEK_MODEL).
+- Hygiène : suppression du doublon `skills/redaction-seo-geo-aio/SKILL.md` (déplacé
+  vers `docs/SKILL-REDACTION-SEO-GEO-AIO.md` au commit v1.9.0 — le dépôt suit).
+
+---
+
 ## [1.9.0] — 2026-11-11 — Tour d'élites SEO/GEO/AIO : scrutage intégral + skill verrouillé machine
 
 Mandat utilisateur : scruter chaque service et article (critères SEO + GEO + AIO),

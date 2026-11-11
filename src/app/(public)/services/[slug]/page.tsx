@@ -30,6 +30,7 @@ import { ServiceCard } from "@/components/site/service-card";
 import { RatingStars } from "@/components/site/rating-stars";
 import { Markdown } from "@/components/site/markdown";
 import { PoleIcon } from "@/components/site/pole-icon";
+import { ServiceChatWidget } from "@/components/site/service-chat-widget";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -166,6 +167,31 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
   });
 
   const accent = POLE_ACCENTS[svc.poleSlug];
+
+  // Assistant IA flottant (v1.9.0) — bouton aux initiales du vendeur,
+  // dégradé aux couleurs de son avatar, suggestions tirées de sa FAQ.
+  const sellerInitials = svc.seller.name
+    .split(/\s+/)
+    .map((p) => p[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+  const sellerColors = (() => {
+    try {
+      const c = JSON.parse(svc.seller.avatarColors) as string[];
+      if (c.length >= 2 && c.every((x) => /^#[0-9a-fA-F]{3,8}$/.test(x))) {
+        return [c[0], c[1]] as [string, string];
+      }
+    } catch {
+      /* couleurs mal formées : dégradé emerald de repli */
+    }
+    return ["#059669", "#34d399"] as [string, string];
+  })();
+  const chatSuggestions = [faq[0]?.q, faq[1]?.q, "Quels sont les délais et garanties ?"]
+    .filter((q): q is string => Boolean(q))
+    .slice(0, 3)
+    .map((q) => (q.length > 62 ? `${q.slice(0, 61).trimEnd()}…` : q));
 
   // Miniatures WebP (Vercel Blob) si migrées — sinon SVG locaux via le slug.
   const thumbUrls = parseThumbUrls(svc.thumbUrls);
@@ -704,6 +730,24 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
           </section>
         )}
       </div>
+
+      {/* Assistant IA flottant (v1.9.0) — chat propre à CE service, bouton aux
+          initiales du vendeur, réponses conviviales et brèves côté /api/service-chat. */}
+      <ServiceChatWidget
+        slug={svc.slug}
+        serviceTitle={svc.title}
+        basePrice={formatPrice(svc.basePrice)}
+        deliveryDays={svc.deliveryDays}
+        ratingLabel={`${svc.rating.toString().replace(".", ",")}/5`}
+        reviewsCount={svc.reviewsCount}
+        sellerName={svc.seller.name}
+        sellerInitials={sellerInitials}
+        sellerCity={svc.seller.city}
+        sellerCountry={svc.seller.countryLabel}
+        responseTime={svc.seller.responseTime.replace("répond en ", "")}
+        colors={sellerColors}
+        suggestions={chatSuggestions}
+      />
     </>
   );
 }
