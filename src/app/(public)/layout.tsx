@@ -1,5 +1,6 @@
 import { getSiteSettings } from "@/lib/settings";
 import { isAdminSession } from "@/lib/admin-auth";
+import { getAuthProvidersStatus } from "@/lib/auth";
 import { SiteHeader } from "@/components/site/site-header";
 import { SiteFooter } from "@/components/site/site-footer";
 import { AnnouncementBanner } from "@/components/site/announcement-banner";
@@ -14,7 +15,11 @@ import { AdminMaintenanceNotice } from "@/components/site/maintenance-screen";
  *  3. header + main + footer (footer collé en bas : min-h-screen flex).
  */
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {
-  const [settings, isAdmin] = await Promise.all([getSiteSettings(), isAdminSession()]);
+  const [settings, isAdmin, authStatus] = await Promise.all([
+    getSiteSettings(),
+    isAdminSession(),
+    getAuthProvidersStatus(),
+  ]);
 
   if (settings.maintenance.enabled && !isAdmin) {
     return <MaintenanceScreen message={settings.maintenance.message} />;
@@ -36,7 +41,7 @@ export default async function PublicLayout({ children }: { children: React.React
       >
         Aller au contenu
       </a>
-      <SiteHeader />
+      <SiteHeader googleAuthEnabled={authStatus.google} emailAuthEnabled={authStatus.email} />
       <main id="contenu" className="flex-1">
         {children}
       </main>

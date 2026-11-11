@@ -43,12 +43,34 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    // v2.0.0 : persister AUSSI une ligne Order (voie démo, non payée) pour
+    // que le client connecté retrouve sa commande dans /account. La voie
+    // PayPal crée déjà ses propres lignes (paymentProvider "paypal").
+    const reference = `CMD-${Date.now().toString(36).toUpperCase()}`;
+    const computedDays = service.deliveryDays + chosen.reduce((s, o) => s + o.daysExtra, 0);
+    await db.order.create({
+      data: {
+        reference,
+        leadId: lead.id,
+        serviceId: service.id,
+        serviceSlug,
+        serviceTitle,
+        optionIds: JSON.stringify(chosen.map((o) => o.id)),
+        brief: typeof brief === "string" && brief ? brief : null,
+        total: computedTotal,
+        deliveryDays: computedDays,
+        currency: "EUR",
+        paymentProvider: "demo",
+        paymentStatus: "CREATED",
+      },
+    });
+
     const summary = [
       `Commande : ${serviceTitle}`,
       `Service : /services/${serviceSlug}`,
       `Offre de base : ${service.basePrice} € (${service.deliveryDays} j)`,
       ...chosen.map((o) => `Option : ${o.name} (+${o.priceExtra} €, +${o.daysExtra} j${o.monthly ? ", mensuel" : ""})`),
-      `TOTAL : ${computedTotal} € · livraison ${service.deliveryDays + chosen.reduce((s, o) => s + o.daysExtra, 0)} jours`,
+      `TOTAL : ${computedTotal} € · livraison ${computedDays} jours`,
       brief ? `Consignes : ${brief}` : "",
       `Lead : ${lead.id}`,
     ]
@@ -63,7 +85,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({ ok: true, orderId: `CMD-${Date.now().toString(36).toUpperCase()}`, total: computedTotal });
+    return NextResponse.json({ ok: true, orderId: reference, total: computedTotal });
   } catch (e) {
     console.error("POST /api/orders", e);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });

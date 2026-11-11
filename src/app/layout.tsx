@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { SessionBoundary } from "@/components/site/session-boundary";
 import { defaultMetadata, SITE } from "@/lib/site";
 
 const geistSans = Geist({
@@ -48,7 +49,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
         />
-        {children}
+        <SessionBoundary>{children}</SessionBoundary>
         <Toaster position="bottom-right" richColors />
       </body>
     </html>

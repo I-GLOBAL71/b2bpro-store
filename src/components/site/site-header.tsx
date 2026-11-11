@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { AuthMenu } from "@/components/site/auth-menu";
 import { POLE_LABELS } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -22,7 +23,15 @@ const NAV = [
   { href: "/support", label: "Support IA" },
 ];
 
-export function SiteHeader() {
+export function SiteHeader({
+  googleAuthEnabled,
+  emailAuthEnabled,
+}: {
+  /** Google OAuth configuré (clés env) — bouton « Continuer avec Google ». */
+  googleAuthEnabled: boolean;
+  /** Lien magique email disponible (SMTP configuré, ou mode dev). */
+  emailAuthEnabled: boolean;
+}) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -72,28 +81,33 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <form action="/services" className="ml-auto hidden max-w-xs flex-1 md:block" role="search">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
-            <Input
-              type="search"
-              name="q"
-              placeholder="Rechercher un service…"
-              className="h-9 rounded-full border-border/70 bg-muted/60 pl-9 text-[13.5px]"
-              aria-label="Rechercher un service"
-            />
-          </div>
-        </form>
+        <div className="ml-auto flex items-center gap-2.5 sm:gap-3">
+          <form action="/services" className="hidden max-w-xs flex-1 md:block" role="search">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+              <Input
+                type="search"
+                name="q"
+                placeholder="Rechercher un service…"
+                className="h-9 rounded-full border-border/70 bg-muted/60 pl-9 text-[13.5px]"
+                aria-label="Rechercher un service"
+              />
+            </div>
+          </form>
 
-        <Button
-          asChild
-          size="sm"
-          className="hidden gap-1.5 rounded-full bg-gradient-to-r from-primary to-emerald-500 px-4 text-[13.5px] font-semibold text-white shadow-sm hover:shadow-md lg:inline-flex"
-        >
-          <Link href="/services">
-            Découvrir les services
-          </Link>
-        </Button>
+          {/* Compte client (v2.0.0) : Google / lien magique email. */}
+          <AuthMenu googleEnabled={googleAuthEnabled} emailEnabled={emailAuthEnabled} />
+
+          <Button
+            asChild
+            size="sm"
+            className="hidden gap-1.5 rounded-full bg-gradient-to-r from-primary to-emerald-500 px-4 text-[13.5px] font-semibold text-white shadow-sm hover:shadow-md lg:inline-flex"
+          >
+            <Link href="/services">
+              Découvrir les services
+            </Link>
+          </Button>
+        </div>
 
         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
           <SheetTrigger asChild>

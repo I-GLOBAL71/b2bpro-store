@@ -25,6 +25,7 @@ import { getPayPalConfig } from "@/lib/env";
 import { parseThumbUrls } from "@/lib/contracts";
 import { ServiceGallery } from "@/components/site/service-gallery";
 import { OptionSelector } from "@/components/site/option-selector";
+import { OrderDock } from "@/components/site/order-dock";
 import { ReviewForm } from "@/components/site/review-form";
 import { ServiceCard } from "@/components/site/service-card";
 import { RatingStars } from "@/components/site/rating-stars";
@@ -642,12 +643,10 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
                 </div>
               </div>
 
-              {/* Sélecteur d'options */}
+              {/* Sélecteur d'options — la sélection est partagée avec la barre
+                  persistante et le tunnel via le store unique (order-store). */}
               <div className="rounded-2xl border border-border bg-card p-5">
                 <OptionSelector
-                  serviceId={svc.id}
-                  serviceSlug={svc.slug}
-                  serviceTitle={svc.title}
                   basePrice={svc.basePrice}
                   baseDays={svc.deliveryDays}
                   options={svc.options.map((o) => ({
@@ -658,7 +657,6 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
                     daysExtra: o.daysExtra,
                     monthly: o.monthly,
                   }))}
-                  payPal={payPal}
                 />
               </div>
 
@@ -729,10 +727,31 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
             </div>
           </section>
         )}
+        {/* Barre de commande persistante (v2.0.0) : ancrée au bas de l'écran
+            pendant toute la lecture de la fiche, elle se range naturellement
+            au-dessus du footer en fin de page. Tunnel intégré : options
+            supplémentaires FACULTATIVES → coordonnées → paiement PayPal. */}
+        <OrderDock
+          serviceId={svc.id}
+          serviceSlug={svc.slug}
+          serviceTitle={svc.title}
+          basePrice={svc.basePrice}
+          baseDays={svc.deliveryDays}
+          options={svc.options.map((o) => ({
+            id: o.id,
+            name: o.name,
+            description: o.description,
+            priceExtra: o.priceExtra,
+            daysExtra: o.daysExtra,
+            monthly: o.monthly,
+          }))}
+          payPal={payPal}
+        />
       </div>
 
       {/* Assistant IA flottant (v1.9.0) — chat propre à CE service, bouton aux
-          initiales du vendeur, réponses conviviales et brèves côté /api/service-chat. */}
+          initiales du vendeur, réponses conviviales et brèves côté /api/service-chat.
+          Surélevé au-dessus de la barre de commande persistante (v2.0.0). */}
       <ServiceChatWidget
         slug={svc.slug}
         serviceTitle={svc.title}
@@ -747,6 +766,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
         responseTime={svc.seller.responseTime.replace("répond en ", "")}
         colors={sellerColors}
         suggestions={chatSuggestions}
+        raiseAboveDock
       />
     </>
   );

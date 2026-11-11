@@ -42,6 +42,8 @@ export interface ServiceChatWidgetProps {
   colors: [string, string];
   /** Questions suggérées (FAQ de la fiche, pré-tronquées côté serveur). */
   suggestions: string[];
+  /** true = bouton surélevé au-dessus de la barre de commande persistante (v2.0.0). */
+  raiseAboveDock?: boolean;
 }
 
 interface Msg {
@@ -67,6 +69,7 @@ export function ServiceChatWidget(props: ServiceChatWidgetProps) {
     responseTime,
     colors,
     suggestions,
+    raiseAboveDock = false,
   } = props;
 
   const [open, setOpen] = useState(false);
@@ -163,7 +166,12 @@ export function ServiceChatWidget(props: ServiceChatWidgetProps) {
   const visibleMessages = messages.length > 0 ? messages : [welcome];
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-3 sm:bottom-5 sm:right-5">
+    <div
+      className={cn(
+        "fixed right-4 z-50 flex flex-col items-end gap-3 sm:right-5",
+        raiseAboveDock ? "bottom-[84px]" : "bottom-4 sm:bottom-5",
+      )}
+    >
       {/* ── Panneau de conversation ─────────────────────────────────────────── */}
       {open && (
         <div

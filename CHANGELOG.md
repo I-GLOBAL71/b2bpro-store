@@ -7,6 +7,58 @@
 
 ---
 
+## [2.0.0] — 2026-11-11 — Commande persistante, tunnel à options, authentification Google + email
+
+### [ADDITIF] — Barre de commande persistante sur les fiches service
+- `src/components/site/order-dock.tsx` : barre `sticky bottom-0` — total en
+  direct + bouton « Commander » ancré au bas de l'écran pendant TOUTE la
+  lecture de la fiche ; se range naturellement au-dessus du footer en fin de
+  page (aucun recouvrement du footer, aucune friction mobile).
+- `src/lib/order-store.ts` (zustand) : source unique de la sélection
+  d'options partagée carte latérale ↔ barre ↔ tunnel.
+
+### [ADDITIF] — Tunnel de commande en 3 étapes, options FACULTATIVES
+1. « Composez votre commande » : offre de base incluse + options cochables
+   ou décochables (total et délais recalculés en direct) — « rien n'est imposé » ;
+2. coordonnées : préremplies si le client est connecté (sinon saisie classique) ;
+3. paiement PayPal (production, SDK JS + capture serveur — logique reprise à
+   l'identique de l'ancien `OptionSelector`) ou validation voie démo
+   `/api/orders`.
+- `option-selector.tsx` recentré sur la carte latérale (sélection + total) ;
+  le dialogue et le tunnel vivent dans `OrderDock`.
+
+### [ADDITIF] — Authentification clients : Google + lien magique email
+- `src/lib/auth.ts` (NextAuth v4, sessions JWT + adaptateur Prisma) :
+  - Google OAuth (activé par `GOOGLE_CLIENT_ID/SECRET`, sélecteur de compte) ;
+  - email par **lien magique 24 h** (nodemailer, Gmail via mot de passe
+    applicatif : `SMTP_HOST/PORT/USER/PASSWORD`) ; email HTML francophone ;
+  - sans SMTP en dev → lien tracé dans `dev.log` (parcours testable) ; en
+    production sans SMTP → bouton email masqué (jamais d'échec visible).
+- Route `src/app/api/auth/[...nextauth]/route.ts`.
+- Modèles Prisma `User/Account/Session/VerificationToken` (SQLite + miroir
+  Postgres), `db:push` local exécuté.
+- `SessionBoundary` au layout racine ; `auth-menu.tsx` : dialogue de connexion
+  (Google 1 clic / lien magique) + menu utilisateur (avatar, /account,
+  déconnexion) dans le header ; disponibilité des méthodes calculée côté
+  serveur (layout public) — boutons absents si non configurés.
+- Page `/account` : profil + commandes du compte (statuts FR, noindex).
+
+### [ADDITIF] — `/api/orders` persiste désormais une ligne Order (voie démo)
+- La voie démo crée aussi l'enregistrement `Order` (`paymentProvider: "demo"`,
+  `paymentStatus: "CREATED"`, même référence `CMD-…`) : le client connecté
+  retrouve sa commande dans `/account`. La voie PayPal reste inchangée.
+
+### [DONNÉES] — Variables d'environnement nouvelles
+- `NEXTAUTH_SECRET` (+ `NEXTAUTH_URL` dev), `GOOGLE_CLIENT_ID/SECRET`,
+  `SMTP_HOST/PORT/USER/PASSWORD/FROM` — documentées dans `.env.example` et
+  `docs/AUTHENTIFICATION-GOOGLE-EMAIL.md` (guide pas-à-pas débutant, 15 min).
+
+### [CORRECTIF] — Assistant IA de fiche surélevé
+- Le bouton flottant du chat IA passe au-dessus de la barre persistante
+  (`raiseAboveDock`) : plus aucun chevauchement sur mobile.
+
+---
+
 ## [1.10.1] — 2026-11-11 — Correctif de production : le chat IA ne renvoie plus jamais d'erreur 500
 
 Défaut constaté par l'utilisateur : `POST /api/service-chat` renvoyait **500** en
