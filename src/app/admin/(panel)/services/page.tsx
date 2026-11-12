@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { Package, Search, ChevronLeft, ChevronRight, Star, ExternalLink, Recycle } from "lucide-react";
+import { Package, Search, ChevronLeft, ChevronRight, Star, ExternalLink, Recycle, Pencil, Check, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -40,6 +41,112 @@ interface ServicesResponse {
   minRating: number;
   rotationEnabled: boolean;
   services: AdminServiceRow[];
+}
+
+/** Éditeur de tarif en place (v2.2.0) — le total de commande est toujours
+ * recalculé serveur depuis la base : le tarif saisi ici s'applique partout
+ * immédiatement (fiches, cartes, tunnel PayPal et démo, chat IA). */
+function PriceEditor({
+  row,
+  onSaved,
+}: {
+  row: AdminServiceRow;
+  onSaved: (price: number) => void;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [value, setValue] = useState(String(row.basePrice));
+  const [saving, setSaving] = useState(false);
+
+  function validate(): number | null {
+    const price = Number(value.replace(/\s/g, "").replace(",", "."));
+    if (!Number.isFinite(price) || price < 1 || price > 100000) return null;
+    if (Math.abs(price * 100 - Math.round(price * 100)) >= 0.001) return null;
+    return price;
+  }
+
+  async function save() {
+    if (saving) return;
+    const price = validate();
+    if (price === null) {
+      toast.error("Tarif invalide : montant en euros, deux décimales maximum (1 à 100 000).");
+      return;
+    }
+    setSaving(true);
+    try {
+      await apiSend(`/api/admin/services/${row.id}`, "PATCH", { basePrice: price });
+      onSaved(price);
+      setEditing(false);
+      toast.success(`Tarif mis à jour : ${row.title} → ${price.toLocaleString("fr-FR")} €`);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Modification impossible");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  if (!editing) {
+    return (
+      <span className="inline-flex items-center gap-1.5">
+        <span className="tabular-nums">{row.basePrice.toLocaleString("fr-FR")} €</span>
+        <button
+          type="button"
+          onClick={() => {
+            setValue(String(row.basePrice));
+            setEditing(true);
+          }}
+          className="rounded-md p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-primary"
+          aria-label={`Modifier le tarif de ${row.title}`}
+          title={`Modifier le tarif de ${row.title}`}
+        >
+          <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
+        </button>
+      </span>
+    );
+  }
+
+  return (
+    <span className="inline-flex items-center gap-1.5" aria-busy={saving}>
+      <Input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            void save();
+          }
+          if (e.key === "Escape") setEditing(false);
+        }}
+        type="text"
+        inputMode="decimal"
+        autoFocus
+        disabled={saving}
+        aria-label={`Nouveau tarif en euros pour ${row.title}`}
+        className="h-8 w-24 text-right tabular-nums"
+      />
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        className="h-8 w-8"
+        onClick={() => void save()}
+        disabled={saving}
+        aria-label={`Enregistrer le tarif de ${row.title}`}
+      >
+        <Check className="h-4 w-4 text-emerald-600" aria-hidden="true" />
+      </Button>
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        className="h-8 w-8"
+        onClick={() => setEditing(false)}
+        disabled={saving}
+        aria-label={`Annuler la modification du tarif de ${row.title}`}
+      >
+        <X className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+      </Button>
+    </span>
+  );
 }
 
 export default function AdminServicesPage() {
@@ -105,7 +212,7 @@ export default function AdminServicesPage() {
     <div>
       <AdminPageHeader
         title="Services"
-        description="Catalogue complet — recherche, filtres et pilotage de la mise en avant éditoriale (mode repli best-sellers)."
+        description="Catalogue complet — recherche, filtres, tarifs (modifiables en place) et pilotage de la mise en avant éditoriale."
         icon={<Package className="h-6 w-6 text-primary" aria-hidden="true" />}
       />
 
@@ -173,7 +280,7 @@ export default function AdminServicesPage() {
               <tr className="border-b border-border bg-muted/50 text-[11.5px] uppercase tracking-wider text-muted-foreground">
                 <th className="px-4 py-3 font-semibold">Service</th>
                 <th className="px-4 py-3 font-semibold">Pôle</th>
-                <th className="px-4 py-3 text-right font-semibold">Prix</th>
+                <th className="px-4 py-3 text-right font-semibold">Tarif</th>
                 <th className="px-4 py-3 text-right font-semibold">Note</th>
                 <th className="px-4 py-3 text-right font-semibold">Ventes</th>
                 <th className="px-4 py-3 text-center font-semibold">Rotation</th>
@@ -209,8 +316,22 @@ export default function AdminServicesPage() {
                       </div>
                     </td>
                     <td className="px-4 py-3 text-muted-foreground">{POLE_LABELS[s.poleSlug] ?? s.poleSlug}</td>
-                    <td className="px-4 py-3 text-right font-semibold tabular-nums">
-                      {s.basePrice.toLocaleString("fr-FR")} €
+                    <td className="px-4 py-3 text-right font-semibold">
+                      <PriceEditor
+                        row={s}
+                        onSaved={(price) =>
+                          setData((prev) =>
+                            prev
+                              ? {
+                                  ...prev,
+                                  services: prev.services.map((x) =>
+                                    x.id === s.id ? { ...x, basePrice: price } : x
+                                  ),
+                                }
+                              : prev
+                          )
+                        }
+                      />
                     </td>
                     <td className="px-4 py-3 text-right tabular-nums">
                       <span className="inline-flex items-center gap-1">

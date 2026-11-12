@@ -7,6 +7,55 @@
 
 ---
 
+## [2.2.0] — 2026-11-13 — Prestataire humain, notifications propriétaire, tarifs pilotables
+
+> Demandes client : (1) discuter avec un vrai interlocuteur (le propriétaire,
+> notifié de façon urgente), (2) l'email configuré en environnement notifié
+> pour chaque commande, chaque conversation prestataire IA et toute transaction
+> décisive, (3) dashboard client avec compte à rebours et historique des
+> commandes, (4) tarifs des services modifiables par l'admin.
+
+### [DONNÉES] — Modèles `SupportThread` / `SupportMessage` (les DEUX schémas)
+- Un fil unique par email de client connecté (identité vérifiée de session) ;
+  `unreadForOwner` alimente le badge « Messages clients » du panneau admin ;
+  les questions (ré)ouvrent le fil, une réponse du propriétaire le relance.
+
+### [ADDITIF] — Notifications email du propriétaire (`src/lib/mailer.ts`)
+- `OWNER_EMAIL` (repli `SMTP_USER`) reçoit : chaque nouvelle commande
+  (PayPal + voie démo), chaque paiement capturé (transaction décisive), chaque
+  nouvelle conversation avec l'assistant prestataire IA, chaque question client
+  au prestataire humain (priorité haute, préfixe [URGENT]).
+- Règle d'or respectée : aucun envoi ne peut faire échouer l'action métier
+  (aucune fonction ne lève ; délais SMTP bornés 8 s/12 s ; en dev sans SMTP le
+  contenu part en trace console dans dev.log, comme le lien magique).
+- La notification IA part EN PARALLÈLE de la génération LLM (aucune latence
+  ajoutée au visiteur), l'envoi restant garanti avant la réponse HTTP.
+
+### [ADDITIF] — Conversation humaine client ↔ propriétaire
+- `/api/support/thread` (GET fil + POST question, session exigée, anti-abus
+  10 msg/min/IP) ; chaque question : email URGENT + trace
+  `support.message` au journal d'audit → badge `/admin/messages`.
+- Espace client (`/account`) : rubrique « Discuter avec le prestataire »,
+  actualisation 20 s + à la reprise de focus de l'onglet ; CTA « Un humain ? »
+  ajouté sur `/support`.
+- Panneau admin : page « Messages clients » (liste, lecture = remise à zéro du
+  compteur, réponse → email au client + espace, clôture/réouverture) et badge
+  rouge de non-lus dans la navigation (interrogé toutes les 45 s).
+
+### [ADDITIF] — Dashboard client : compte à rebours des commandes
+- `OrderCountdown` — livrable promis à `paidAt + délai` (seconde par seconde,
+  rendu hydratation-safe) sur chaque commande payée de `/account`, avec lien
+  « Une question sur cette commande ? Écrire au prestataire » par commande.
+
+### [ADDITIF] — Tarifs des services modifiables par l'admin
+- `adminServicePatchSchema` accepte `basePrice` (1 à 100 000 €, deux décimales) ;
+  `PATCH /api/admin/services/[id]` applique + journalise « tarif X € → Y € » ;
+  édition en place dans /admin/services (Entrée enregistre, Échap annule).
+- Sécurité inchangée : le total de commande est TOUJOURS recalculé serveur
+  depuis la base — le tarif modifié s'applique immédiatement partout.
+
+---
+
 ## [2.1.3] — 2026-11-12 — Connexion Google réparée en production (?error=Callback)
 
 > Constat client : « l'authentification par Google tourne et revient non

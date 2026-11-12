@@ -280,6 +280,9 @@ export const API_ROUTES = {
   adminVitrine: "/api/admin/vitrine",
   adminServices: "/api/admin/services",
   adminLogs: "/api/admin/logs",
+  // ── v2.2.0 : conversation humaine client ↔ propriétaire-prestataire ──
+  supportThread: "/api/support/thread",
+  adminSupport: "/api/admin/support",
 } as const;
 
 // ─── Rapport d'intégrité (contrat de /api/integrity et du script guard) ──────
@@ -419,6 +422,9 @@ export const ADMIN_LOG_ACTIONS = {
   LOGOUT: "logout",
   CONFIG_UPDATE: "config.update",
   SERVICE_UPDATE: "service.update",
+  // ── v2.2.0 : conversation humaine client ↔ propriétaire ──
+  SUPPORT_MESSAGE: "support.message",
+  SUPPORT_REPLY: "support.reply",
 } as const;
 
 // ─── Groupes de réglages du site (SiteConfig.key) ────────────────────────────
@@ -725,10 +731,67 @@ export const adminConfigPatchSchema = z.object({
   patch: z.record(z.string(), z.unknown()),
 });
 
-/** PATCH /api/admin/services/[id] — corps de requête. */
+/** PATCH /api/admin/services/[id] — corps de requête.
+ * v2.2.0 : le tarif de base devient pilotable depuis le panneau (le reste du
+ * contenu reste géré par le pipeline éditorial). */
 export const adminServicePatchSchema = z.object({
   featured: z.boolean().optional(),
+  basePrice: z
+    .number({ message: "Tarif invalide" })
+    .min(1, "Le tarif doit être au moins de 1 €")
+    .max(100000, "Le tarif ne peut pas excéder 100 000 €")
+    .refine((v) => Math.abs(v * 100 - Math.round(v * 100)) < 1e-6, "Deux décimales maximum")
+    .optional(),
 });
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  SECTION ADDITIVE v2.2.0 — Conversation humaine client ↔ propriétaire
+//  (prestataire unique = propriétaire ; notifications email + admin)
+// ═══════════════════════════════════════════════════════════════════════════
+
+/** Statuts d'un fil de conversation (model SupportThread.status). */
+export const SUPPORT_THREAD_STATUS = {
+  OPEN: "open",
+  CLOSED: "closed",
+} as const;
+
+export type SupportThreadStatus = (typeof SUPPORT_THREAD_STATUS)[keyof typeof SUPPORT_THREAD_STATUS];
+
+/** POST /api/support/thread — question du client au prestataire humain. */
+export const supportThreadPostSchema = z.object({
+  message: z
+    .string()
+    .trim()
+    .min(5, "Votre message est trop court (5 caractères minimum)")
+    .max(4000, "Votre message est trop long (4 000 caractères maximum)"),
+});
+
+/** POST /api/admin/support/[id] — réponse du propriétaire au client. */
+export const adminSupportReplySchema = z.object({
+  message: z
+    .string()
+    .trim()
+    .min(2, "La réponse est trop courte")
+    .max(4000, "La réponse est trop longue (4 000 caractères maximum)"),
+});
+
+/** PATCH /api/admin/support/[id] — ouverture/fermeture d'un fil. */
+export const adminSupportStatusSchema = z.object({
+  status: z.enum(["open", "closed"] as const),
+});
+
+/** GET /api/support/thread — réponse (fil du client connecté). */
+export interface SupportThreadMessageDTO {
+  id: string;
+  role: "client" | "owner";
+  content: string;
+  createdAt: string;
+}
+
+export interface SupportThreadResponse {
+  thread: { email: string; name: string | null; status: SupportThreadStatus } | null;
+  messages: SupportThreadMessageDTO[];
+}
 
 /** GET /api/admin/stats — réponse du tableau de bord. */
 /** Santé d'une table d'authentification (sonde /api/admin/stats — v2.1.3). */

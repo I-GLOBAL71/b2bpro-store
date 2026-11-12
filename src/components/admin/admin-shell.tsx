@@ -3,12 +3,13 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   LayoutDashboard,
   Recycle,
   Home,
   MessageCircle,
+  MessagesSquare,
   Settings2,
   Package,
   ScrollText,
@@ -24,20 +25,63 @@ import { apiSend } from "@/components/admin/api";
 
 const NAV = [
   { href: "/admin", label: "Tableau de bord", icon: LayoutDashboard, exact: true },
+  { href: "/admin/messages", label: "Messages clients", icon: MessagesSquare, badge: true },
   { href: "/admin/vitrine", label: "Vitrine & Rotation", icon: Recycle },
   { href: "/admin/accueil", label: "Page d'accueil", icon: Home },
   { href: "/admin/support", label: "Support IA", icon: MessageCircle },
   { href: "/admin/general", label: "Général & SEO", icon: Settings2 },
   { href: "/admin/services", label: "Services", icon: Package },
   { href: "/admin/journal", label: "Journal d'audit", icon: ScrollText },
-];
+] as const;
+
+/**
+ * Badge « questions clients en attente » (v2.2.0) : interrogé toutes les 45 s
+ * (réponse minuscule ?summary=1) + à la reprise de focus. C'est la
+ * « notification » visuelle du propriétaire, complément de l'email urgent.
+ */
+function UnreadMessagesBadge() {
+  const [unread, setUnread] = useState(0);
+
+  useEffect(() => {
+    let cancelled = false;
+    const query = async () => {
+      try {
+        const res = await fetch("/api/admin/support?summary=1", { cache: "no-store" });
+        if (res.status === 401) return;
+        const data = (await res.json()) as { unreadTotal?: number };
+        if (!cancelled) setUnread(data.unreadTotal ?? 0);
+      } catch {
+        /* réseau passager — le prochain cycle réessaiera */
+      }
+    };
+    void query();
+    const id = setInterval(() => void query(), 45_000);
+    const onVisible = () => document.visibilityState === "visible" && void query();
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      cancelled = true;
+      clearInterval(id);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
+  }, []);
+
+  if (unread <= 0) return null;
+  return (
+    <span
+      className="ml-auto inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-red-500 px-1.5 text-[11px] font-bold leading-none text-white"
+      aria-label={`${unread} message${unread > 1 ? "s" : ""} client en attente`}
+    >
+      {unread > 99 ? "99+" : unread}
+    </span>
+  );
+}
 
 function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
   return (
     <nav aria-label="Navigation administration" className="flex flex-col gap-1">
       {NAV.map((item) => {
-        const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
+        const active = "exact" in item && item.exact ? pathname === item.href : pathname.startsWith(item.href);
         return (
           <Link
             key={item.href}
@@ -53,6 +97,7 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
           >
             <item.icon className="h-4.5 w-4.5 shrink-0" aria-hidden="true" />
             {item.label}
+            {"badge" in item && item.badge && <UnreadMessagesBadge />}
           </Link>
         );
       })}

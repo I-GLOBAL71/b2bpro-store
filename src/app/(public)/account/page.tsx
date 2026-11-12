@@ -6,12 +6,15 @@ import {
   Clock,
   CreditCard,
   LogIn,
+  MessageCircle,
   PackageSearch,
   ShieldCheck,
   ShoppingBag,
 } from "lucide-react";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { OrderCountdown } from "@/components/site/account/order-countdown";
+import { ProviderChat } from "@/components/site/account/provider-chat";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -134,10 +137,17 @@ export default async function AccountPage() {
                 label: order.paymentStatus,
                 className: "border-border bg-muted text-muted-foreground",
               };
+              // Compte à rebours (v2.2.0) : livrable promis X jours ouvrés après
+              // le paiement capturé (PAID) — approximation calendairé affichée au client.
+              const anchor = order.paidAt ?? order.createdAt;
+              const deliveryAt =
+                order.paymentStatus === "PAID"
+                  ? new Date(anchor.getTime() + order.deliveryDays * 86_400_000)
+                  : null;
               return (
                 <li
                   key={order.id}
-                  className="flex flex-wrap items-center gap-x-6 gap-y-3 rounded-2xl border border-border bg-card p-5"
+                  className="flex flex-wrap items-start gap-x-6 gap-y-3 rounded-2xl border border-border bg-card p-5"
                 >
                   <div className="min-w-0 flex-1">
                     <p className="flex flex-wrap items-center gap-2 text-[14px] font-semibold">
@@ -165,6 +175,18 @@ export default async function AccountPage() {
                         {order.total.toLocaleString("fr-FR")} €
                       </span>
                     </p>
+                    {deliveryAt && (
+                      <p className="mt-2.5">
+                        <OrderCountdown deliveryAt={deliveryAt.toISOString()} />
+                      </p>
+                    )}
+                    <Link
+                      href="#prestataire"
+                      className="mt-2 inline-flex items-center gap-1 text-[12px] font-medium text-primary hover:underline"
+                    >
+                      <MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />
+                      Une question sur cette commande ? Écrire au prestataire
+                    </Link>
                   </div>
                   <span
                     className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] font-semibold ${st.className}`}
@@ -182,6 +204,22 @@ export default async function AccountPage() {
           jusqu'à la livraison approuvée par vous — le vendeur n'est payé qu'après
           votre validation du livrable.
         </p>
+      </section>
+
+      {/* Conversation avec le prestataire humain (propriétaire) — v2.2.0 */}
+      <section id="prestataire" aria-labelledby="prestataire-title" className="mt-10 scroll-mt-24">
+        <h2 id="prestataire-title" className="flex items-center gap-2 text-lg font-bold tracking-tight">
+          <MessageCircle className="h-5 w-5 text-primary" aria-hidden="true" />
+          Discuter avec le prestataire — réponse humaine
+        </h2>
+        <p className="mt-1.5 max-w-2xl text-[13px] leading-5 text-muted-foreground">
+          Le propriétaire de b2bpro.store est le prestataire unique de la plateforme :
+          vos questions sur une commande, un livrable ou un délai lui parviennent
+          directement (email marqué urgent + notification dans son tableau de bord).
+        </p>
+        <div className="mt-4">
+          <ProviderChat />
+        </div>
       </section>
     </div>
   );

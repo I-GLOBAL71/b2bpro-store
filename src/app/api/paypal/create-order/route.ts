@@ -4,6 +4,7 @@ import { authOptions, isAuthRequiredForOrders } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getPayPalConfig } from "@/lib/env";
 import { createPayPalOrder, PayPalError } from "@/lib/paypal";
+import { notifyOwnerNewOrder } from "@/lib/mailer";
 import {
   API_ROUTES,
   paypalCreateOrderRequestSchema,
@@ -115,6 +116,20 @@ export async function POST(req: NextRequest) {
         paymentStatus: "CREATED",
         paypalOrderId: ppOrder.id,
       },
+    });
+
+    // ── Notification propriétaire (v2.2.0) : chaque commande déclenche un mail ─
+    // (jamais bloquante : mailer ne lève pas, délais SMTP bornés).
+    await notifyOwnerNewOrder({
+      reference,
+      serviceTitle: service.title,
+      serviceSlug: service.slug,
+      total: computedTotal,
+      deliveryDays: computedDays,
+      clientEmail: lead.email,
+      clientName: typeof effName === "string" && effName ? effName : null,
+      options: chosen.map((o) => ({ name: o.name, priceExtra: o.priceExtra })),
+      provider: "paypal",
     });
 
     return NextResponse.json({

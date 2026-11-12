@@ -6,9 +6,11 @@ import { logAdminAction } from "@/lib/settings";
 
 /**
  * PATCH /api/admin/services/[id] — mise à jour pilotée d'un service.
- * v1.5.0 : bascule `featured` (utilisée par le repli best-sellers et
- * la mise en avant éditoriale). Les autres champs restent gérés par le
- * pipeline de contenu (skills rédactionnels + guard) — jamais ici.
+ * v1.5.0 : bascule `featured` (repli best-sellers, mise en avant éditoriale).
+ * v2.2.0 : `basePrice` — le tarif de base devient modifiable depuis le panneau
+ * (le tunnel de commande recalcule TOUJOURS le total serveur depuis la base,
+ * donc un tarif changé ici s'applique immédiatement et partout). Le reste du
+ * contenu demeure géré par le pipeline éditorial (skills + guard) — jamais ici.
  */
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const denied = await ensureAdmin();
@@ -23,7 +25,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
     const existing = await db.service.findUnique({
       where: { id },
-      select: { id: true, slug: true, title: true, featured: true },
+      select: { id: true, slug: true, title: true, featured: true, basePrice: true },
     });
     if (!existing) {
       return NextResponse.json({ error: "Service introuvable" }, { status: 404 });
@@ -32,9 +34,16 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     const updated = await db.service.update({
       where: { id },
       data: parsed.data,
-      select: { id: true, slug: true, featured: true },
+      select: { id: true, slug: true, featured: true, basePrice: true },
     });
 
+    if (parsed.data.basePrice !== undefined) {
+      const eurFmt = (n: number) => n.toLocaleString("fr-FR", { maximumFractionDigits: 2 });
+      await logAdminAction(
+        ADMIN_LOG_ACTIONS.SERVICE_UPDATE,
+        `Service « ${existing.title} » (${existing.slug}) : tarif ${eurFmt(existing.basePrice)} € → ${eurFmt(updated.basePrice)} €`
+      );
+    }
     if (parsed.data.featured !== undefined) {
       await logAdminAction(
         ADMIN_LOG_ACTIONS.SERVICE_UPDATE,

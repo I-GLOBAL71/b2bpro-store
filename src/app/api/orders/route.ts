@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions, isAuthRequiredForOrders } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { notifyOwnerNewOrder } from "@/lib/mailer";
 
 /**
  * Enregistre une commande (lead + récapitulatif). Le paiement réel est simulé côté front.
@@ -104,6 +105,19 @@ export async function POST(req: NextRequest) {
         role: "assistant",
         content: summary,
       },
+    });
+
+    // ── Notification propriétaire (v2.2.0) : chaque commande, même la voie démo ─
+    await notifyOwnerNewOrder({
+      reference,
+      serviceTitle: service.title,
+      serviceSlug: service.slug,
+      total: computedTotal,
+      deliveryDays: computedDays,
+      clientEmail: lead.email,
+      clientName: typeof name === "string" && name ? name : null,
+      options: chosen.map((o) => ({ name: o.name, priceExtra: o.priceExtra })),
+      provider: "demo",
     });
 
     return NextResponse.json({ ok: true, orderId: reference, total: computedTotal });

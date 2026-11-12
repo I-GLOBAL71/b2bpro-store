@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";
+import { notifyOwnerAiConversation } from "@/lib/mailer";
+import { authOptions } from "@/lib/auth";
 import {
   generateChatReply,
   getChatProviderDiagnostics,
@@ -303,6 +306,31 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // ── Notification propriétaire (v2.2.0) : nouvelle conversation IA ──────
+    // Démarrée EN PARALLÈLE de la génération LLM : l'email part pendant que
+    // le fournisseur formule sa réponse — aucune latence ajoutée au visiteur,
+    // et l'envoi reste garanti (await) avant le renvoi de la réponse.
+    const isNewConversation = messages.filter((m) => m.role === "user").length === 1;
+    const notifyPromise = isNewConversation
+      ? (async () => {
+          let visitorEmail: string | null = null;
+          try {
+            const session = await getServerSession(authOptions);
+            if (typeof session?.user?.email === "string" && session.user.email) {
+              visitorEmail = session.user.email.toLowerCase().trim();
+            }
+          } catch {
+            /* session indisponible — la notification part sans identité */
+          }
+          await notifyOwnerAiConversation({
+            serviceTitle: svc.title,
+            serviceSlug: svc.slug,
+            question: lastUser.content.slice(0, 300),
+            clientEmail: visitorEmail,
+          });
+        })()
+      : null;
+
     const providerMessages: ChatProviderMessage[] = [
       { role: "system", content: buildSystemPrompt(svc) },
       ...messages,
@@ -312,6 +340,9 @@ export async function POST(req: NextRequest) {
       temperature: 0.75,
       maxTokens: 400,
     });
+
+    // L'envoi de la notification (s'il y en a une) est garanti avant la réponse.
+    await notifyPromise?.catch(() => undefined);
 
     // Chaîne complète épuisée (DeepSeek ET z-ai injoignables) : réponse locale
     // déterministe sur les chiffres exacts de la fiche — JAMAIS d'erreur 500.

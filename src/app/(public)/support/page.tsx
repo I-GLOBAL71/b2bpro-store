@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Zap, Database, Globe2, HeartHandshake, MessageCircleOff } from "lucide-react";
+import { Zap, Database, Globe2, HeartHandshake, MessageCircleOff, UserRound } from "lucide-react";
 import { SupportChat } from "@/components/site/support-chat";
 import { getSiteSettings } from "@/lib/settings";
 
@@ -54,6 +54,27 @@ export default async function SupportPage() {
             </Link>
           </div>
         )}
+      </div>
+
+      {/* Relais humain direct (v2.2.0) : le propriétaire-prestataire répond lui-même */}
+      <div className="mx-auto mt-6 flex max-w-xl flex-wrap items-center gap-4 rounded-2xl border border-primary/20 bg-accent/40 p-5">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-white">
+          <UserRound className="h-5.5 w-5.5" aria-hidden="true" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="text-[14px] font-bold">Un humain ? Le propriétaire vous répond personnellement</p>
+          <p className="mt-1 text-[12.5px] leading-5 text-muted-foreground">
+            Depuis votre espace client, écrivez directement au prestataire unique de la
+            plateforme : votre question le notifie par email marqué urgent — réponse
+            humaine généralement sous 4 h.
+          </p>
+        </div>
+        <Link
+          href="/account"
+          className="rounded-full bg-primary px-5 py-2.5 text-[13.5px] font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+        >
+          Discuter avec le prestataire
+        </Link>
       </div>
 
       {/* Capacités du support */}

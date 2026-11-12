@@ -139,6 +139,31 @@ model ChatMessage {
   createdAt DateTime @default(now())
 }
 
+// ─── Conversations client ↔ prestataire humain (v2.2.0) ────────────────────
+// Le prestataire humain de la plateforme est UNIQUE : le propriétaire.
+// Chaque fil est rattaché à l'email vérifié d'un client connecté (session) ;
+// chaque question déclenche un email URGENT au propriétaire (OWNER_EMAIL)
+// ET une trace « support.message » dans le journal admin (notification /admin/messages).
+model SupportThread {
+  id             String           @id @default(cuid())
+  email          String           @unique // email de session (identité vérifiée)
+  name           String?
+  status         String           @default("open") // "open" | "closed"
+  unreadForOwner Int              @default(0) // questions en attente du propriétaire
+  lastMessageAt  DateTime         @default(now())
+  createdAt      DateTime         @default(now())
+  messages       SupportMessage[]
+}
+
+model SupportMessage {
+  id        String        @id @default(cuid())
+  threadId  String
+  thread    SupportThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  role      String // "client" | "owner"
+  content   String
+  createdAt DateTime      @default(now())
+}
+
 // ─── Configuration dynamique du site (panneau d'administration) ──────────────
 // v1.5.0 — rotation équitable de la vitrine d'accueil + réglages pilotables.
 // Une ligne par groupe de réglages ; `value` est un JSON typé via les contrats

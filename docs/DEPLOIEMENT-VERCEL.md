@@ -69,6 +69,7 @@ Catalogue complet de référence : `.env.example` (racine du repo).
 | `PAYPAL_CLIENT_ID` / `PAYPAL_CLIENT_SECRET` | Clés de l'app REST PayPal — le **secret ne quitte jamais le serveur** | ❌ (mode démo) | ⭕ paiement réel |
 | `PAYPAL_ENV` | `sandbox` (défaut) ou `live` | ❌ | ⭕ `live` en production |
 | `GOOGLE_SITE_VERIFICATION` | Code de vérification GSC (balise META, déjà câblée dans les métadonnées) | ❌ | ⭕ pour la vérification |
+| `OWNER_EMAIL` | **Notifications du propriétaire-prestataire (v2.2.0)** : chaque commande (création + paiement capturé), chaque nouvelle conversation prestataire IA, chaque question client au prestataire humain ([URGENT]) — repli automatique sur `SMTP_USER` si absente. L'envoi réel requiert les variables `SMTP_*` du lien magique | ❌ (trace console dev) | ⭕ **recommandée** — sinon repli sur `SMTP_USER` |
 
 > **Mode démo — comportement par défaut :** tant que `PAYPAL_CLIENT_ID` /
 > `PAYPAL_CLIENT_SECRET` ne sont **pas** définis, la plateforme utilise la voie

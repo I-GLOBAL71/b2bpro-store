@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getPayPalConfig } from "@/lib/env";
 import { capturePayPalOrder, PayPalError } from "@/lib/paypal";
+import { notifyOwnerPaymentCaptured } from "@/lib/mailer";
 import {
   API_ROUTES,
   ORDER_PAYMENT_STATUS,
@@ -39,7 +40,10 @@ export async function POST(req: NextRequest) {
     }
     const { paypalOrderId } = parsed.data;
 
-    const order = await db.order.findUnique({ where: { paypalOrderId } });
+    const order = await db.order.findUnique({
+      where: { paypalOrderId },
+      include: { lead: { select: { email: true, name: true } } },
+    });
     if (!order) {
       return NextResponse.json({ error: "Commande introuvable" }, { status: 404 });
     }
@@ -126,6 +130,18 @@ export async function POST(req: NextRequest) {
         role: "assistant",
         content: summary,
       },
+    });
+
+    // ── Notification propriétaire (v2.2.0) : transaction DÉCISIVE capturée ──
+    // (jamais bloquante — l'échec éventuel est tracé serveur, pas remonté).
+    await notifyOwnerPaymentCaptured({
+      reference: paid.reference,
+      serviceTitle: paid.serviceTitle,
+      total: paid.total,
+      payerEmail: paid.payerEmail,
+      payerName: paid.payerName,
+      captureId: paid.paypalCaptureId,
+      clientEmail: order.lead.email,
     });
 
     return NextResponse.json({
