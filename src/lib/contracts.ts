@@ -567,7 +567,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettingsDTO = {
   support: {
     enabled: true,
     welcome:
-      "Bonjour et bienvenue sur b2bpro.store ! 👋\n\nJe suis votre conseiller IA : je connais tous nos services par cœur, leurs options, leurs tarifs et leurs livrables. Posez-moi toutes vos questions — choisir le bon service, comprendre un livrable, vérifier un délai…\n\nQuel besoin business puis-je vous aider à résoudre aujourd'hui ?",
+      "Bonjour et bienvenue sur b2bpro.store.\n\nJe suis votre conseiller IA : je connais tous nos services par cœur, leurs options, leurs tarifs et leurs livrables. Posez-moi toutes vos questions — choisir le bon service, comprendre un livrable, vérifier un délai…\n\nQuel besoin business puis-je vous aider à résoudre aujourd'hui ?",
   },
   maintenance: {
     enabled: false,

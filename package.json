@@ -26,7 +26,8 @@
     "db:restore": "bun run scripts/db-restore.ts",
     "add:service": "bun run scripts/add-service.ts",
     "gen:gsc-urls": "bun run scripts/gen-gsc-urls.ts",
-    "gen:favicon": "bun run scripts/gen-favicon.ts"
+    "gen:favicon": "bun run scripts/gen-favicon.ts",
+    "emojis:clean": "bun run scripts/remove-emojis.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

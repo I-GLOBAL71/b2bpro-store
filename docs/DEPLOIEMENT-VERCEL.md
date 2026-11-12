@@ -456,6 +456,29 @@ avant d'annoncer la mise en production :
 
 Réflexe : **snapshot local avant toute manipulation risquée** (charte §1).
 
+### Nettoyage des émoticônes « qui font trop IA » (v2.1.3)
+
+La charte éditoriale bannit les émoticônes d'ornement (✨ sparkles, salut 👋,
+cadenas 🔒 décoratif…) des textes visibles — elles « font trop IA ». Les symboles
+typographiques sobres sont conservés (flèches →, coches ✓, étoiles de notation ★),
+tout comme les émoticônes CITÉES par un article (ex. « 🔥🔥 » cité par la fiche
+« micro-influenceurs » comme exemple de commentaire — c'est du contenu, pas un ornement).
+
+Le script est **idempotent** (relancer ne change rien) et couvre `SiteConfig.support.welcome`,
+`ChatMessage.content`, et en sweep de sécurité les champs textuels `Service` / `BlogPost` / `Review` :
+
+```bash
+# Base locale (SQLite) :
+bun run emojis:clean                  # écriture
+bun run scripts/remove-emojis.ts --dry-run   # rapport seul
+
+# Production Neon (même convention que db:migrate:neon) :
+NEON_DATABASE_URL="postgresql://…sslmode=require" bun run emojis:clean
+```
+
+À dérouler après le prochain déploiement une fois, puis à la demande si de
+nouveaux textes en contiennent.
+
 ### Rappels charte anti-régression applicables à la production
 
 - `bun run guard` **avant ET après** toute évolution (15 contrôles — exit 1 si

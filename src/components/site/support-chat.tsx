@@ -32,7 +32,7 @@ export function SupportChat({ welcome }: { welcome?: string }) {
   /** Message d'accueil configurable (panneau admin → Support IA). */
   const welcomeMessage =
     welcome ||
-    "Bonjour et bienvenue sur b2bpro.store ! 👋 Comment puis-je vous aider aujourd'hui ?";
+    "Bonjour et bienvenue sur b2bpro.store. Comment puis-je vous aider aujourd'hui ?";
 
   useEffect(() => {
     // Restaure la session précédente

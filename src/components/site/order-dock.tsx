@@ -391,10 +391,12 @@ export function OrderDock({
                 · livraison {totalDays} jour{totalDays > 1 ? "s" : ""} ouvré{totalDays > 1 ? "s" : ""}
               </span>
             </p>
-            <p className="truncate text-[11.5px] text-muted-foreground">
-              {elementsCount} élément{elementsCount > 1 ? "s" : ""}
-              {selectedCount > 0 && ` · offre de base + ${selectedCount} option${selectedCount > 1 ? "s" : ""}`}
-              <span className="ml-2 inline-flex items-center gap-1 text-emerald-600">
+            <p className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11.5px] leading-4 text-muted-foreground">
+              <span className="shrink-0">{elementsCount} élément{elementsCount > 1 ? "s" : ""}</span>
+              {selectedCount > 0 && (
+                <span className="shrink-0">offre de base + {selectedCount} option{selectedCount > 1 ? "s" : ""}</span>
+              )}
+              <span className="inline-flex shrink-0 items-center gap-1 text-emerald-600">
                 <ShieldCheck className="h-3 w-3" aria-hidden="true" />
                 paiement séquestré
               </span>
@@ -414,11 +416,25 @@ export function OrderDock({
 
       {/* ═════════════════════════════════════════════════════════════════
           2. Tunnel de commande — options → coordonnées → paiement
+
+          Mobile-first (v2.1.3) : sur téléphone la modale devient un BOTTOM
+          SHEET pleine largeur ancré bas d'écran (poignée visible, coin
+          supérieur arrondi, safe-area respectée) ; ≥sm elle redevient la
+          modale centrée classique.
          ═════════════════════════════════════════════════════════════════ */}
       <Dialog open={dialogOpen} onOpenChange={handleDialogOpen}>
-        <DialogContent className="max-h-[88dvh] gap-0 overflow-y-auto overflow-x-hidden overscroll-contain p-4 pb-[calc(1.25rem+env(safe-area-inset-bottom))] sm:max-w-lg sm:p-6 sm:pb-6">
+        <DialogContent
+          className={cn(
+            // ── Mobile : bottom sheet pleine largeur ──
+            "left-0 right-0 bottom-0 top-auto grid max-h-[92dvh] w-full max-w-full translate-x-0 translate-y-0 gap-0 overflow-x-hidden overflow-y-auto overscroll-contain rounded-none rounded-t-2xl rounded-b-none border-b-0 p-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))]",
+            // ── ≥sm : modale centrée classique ──
+            "sm:bottom-auto sm:left-1/2 sm:right-auto sm:top-1/2 sm:max-h-[88dvh] sm:max-w-lg sm:translate-x-[-50%] sm:translate-y-[-50%] sm:rounded-lg sm:rounded-t-lg sm:rounded-b-lg sm:border-b sm:p-6 sm:pb-6",
+          )}
+        >
+          {/* Poignée du bottom sheet (mobile uniquement) */}
+          <div aria-hidden="true" className="mx-auto mb-1 h-1.5 w-10 shrink-0 rounded-full bg-muted-foreground/25 sm:hidden" />
           <DialogHeader className="text-left">
-            <DialogTitle className="flex flex-wrap items-center gap-2 pr-10 text-xl leading-snug">
+            <DialogTitle className="pr-10 text-lg font-bold leading-snug sm:text-xl">
               {step === "options"
                 ? "Composez votre commande"
                 : step === "form"
@@ -433,7 +449,7 @@ export function OrderDock({
                       ? "Paiement confirmé"
                       : "Commande enregistrée"}
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-left text-[12.5px] leading-5 text-muted-foreground sm:text-sm">
               {step === "options" ? (
                 <>
                   Offre de base incluse d'office. Ajoutez seulement les options
@@ -441,14 +457,16 @@ export function OrderDock({
                   <span className="font-semibold text-foreground">rien n'est imposé</span>.
                 </>
               ) : (
-                <>
-                  {serviceTitle} :{" "}
-                  <span className="font-semibold text-foreground">{fmt(total)}</span> ·
-                  livraison {totalDays} j.{" "}
-                  {payPal
-                    ? "Paiement par carte ou compte PayPal, fonds sécurisés."
-                    : "Paiement sécurisé après validation du formulaire."}
-                </>
+                <span className="block">
+                  <span className="block break-words font-medium text-foreground/80">{serviceTitle}</span>
+                  <span className="mt-1 block break-words">
+                    <span className="whitespace-nowrap font-semibold text-foreground">{fmt(total)}</span>
+                    {" "}· livraison {totalDays} j.{" "}
+                    {payPal
+                      ? "Paiement par carte ou compte PayPal, fonds sécurisés."
+                      : "Paiement sécurisé après validation du formulaire."}
+                  </span>
+                </span>
               )}
             </DialogDescription>
           </DialogHeader>
@@ -460,26 +478,26 @@ export function OrderDock({
                 {paid ? "Paiement confirmé ✓" : "Commande enregistrée ✓"}
               </p>
               {paid && (
-                <p className="mt-1 text-[13px] font-semibold text-primary">
+                <p className="mt-1 break-words text-[13px] font-semibold text-primary">
                   Commande {paid.reference} : {fmt(paid.total)} réglés
                 </p>
               )}
-              <p className="mt-2 text-[13.5px] leading-6 text-muted-foreground">
-                {paid
-                  ? "Le paiement a été encaissé via PayPal"
-                  : "Le récapitulatif complet vient d'être envoyé à"}
-                {paid && paid.payerEmail ? (
+              <p className="mt-2 break-words text-[13.5px] leading-6 text-muted-foreground">
+                {paid ? (
                   <>
-                    {" "}({paid.payerEmail})
+                    Le paiement a été encaissé via PayPal
+                    {paid.payerEmail ? <span className="break-all"> ({paid.payerEmail})</span> : null}
+                    {" "}. Le récapitulatif complet et le suivi de livraison partent vers{" "}
+                    <strong className="block break-all text-foreground">{formRef.current.email}</strong>
+                    {" "}. Votre expert est notifié et démarre sous 24 h — vos fonds restent protégés jusqu'à validation du livrable.
                   </>
-                ) : null}
-                {paid
-                  ? ". Le récapitulatif complet et le suivi de livraison partent vers "
-                  : " "}
-                <strong className="break-all">{formRef.current.email}</strong>
-                {paid
-                  ? ". Votre expert est notifié et démarre sous 24 h — vos fonds restent protégés jusqu'à validation du livrable."
-                  : ". Un conseiller confirme votre commande et le lien de paiement sécurisé dans l'heure. Vos fonds restent séquestrés jusqu'à validation du livrable."}
+                ) : (
+                  <>
+                    Le récapitulatif complet vient d'être envoyé à{" "}
+                    <strong className="block break-all text-foreground">{formRef.current.email}</strong>
+                    {" "}. Un conseiller confirme votre commande et le lien de paiement sécurisé dans l'heure. Vos fonds restent séquestrés jusqu'à validation du livrable.
+                  </>
+                )}
               </p>
             </div>
           ) : step === "options" ? (
@@ -586,15 +604,16 @@ export function OrderDock({
           ) : step === "payment" && payPal ? (
             /* ── Étape 3 : paiement PayPal ── */
             <div className="mt-2 space-y-4">
-              <div className="rounded-xl bg-muted/60 p-3.5 text-[12.5px] leading-5 text-muted-foreground">
+              <div className="break-words rounded-xl bg-muted/60 p-3.5 text-[12.5px] leading-5 text-muted-foreground">
                 <p className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 font-semibold text-foreground">
                   <Check className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
                   Récapitulatif :{" "}
                   <span className="whitespace-nowrap">{fmt(total)} · {totalDays} jours</span>
                 </p>
-                <p className="mt-1">{recapLine}</p>
-                <p className="mt-1">
-                  Confirmation envoyée à <strong>{formRef.current.email}</strong>
+                <p className="mt-1 break-words">{recapLine}</p>
+                <p className="mt-1 break-words">
+                  Confirmation envoyée à{" "}
+                  <strong className="block break-all font-semibold text-foreground">{formRef.current.email}</strong>
                 </p>
               </div>
 
@@ -604,9 +623,9 @@ export function OrderDock({
               </div>
 
               {sdkFailed ? (
-                <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-[13px] leading-6 text-amber-800">
+                <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-[13px] leading-6 text-amber-800 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-300">
                   <p className="font-semibold">Impossible de charger le module PayPal.</p>
-                  <p className="mt-1">
+                  <p className="mt-1 break-words">
                     Vérifiez votre connexion puis réessayez — ou contactez le support IA,
                     aucun montant n'a été débité.
                   </p>
@@ -689,18 +708,20 @@ export function OrderDock({
             /* ── Étape 2 : coordonnées (PayPal) / formulaire unique (démo) ── */
             <form onSubmit={payPal ? goToPayment : placeOrder} className="mt-2 space-y-4">
               {sessionEmail ? (
-                <div className="flex items-center gap-3 rounded-xl border border-primary/30 bg-accent/30 p-3.5">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
-                    <UserCheck className="h-5 w-5" aria-hidden="true" />
-                  </span>
-                  <div className="min-w-0">
-                    <p className="text-[13.5px] font-semibold leading-tight">
+                <div className="break-words rounded-xl border border-primary/30 bg-accent/30 p-3.5">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
+                      <UserCheck className="h-5 w-5" aria-hidden="true" />
+                    </span>
+                    <p className="min-w-0 flex-1 truncate text-[13.5px] font-semibold leading-tight">
                       Connecté{sessionName ? ` — ${sessionName}` : ""}
                     </p>
-                    <p className="truncate text-[12px] text-muted-foreground">
-                      Commande préremplie pour <strong>{sessionEmail}</strong> : rien à ressaisir.
-                    </p>
                   </div>
+                  <p className="mt-2 text-[12px] leading-5 text-muted-foreground">
+                    Commande préremplie pour{" "}
+                    <strong className="block break-all font-semibold text-foreground">{sessionEmail}</strong>
+                    <span className="block">Rien à ressaisir.</span>
+                  </p>
                 </div>
               ) : (
                 <>
@@ -732,17 +753,17 @@ export function OrderDock({
                   id="dock-order-brief"
                   value={brief}
                   onChange={(e) => setBrief(e.target.value)}
-                  placeholder="Décrivez votre besoin : cible, zone, volume attendu…"
+                  placeholder="Votre besoin : cible, zone, volume…"
                   rows={3}
                 />
               </div>
-              <div className="rounded-xl bg-muted/60 p-3.5 text-[12.5px] leading-5 text-muted-foreground">
+              <div className="break-words rounded-xl bg-muted/60 p-3.5 text-[12.5px] leading-5 text-muted-foreground">
                 <p className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 font-semibold text-foreground">
                   <Check className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
                   Récapitulatif :{" "}
                   <span className="whitespace-nowrap">{fmt(total)} · {totalDays} jours</span>
                 </p>
-                <p className="mt-1">{recapLine}</p>
+                <p className="mt-1 break-words">{recapLine}</p>
                 {selectedCount > 0 && (
                   <Button
                     type="button"

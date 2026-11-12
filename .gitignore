@@ -62,4 +62,5 @@ tool-results/
 
 server.log
 # Skills directory
-/skills/
+/skills/# captures et analyses de test déposées par la passerelle de chat
+upload/

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { MessageCircle, RotateCcw, Send, ShieldCheck, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useOrderStore } from "@/lib/order-store";
 
 /**
  * ═══════════════════════════════════════════════════════════════════════════
@@ -79,6 +80,14 @@ export function ServiceChatWidget(props: ServiceChatWidgetProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const storageKey = `b2bpro-svcchat:${slug}`;
+
+  // v2.1.3 — Le tunnel de commande (OrderDock) s'ouvre au même z-index que ce
+  // bouton flottant : on le retire pendant le tunnel (il recouvrait la modale
+  // sur mobile) et il revient dès la fermeture.
+  const orderDialogOpen = useOrderStore((s) => s.dialogOpen);
+  useEffect(() => {
+    if (orderDialogOpen) setOpen(false);
+  }, [orderDialogOpen]);
 
   const welcome: Msg = {
     role: "assistant",
@@ -170,6 +179,8 @@ export function ServiceChatWidget(props: ServiceChatWidgetProps) {
       className={cn(
         "fixed right-4 z-50 flex flex-col items-end gap-3 sm:right-5",
         raiseAboveDock ? "bottom-[84px]" : "bottom-4 sm:bottom-5",
+        // Tunnel de commande ouvert → bouton retiré (conflit z-index/chevauchement).
+        orderDialogOpen && "hidden",
       )}
     >
       {/* ── Panneau de conversation ─────────────────────────────────────────── */}
