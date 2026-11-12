@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "# Vérification factuelle des 3 captures mobiles\n\n**1) Textes coupés sur le bord droit ?**\nNon. Sur les 3 captures, les textes sont correctement débordés à la ligne, aucune troncature visible.\n\n**2) Scrollbar horizontale ?**\nAucune scrollbar horizontale visible. Le contenu tient dans la largeur.\n\n**3) Prix 25 € sur une seule ligne ?**\nOui, partout : « 25 € » dans les cartes, total et récapitulatif est sur une seule ligne. (Note : en bas d'écran, « 25 € » de la barre de commande apparaît légèrement chevauché par la pastille noire « N », mais pas coupé en deux lignes.)\n\n**4) Boutons CTA lisibles en entier ?**\nOui : « Continuer avec l'offre de base », « Continuer vers le paiement sécurisé », « Carte bancaire », bouton PayPal et « Commander » sont tous intégralement visibles et lisibles.\n\n**5) Icônes sparkle/étoile restantes ?**\nNon détectées. Aucune icône sparkle/étoile visible sur les 3 captures (seulement check ✓, flèches →, cadenas, horloge, X de fermeture).\n\n**Bilan : responsive conforme** sur les 5 points, à l'exception mineure du léger chevauchement pastille/prix dans la barre inférieure.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1794446960,
+  "id": "202611120929105dabae7c520e4ffd",
+  "model": "glm-5.3-flash",
+  "object": "chat.completion",
+  "request_id": "202611120929105dabae7c520e4ffd",
+  "usage": {
+    "completion_tokens": 328,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1401,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1729
+  }
+}
