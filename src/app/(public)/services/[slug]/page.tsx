@@ -17,7 +17,7 @@ import {
   Workflow,
   HelpCircle,
   Quote,
-  Sparkles,
+  Zap,
 } from "lucide-react";
 import { db } from "@/lib/db";
 import { getServiceBySlug, getRelatedServices } from "@/lib/queries";
@@ -349,7 +349,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
               className="mt-4 rounded-2xl bg-stone-100 p-4 dark:bg-stone-900 sm:p-5"
             >
               <div className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                <Zap className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
                 <span className="text-[11px] font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400">
                   Réponse rapide
                 </span>

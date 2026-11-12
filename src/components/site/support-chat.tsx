@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Send, ShieldCheck, Sparkles, Mail, Lock, RotateCcw } from "lucide-react";
+import { Send, ShieldCheck, Bot, Mail, Lock, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -144,7 +144,7 @@ export function SupportChat({ welcome }: { welcome?: string }) {
         </div>
         <div>
           <h2 className="flex items-center justify-center gap-2 text-xl font-extrabold">
-            <Sparkles className="h-5 w-5 text-primary" aria-hidden="true" />
+            <Bot className="h-5 w-5 text-primary" aria-hidden="true" />
             Activez votre conseiller IA
           </h2>
           <p className="mt-2 text-[13.5px] leading-6 text-muted-foreground">
@@ -187,7 +187,7 @@ export function SupportChat({ welcome }: { welcome?: string }) {
       {/* En-tête */}
       <div className="flex items-center gap-3 border-b border-border bg-gradient-to-r from-stone-950 to-stone-900 px-5 py-4 text-white">
         <span className="relative flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-500/15">
-          <Sparkles className="h-5 w-5 text-emerald-400" aria-hidden="true" />
+          <Bot className="h-5 w-5 text-emerald-400" aria-hidden="true" />
           <span className="absolute -right-0.5 -top-0.5 h-3 w-3 rounded-full border-2 border-stone-950 bg-emerald-400 animate-pulse-soft" aria-hidden="true" />
         </span>
         <div className="min-w-0 flex-1">

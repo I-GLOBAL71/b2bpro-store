@@ -13,7 +13,7 @@ import {
   TrendingUp,
   GraduationCap,
   Truck,
-  Sparkles,
+  Layers,
   type LucideIcon,
 } from "lucide-react";
 
@@ -41,6 +41,6 @@ export function PoleIcon({
   icon: string;
   className?: string;
 }) {
-  const Icon = MAP[icon] || Sparkles;
+  const Icon = MAP[icon] || Layers;
   return <Icon className={className} aria-hidden="true" />;
 }

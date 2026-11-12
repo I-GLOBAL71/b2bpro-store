@@ -13,7 +13,6 @@ import {
   PackageCheck,
   ShieldCheck,
   ShoppingCart,
-  Sparkles,
   UserCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -377,7 +376,7 @@ export function OrderDock({
   return (
     <>
       <div
-        className="sticky bottom-0 z-40 -mx-4 mt-8 border-t border-border/80 bg-background/95 shadow-[0_-8px_24px_rgba(0,0,0,0.06)] backdrop-blur-xl sm:-mx-6 lg:-mx-8"
+        className="sticky bottom-0 z-40 -mx-4 mt-8 border-t border-border/80 bg-background/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_24px_rgba(0,0,0,0.06)] backdrop-blur-xl sm:-mx-6 lg:-mx-8"
         role="region"
         aria-label="Commander ce service"
       >
@@ -417,10 +416,9 @@ export function OrderDock({
           2. Tunnel de commande — options → coordonnées → paiement
          ═════════════════════════════════════════════════════════════════ */}
       <Dialog open={dialogOpen} onOpenChange={handleDialogOpen}>
-        <DialogContent className="max-h-[90vh] gap-0 overflow-y-auto sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-xl">
-              <Sparkles className="h-5 w-5 text-primary" aria-hidden="true" />
+        <DialogContent className="max-h-[88dvh] gap-0 overflow-y-auto overflow-x-hidden overscroll-contain p-4 pb-[calc(1.25rem+env(safe-area-inset-bottom))] sm:max-w-lg sm:p-6 sm:pb-6">
+          <DialogHeader className="text-left">
+            <DialogTitle className="flex flex-wrap items-center gap-2 pr-10 text-xl leading-snug">
               {step === "options"
                 ? "Composez votre commande"
                 : step === "form"
@@ -457,7 +455,7 @@ export function OrderDock({
 
           {/* ── Confirmation finale (PayPal payé OU voie démo) ── */}
           {step === "done" && (paid || done) ? (
-            <div className="mt-3 rounded-xl border border-primary/30 bg-accent/30 p-5 text-center">
+            <div className="mt-3 rounded-xl border border-primary/30 bg-accent/30 p-4 text-center sm:p-5">
               <p className="text-[15px] font-bold">
                 {paid ? "Paiement confirmé ✓" : "Commande enregistrée ✓"}
               </p>
@@ -478,7 +476,7 @@ export function OrderDock({
                 {paid
                   ? ". Le récapitulatif complet et le suivi de livraison partent vers "
                   : " "}
-                <strong>{formRef.current.email}</strong>
+                <strong className="break-all">{formRef.current.email}</strong>
                 {paid
                   ? ". Votre expert est notifié et démarre sous 24 h — vos fonds restent protégés jusqu'à validation du livrable."
                   : ". Un conseiller confirme votre commande et le lien de paiement sécurisé dans l'heure. Vos fonds restent séquestrés jusqu'à validation du livrable."}
@@ -489,20 +487,20 @@ export function OrderDock({
             <div className="mt-3 space-y-4">
               <div className="rounded-xl border-2 border-primary/60 bg-accent/30 p-3.5">
                 <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-start gap-3">
+                  <div className="flex min-w-0 flex-1 items-start gap-3">
                     <span className="mt-0.5 flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
                       <Check className="h-3.5 w-3.5" aria-hidden="true" />
                     </span>
-                    <div>
+                    <div className="min-w-0">
                       <p className="text-[14px] font-bold">Offre de base — toujours incluse</p>
                       <p className="mt-0.5 text-[12.5px] leading-5 text-muted-foreground">
                         Le livrable complet décrit sur cette page, avec ajustements inclus.
                       </p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-[15px] font-extrabold text-primary">{fmt(basePrice)}</p>
-                    <p className="text-[11.5px] text-muted-foreground">{baseDays} j</p>
+                  <div className="shrink-0 text-right">
+                    <p className="whitespace-nowrap text-[15px] font-extrabold text-primary">{fmt(basePrice)}</p>
+                    <p className="whitespace-nowrap text-[11.5px] text-muted-foreground">{baseDays} j</p>
                   </div>
                 </div>
               </div>
@@ -527,7 +525,7 @@ export function OrderDock({
                             : "border-border bg-card hover:border-primary/30",
                         )}
                       >
-                        <div className="flex items-start gap-3">
+                        <div className="flex min-w-0 flex-1 items-start gap-3">
                           <span
                             className={cn(
                               "mt-0.5 flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-full border-2 transition-colors",
@@ -536,15 +534,15 @@ export function OrderDock({
                           >
                             {isSel && <Check className="h-3.5 w-3.5" aria-hidden="true" />}
                           </span>
-                          <div>
+                          <div className="min-w-0">
                             <p className="text-[13.5px] font-semibold">{o.name}</p>
                             <p className="mt-0.5 text-[12px] leading-5 text-muted-foreground">{o.description}</p>
                           </div>
                         </div>
                         <div className="shrink-0 text-right">
-                          <p className="text-[13.5px] font-bold text-primary">+{fmt(o.priceExtra)}</p>
+                          <p className="whitespace-nowrap text-[13.5px] font-bold text-primary">+{fmt(o.priceExtra)}</p>
                           {o.daysExtra > 0 && (
-                            <p className="text-[11px] text-muted-foreground">+{o.daysExtra} j</p>
+                            <p className="whitespace-nowrap text-[11px] text-muted-foreground">+{o.daysExtra} j</p>
                           )}
                         </div>
                       </button>
@@ -554,22 +552,22 @@ export function OrderDock({
               )}
 
               <div className="rounded-xl border border-border bg-muted/40 p-3.5">
-                <div className="flex items-center justify-between gap-3">
-                  <div>
+                <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+                  <div className="min-w-0">
                     <p className="text-[11.5px] font-medium uppercase tracking-wide text-muted-foreground">
                       Total ({elementsCount} élément{elementsCount > 1 ? "s" : ""})
                     </p>
-                    <p className="mt-0.5 text-xl font-extrabold">{fmt(total)}</p>
+                    <p className="mt-0.5 whitespace-nowrap text-xl font-extrabold">{fmt(total)}</p>
                   </div>
-                  <div className="flex items-center gap-1.5 text-[12.5px] text-muted-foreground">
-                    <Clock className="h-4 w-4" aria-hidden="true" />
+                  <div className="flex min-w-0 items-center gap-1.5 text-[12.5px] text-muted-foreground">
+                    <Clock className="h-4 w-4 shrink-0" aria-hidden="true" />
                     Livraison {totalDays} jour{totalDays > 1 ? "s" : ""} ouvré{totalDays > 1 ? "s" : ""}
                   </div>
                 </div>
                 <Button
                   type="button"
                   onClick={goToForm}
-                  className="mt-3 h-11 w-full gap-2 rounded-full bg-gradient-to-r from-primary to-emerald-500 text-[14.5px] font-bold text-white"
+                  className="mt-3 h-auto min-h-11 w-full gap-2 whitespace-normal rounded-full bg-gradient-to-r from-primary to-emerald-500 px-4 py-2.5 text-[14.5px] font-bold text-white"
                 >
                   {selectedCount > 0 ? (
                     <PackageCheck className="h-4.5 w-4.5" aria-hidden="true" />
@@ -589,9 +587,10 @@ export function OrderDock({
             /* ── Étape 3 : paiement PayPal ── */
             <div className="mt-2 space-y-4">
               <div className="rounded-xl bg-muted/60 p-3.5 text-[12.5px] leading-5 text-muted-foreground">
-                <p className="flex items-center gap-1.5 font-semibold text-foreground">
-                  <Check className="h-4 w-4 text-primary" aria-hidden="true" />
-                  Récapitulatif : {fmt(total)} · {totalDays} jours
+                <p className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 font-semibold text-foreground">
+                  <Check className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                  Récapitulatif :{" "}
+                  <span className="whitespace-nowrap">{fmt(total)} · {totalDays} jours</span>
                 </p>
                 <p className="mt-1">{recapLine}</p>
                 <p className="mt-1">
@@ -599,8 +598,8 @@ export function OrderDock({
                 </p>
               </div>
 
-              <div className="flex items-center justify-center gap-2 text-[12px] font-medium text-muted-foreground">
-                <Lock className="h-3.5 w-3.5" aria-hidden="true" />
+              <div className="flex min-w-0 flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-[12px] font-medium text-muted-foreground">
+                <Lock className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                 Paiement chiffré — le vendeur n'est payé qu'après votre validation du livrable
               </div>
 
@@ -631,10 +630,10 @@ export function OrderDock({
               <Button
                 type="button"
                 variant="ghost"
-                className="h-9 w-full gap-1.5 text-[13px] text-muted-foreground"
+                className="h-auto min-h-9 w-full gap-1.5 whitespace-normal py-2 text-[13px] text-muted-foreground"
                 onClick={() => setStep("options")}
               >
-                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                <ArrowLeft className="h-4 w-4 shrink-0" aria-hidden="true" />
                 Modifier mes options
               </Button>
             </div>
@@ -644,7 +643,7 @@ export function OrderDock({
                connexion — le serveur refuse de toute façon un POST invité
                (401) : ce panneau n'est que la face lisible du garde. ── */
             <div className="mt-3 space-y-4">
-              <div className="rounded-xl border-2 border-primary/50 bg-accent/30 p-5 text-center">
+              <div className="rounded-xl border-2 border-primary/50 bg-accent/30 p-4 text-center sm:p-5">
                 <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-full bg-primary/15 text-primary">
                   <UserCheck className="h-5.5 w-5.5" aria-hidden="true" />
                 </span>
@@ -660,9 +659,9 @@ export function OrderDock({
                 <Button
                   type="button"
                   onClick={() => setAuthOpen(true)}
-                  className="mt-4 h-11 w-full gap-2 rounded-full bg-gradient-to-r from-primary to-emerald-500 text-[14.5px] font-bold text-white"
+                  className="mt-4 h-auto min-h-11 w-full gap-2 whitespace-normal rounded-full bg-gradient-to-r from-primary to-emerald-500 px-4 py-2.5 text-[14.5px] font-bold text-white"
                 >
-                  <LogIn className="h-4.5 w-4.5" aria-hidden="true" />
+                  <LogIn className="h-4.5 w-4.5 shrink-0" aria-hidden="true" />
                   Se connecter pour finaliser
                 </Button>
                 <p className="mt-2 text-center text-[11.5px] text-muted-foreground">
@@ -672,10 +671,10 @@ export function OrderDock({
               <Button
                 type="button"
                 variant="ghost"
-                className="h-9 w-full gap-1.5 text-[13px] text-muted-foreground"
+                className="h-auto min-h-9 w-full gap-1.5 whitespace-normal py-2 text-[13px] text-muted-foreground"
                 onClick={() => setStep("options")}
               >
-                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                <ArrowLeft className="h-4 w-4 shrink-0" aria-hidden="true" />
                 Revoir mes options
               </Button>
               {/* Dialogue de connexion empilé (composant partagé du header) */}
@@ -738,9 +737,10 @@ export function OrderDock({
                 />
               </div>
               <div className="rounded-xl bg-muted/60 p-3.5 text-[12.5px] leading-5 text-muted-foreground">
-                <p className="flex items-center gap-1.5 font-semibold text-foreground">
-                  <Check className="h-4 w-4 text-primary" aria-hidden="true" />
-                  Récapitulatif : {fmt(total)} · {totalDays} jours
+                <p className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 font-semibold text-foreground">
+                  <Check className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                  Récapitulatif :{" "}
+                  <span className="whitespace-nowrap">{fmt(total)} · {totalDays} jours</span>
                 </p>
                 <p className="mt-1">{recapLine}</p>
                 {selectedCount > 0 && (
@@ -757,9 +757,9 @@ export function OrderDock({
               <Button
                 type="submit"
                 disabled={submitting}
-                className="h-11 w-full gap-2 rounded-full bg-gradient-to-r from-primary to-emerald-500 text-[14.5px] font-bold text-white"
+                className="h-auto min-h-11 w-full gap-2 whitespace-normal rounded-full bg-gradient-to-r from-primary to-emerald-500 px-4 py-2.5 text-[14.5px] font-bold text-white"
               >
-                <Lock className="h-4 w-4" aria-hidden="true" />
+                <Lock className="h-4 w-4 shrink-0" aria-hidden="true" />
                 {payPal
                   ? "Continuer vers le paiement sécurisé"
                   : submitting
@@ -770,10 +770,10 @@ export function OrderDock({
                 <Button
                   type="button"
                   variant="ghost"
-                  className="h-9 w-full gap-1.5 text-[13px] text-muted-foreground"
+                  className="h-auto min-h-9 w-full gap-1.5 whitespace-normal py-2 text-[13px] text-muted-foreground"
                   onClick={() => setStep("options")}
                 >
-                  <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                  <ArrowLeft className="h-4 w-4 shrink-0" aria-hidden="true" />
                   Modifier mes options
                 </Button>
               )}
