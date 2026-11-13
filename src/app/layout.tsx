@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { SessionBoundary } from "@/components/site/session-boundary";
+import { PwaClient } from "@/components/site/pwa-client";
 import { defaultMetadata, SITE } from "@/lib/site";
 
 const geistSans = Geist({
@@ -16,6 +17,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = defaultMetadata();
+
+/**
+ * Viewport PWA (v2.3.0) — couleur de barre émeraude sur l'écran d'accueil
+ * installé (Android/desktop) et respect des zones de sécurité iOS.
+ */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#059669",
+};
 
 /**
  * Icônes du site (v2.0.1) — servies via <link> React 19 (remontés dans le
@@ -67,6 +79,8 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
         />
         <SessionBoundary>{children}</SessionBoundary>
+        {/* PWA v2.3.0 — service worker + invite d'installation écran d'accueil */}
+        <PwaClient />
         <Toaster position="bottom-right" richColors />
       </body>
     </html>

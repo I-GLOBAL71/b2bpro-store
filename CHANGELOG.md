@@ -7,6 +7,74 @@
 
 ---
 
+## [2.3.0] — 2026-11-13 — PWA : application installable sur l'écran d'accueil
+
+> Demande client : support PWA « parfaitement fonctionnel pour qu'elle soit
+> installable sur l'écran d'accueil », avec une invite « élégante, moderne,
+> 3 ou 4 mots au plus », qui « floute l'arrière-plan afin que l'attention soit
+> concentrée sur lui », offrant « installer ou fermer », et qui « ne
+> s'affichera plus qu'à la prochaine ouverture de l'App ».
+
+### [ADDITIF] — Service worker (la pièce manquante de l'installabilité)
+- `public/sw.js` — Chrome/Edge/Android exigent un SW actif AVEC gestionnaire
+  `fetch` avant d'émettre `beforeinstallprompt` : il manquait, le manifeste
+  était orphelin. Stratégies conservatrices (catalogue dynamique oblige) :
+  navigations réseau d'abord puis repli sur la copie en cache puis
+  `/offline.html` ; assets statiques (`/_next/static`, `/thumbs`, `/avatars`,
+  `/icons`) cache d'abord + revalidation ; `/api` et `/admin` JAMAIS servis du
+  cache. Pré-cache tolérant à l'install (identité de l'app + repli), purge des
+  caches obsolètes à l'activation, `skipWaiting` + `clients.claim`.
+- `public/offline.html` — repli hors-ligne statique (zéro dépendance réseau),
+  marque émeraude, noindex, bouton « Réessayer ».
+
+### [ADDITIF] — `PwaClient` : enregistrement + invite d'installation
+- `src/components/site/pwa-client.tsx` (rendu du layout racine) — enregistre
+  `/sw.js`, puis n'apparaît QUE si le navigateur a réellement décidé que
+  l'app est installable (`beforeinstallprompt`) et qu'elle n'est pas déjà
+  installée (mode standalone détecté) ni refusée cette session.
+- L'invite : Dialog Radix (composants existants + primitives), fond flouté
+  réel (backdrop-blur 12 px + voile 40 %, `z-[70]` : au-dessus de la bannière
+  d'annonce z-60 et du header z-50, sous les toasts z-100 — le flou couvre
+  TOUT le chrome, bannière comprise), carte 24 px arrondie centrée :
+  icône b2b émeraude, titre « Installer l'application » (3 mots), ligne marque
+  « b2bpro.store », bouton plein « Installer » (icône téléchargement), croix
+  « Fermer ». Apparition différée 900 ms (laisse la page respirer).
+- Sémantique de session (`sessionStorage`) : fermée (croix, Échap, clic
+  au-dehors) ou tranchée par le dialogue natif → silence TOTAL jusqu'à la
+  prochaine ouverture de l'app ; ré-émissions de l'événement au cours de la
+  session restent muettes ; `appinstalled` enterre définitivement.
+- iOS : Safari n'émet pas l'événement → l'invite reste silencieuse par
+  conception ; l'installation passe par Partage → « Sur l'écran d'accueil »
+  (apple-touch-icon + manifeste, satisfaits).
+
+### [ADDITIF] — Manifeste et métadonnées complétés
+- `public/site.webmanifest` — `id` et `scope` racine, + icônes MASKABLE
+  192/512 (`public/icons/maskable-*.png`, glyphe dans le cercle sûr 80 %) :
+  Android peut rogner selon la forme de l'icône d'accueil sans rien perdre.
+- `scripts/gen-favicon.ts` (`bun run gen:favicon`) — génère désormais les 2
+  variantes maskable (source de vérité unique, idempotent).
+- `src/app/layout.tsx` — `viewport` export (themeColor #059669 pour la barre
+  installée, viewportFit cover pour les zones de sécurité iOS) ;
+  `src/lib/site.ts` — `appleWebApp` (plein écran standalone iOS, titre, barre
+  d'état) : Next rend `mobile-web-app-capable` + `apple-mobile-web-app-title`
+  + `apple-mobile-web-app-status-bar-style`.
+
+### Vérification (navigateur headless, tout re-testé)
+- SW ACTIF (scope racine, activated, contrôle la page) ; pré-cache complet
+  (offline.html, manifeste, favicon, logo, 4 icônes) ; routes 200.
+- Balises : `<link rel=manifest>`, `<meta name=theme-color content=#059669>`,
+  `mobile-web-app-capable=yes`, `apple-mobile-web-app-title=b2bpro.store`.
+- Invite (événement synthétique) : flou réel blur(12px) + voile 40 %,
+  bannière d'annonce couverte (VLM : « aucun texte lisible derrière »),
+  z-index 70 > bannière 60 ; cycle de vie complet VERT : ouverture →
+  « Installer » → fermeture + drapeau session → re-diffusion MUETTE →
+  session nouvelle → réapparition → croix → fermeture + drapeau.
+- Mobile 375 px : carte 320×258, aucun débordement, overlay couvrant ;
+  design noté ~9/10 par analyse visuelle ; 0 erreur console ; lint 0 erreur ;
+  garde 19 contrôles verts.
+
+---
+
 ## [2.2.2] — 2026-11-13 — Zéro cadratin dans tout le HTML crawlable (gabarits alt)
 
 > Complément de la vérification v2.2.1 : après correction des FAQ en base,

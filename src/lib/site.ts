@@ -194,5 +194,12 @@ export function defaultMetadata(): Metadata {
     },
     twitter: { card: "summary_large_image" },
     robots: { index: true, follow: true },
+    // PWA iOS (v2.3.0) : « Ajouter à l'écran d'accueil » en plein écran
+    // standalone, titre et barre d'état maîtrisés.
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "default",
+      title: "b2bpro.store",
+    },
   };
 }

@@ -10,6 +10,11 @@
  *                                  ses coins arrondis : jamais de transparence).
  *   • public/icons/icon-192.png / icon-512.png — icônes du site.webmanifest
  *                                  (Android « À l'écran d'accueil », onglets).
+ *   • public/icons/maskable-192.png / maskable-512.png — variantes MASKABLE du
+ *                                  manifeste (v2.3.0 PWA) : Android peut rogner
+ *                                  les coins selon la forme de l'icône d'accueil.
+ *                                  Le glyphe (51 % du cadre) tient déjà dans la
+ *                                  zone sûre maskable (cercle inscrit de 80 %).
  *
  * Sources : SVG vectoriels rendus via sharp (librsvg) à haute densité puis
  * redimensionnés Lanczos — traits et dégradés exacts à toutes les tailles.
@@ -103,10 +108,12 @@ async function main() {
   await Bun.write(`${ROOT}/public/apple-touch-icon.png`, await renderPng(FULLBLEED_SVG(180), 180));
   console.log("✓ public/apple-touch-icon.png (180)");
 
-  // 3) Icônes du manifeste — 192 et 512 px plein cadre.
+  // 3) Icônes du manifeste — 192 et 512 px plein cadre, + variantes maskable
+  //    (même rendu : le glyphe occupe 51 % du cadre, dans le cercle sûr 80 %).
   for (const size of [192, 512]) {
     await Bun.write(`${ROOT}/public/icons/icon-${size}.png`, await renderPng(FULLBLEED_SVG(size), size));
-    console.log(`✓ public/icons/icon-${size}.png`);
+    await Bun.write(`${ROOT}/public/icons/maskable-${size}.png`, await renderPng(FULLBLEED_SVG(size), size));
+    console.log(`✓ public/icons/icon-${size}.png + maskable-${size}.png`);
   }
 }
 
