@@ -332,45 +332,150 @@ export function notifyOwnerAiConversation(params: {
   });
 }
 
-/** Question client adressée AU prestataire humain — notification URGENTE. */
+/** Question client adressée AU support humain — notification URGENTE (v2.5.0).
+ * Chaque question porte sa route unique (questionRef) : l'email de alerte
+ * embarque le code ET le lien direct vers CE fil dans le panneau — la
+ * réponse ne peut partir que vers ce client précis. */
 export function notifyOwnerClientQuestion(params: {
   clientEmail: string;
   clientName: string | null;
   message: string;
   ordersCount: number;
+  /** Code de route unique de la question (Q-XXXXXX). */
+  questionRef: string;
+  /** Id du fil : lien direct vers la conversation dans le panneau. */
+  threadId: string;
 }): Promise<boolean> {
   return sendOwnerNotification({
     urgent: true,
-    subject: `Question client en attente — ${params.clientEmail}`,
+    subject: `Question ${params.questionRef} en attente — ${params.clientEmail}`,
     title: "Question client à traiter",
     intro:
-      "Un client vous écrit directement depuis son espace. Il attend une réponse personnelle du prestataire humain de la plateforme.",
+      "Un client vous écrit depuis son espace. Sa question porte une route unique : votre réponse lui sera transmise à LUI seul (email filaire + espace client).",
     rows: [
+      { label: "Route de la question", value: params.questionRef, mono: true },
       { label: "Client", value: params.clientEmail, mono: true },
       ...(params.clientName ? [{ label: "Nom", value: params.clientName }] : []),
       { label: "Historique commandes", value: `${params.ordersCount}` },
       { label: "Message", value: params.message },
+      { label: "Répondre (panneau)", value: `/admin/messages?thread=${params.threadId}`, mono: true },
     ],
-    note: "Répondez depuis le panneau d'administration → Messages clients : le client est notifié par email et voit votre réponse dans son espace.",
+    note: `Un clic sur le lien ouvre directement le fil de CE client dans le panneau → Messages clients. Répondez-y : le client ${params.clientEmail} reçoit la réponse par email avec la référence ${params.questionRef} — aucun autre client ne peut la recevoir.`,
   });
 }
 
-/** Réponse du propriétaire transmise au client (email + espace client). */
+/** Réponse du support transmise au client (email + espace client) — v2.5.0 :
+ * l'objet référence la ROUTE de la question (Q-XXXXXX) → fil de discussion
+ * email propre par question ; le client X ne reçoit jamais la réponse du Y.
+ * Aucune adresse email n'est exposée au client (expéditeur = identité du site). */
 export async function sendClientOwnerReply(params: {
   to: string;
   clientName: string | null;
   reply: string;
+  /** Code de la question à laquelle on répond (facultatif — repli propre). */
+  questionRef?: string | null;
+  /** Extrait de la question d'origine, rappelé au-dessus de la réponse. */
+  questionExcerpt?: string | null;
 }): Promise<boolean> {
+  const ref = params.questionRef ?? null;
   const { html, text } = buildBody({
-    title: "Réponse du prestataire b2bpro.store",
-    intro: `Bonjour ${params.clientName?.split(" ")[0] ?? ""}, voici la réponse personnelle du prestataire à votre question. La suite de l'échange reste disponible dans votre espace client.`,
-    rows: [{ label: "Réponse", value: params.reply }],
-    note: "Retrouvez l'historique complet et répondez directement depuis votre espace : /account (rubrique « Discuter avec le prestataire »).",
+    title: ref ? `Réponse à votre question ${ref}` : "Réponse du support b2bpro.store",
+    intro: `Bonjour ${params.clientName?.split(" ")[0] ?? ""}, voici la réponse du support à votre question. La suite de l'échange reste disponible dans votre espace client.`,
+    rows: [
+      ...(params.questionExcerpt
+        ? [{ label: "Votre question", value: params.questionExcerpt }]
+        : []),
+      { label: "Réponse", value: params.reply },
+    ],
+    note: "Retrouvez l'historique complet et répondez directement depuis votre espace : /account (rubrique « Contacter le support humain »).",
   });
   return sendMail({
     to: params.to,
-    subject: "Réponse du prestataire — b2bpro.store",
+    subject: ref
+      ? `Réponse à votre question ${ref} — b2bpro.store`
+      : "Réponse du support — b2bpro.store",
     html,
     text,
+  });
+}
+
+// ─── Cycle de vie des commandes (v2.5.0) ────────────────────────────────────
+
+/** Le client a demandé une modification sur un travail en cours — URGENT. */
+export function notifyOwnerRevisionRequested(params: {
+  reference: string;
+  serviceTitle: string;
+  reason: string;
+  clientEmail: string;
+  revisionCount: number;
+}): Promise<boolean> {
+  return sendOwnerNotification({
+    urgent: true,
+    subject: `Modification demandée ${params.reference} — ${params.serviceTitle}`,
+    title: "Modification demandée par le client",
+    intro:
+      "Le client demande un ajustement sur une commande en cours. Le compte à rebours client affiche désormais « modification en traitement ».",
+    rows: [
+      { label: "Commande", value: params.reference, mono: true },
+      { label: "Service", value: params.serviceTitle },
+      { label: "N° de demande", value: `${params.revisionCount}` },
+      { label: "Motif du client", value: params.reason },
+      { label: "Client", value: params.clientEmail, mono: true },
+    ],
+    note: "Traitez la modification puis marquez la commande « livrée » depuis le panneau → Commandes : le client reçoit un email de validation.",
+  });
+}
+
+/** Le support a marqué une commande livrée — email au client. */
+export async function sendClientOrderDelivered(params: {
+  to: string;
+  clientName: string | null;
+  reference: string;
+  serviceTitle: string;
+  total: number;
+}): Promise<boolean> {
+  const eur = (n: number): string =>
+    `${n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+  const { html, text } = buildBody({
+    title: `Votre livrable est prêt — ${params.reference}`,
+    intro: `Bonjour ${params.clientName?.split(" ")[0] ?? ""}, le travail commandé est terminé. Un dernier geste débloque le paiement du prestataire : validez la livraison dans votre espace.`,
+    rows: [
+      { label: "Commande", value: params.reference, mono: true },
+      { label: "Service", value: params.serviceTitle },
+      { label: "Montant séquestré", value: eur(params.total) },
+    ],
+    note: "Validez depuis votre espace : /account → « Valider la livraison ». Les fonds sont alors versés au prestataire ; en cas de défaut, une demande de modification reste possible avant validation.",
+  });
+  return sendMail({
+    to: params.to,
+    subject: `Livrable prêt à valider — ${params.reference} — b2bpro.store`,
+    html,
+    text,
+  });
+}
+
+/** Le client a validé la livraison : fonds libérés au prestataire. */
+export function notifyOwnerOrderValidated(params: {
+  reference: string;
+  serviceTitle: string;
+  total: number;
+  clientEmail: string;
+  deliveredAt: Date | null;
+}): Promise<boolean> {
+  const eur = (n: number): string =>
+    `${n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+  return sendOwnerNotification({
+    subject: `Commande validée ${params.reference} — ${eur(params.total)} à libérer`,
+    title: "Validation client — paiement du prestataire à effectuer",
+    intro:
+      "Le client a validé la livraison : les fonds séquestrés doivent être versés au prestataire (transaction de sortie à opérer côté PayPal).",
+    rows: [
+      { label: "Commande", value: params.reference, mono: true },
+      { label: "Service", value: params.serviceTitle },
+      { label: "Montant libéré", value: eur(params.total) },
+      { label: "Client", value: params.clientEmail, mono: true },
+      { label: "Livrée le", value: params.deliveredAt ? params.deliveredAt.toISOString().slice(0, 10) : "—" },
+    ],
+    note: "Le client peut désormais laisser un avis public sur la fiche du service — un avis lié à cette commande (un seul possible).",
   });
 }

@@ -1,21 +1,26 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Loader2, RefreshCcw, Send, ShieldCheck, UserRound } from "lucide-react";
+import { Hash, Loader2, RefreshCcw, Send, ShieldCheck, UserRound } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { API_ROUTES, type SupportThreadMessageDTO } from "@/lib/contracts";
 
 /**
- * Chat avec le PRESTATAIRE HUMAIN de la plateforme (v2.2.0) — c'est-à-dire le
- * propriétaire lui-même (prestataire unique). Conversation bijective :
- *   • chaque question du client → email URGENT au propriétaire + notification
- *     dans son panneau d'administration (/admin/messages) ;
- *   • chaque réponse du propriétaire → email au client + affichage ici.
+ * Chat avec le SUPPORT HUMAIN de b2bpro.store (v2.2.0, requalifié v2.5.0).
+ *
+ * La plateforme réunit de nombreux prestataires : cette zone n'est PAS celle
+ * d'un prestataire en particulier, mais du support humain qui orchestre les
+ * commandes, les relances prestataires et les litiges.
+ *   • chaque question du client → email URGENT au support + notification dans
+ *     le panneau d'administration (/admin/messages) ;
+ *   • chaque question porte une ROUTE UNIQUE (code Q-XXXXXX) : la réponse du
+ *     support référence ce code (email + bulle ci-dessous) — un client ne peut
+ *     jamais recevoir la réponse d'un autre ;
+ *   • chaque réponse du support → email au client + affichage ici.
  *
  * Actualisation automatique toutes les 20 s (léger, compatible Vercel) et à
- * la reprise de focus de l'onglet : la réponse du prestataire apparaît sans
- * rechargement de page.
+ * la reprise de focus de l'onglet.
  */
 
 const POLL_MS = 20_000;
@@ -88,14 +93,21 @@ export function ProviderChat() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message }),
       });
-      const data = (await res.json().catch(() => null)) as { error?: string } | null;
+      const data = (await res.json().catch(() => null)) as {
+        error?: string;
+        reference?: string | null;
+      } | null;
       if (!res.ok) {
         toast.error(data?.error ?? "L'envoi a échoué — réessayez dans un instant.");
         return;
       }
       setText("");
       await load(true);
-      toast.success("Message transmis au prestataire — il est notifié immédiatement.");
+      toast.success(
+        data?.reference
+          ? `Message transmis au support — route ${data.reference}. Réponse sous 4 h en moyenne.`
+          : "Message transmis au support — il est notifié immédiatement.",
+      );
     } catch {
       toast.error("Réseau indisponible — votre message n'est pas perdu, réessayez.");
     } finally {
@@ -114,13 +126,11 @@ export function ProviderChat() {
             <UserRound className="h-5 w-5" aria-hidden="true" />
           </span>
           <div className="min-w-0">
-            <p className="text-[15px] font-bold tracking-tight">
-              Discuter avec le prestataire — réponse humaine
-            </p>
+            <p className="text-[15px] font-bold tracking-tight">Contacter le support humain</p>
             <p className="text-[12.5px] leading-5 text-muted-foreground">
-              Vous écrivez directement au propriétaire de b2bpro.store, prestataire
-              unique de la plateforme : chaque question le notifie par email (marquée
-              urgente) et remonte dans son tableau de bord.
+              Une équipe dédiée orchestre vos commandes et vos prestataires sur
+              b2bpro.store : chaque question reçoit une route unique (code
+              Q-XXXXXX) et déclenche une alerte email immédiate côté support.
             </p>
           </div>
           <button
@@ -140,7 +150,7 @@ export function ProviderChat() {
         ref={listRef}
         className="max-h-96 min-h-44 space-y-3 overflow-y-auto px-4 py-4 sm:px-5"
         role="log"
-        aria-label="Conversation avec le prestataire"
+        aria-label="Conversation avec le support"
         aria-live="polite"
       >
         {loading ? (
@@ -153,7 +163,7 @@ export function ProviderChat() {
             <p className="text-[13.5px] font-semibold">Aucun message pour l&apos;instant</p>
             <p className="mx-auto max-w-sm text-[12.5px] leading-5 text-muted-foreground">
               Une question sur un service, une commande en cours, un livrable à préciser ?
-              Posez-la ici : le propriétaire-prestataire vous répond personnellement.
+              Posez-la ici : le support humain vous répond personnellement.
             </p>
           </div>
         ) : (
@@ -169,13 +179,25 @@ export function ProviderChat() {
                     : "rounded-bl-md border border-border bg-muted/60 text-foreground"
                 }`}
               >
+                {m.reference && (
+                  <p
+                    className={`mb-1 inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-mono text-[10.5px] font-semibold tracking-wide ${
+                      m.role === "client"
+                        ? "bg-primary-foreground/15 text-primary-foreground/90"
+                        : "bg-primary/10 text-primary"
+                    }`}
+                  >
+                    <Hash className="h-3 w-3" aria-hidden="true" />
+                    {m.reference}
+                  </p>
+                )}
                 <p className="whitespace-pre-wrap break-words text-[13.5px] leading-6">{m.content}</p>
                 <p
                   className={`mt-1 text-right text-[11px] tabular-nums ${
                     m.role === "client" ? "text-primary-foreground/70" : "text-muted-foreground"
                   }`}
                 >
-                  {m.role === "owner" ? "Prestataire · " : ""}
+                  {m.role === "owner" ? "Support · " : ""}
                   {timeFmt.format(new Date(m.createdAt))}
                 </p>
               </div>
@@ -184,7 +206,7 @@ export function ProviderChat() {
         )}
         {thread?.status === "closed" && messages.length > 0 && (
           <p className="text-center text-[12px] text-muted-foreground">
-            Fil clôturé par le prestataire — écrivez de nouveau pour le rouvrir.
+            Fil clôturé par le support — écrivez de nouveau pour le rouvrir.
           </p>
         )}
       </div>
@@ -198,7 +220,7 @@ export function ProviderChat() {
         }}
       >
         <label htmlFor="provider-chat-input" className="sr-only">
-          Votre message au prestataire
+          Votre message au support
         </label>
         <div className="flex flex-col gap-2.5 sm:flex-row sm:items-end">
           <textarea
@@ -214,21 +236,21 @@ export function ProviderChat() {
             }}
             rows={3}
             maxLength={4000}
-            placeholder="Votre question au prestataire (Commande CMD-…, livrable, délai…)"
+            placeholder="Votre question au support (commande CMD-…, livrable, délai…)"
             className="min-w-0 flex-1 resize-none rounded-2xl border border-border bg-background px-3.5 py-2.5 text-[13.5px] leading-6 outline-none transition-colors focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
           />
           <Button
             type="submit"
             disabled={sending || text.trim().length < 5}
             className="h-11 shrink-0 gap-2 rounded-2xl font-semibold sm:h-auto sm:self-stretch"
-            aria-label="Envoyer le message au prestataire"
+            aria-label="Envoyer le message au support"
           >
             {sending ? (
               <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
             ) : (
               <Send className="h-4 w-4" aria-hidden="true" />
             )}
-            <span className="sm:hidden">Envoyer au prestataire</span>
+            <span className="sm:hidden">Envoyer au support</span>
             <span className="hidden sm:inline">Envoyer</span>
           </Button>
         </div>

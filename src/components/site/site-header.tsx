@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useCallback, useRef, useState } from "react";
 import { Menu, Search, MessageCircle, ChevronDown, LayoutGrid } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { AuthMenu } from "@/components/site/auth-menu";
+import { BrandLogo } from "@/components/site/brand-logo";
 import { POLE_LABELS } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -22,6 +23,15 @@ const NAV = [
   { href: "/blog", label: "Blog" },
   { href: "/support", label: "Support IA" },
 ];
+
+/* ══ Accès discret au panneau d'administration (v2.5.0) ══════════════════════
+ * Sept taps sur le logo (écart max 1 s entre chaque) ouvrent l'accès admin :
+ * session déjà ouverte → panneau ; sinon → écran du mot de passe (variable
+ * ADMIN_PASSWORD, définie dans les environnements Vercel). Aucun indice
+ * visuel ne trahit le geste : un clic ordinaire navigue simplement vers
+ * l'accueil, les taps intermédiaires sont neutres (aucune navigation parasite). */
+const ADMIN_UNLOCK_TAPS = 7;
+const ADMIN_TAP_GAP_MS = 1_000;
 
 export function SiteHeader({
   googleAuthEnabled,
@@ -33,15 +43,43 @@ export function SiteHeader({
   emailAuthEnabled: boolean;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const adminTapsRef = useRef(0);
+  const lastTapRef = useRef(0);
+
+  /** Compte les taps sur le logo : 7 rapprochés → panneau admin, sinon accueil. */
+  const handleLogoTap = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>) => {
+      const now = Date.now();
+      if (now - lastTapRef.current > ADMIN_TAP_GAP_MS) adminTapsRef.current = 0;
+      lastTapRef.current = now;
+      adminTapsRef.current += 1;
+
+      if (adminTapsRef.current >= ADMIN_UNLOCK_TAPS) {
+        adminTapsRef.current = 0;
+        e.preventDefault();
+        router.push("/admin"); // déjà connecté → panneau, sinon → login (garde serveur)
+        return;
+      }
+      // Premier tap d'une séquence : comportement normal du lien (accueil).
+      if (adminTapsRef.current === 1) return;
+      // Taps intermédiaires : neutralisés — la séquence reste sur place.
+      e.preventDefault();
+    },
+    [router],
+  );
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/80 bg-background/85 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2.5" aria-label="b2bpro.store : accueil">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-emerald-400 text-[15px] font-black text-white shadow-sm">
-            B
-          </span>
+        <Link
+          href="/"
+          onClick={handleLogoTap}
+          className="flex items-center gap-2.5 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+          aria-label="b2bpro.store : accueil"
+        >
+          <BrandLogo className="h-9 w-9 shrink-0 shadow-sm transition-transform duration-150 active:scale-90" />
           <span className="hidden text-lg font-extrabold tracking-tight text-foreground sm:inline">
             b2bpro<span className="text-primary">.store</span>
           </span>
@@ -117,7 +155,10 @@ export function SiteHeader({
           </SheetTrigger>
           <SheetContent side="left" className="w-80 overflow-y-auto">
             <SheetTitle className="px-1 text-left text-lg font-extrabold">
-              b2bpro<span className="text-primary">.store</span>
+              <span className="flex items-center gap-2.5">
+                <BrandLogo className="h-8 w-8 shrink-0 shadow-sm" />
+                b2bpro<span className="text-primary">.store</span>
+              </span>
             </SheetTitle>
             <div className="mt-6 flex flex-col gap-1">
               <form action="/services" className="mb-3" role="search">

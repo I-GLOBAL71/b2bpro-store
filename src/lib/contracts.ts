@@ -425,6 +425,10 @@ export const ADMIN_LOG_ACTIONS = {
   // ── v2.2.0 : conversation humaine client ↔ propriétaire ──
   SUPPORT_MESSAGE: "support.message",
   SUPPORT_REPLY: "support.reply",
+  // ── v2.5.0 : cycle de vie des commandes ──
+  ORDER_REVISION: "order.revision",
+  ORDER_DELIVERED: "order.delivered",
+  ORDER_VALIDATED: "order.validated",
 } as const;
 
 // ─── Groupes de réglages du site (SiteConfig.key) ────────────────────────────
@@ -745,8 +749,8 @@ export const adminServicePatchSchema = z.object({
 });
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  SECTION ADDITIVE v2.2.0 — Conversation humaine client ↔ propriétaire
-//  (prestataire unique = propriétaire ; notifications email + admin)
+//  SECTION ADDITIVE v2.2.0 — Conversation humaine client ↔ support
+//  (notifications email + admin ; requalifiée « support humain » en v2.5.0)
 // ═══════════════════════════════════════════════════════════════════════════
 
 /** Statuts d'un fil de conversation (model SupportThread.status). */
@@ -766,13 +770,16 @@ export const supportThreadPostSchema = z.object({
     .max(4000, "Votre message est trop long (4 000 caractères maximum)"),
 });
 
-/** POST /api/admin/support/[id] — réponse du propriétaire au client. */
+/** POST /api/admin/support/[id] — réponse du support au client.
+ * v2.5.0 : `replyTo` (optionnel) = id de la question ciblée — validé serveur
+ * (doit appartenir au MÊME fil), la réponse email référence son code Q-XXXXXX. */
 export const adminSupportReplySchema = z.object({
   message: z
     .string()
     .trim()
     .min(2, "La réponse est trop courte")
     .max(4000, "La réponse est trop longue (4 000 caractères maximum)"),
+  replyTo: z.string().min(1).optional(),
 });
 
 /** PATCH /api/admin/support/[id] — ouverture/fermeture d'un fil. */
@@ -786,6 +793,8 @@ export interface SupportThreadMessageDTO {
   role: "client" | "owner";
   content: string;
   createdAt: string;
+  /** v2.5.0 — code de route de la question (Q-XXXXXX), côté client uniquement. */
+  reference?: string | null;
 }
 
 export interface SupportThreadResponse {
@@ -830,4 +839,78 @@ export interface AdminLogDTO {
   action: string;
   detail: string;
   createdAt: string;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  SECTION ADDITIVE v2.5.0 — Cycle de vie des commandes + support routé
+//  (révision, livraison, validation/libération des fonds, avis lié ;
+//   route unique par question support)
+// ═══════════════════════════════════════════════════════════════════════════
+
+/** Étapes du cycle de vie d'une prestation (model Order.stage). */
+export const ORDER_STAGES = {
+  /** Délai de production en cours (défaut, rétrocompatible). */
+  PRODUCTION: "production",
+  /** Le client a demandé une modification (OrderRevision en attente). */
+  REVISION: "revision",
+  /** Livrable déclaré prêt par le support — validation client attendue. */
+  DELIVERED: "delivered",
+  /** Validé par le client : fonds libérés au prestataire (releasedAt posé). */
+  COMPLETED: "completed",
+} as const;
+
+export type OrderStage = (typeof ORDER_STAGES)[keyof typeof ORDER_STAGES];
+
+/** POST /api/orders/[reference]/revision — demande de modification client. */
+export const orderRevisionRequestSchema = z.object({
+  reason: z
+    .string()
+    .trim()
+    .min(15, "Décrivez la modification souhaitée (15 caractères minimum)")
+    .max(2000, "2 000 caractères maximum"),
+});
+
+/** POST /api/orders/[reference]/validate — validation de la livraison client. */
+export const orderValidateResponseSchema = z.object({
+  ok: z.literal(true),
+  reference: z.string(),
+});
+
+/** POST /api/reviews — extension v2.5.0 : avis LIÉ à une commande validée. */
+export const orderReviewRequestSchema = reviewRequestSchema.extend({
+  /** Référence de la commande validée (CMD-XXXX) — session requise alors. */
+  orderReference: z.string().trim().min(3).optional(),
+});
+
+/** URL d'action client sur une commande (route dynamique par référence). */
+export function orderActionUrl(reference: string, action: "revision" | "validate"): string {
+  return `/api/orders/${encodeURIComponent(reference)}/${action}`;
+}
+
+/** URL d'action admin sur une commande (route dynamique par référence). */
+export function adminOrderActionUrl(reference: string, action: "deliver"): string {
+  return `/api/admin/orders/${encodeURIComponent(reference)}/${action}`;
+}
+
+/** Ligne « Commandes » de /api/admin/orders (page /admin/commandes). */
+export interface AdminOrderRow {
+  id: string;
+  reference: string;
+  serviceTitle: string;
+  serviceSlug: string;
+  total: number;
+  currency: string;
+  paymentStatus: string;
+  paymentProvider: string;
+  stage: string;
+  createdAt: string;
+  paidAt: string | null;
+  deliveredAt: string | null;
+  releasedAt: string | null;
+  deliveryDays: number;
+  clientEmail: string;
+  clientName: string | null;
+  revisionCount: number;
+  lastRevision: { reason: string; status: string; createdAt: string } | null;
+  hasReview: boolean;
 }

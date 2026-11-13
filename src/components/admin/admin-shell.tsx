@@ -16,16 +16,19 @@ import {
   LogOut,
   ExternalLink,
   Menu,
+  ShoppingCart,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { apiSend } from "@/components/admin/api";
+import { BrandLogo } from "@/components/site/brand-logo";
 
 const NAV = [
   { href: "/admin", label: "Tableau de bord", icon: LayoutDashboard, exact: true },
   { href: "/admin/messages", label: "Messages clients", icon: MessagesSquare, badge: true },
+  { href: "/admin/commandes", label: "Commandes", icon: ShoppingCart },
   { href: "/admin/vitrine", label: "Vitrine & Rotation", icon: Recycle },
   { href: "/admin/accueil", label: "Page d'accueil", icon: Home },
   { href: "/admin/support", label: "Support IA", icon: MessageCircle },
@@ -122,9 +125,7 @@ function SidebarInner({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className="flex h-full flex-col">
       <Link href="/admin" className="flex items-center gap-2.5 px-2" onClick={onNavigate}>
-        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 text-[15px] font-black text-white shadow-sm">
-          B
-        </span>
+        <BrandLogo className="h-9 w-9 shrink-0 shadow-sm" />
         <span className="text-[15px] font-extrabold tracking-tight text-white">
           b2bpro<span className="text-emerald-400">.store</span>
           <span className="ml-2 rounded-md bg-stone-800 px-1.5 py-0.5 align-middle text-[10px] font-bold uppercase tracking-wider text-stone-400">

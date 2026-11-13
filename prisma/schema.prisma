@@ -93,6 +93,10 @@ model Review {
   rating     Float // 4.2 → 5.0
   comment    String
   orderLabel String // option commandée
+  // v2.5.0 — avis lié à une commande validée (au plus un par commande : la
+  // validation client débloque l'avis, l'unicité empêche le double post).
+  orderId    String?  @unique
+  order      Order?   @relation(fields: [orderId], references: [id])
   createdAt  DateTime @default(now())
 }
 
@@ -161,6 +165,10 @@ model SupportMessage {
   thread    SupportThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
   role      String // "client" | "owner"
   content   String
+  // v2.5.0 — route unique par question : code lisible (Q-XXXXXX) posé à la
+  // création d'une question client ; la réponse du support référence CE code
+  // (objet email dédié + accusé visuel côté client) — aucun croisement possible.
+  reference String?       @unique
   createdAt DateTime      @default(now())
 }
 
@@ -262,6 +270,29 @@ model Order {
   payerName       String?
   createdAt       DateTime  @default(now())
   paidAt          DateTime?
+
+  // ── v2.5.0 — cycle de vie de la prestation (après paiement) ──────────────
+  // production : délai en cours (défaut, rétrocompatible avec l'existant) ;
+  // revision   : le client a demandé une modification (OrderRevision en attente) ;
+  // delivered  : le support a marqué le livrable prêt (validation attendue) ;
+  // completed  : le client a validé → fonds libérés au prestataire (releasedAt).
+  stage          String   @default("production")
+  deliveredAt    DateTime?
+  releasedAt     DateTime?
+  revisions      OrderRevision[]
+  review         Review?
+}
+
+// ─── Demandes de modification sur un travail livré/en cours (v2.5.0) ────────
+// Chaque demande est horodatée et motivée ; le support la traite puis
+// re-marque la commande livrée (nouveau cycle delivered → validation).
+model OrderRevision {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  reason    String
+  status    String   @default("pending") // pending | resolved
+  createdAt DateTime @default(now())
 }
 
 // ─── Abonnements Web Push (notifications navigateur, v2.4.0) ──────────────────

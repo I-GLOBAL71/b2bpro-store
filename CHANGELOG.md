@@ -7,6 +7,116 @@
 
 ---
 
+## [2.5.0] — 2026-11-13 — Marque, accès admin discret, support routé par question, cycle de vie des commandes
+
+> Demande client : logo conçu dans l'interface (fini le « B » simple), accès au panneau
+> admin par 7 taps sur le logo + mot de passe Vercel, refonte du wording « prestataire
+> unique » (la plateforme a de nombreux prestataires → support humain), réponse admin par
+> email avec une route PAR question (aucun croisement client X/Y), carte de commande
+> parfaitement structurée mobile/desktop (compte à rebours et indispensables), et la
+> logique complète modification → validation du paiement → avis et note.
+
+### [ADDITIF] — `BrandLogo` : le glyphe du favicon devient la marque d'interface
+- `src/components/site/brand-logo.tsx` — SVG inline reprenant TRAIT POUR TRAIT le glyphe
+  « b2b » du favicon officiel (public/favicon.svg) : net à toutes les tailles, zéro requête
+  réseau, toujours synchrone avec l'icône d'onglet. Id de dégradé unique par instance
+  (useId purgé des « : », NCName XML) — aucune collision url(#…).
+- Remplacements du « B » simple : `SiteHeader` (desktop + sheet mobile),
+  `AdminShell` (sidebar), `AdminLoginForm` (login admin).
+
+### [ADDITIF] — Accès admin discret : 7 taps sur le logo de l'app
+- `SiteHeader.handleLogoTap` — sept clics/taps espacés de ≤ 1 s ouvrent `/admin` :
+  session admin vivante → panneau direct ; sinon → écran du mot de passe
+  (`ADMIN_PASSWORD`, variable Vercel). Aucun indice visuel : un clic ordinaire navigue
+  normalement vers l'accueil, les taps intermédiaires sont neutralisés (aucune navigation
+  parasite). Feedback tactile discret (`active:scale-90`).
+- `src/app/admin/login/page.tsx` — devient composant SERVEUR : session admin déjà valide
+  → redirection immédiate `/admin` (le formulaire client vit dans `login-form.tsx`).
+
+### [FORCE MAJEURE] — « Prestataire unique » devient « support humain » (cohérence place de marché)
+- La plateforme réunit de nombreux prestataires : le fil de discussion ne peut plus se
+  présenter comme « le propriétaire, prestataire unique » (contradictoire). Requalifié
+  « Contacter le support humain » (équipe qui orchestre les prestataires) dans :
+  `account/page.tsx`, `provider-chat.tsx`, `support/page.tsx`, `admin/messages`,
+  `mailer.ts` (notifications), `api/support/thread`. La mécanique (fil par email de
+  session) est inchangée — seul le discours change. Bulles signées « Support · ».
+
+### [ADDITIF] — Route unique par question : la réponse ne peut jamais se croiser
+- `SupportMessage.reference` (`Q-XXXXXX`, unique, alphabet sans ambigus) posé à la
+  création de chaque question client (`POST /api/support/thread` retourne le code ;
+  collision quasi impossible, 31^6 codes, 2 tentatives).
+- `POST /api/admin/support/[id]` accepte `replyTo` (id de question) : VALIDÉ SERVEUR —
+  404 si inconnue, 400 si elle appartient à un AUTRE fil (« répondez depuis le fil du
+  client concerné, aucun envoi effectué »). Sans cible : la dernière question du fil.
+- Email au client : objet « Réponse à votre question Q-XXXXXX — b2bpro.store » + rappel
+  de la question — fil de discussion email propre par question. Aucune adresse email
+  exposée (expéditeur = identité du site SMTP_FROM ; le client X ne voit jamais Y).
+- Email d'alerte support : objet « Question Q-XXXXXX en attente », LIEN DIRECT
+  `/admin/messages?thread=<id>` (deep-link : le fil s'ouvre automatiquement) + compteur
+  de commandes du client.
+- `/admin/messages` : deep-link `?thread=`, badges Q-XXXXXX sur les questions, clic sur
+  une question → ciblage `replyTo` (indicateur « Répond à la question Q-… de <client> »,
+  détachable), libellé d'envoi « exclusif à ce client ».
+- `provider-chat.tsx` : badge de route sur chaque question + toast « route Q-XXXXXX ».
+
+### [ADDITIF] — Cycle de vie des commandes : modification, livraison, validation, avis
+- Prisma (SQLite + miroir Neon, poussé) : `Order.stage` (production | revision |
+  delivered | completed), `deliveredAt`, `releasedAt`, modèle `OrderRevision` (motif,
+  statut pending/resolved), `Review.orderId` (unique — un avis par commande),
+  `SupportMessage.reference`. Colonnes purement additives (NULL sûr en Postgres).
+- `OrderCard` (`components/site/account/order-card.tsx`) — carte structurée mobile →
+  desktop : référence mono + badge de paiement ; fiche + options choisies ; méta
+  (date, délai, montant, voie) ; **ligne de vie à 4 jalons** (payée → production/
+  modification → livrée → validée) ; compte à rebours + **barre de progression** ;
+  encarts d'état (modification en traitement avec motif, livrable prêt, terminée avec
+  date de libération) ; actions contextuelles : Demander une modification (dialogue
+  motivé), Valider la livraison (confirmation « libère les fonds »), Laisser note+avis.
+- Routes client (garde : commande rattachée au Lead de l'email de SESSION) :
+  `POST /api/orders/[reference]/revision` (PAID non complété → OrderRevision + étape
+  revision + alerte URGENTE support + audit) ; `POST /api/orders/[reference]/validate`
+  (uniquement depuis « delivered » → completed + releasedAt + revisions résolues +
+  notification « paiement à libérer »).
+- Routes admin (garde ensureAdmin) : `GET /api/admin/orders` (100 dernières, compteurs
+  d'étapes) ; `POST /api/admin/orders/[reference]/deliver` (PAID production/revision →
+  delivered + email au client « livrable prêt à valider » + audit).
+- `POST /api/reviews` — `orderReference` optionnel : exige session + commande COMPLETED
+  du client + pas d'avis existant → avis lié (`orderLabel` « Commande CMD-… »),
+  moyenne du service recalculée. Sans `orderReference` : comportement public inchangé.
+- `/admin/commandes` (nav « Commandes ») : pilotage support — liste avec badge d'étape,
+  dernière demande de modification, compte à rebours hérité, bouton « Marquer livré ».
+- `mailer.ts` : `notifyOwnerRevisionRequested` (urgent), `sendClientOrderDelivered`,
+  `notifyOwnerOrderValidated` ; `notifyOwnerClientQuestion` enrichi (route + lien
+  direct) ; `sendClientOwnerReply` référencé par question.
+
+### [CORRECTIF] — `OrderCountdown` : boucle de rendu éliminée (Maximum update depth)
+- `components/site/account/order-countdown.tsx` — la cible vivait en `new Date()` recréé
+  à CHAQUE rendu dans les dépendances de l'effet → cascade setState/re-rendu illimitée
+  dès qu'un parent re-rendait (ouverture de dialogue) sous React 19. Désormais
+  millisecondes primitives (`Date.parse`) + formateur module-level. Latent depuis
+  v2.2.0, neutralisé aujourd'hui où la carte re-rend à chaque interaction.
+
+### [DONNÉES] — Bases
+- SQLite local (`db:push`) et Neon Postgres (`db:push:pg`) synchronisés — colonnes
+  additives uniquement, aucune donnée touchée (unicités NULL-sûres : les lignes
+  existantes ont orderId/reference à NULL).
+- `.env` local : `NEXTAUTH_SECRET` stable ajouté (les JWT de session se validaient
+  mal entre redémarrages du serveur dev sans secret fixe — documenté dans .env.example).
+
+### Vérification (E2E sur serveur dev, navigateur réel)
+- Logo : SVG glyphe « b2b » présent (header, sheet mobile, sidebar admin, login).
+- 7 taps logo → `/admin` (session vivante) ; clic simple → accueil ; `/admin/login`
+  avec session → redirection `/admin`.
+- Cycle complet vécu en réel : question support `Q-54WAJP` → deep-link admin → ciblage
+  replyTo → réponse (200) → email « Réponse à votre question Q-54WAJP » tracé → bulle
+  « Support · » côté client. Commande `CMD-E2ECYCLE` : demande de modification (bannière
+  + motif) → « Marquer livré » (admin, email client tracé) → validation client (fonds
+  libérés, bannière terminée) → avis 5★ lié à la commande persisté (moyenne recalculée).
+- Aucune erreur console/page sur tous les parcours ; zéro « prestataire unique »
+  résiduel côté client ; footer présent, mobile 390×844 sans débordement horizontal ;
+  lint impeccable.
+
+---
+
 ## [2.4.0] — 2026-11-14 — Notifications navigateur intelligentes, coordonnées avec l'installation de l'App
 
 > Demande client : fonctionnalité de notification sur navigateur « intelligente

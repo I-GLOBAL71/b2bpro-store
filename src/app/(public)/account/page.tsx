@@ -1,19 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
-import {
-  CalendarDays,
-  Clock,
-  CreditCard,
-  LogIn,
-  MessageCircle,
-  PackageSearch,
-  ShieldCheck,
-  ShoppingBag,
-} from "lucide-react";
+import { LogIn, MessageCircle, PackageSearch, ShieldCheck, ShoppingBag } from "lucide-react";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { OrderCountdown } from "@/components/site/account/order-countdown";
+import { OrderCard, type OrderCardDTO } from "@/components/site/account/order-card";
 import { ProviderChat } from "@/components/site/account/provider-chat";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,22 +16,6 @@ export const metadata: Metadata = {
   description: "Suivez vos commandes b2bpro.store, leurs statuts et vos livraisons.",
   robots: { index: false, follow: false },
 };
-
-/** Libellés FR des statuts de paiement. */
-const PAYMENT_STATUS_LABELS: Record<string, { label: string; className: string }> = {
-  PAID: { label: "Payée — fonds séquestrés", className: "border-emerald-300 bg-emerald-50 text-emerald-700" },
-  CREATED: { label: "En attente de paiement", className: "border-amber-300 bg-amber-50 text-amber-800" },
-  FAILED: { label: "Paiement non abouti", className: "border-red-300 bg-red-50 text-red-700" },
-  REFUNDED: { label: "Remboursée", className: "border-border bg-muted text-muted-foreground" },
-};
-
-const dateFmt = new Intl.DateTimeFormat("fr-FR", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-  hour: "2-digit",
-  minute: "2-digit",
-});
 
 export default async function AccountPage() {
   const session = await getServerSession(authOptions);
@@ -72,11 +47,34 @@ export default async function AccountPage() {
   }
 
   // ── Commandes rattachées à l'email du compte (Lead ↔ Order) ──────────────
+  // v2.5.0 : la carte structurée reçoit tout ce qu'elle affiche — options
+  // choisies (libellés), dernière demande de modification, avis publié.
   const orders = await db.order.findMany({
     where: { lead: { email } },
     orderBy: { createdAt: "desc" },
     take: 50,
+    include: {
+      revisions: { orderBy: { createdAt: "desc" }, take: 1 },
+      review: { select: { id: true } },
+      _count: { select: { revisions: true } },
+    },
   });
+
+  const optionIdsAll = orders.flatMap((o) => {
+    try {
+      return JSON.parse(o.optionIds) as string[];
+    } catch {
+      return [] as string[];
+    }
+  });
+  const optionsMap = new Map<string, string>();
+  if (optionIdsAll.length > 0) {
+    const found = await db.serviceOption.findMany({
+      where: { id: { in: optionIdsAll } },
+      select: { id: true, name: true },
+    });
+    for (const o of found) optionsMap.set(o.id, o.name);
+  }
 
   const name = session?.user?.name ?? null;
   const initials = (name ?? email)
@@ -86,6 +84,45 @@ export default async function AccountPage() {
     .slice(0, 2)
     .join("")
     .toUpperCase();
+
+  const cards: OrderCardDTO[] = orders.map((o) => {
+    let optIds: string[] = [];
+    try {
+      optIds = JSON.parse(o.optionIds) as string[];
+    } catch {
+      optIds = [];
+    }
+    const lastRevision = o.revisions[0];
+    return {
+      serviceId: o.serviceId,
+      reference: o.reference,
+      serviceSlug: o.serviceSlug,
+      serviceTitle: o.serviceTitle,
+      optionLabels: optIds
+        .map((id) => optionsMap.get(id))
+        .filter((n): n is string => Boolean(n)),
+      createdAt: o.createdAt.toISOString(),
+      paidAt: o.paidAt?.toISOString() ?? null,
+      deliveryDays: o.deliveryDays,
+      total: o.total,
+      currency: o.currency,
+      paymentStatus: o.paymentStatus,
+      paymentProvider: o.paymentProvider,
+      stage: o.stage,
+      deliveredAt: o.deliveredAt?.toISOString() ?? null,
+      releasedAt: o.releasedAt?.toISOString() ?? null,
+      revisionCount: o._count.revisions,
+      lastRevision: lastRevision
+        ? {
+            reason: lastRevision.reason,
+            status: lastRevision.status,
+            createdAt: lastRevision.createdAt.toISOString(),
+          }
+        : null,
+      hasReview: Boolean(o.review),
+      clientName: name,
+    };
+  });
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
@@ -113,15 +150,15 @@ export default async function AccountPage() {
       <section aria-labelledby="orders-title" className="mt-8">
         <h2 id="orders-title" className="flex items-center gap-2 text-lg font-bold tracking-tight">
           <PackageSearch className="h-5 w-5 text-primary" aria-hidden="true" />
-          Mes commandes ({orders.length})
+          Mes commandes ({cards.length})
         </h2>
 
-        {orders.length === 0 ? (
+        {cards.length === 0 ? (
           <div className="mt-4 rounded-2xl border border-dashed border-border bg-muted/30 p-8 text-center">
-            <p className="text-[14px] font-semibold">Aucune commande pour l'instant</p>
+            <p className="text-[14px] font-semibold">Aucune commande pour l&apos;instant</p>
             <p className="mx-auto mt-2 max-w-sm text-[13px] leading-6 text-muted-foreground">
-              Vos futures commandes apparaîtront ici : statut de paiement, référence,
-              montant et fiche du service commandé.
+              Vos futures commandes apparaîtront ici : ligne de vie, compte à rebours,
+              validation de livraison et avis.
             </p>
             <Button asChild className="mt-5 gap-2 rounded-full bg-gradient-to-r from-primary to-emerald-500 font-semibold text-white">
               <Link href="/services">
@@ -132,90 +169,29 @@ export default async function AccountPage() {
           </div>
         ) : (
           <ol className="mt-4 space-y-3.5">
-            {orders.map((order) => {
-              const st = PAYMENT_STATUS_LABELS[order.paymentStatus] ?? {
-                label: order.paymentStatus,
-                className: "border-border bg-muted text-muted-foreground",
-              };
-              // Compte à rebours (v2.2.0) : livrable promis X jours ouvrés après
-              // le paiement capturé (PAID) — approximation calendairé affichée au client.
-              const anchor = order.paidAt ?? order.createdAt;
-              const deliveryAt =
-                order.paymentStatus === "PAID"
-                  ? new Date(anchor.getTime() + order.deliveryDays * 86_400_000)
-                  : null;
-              return (
-                <li
-                  key={order.id}
-                  className="flex flex-wrap items-start gap-x-6 gap-y-3 rounded-2xl border border-border bg-card p-5"
-                >
-                  <div className="min-w-0 flex-1">
-                    <p className="flex flex-wrap items-center gap-2 text-[14px] font-semibold">
-                      <Link
-                        href={`/services/${order.serviceSlug}`}
-                        className="hover:text-primary hover:underline"
-                      >
-                        {order.serviceTitle}
-                      </Link>
-                      <span className="font-mono text-[11.5px] text-muted-foreground">
-                        {order.reference}
-                      </span>
-                    </p>
-                    <p className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-[12.5px] text-muted-foreground">
-                      <span className="inline-flex items-center gap-1">
-                        <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
-                        {dateFmt.format(order.createdAt)}
-                      </span>
-                      <span className="inline-flex items-center gap-1">
-                        <Clock className="h-3.5 w-3.5" aria-hidden="true" />
-                        Livraison {order.deliveryDays} jour{order.deliveryDays > 1 ? "s" : ""}
-                      </span>
-                      <span className="inline-flex items-center gap-1">
-                        <CreditCard className="h-3.5 w-3.5" aria-hidden="true" />
-                        {order.total.toLocaleString("fr-FR")} €
-                      </span>
-                    </p>
-                    {deliveryAt && (
-                      <p className="mt-2.5">
-                        <OrderCountdown deliveryAt={deliveryAt.toISOString()} />
-                      </p>
-                    )}
-                    <Link
-                      href="#prestataire"
-                      className="mt-2 inline-flex items-center gap-1 text-[12px] font-medium text-primary hover:underline"
-                    >
-                      <MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />
-                      Une question sur cette commande ? Écrire au prestataire
-                    </Link>
-                  </div>
-                  <span
-                    className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] font-semibold ${st.className}`}
-                  >
-                    {st.label}
-                  </span>
-                </li>
-              );
-            })}
+            {cards.map((order) => (
+              <OrderCard key={order.reference} order={order} />
+            ))}
           </ol>
         )}
 
         <p className="mt-6 text-[12.5px] leading-5 text-muted-foreground">
           Rappel : le paiement a lieu à la commande, mais les fonds restent séquestrés
-          jusqu'à la livraison approuvée par vous — le vendeur n'est payé qu'après
+          jusqu&apos;à la livraison approuvée par vous — le vendeur n&apos;est payé qu&apos;après
           votre validation du livrable.
         </p>
       </section>
 
-      {/* Conversation avec le prestataire humain (propriétaire) — v2.2.0 */}
-      <section id="prestataire" aria-labelledby="prestataire-title" className="mt-10 scroll-mt-24">
-        <h2 id="prestataire-title" className="flex items-center gap-2 text-lg font-bold tracking-tight">
+      {/* Support humain — v2.5.0 : plus jamais « prestataire unique » */}
+      <section id="support-humain" aria-labelledby="support-title" className="mt-10 scroll-mt-24">
+        <h2 id="support-title" className="flex items-center gap-2 text-lg font-bold tracking-tight">
           <MessageCircle className="h-5 w-5 text-primary" aria-hidden="true" />
-          Discuter avec le prestataire — réponse humaine
+          Contacter le support humain
         </h2>
         <p className="mt-1.5 max-w-2xl text-[13px] leading-5 text-muted-foreground">
-          Le propriétaire de b2bpro.store est le prestataire unique de la plateforme :
-          vos questions sur une commande, un livrable ou un délai lui parviennent
-          directement (email marqué urgent + notification dans son tableau de bord).
+          Une question sur une commande, un livrable ou un délai ? L&apos;équipe support
+          b2bpro.store — qui pilote l&apos;ensemble des prestataires de la plateforme — vous
+          répond personnellement : chaque question porte sa propre route de réponse.
         </p>
         <div className="mt-4">
           <ProviderChat />

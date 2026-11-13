@@ -4,12 +4,17 @@ import { useEffect, useState } from "react";
 import { Hourglass } from "lucide-react";
 
 /**
- * Compte à rebours de livraison d'une commande payée (v2.2.0).
+ * Compte à rebours de livraison d'une commande payée (v2.2.0, corrigé v2.5.0).
  *
  * La date cible (paidAt + délai de livraison) est calculée côté SERVEUR et
  * passée en prop ISO — le client n'affiche que le décompte. Rendu robuste à
  * l'hydratation : la seconde s'affiche après montage (le serveur rend le
  * libellé statique « livraison prévue le … »).
+ *
+ * v2.5.0 — stabilité du rendu : la cible vit sous forme de MILLISECONDES
+ * primitives (Date.parse). Un `new Date()` à chaque rendu faisait changer
+ * les dépendances de l'effet à chaque re-rendu (boucle « Maximum update
+ * depth » dès qu'un parent re-rendait, ex. ouverture d'un dialogue).
  */
 
 function formatRemaining(ms: number): string {
@@ -24,23 +29,25 @@ function formatRemaining(ms: number): string {
   return `${m} min ${pad(s)} s`;
 }
 
+const dateFmt = new Intl.DateTimeFormat("fr-FR", {
+  day: "numeric",
+  month: "short",
+  hour: "2-digit",
+  minute: "2-digit",
+});
+
 export function OrderCountdown({ deliveryAt }: { deliveryAt: string }) {
-  const target = new Date(deliveryAt);
+  // Primitive stable : la prop ISO est analysée en millisecondes UNE fois,
+  // jamais recréée par un new Date() dans le corps du composant.
+  const targetMs = Date.parse(deliveryAt);
   const [remaining, setRemaining] = useState<number | null>(null);
 
   useEffect(() => {
-    const tick = () => setRemaining(target.getTime() - Date.now());
+    const tick = () => setRemaining(targetMs - Date.now());
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, [target]);
-
-  const dateFmt = new Intl.DateTimeFormat("fr-FR", {
-    day: "numeric",
-    month: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  }, [targetMs]);
 
   const late = remaining !== null && remaining <= 0;
 
@@ -51,19 +58,19 @@ export function OrderCountdown({ deliveryAt }: { deliveryAt: string }) {
           ? "border-amber-300 bg-amber-50 text-amber-800"
           : "border-primary/30 bg-accent text-primary"
       }`}
-      title={`Livraison prévue le ${dateFmt.format(target)}`}
+      title={`Livraison prévue le ${dateFmt.format(new Date(targetMs))}`}
     >
       <Hourglass className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
       {late ? (
         <span className="truncate">Livraison attendue — validation à venir</span>
       ) : (
         <span className="truncate">
-          Livraison {dateFmt.format(target)}
+          Livraison {dateFmt.format(new Date(targetMs))}
           {remaining !== null ? ` · dans ${formatRemaining(remaining)}` : ""}
         </span>
       )}
       <span className="sr-only">
-        Livraison prévue le {dateFmt.format(target)}
+        Livraison prévue le {dateFmt.format(new Date(targetMs))}
         {late ? ", échéance atteinte" : ""}
       </span>
     </span>

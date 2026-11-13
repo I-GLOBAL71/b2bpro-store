@@ -109,6 +109,9 @@ model Review {
   rating     Float // 4.2 → 5.0
   comment    String
   orderLabel String // option commandée
+  // v2.5.0 — avis lié à une commande validée (au plus un par commande).
+  orderId    String?  @unique
+  order      Order?   @relation(fields: [orderId], references: [id])
   createdAt  DateTime @default(now())
 }
 
@@ -175,6 +178,8 @@ model SupportMessage {
   thread    SupportThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
   role      String // "client" | "owner"
   content   String
+  // v2.5.0 — route unique par question (code Q-XXXXXX) — voir schéma SQLite.
+  reference String?       @unique
   createdAt DateTime      @default(now())
 }
 
@@ -268,6 +273,23 @@ model Order {
   payerName       String?
   createdAt       DateTime  @default(now())
   paidAt          DateTime?
+
+  // v2.5.0 — cycle de vie de la prestation — voir schéma SQLite (miroir).
+  stage          String   @default("production")
+  deliveredAt    DateTime?
+  releasedAt     DateTime?
+  revisions      OrderRevision[]
+  review         Review?
+}
+
+// v2.5.0 — demandes de modification (miroir du schéma SQLite).
+model OrderRevision {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  reason    String
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
 }
 
 // ─── Abonnements Web Push (notifications navigateur, v2.4.0) ──────────────────

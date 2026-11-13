@@ -1,8 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   CheckCircle2,
+  CornerDownRight,
+  Hash,
   Loader2,
   Mail,
   MessagesSquare,
@@ -14,16 +16,20 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { apiGet, apiSend } from "@/components/admin/api";
 import { AdminPageHeader } from "@/components/admin/fields";
+import { cn } from "@/lib/utils";
 
 /**
- * « Messages clients » (v2.2.0) — boîte de réception du propriétaire-prestataire.
+ * « Messages clients » (v2.2.0, routage par question v2.5.0) — boîte de
+ * réception du support humain.
  *
- * Chaque question posée par un client dans son espace (/account) arrive ici :
- *   • email URGENT envoyé au propriétaire au moment de la question ;
- *   • badge de non-lus dans la navigation (interrogé toutes les 45 s) ;
- *   • cette page liste les fils, les affiche (lecture = remise à zéro du
- *     compteur), permet d'y répondre (réponse aussi transmise par email au
- *     client) et de clôturer/réouvrir chaque fil.
+ * Chaque question d'un client arrive ici avec sa ROUTE UNIQUE (code
+ * Q-XXXXXX) ; l'email d'alerte au support contient un lien direct
+ * /admin/messages?thread=<id> qui ouvre CE fil précis.
+ *
+ * Répondre : cliquer une question la CIBLE (replyTo) — la réponse part vers
+ * le client du fil, avec l'objet « Réponse à votre question Q-XXXXXX ». Le
+ * serveur valide que la question ciblée appartient bien au fil affiché :
+ * un client ne peut jamais recevoir la réponse d'un autre.
  */
 
 interface ThreadRow {
@@ -43,6 +49,14 @@ interface ThreadsResponse {
   threads: ThreadRow[];
 }
 
+interface ThreadMessage {
+  id: string;
+  role: "client" | "owner";
+  content: string;
+  createdAt: string;
+  reference?: string | null;
+}
+
 interface ThreadDetail {
   thread: {
     id: string;
@@ -50,7 +64,7 @@ interface ThreadDetail {
     name: string | null;
     status: "open" | "closed" | string;
     createdAt: string;
-    messages: { id: string; role: "client" | "owner"; content: string; createdAt: string }[];
+    messages: ThreadMessage[];
   };
 }
 
@@ -79,6 +93,9 @@ export default function AdminMessagesPage() {
   const [reply, setReply] = useState("");
   const [sending, setSending] = useState(false);
   const [statusBusy, setStatusBusy] = useState(false);
+  /** Question ciblée par la réponse en cours (null = dernière question du fil). */
+  const [replyTarget, setReplyTarget] = useState<ThreadMessage | null>(null);
+  const deepLinkDone = useRef(false);
 
   const load = useCallback(async () => {
     try {
@@ -91,12 +108,9 @@ export default function AdminMessagesPage() {
     }
   }, []);
 
-  useEffect(() => {
-    void load();
-  }, [load]);
-
-  async function open(threadId: string) {
+  const open = useCallback(async (threadId: string) => {
     setLoadingDetail(true);
+    setReplyTarget(null);
     try {
       const d = await apiGet<ThreadDetail>(`/api/admin/support/${threadId}`);
       setDetail(d.thread);
@@ -121,7 +135,21 @@ export default function AdminMessagesPage() {
     } finally {
       setLoadingDetail(false);
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    void load();
+  }, [load]);
+
+  // Lien direct depuis l'email d'alerte : /admin/messages?thread=<id>
+  // (lecture via window.location — pas de useSearchParams, donc aucun
+  // périmètre Suspense à ajouter pour le prérendu).
+  useEffect(() => {
+    if (deepLinkDone.current) return;
+    deepLinkDone.current = true;
+    const threadId = new URLSearchParams(window.location.search).get("thread");
+    if (threadId) void open(threadId);
+  }, [open]);
 
   async function sendReply() {
     if (!detail || sending) return;
@@ -132,17 +160,20 @@ export default function AdminMessagesPage() {
     }
     setSending(true);
     try {
-      const res = await apiSend<{ ok: boolean; emailSent: boolean }>(
+      const res = await apiSend<{ ok: boolean; emailSent: boolean; questionRef: string | null }>(
         `/api/admin/support/${detail.id}`,
         "POST",
-        { message }
+        { message, replyTo: replyTarget?.id ?? undefined }
       );
       setReply("");
+      setReplyTarget(null);
       await open(detail.id);
       await load();
       toast.success(
         res.emailSent
-          ? "Réponse enregistrée et transmise au client par email."
+          ? res.questionRef
+            ? `Réponse envoyée au client par email (question ${res.questionRef}).`
+            : "Réponse enregistrée et transmise au client par email."
           : "Réponse enregistrée — visible dans l'espace client (email non envoyé : SMTP absent)."
       );
     } catch (e) {
@@ -176,7 +207,7 @@ export default function AdminMessagesPage() {
     <div>
       <AdminPageHeader
         title="Messages clients"
-        description="Questions posées au prestataire humain : chaque question notifie le propriétaire par email urgent — répondez ici, le client est prévenu par email et dans son espace."
+        description="Chaque question porte une route unique (code Q-XXXXXX) et notifie le support par email urgent — cliquez une question pour y répondre précisément : le client la reçoit par email, personne d'autre."
         icon={<MessagesSquare className="h-6 w-6 text-primary" aria-hidden="true" />}
       />
 
@@ -218,7 +249,7 @@ export default function AdminMessagesPage() {
               <div className="px-4 py-10 text-center">
                 <p className="text-[13.5px] font-semibold">Aucun message pour l&apos;instant</p>
                 <p className="mx-auto mt-1.5 max-w-xs text-[12.5px] leading-5 text-muted-foreground">
-                  Les questions des clients (espace « Discuter avec le prestataire ») apparaîtront
+                  Les questions des clients (espace « Contacter le support humain ») apparaîtront
                   ici, avec une notification par email.
                 </p>
               </div>
@@ -277,8 +308,8 @@ export default function AdminMessagesPage() {
               <MessagesSquare className="h-8 w-8 text-muted-foreground/60" aria-hidden="true" />
               <p className="text-[13.5px] font-semibold">Sélectionnez une conversation</p>
               <p className="max-w-xs text-[12.5px] leading-5 text-muted-foreground">
-                La réponse du prestataire est envoyée au client par email et reste visible dans
-                son espace client.
+                La réponse part vers le client du fil sélectionné, avec la référence de sa
+                question — aucun croisement possible.
               </p>
             </div>
           ) : (
@@ -329,24 +360,63 @@ export default function AdminMessagesPage() {
                       key={m.id}
                       className={`flex ${m.role === "owner" ? "justify-end" : "justify-start"}`}
                     >
+                      {/* Question client : cliquable → devient la cible de la réponse. */}
                       <div
-                        className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 ${
-                          m.role === "owner"
-                            ? "rounded-br-md bg-primary text-primary-foreground"
-                            : "rounded-bl-md border border-border bg-muted/50"
-                        }`}
+                        className={
+                          m.role === "client"
+                            ? "max-w-[85%] cursor-pointer rounded-2xl rounded-bl-md border bg-muted/50 transition-colors aria-selected:border-primary/60 aria-selected:bg-accent/50"
+                            : "max-w-[85%] rounded-2xl rounded-br-md bg-primary text-primary-foreground"
+                        }
+                        {...(m.role === "client" && {
+                          role: "button",
+                          tabIndex: 0,
+                          "aria-selected": replyTarget?.id === m.id,
+                          "aria-label": `Cibler la réponse sur la question ${m.reference ?? m.id}`,
+                          onClick: () => setReplyTarget(m),
+                          onKeyDown: (e: React.KeyboardEvent) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              setReplyTarget(m);
+                            }
+                          },
+                        })}
                       >
-                        <p className="whitespace-pre-wrap break-words text-[13px] leading-6">
-                          {m.content}
-                        </p>
-                        <p
-                          className={`mt-1 text-right text-[10.5px] tabular-nums ${
-                            m.role === "owner" ? "text-primary-foreground/70" : "text-muted-foreground"
-                          }`}
+                        <div
+                          className={cn(
+                            "px-3.5 py-2.5",
+                            m.role === "client" &&
+                              replyTarget?.id === m.id &&
+                              "ring-1 ring-primary/50 rounded-2xl"
+                          )}
                         >
-                          {m.role === "owner" ? "Vous · " : "Client · "}
-                          {dtFmt.format(new Date(m.createdAt))}
-                        </p>
+                          {m.reference && (
+                            <p
+                              className={`mb-1 inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-mono text-[10.5px] font-semibold tracking-wide ${
+                                m.role === "client"
+                                  ? "bg-primary/10 text-primary"
+                                  : "bg-primary-foreground/15 text-primary-foreground/90"
+                              }`}
+                            >
+                              <Hash className="h-3 w-3" aria-hidden="true" />
+                              {m.reference}
+                            </p>
+                          )}
+                          <p
+                            className={`whitespace-pre-wrap break-words text-[13px] leading-6 ${
+                              m.role === "owner" ? "" : "text-foreground"
+                            }`}
+                          >
+                            {m.content}
+                          </p>
+                          <p
+                            className={`mt-1 text-right text-[10.5px] tabular-nums ${
+                              m.role === "owner" ? "text-primary-foreground/70" : "text-muted-foreground"
+                            }`}
+                          >
+                            {m.role === "owner" ? "Support · " : "Client · "}
+                            {dtFmt.format(new Date(m.createdAt))}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -360,6 +430,28 @@ export default function AdminMessagesPage() {
                   void sendReply();
                 }}
               >
+                {/* Cible de réponse : toujours visible, jamais ambiguë. */}
+                <p className="mb-2 flex items-center gap-1.5 text-[11.5px] font-medium text-muted-foreground">
+                  <CornerDownRight className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
+                  {replyTarget ? (
+                    <>
+                      Répond à la question{" "}
+                      <span className="rounded-full bg-primary/10 px-1.5 py-0.5 font-mono text-[10.5px] font-semibold text-primary">
+                        {replyTarget.reference ?? replyTarget.id.slice(0, 8)}
+                      </span>{" "}
+                      de {detail.name ?? detail.email}
+                      <button
+                        type="button"
+                        onClick={() => setReplyTarget(null)}
+                        className="ml-1 rounded-full px-1.5 text-[11px] text-muted-foreground underline decoration-dotted hover:text-foreground"
+                      >
+                        détacher
+                      </button>
+                    </>
+                  ) : (
+                    <>Réponse à la dernière question de {detail.name ?? detail.email} — cliquez une question pour la cibler.</>
+                  )}
+                </p>
                 <div className="flex flex-col gap-2.5 sm:flex-row sm:items-end">
                   <label htmlFor="admin-reply" className="sr-only">
                     Votre réponse au client {detail.email}
@@ -376,7 +468,7 @@ export default function AdminMessagesPage() {
                     }}
                     rows={3}
                     maxLength={4000}
-                    placeholder="Votre réponse au client (envoyée par email et visible dans son espace)…"
+                    placeholder="Votre réponse au client (envoyée par email avec la référence de sa question, et visible dans son espace)…"
                     className="min-w-0 flex-1 resize-none rounded-2xl border border-border bg-background px-3.5 py-2.5 text-[13px] leading-6 outline-none transition-colors focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
                   />
                   <Button
@@ -395,8 +487,7 @@ export default function AdminMessagesPage() {
                   </Button>
                 </div>
                 <p className="mt-1.5 text-[11.5px] text-muted-foreground">
-                  Réponse signée « prestataire » : email au client + historique conservé dans son
-                  espace. Ctrl + Entrée pour envoyer.
+                  Envoi exclusif à ce client (email filaire + espace). Ctrl + Entrée pour envoyer.
                 </p>
               </form>
             </>

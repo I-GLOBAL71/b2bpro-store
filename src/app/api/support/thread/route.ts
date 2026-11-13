@@ -7,6 +7,7 @@ import {
   ADMIN_LOG_ACTIONS,
   SUPPORT_THREAD_STATUS,
   supportThreadPostSchema,
+  type SupportThreadMessageDTO,
   type SupportThreadResponse,
 } from "@/lib/contracts";
 import { logAdminAction } from "@/lib/settings";
@@ -14,20 +15,19 @@ import { notifyOwnerClientQuestion } from "@/lib/mailer";
 
 /**
  * ═══════════════════════════════════════════════════════════════════════════
- *  /api/support/thread — conversation client ↔ prestataire humain (v2.2.0)
+ *  /api/support/thread — conversation client ↔ support humain (v2.2.0)
  * ═══════════════════════════════════════════════════════════════════════════
  *
- * Le prestataire humain de la plateforme est unique : le PROPRIÉTAIRE.
+ * v2.5.0 — chaque QUESTION du client reçoit une ROUTE UNIQUE : un code
+ * lisible Q-XXXXXX (champ SupportMessage.reference, unique en base). La
+ * réponse du support référence ce code (objet email dédié + accusé visuel
+ * côté client) : le client X ne peut jamais recevoir la réponse du client Y —
+ * le fil est en outre propre à l'email de session (un fil par client).
  *   • GET  : le fil complet du client connecté (email de session = identité).
- *   • POST : dépose une question. Chaque question déclenche :
- *       - un email URGENT au propriétaire (OWNER_EMAIL — mailer.ts) ;
- *       - une trace « support.message » dans le journal d'audit
- *         → badge « Messages clients » du panneau d'administration.
- *     Le fil (ré)ouvre automatiquement, le compteur de non-lus du
- *     propriétaire s'incrémente, et le Lead reste synchronisé (même email).
+ *   • POST : dépose une question → email URGENT au support (OWNER_EMAIL) avec
+ *     lien direct vers CE fil dans le panneau + trace « support.message ».
  *
- * Garde : session cliente exigée (identité vérifiée Google / lien magique —
- * le fil ne peut JAMAIS être anonyme). Anti-abus : 10 messages / minute / IP.
+ * Garde : session cliente exigée. Anti-abus : 10 messages / minute / IP.
  */
 
 // ── Anti-abus (fenêtre glissante par IP — même garde-fou que service-chat) ──
@@ -63,12 +63,32 @@ async function sessionEmail(): Promise<string | null> {
   return typeof raw === "string" && raw ? raw.toLowerCase().trim() : null;
 }
 
+/** Code de route unique d'une question (Q-XXXXXX, alphabet sans ambigus). */
+function newQuestionReference(): string {
+  const ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; // ni O/0, ni I/1/L…
+  const bytes = crypto.getRandomValues(new Uint8Array(6));
+  let code = "";
+  for (const b of bytes) code += ALPHABET[b % ALPHABET.length];
+  return `Q-${code}`;
+}
+
+/** DTO message du fil — reference uniquement pour les questions client. */
+function toMessageDTO(m: { id: string; role: string; content: string; createdAt: Date; reference: string | null }): SupportThreadMessageDTO {
+  return {
+    id: m.id,
+    role: m.role === "owner" ? "owner" : "client",
+    content: m.content,
+    createdAt: m.createdAt.toISOString(),
+    reference: m.reference,
+  };
+}
+
 // ── GET : fil + messages du client connecté ──────────────────────────────────
 export async function GET() {
   const email = await sessionEmail();
   if (!email) {
     return NextResponse.json(
-      { error: "Connexion requise pour discuter avec le prestataire." },
+      { error: "Connexion requise pour écrire au support." },
       { status: 401 }
     );
   }
@@ -87,12 +107,7 @@ export async function GET() {
             status: thread.status === SUPPORT_THREAD_STATUS.CLOSED ? "closed" : "open",
           }
         : null,
-      messages: (thread?.messages ?? []).map((m) => ({
-        id: m.id,
-        role: m.role === "owner" ? "owner" : "client",
-        content: m.content,
-        createdAt: m.createdAt.toISOString(),
-      })),
+      messages: (thread?.messages ?? []).map(toMessageDTO),
     };
     return NextResponse.json(body);
   } catch (e) {
@@ -108,7 +123,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         error:
-          "Connexion requise pour écrire au prestataire. Identifiez-vous (Google ou lien email) puis reprenez la conversation.",
+          "Connexion requise pour écrire au support. Identifiez-vous (Google ou lien email) puis reprenez la conversation.",
       },
       { status: 401 }
     );
@@ -159,30 +174,50 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    await db.supportMessage.create({
-      data: {
-        threadId: thread.id,
-        role: "client",
-        content: message,
-      },
-    });
+    // Route unique de la question (v2.5.0) : collision quasi impossible
+    // (31^6 ≈ 887 millions de codes) — deux tentatives suffisent largement.
+    let created = null as { id: string; reference: string } | null;
+    for (let attempt = 0; attempt < 2 && !created; attempt += 1) {
+      try {
+        created = await db.supportMessage.create({
+          data: {
+            threadId: thread.id,
+            role: "client",
+            content: message,
+            reference: newQuestionReference(),
+          },
+          select: { id: true, reference: true },
+        });
+      } catch {
+        /* collision d'unicité : nouveau code, dernière tentative */
+      }
+    }
+    if (!created) {
+      return NextResponse.json(
+        { error: "Enregistrement impossible pour le moment — réessayez." },
+        { status: 500 },
+      );
+    }
+    const questionRef = created.reference;
 
     // Contexte de la notification : combien de commandes ce client a-t-il passées ?
     const ordersCount = await db.order.count({ where: { lead: { email } } }).catch(() => 0);
 
-    // Notification URGENTE du propriétaire + trace journal (jamais bloquantes).
+    // Notification URGENTE du support + trace journal (jamais bloquantes).
     await notifyOwnerClientQuestion({
       clientEmail: email,
       clientName: name,
       message,
       ordersCount,
+      questionRef,
+      threadId: thread.id,
     });
     await logAdminAction(
       ADMIN_LOG_ACTIONS.SUPPORT_MESSAGE,
-      `Question de ${email}${name ? ` (${name})` : ""} : « ${message.slice(0, 140)}${message.length > 140 ? "…" : ""} »`
+      `Question ${questionRef} de ${email}${name ? ` (${name})` : ""} : « ${message.slice(0, 140)}${message.length > 140 ? "…" : ""} »`
     );
 
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true, reference: questionRef });
   } catch (e) {
     console.error(`POST ${API_ROUTES.supportThread}`, e);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
