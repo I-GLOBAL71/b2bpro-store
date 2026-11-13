@@ -14,6 +14,12 @@
  *     à la prochaine ouverture de l'app ;
  *   • jamais affichée si l'app tourne déjà en mode standalone (installée).
  *
+ * v2.4.0 — coordination avec l'invite de notifications : les deux se partagent
+ * UN créneau d'attention (src/lib/prompt-hub.ts). L'installation garde la
+ * priorité naturelle (Chromium émet `beforeinstallprompt` tôt) ; si l'invite
+ * de notifications tient le créneau ou vient de le libérer, l'installation
+ * attend patiemment la fin de la fenêtre de courtoisie de 60 s.
+ *
  * iOS : Safari n'émet pas `beforeinstallprompt` (installation via Partage →
  * « Sur l'écran d'accueil », satisfaite par apple-touch-icon + manifeste) :
  * l'invite reste donc silencieuse, par conception.
@@ -33,6 +39,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import {
+  acquirePrompt,
+  getPromptHubSnapshot,
+  releasePrompt,
+  usePromptHub,
+  withinSpacing,
+} from "@/lib/prompt-hub";
 
 /** Événement non standardisé émis par Chromium quand l'app devient installable. */
 interface BeforeInstallPromptEvent extends Event {
@@ -58,8 +71,11 @@ function isStandalone(): boolean {
 
 export function PwaClient() {
   const [open, setOpen] = useState(false);
+  /** `beforeinstallprompt` capturé : Chromium estime l'app installable. */
+  const [armed, setArmed] = useState(false);
   const deferred = useRef<BeforeInstallPromptEvent | null>(null);
   const showTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hub = usePromptHub();
 
   // 1) Service worker : condition d'installabilité Chrome/Edge/Android.
   //    Échec silencieux : le site fonctionne intégralement sans SW, seule
@@ -71,7 +87,8 @@ export function PwaClient() {
   }, []);
 
   // 2) Invite : uniquement si installable, pas déjà installée, pas refusée
-  //    au cours de cette session.
+  //    au cours de cette session. On capture l'événement (armed) — la décision
+  //    d'apparition elle-même vit dans l'effet coordonné ci-dessous.
   useEffect(() => {
     if (isStandalone()) return;
     if (sessionStorage.getItem(SESSION_KEY)) return;
@@ -82,13 +99,13 @@ export function PwaClient() {
       const e = event as BeforeInstallPromptEvent;
       e.preventDefault();
       deferred.current = e;
-      if (showTimer.current) clearTimeout(showTimer.current);
-      showTimer.current = setTimeout(() => setOpen(true), SHOW_DELAY_MS);
+      setArmed(true);
     };
 
     const onAppInstalled = () => {
       sessionStorage.setItem(SESSION_KEY, "1");
       deferred.current = null;
+      setArmed(false);
       setOpen(false);
     };
 
@@ -97,9 +114,46 @@ export function PwaClient() {
     return () => {
       window.removeEventListener("beforeinstallprompt", onBeforeInstallPrompt);
       window.removeEventListener("appinstalled", onAppInstalled);
-      if (showTimer.current) clearTimeout(showTimer.current);
     };
   }, []);
+
+  // 3) Décision COORDONNÉE (v2.4.0) : le créneau d'attention doit être libre
+  //    (invite de notifications absente) et la fenêtre de courtoisie de 60 s
+  //    écoulée. Évaluée à l'armement, à chaque changement de créneau (dep hub),
+  //    puis par filet périodique (5 s) : la fin d'une fenêtre de courtoisie
+  //    n'émet AUCUN événement observable, seul le filet la détecte.
+  //    Tout l'état réactif vit dans le callback du minuteur (jamais de
+  //    setState dans le corps de l'effet) ; le minuteur de rendu (900 ms)
+  //    vit dans un ref : aucun nettoyage de re-rendu ne peut l'annuler en route.
+  useEffect(() => {
+    if (!armed) return;
+    const evaluate = () => {
+      if (sessionStorage.getItem(SESSION_KEY)) return; // la session a tranché
+      const snap = getPromptHubSnapshot();
+      if (snap.active) return; // l'invite de notifications tient le créneau
+      if (withinSpacing(snap)) return; // courtoisie post-fermeture en cours
+      if (!acquirePrompt("install")) return;
+      showTimer.current = setTimeout(() => setOpen(true), SHOW_DELAY_MS);
+    };
+    evaluate();
+    const id = setInterval(evaluate, 5000);
+    return () => clearInterval(id);
+  }, [armed, hub]);
+
+  // 4) Minuteur de rendu : nettoyé au démontage uniquement.
+  useEffect(
+    () => () => {
+      if (showTimer.current) clearTimeout(showTimer.current);
+    },
+    [],
+  );
+
+  // 5) Libération du créneau + courtoisie, quelle que soit la voie de sortie
+  //    (croix, Échap, clic au-dehors, dialogue natif, appinstalled).
+  useEffect(() => {
+    if (!open) return;
+    return () => releasePrompt("install");
+  }, [open]);
 
   /** Fermeture (croix, Échap, clic au-dehors) : silence jusqu'à la prochaine ouverture. */
   const handleOpenChange = useCallback((next: boolean) => {

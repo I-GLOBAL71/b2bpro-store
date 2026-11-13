@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { SessionBoundary } from "@/components/site/session-boundary";
 import { PwaClient } from "@/components/site/pwa-client";
+import { NotificationPrompt } from "@/components/site/notification-prompt";
 import { defaultMetadata, SITE } from "@/lib/site";
 
 const geistSans = Geist({
@@ -81,6 +82,8 @@ export default function RootLayout({
         <SessionBoundary>{children}</SessionBoundary>
         {/* PWA v2.3.0 — service worker + invite d'installation écran d'accueil */}
         <PwaClient />
+        {/* Notifications v2.4.0 — invite bienveillante coordonnée avec l'installation */}
+        <NotificationPrompt />
         <Toaster position="bottom-right" richColors />
       </body>
     </html>

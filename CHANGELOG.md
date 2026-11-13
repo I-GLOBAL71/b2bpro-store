@@ -7,6 +7,99 @@
 
 ---
 
+## [2.4.0] — 2026-11-14 — Notifications navigateur intelligentes, coordonnées avec l'installation de l'App
+
+> Demande client : fonctionnalité de notification sur navigateur « intelligente
+> et non intrusive, invitation bienveillante à s'inscrire aux notifications
+> sans paraître trop intrusif, bon accord d'apparition de ce composant avec
+> celui de l'installation de l'App pour ne pas spammer l'utilisateur, animation
+> immersive, élégante et moderne lors de l'apparition ».
+
+### [ADDITIF] — Régisseur d'attention : UN créneau pour les deux invites
+- `src/lib/prompt-hub.ts` — l'invite d'installation (v2.3.0) et l'invite de
+  notifications (v2.4.0) ne sont jamais à l'écran ensemble : `acquirePrompt`
+  occupe le créneau, `releasePrompt` le libère en horodatant la fermeture,
+  `withinSpacing` applique une fenêtre de **courtoisie de 60 s** après TOUTE
+  fermeture (la seconde invitation attend, même si ses propres conditions
+  sont réunies). Store externe via `useSyncExternalStore` : les deux composants
+  réagissent instantanément, hub purement mémoire (chaque ouverture de l'app
+  repart à zéro, les règles persistées tranchent ensuite).
+- `PwaClient` (refonte du seul bloc de décision) — l'installation garde sa
+  priorité naturelle (Chromium arme `beforeinstallprompt` tôt) ; si le
+  créneau est pris ou en courtoisie, elle attend : évaluation à chaque
+  changement de créneau + filet périodique de 5 s (la fin d'une courtoisie
+  n'émet aucun événement observable). Sémantique v2.3.0 intacte : refusée une
+  fois, l'invite d'installation ne revient plus de toute la session.
+
+### [ADDITIF] — `NotificationPrompt` : l'invitation bienveillante
+- `src/components/site/notification-prompt.tsx` (layout racine, après
+  `PwaClient`) — sœur visuelle de l'invite d'installation : même carte centrée
+  arrondie 24 px, même **fond flouté** (backdrop-blur + voile 40 %, `z-[70]`),
+  même famille de boutons/croix. Titre sobre : « Rester informé ? », promesse
+  en une ligne : « Suivi de vos commandes et réponses clés. Rien d'autre. »,
+  bouton plein « Activer » + « Plus tard » discret + croix.
+- Animation d'entrée immersive (Framer Motion, première utilisation du projet)
+  : médaille cloche émeraude qui « sonne » en pulsations concentriques
+  continues, textes puis boutons qui montent en cascade (ressorts ~350 ms,
+  flou qui se dissipe), sortie douce du Dialog Radix.
+- Intelligence d'apparition (« non intrusif » par construction) :
+  1) **jamais avant un vrai engagement** : 40 s de présence + 3 interactions,
+  ou 3 pages vues + 15 s + 2 interactions (visiteur qui explore) ;
+  2) **jamais si le navigateur a déjà tranché** (permission accordée ou
+  refusée dans les réglages du site : on s'incline sans rien demander) ;
+  3) **jamais en même temps ni juste après l'autre invite** (régisseur :
+  créneau unique + courtoisie 60 s) ;
+  4) **jamais sur `/admin` ni `/api`** ;
+  5) **refus poli respecté et escaladant** : 48 h, puis 7 jours, puis 30 jours
+  de silence (localStorage `b2bpro-notif-prompt`) ; refus au niveau du
+  NAVIGATEUR (« Activer » puis non dans le dialogue natif) : statut
+  `blocked` définitif, l'invite ne se représente plus jamais ;
+  6) horloge de décision à 1 Hz : la fin d'un cooldown ou d'une courtoisie
+  est détectée sans attendre le moindre geste du visiteur.
+
+### [ADDITIF] — Web Push : abonnement réel + envoi serveur
+- `public/sw.js` (v2.4.0, `VERSION = "b2bpro-v2"`) — gestionnaires `push`
+  (charge utile `{ title, body, url, tag }`, repli sobre si message brut ou
+  vide) et `notificationclick` (fenêtre existante focalisée + navigation vers
+  l'URL utile du message, sinon `openWindow`). Les notifications LOCALES de
+  confirmation transitent par le même canal visuel.
+- Prisma — modèle `PushSubscription` (endpoint unique, clés `p256dh`/`auth`,
+  user-agent, horodatages) sur les DEUX schémas (SQLite + miroir Postgres
+  Neon) ; `bun run db:push` local exécuté, le garant `ensure-neon-schema.ts`
+  crée la table côté prod au prochain déploiement (§0 du runbook).
+- `src/lib/push.ts` — envoyeur Web Push VAPID (`web-push`), `sendPushToAll`
+  avec assainissement : endpoint mort (404/410) retiré sur-le-champ, la base
+  ne garde que des destinataires vivants.
+- Routes API : `GET /api/push/public-key` (clé publique, `{ publicKey: null }`
+  si VAPID absent : tout se dégrade proprement) ; `POST /api/push/subscribe`
+  (upsert idempotent sur l'endpoint, validation stricte) ;
+  `POST /api/push/unsubscribe` (idempotent) ; `POST /api/push/test`
+  (notification d'essai, **garde `ensureAdmin`** : propriétaire uniquement).
+- Activation complète côté client : permission native → abonnement
+  `pushManager` (clé VAPID décodée base64url → `Uint8Array`) →
+  `POST /api/push/subscribe` → notification de confirmation affichée par le
+  service worker + toast (« activées et synchronisées » / « activées sur cet
+  appareil » si Web Push indisponible).
+- Dépendance `web-push` (+ `@types/web-push`) ; clés VAPID générées et posées
+  dans `.env` local (jamais versionnées : `.env` est ignoré par git).
+
+### [DONNÉES] — Aucune donnée de contenu touchée
+- Création de la seule table `PushSubscription` (vide au départ) : aucune
+  migration de contenu, aucun service/avis/article modifié.
+
+### Vérification (navigateur réel, golden path complet)
+- Invite d'installation prioritaire (créneau libre, flou actif), puis refus →
+  **aucune invite pendant la fenêtre de courtoisie** ; engagement non réuni
+  (temps/interactions) → l'invite notifications **n'apparaît pas** ; après
+  engagement + expiration de la courtoisie → apparition au message près
+  (« Rester informé ? / Activer / Plus tard ») ; « Plus tard » → cooldown 48 h
+  persisté + silence à 8 s ET après rechargement complet ; « Activer » refusé
+  au niveau navigateur → statut `blocked`, refermeture immédiate, plus jamais
+  relancée. Console et page : zéro erreur. Routes push : 200 idempotents,
+  garde admin 401, clé publique servie.
+
+---
+
 ## [2.3.0] — 2026-11-13 — PWA : application installable sur l'écran d'accueil
 
 > Demande client : support PWA « parfaitement fonctionnel pour qu'elle soit

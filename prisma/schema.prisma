@@ -263,3 +263,17 @@ model Order {
   createdAt       DateTime  @default(now())
   paidAt          DateTime?
 }
+
+// ─── Abonnements Web Push (notifications navigateur, v2.4.0) ──────────────────
+// Un abonnement par endpoint de navigateur. L'invite bienveillante crée la ligne
+// à l'activation ; l'envoi réel (src/lib/push.ts) purge les endpoints morts
+// (404/410) au fil des envois. Champs p256dh/auth : clés de chiffrement Push.
+model PushSubscription {
+  id        String   @id @default(cuid())
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

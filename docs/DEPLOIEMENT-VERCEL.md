@@ -70,6 +70,7 @@ Catalogue complet de référence : `.env.example` (racine du repo).
 | `PAYPAL_ENV` | `sandbox` (défaut) ou `live` | ❌ | ⭕ `live` en production |
 | `GOOGLE_SITE_VERIFICATION` | Code de vérification GSC (balise META, déjà câblée dans les métadonnées) | ❌ | ⭕ pour la vérification |
 | `OWNER_EMAIL` | **Notifications du propriétaire-prestataire (v2.2.0)** : chaque commande (création + paiement capturé), chaque nouvelle conversation prestataire IA, chaque question client au prestataire humain ([URGENT]) — repli automatique sur `SMTP_USER` si absente. L'envoi réel requiert les variables `SMTP_*` du lien magique | ❌ (trace console dev) | ⭕ **recommandée** — sinon repli sur `SMTP_USER` |
+| `VAPID_PUBLIC_KEY` / `VAPID_PRIVATE_KEY` / `VAPID_SUBJECT` | **Web Push (v2.4.0)** : paire de clés VAPID pour l'envoi de notifications navigateur + identité d'émetteur (`mailto:`). La clé PUBLIQUE est exposée volontairement via `/api/push/public-key` (convention Web Push), le secret ne quitte jamais le serveur. **Sans ces clés : tout se dégrade proprement** (notifications locales du service worker uniquement) | ✅ déjà posées | ⭕ **recommandées** (cf. §10) |
 
 > **Mode démo — comportement par défaut :** tant que `PAYPAL_CLIENT_ID` /
 > `PAYPAL_CLIENT_SECRET` ne sont **pas** définis, la plateforme utilise la voie
@@ -224,6 +225,9 @@ bouton *Add* / `?create=true` → environnement **Production** :
 | `PAYPAL_CLIENT_SECRET` | `EGnHDxD_…` | §5 — secret côté serveur uniquement |
 | `PAYPAL_ENV` | `sandbox` puis `live` | §5 — `live` après validation sandbox |
 | `GOOGLE_SITE_VERIFICATION` | code GSC | §6 — méthode balise META |
+| `VAPID_PUBLIC_KEY` | `BMxLnp…` (65 car.) | §10 — Web Push, clé publique (type Plain Text : c'est le rôle d'une clé publique) |
+| `VAPID_PRIVATE_KEY` | secret 43 car. | §10 — **Secret**, ne quitte jamais le serveur |
+| `VAPID_SUBJECT` | `mailto:contact@b2bpro.store` | §10 — identité de l'émetteur (mailto obligatoire) |
 
 1. Après **chaque** ajout/modification : **Redeploy** obligatoire (Deployments →
    menu du dernier déploiement → *Redeploy*) — les variables ne s'injectent que dans
@@ -566,3 +570,45 @@ bun run db:restore           # restauration à l'identique (IDs et slugs préser
 *Runbook établi pour la stack de production Vercel · Neon · Blob · PayPal · GSC. Toute
 évolution de la procédure doit rester cohérente avec `docs/REGRESSION-GUARD.md` et
 être tracée dans `CHANGELOG.md`.*
+
+## §10. Notifications Web Push navigateur (v2.4.0)
+
+La marketplace invite les visiteurs à recevoir des notifications navigateur
+(suivi de commandes, réponses clés) via une invite bienveillante, coordonnée
+avec l'invite d'installation PWA : créneau d'attention unique + fenêtre de
+courtoisie de 60 s, engagement requis (40 s + 3 interactions, ou 3 pages +
+15 s + 2 interactions), refus poli escaladant (48 h → 7 j → 30 j), refus
+navigateur = silence définitif. Côté serveur : Web Push VAPID + table
+`PushSubscription` (créée automatiquement par le garant `ensure-neon-schema.ts`
+au prochain build).
+
+### Configuration (3 variables, ~2 minutes)
+
+1. **Générer la paire de clés** (si non déjà posée en local — `bunx web-push
+   generate-vapid-keys --json`) : conserver `publicKey` et `privateKey`.
+2. **Vercel → Environment Variables → Production** (valeurs brutes, sans
+   guillemets) :
+   - `VAPID_PUBLIC_KEY` (Plain Text — 65 car., commence par `B`) ;
+   - `VAPID_PRIVATE_KEY` (**Secret** — 43 car.) ;
+   - `VAPID_SUBJECT` = `mailto:contact@b2bpro.store`.
+3. **Redeploy** (les variables ne s'injectent que dans les builds futurs).
+
+### Vérifications post-configuration
+
+- `https://b2bpro.store/api/push/public-key` → 200 avec la clé (`{"publicKey":"B…"}`)
+  — avant configuration : `{"publicKey":null}` (dégradation propre, jamais d'erreur).
+- Le service worker sert la version v2 : `https://b2bpro.store/sw.js` → 200.
+- Test d'envoi (propriétaire connecté au panneau admin) :
+  `POST https://b2bpro.store/api/push/test` — envoie à tous les abonnements
+  vivants et purge les endpoints morts (404/410). Sans session admin → 401.
+
+### Remplacer / révoquer une paire VAPID
+
+Un changement de paire invalide silencieusement les abonnements existants (le
+service push vérifie la clé à l'envoi) : les visiteurs réactivent leurs
+notifications au prochain passage par l'invite (le statut local `enabled`
+n'étant pas un verrou d'apparition… si la permission navigateur est toujours
+accordée, l'invite reste silencieuse : vider `localStorage
+[b2bpro-notif-prompt]` côté client ou attendre la désinscription native).
+Les endpoints morts sont purgés automatiquement au premier envoi réel.
+

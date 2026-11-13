@@ -16,8 +16,8 @@
  *     puis notification de confirmation affichée par le service worker.
  *
  * Visuellement, sœur de l'invite d'installation : même carte centrée, fond
- * flouté (l'attention se concentre sur elle), même famille de coins, de la même
- * famille de boutons et de croix. L'animation d'entrée est ici staggered :
+ * flouté (l'attention se concentre sur elle), même famille de coins, de
+ * boutons et de croix. L'animation d'entrée est ici staggered :
  * médaille cloche qui « sonne » en pulsations concentriques, textes puis
  * boutons qui montent l'un après l'autre (spring, ~350 ms) : immersive mais
  * discrète.
@@ -35,6 +35,7 @@ import { toast } from "sonner";
 
 import {
   Dialog,
+  DialogClose,
   DialogDescription,
   DialogOverlay,
   DialogPortal,
@@ -43,8 +44,8 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   acquirePrompt,
+  getPromptHubSnapshot,
   releasePrompt,
-  usePromptHub,
   withinSpacing,
   type PromptHubSnapshot,
 } from "@/lib/prompt-hub";
@@ -99,12 +100,14 @@ function notificationsSupported(): boolean {
 }
 
 /** Décode une clé publique VAPID (base64url) vers le buffer attendu par Push. */
-function urlBase64ToUint8Array(base64: string): Uint8Array {
+function urlBase64ToUint8Array(base64: string): Uint8Array<ArrayBuffer> {
   const padding = "=".repeat((4 - (base64.length % 4)) % 4);
   const padded = base64 + padding;
   const normalized = padded.split("-").join("+").split("_").join("/");
   const raw = window.atob(normalized);
-  const output = new Uint8Array(raw.length);
+  // ArrayBuffer explicite : la clé doit être ArrayBufferView<ArrayBuffer> pour
+  // l'API push (Uint8Array<ArrayBufferLike> est refusé par les types récents).
+  const output = new Uint8Array(new ArrayBuffer(raw.length));
   for (let i = 0; i < raw.length; i++) output[i] = raw.charCodeAt(i);
   return output;
 }
@@ -146,13 +149,10 @@ const pop: Variants = {
 
 export function NotificationPrompt() {
   const [open, setOpen] = useState(false);
-  const [engaged, setEngaged] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [check, setCheck] = useState(0);
-
-  const hub = usePromptHub();
   const pathname = usePathname();
 
+  const pathnameRef = useRef<string | null>(null);
   const timeRef = useRef(0);
   const interactionsRef = useRef(0);
   const pagesRef = useRef(0);
@@ -161,6 +161,7 @@ export function NotificationPrompt() {
   /* Pages vues : l'invite vit dans le layout racine (jamais démontée en
      navigation douce) : chaque pathname franchi est une page de plus. */
   useEffect(() => {
+    pathnameRef.current = pathname;
     pagesRef.current += 1;
   }, [pathname]);
 
@@ -177,34 +178,32 @@ export function NotificationPrompt() {
     };
   }, []);
 
-  /* Temps de présence (onglet visible seulement), engagement, re-évaluation
-     périodique : la fin d'un espacement ou d'un cooldown est ainsi détectée
-     sans attendre le moindre événement utilisateur. */
+  /* Horloge de décision (1 Hz, onglet visible) : présence, engagement puis
+     créneau. Tout l'état réactif vit dans le callback du minuteur — jamais
+     de setState dans le corps de l'effet. La fin d'un cooldown ou d'une
+     fenêtre de courtoisie n'émet aucun événement : seul ce battement la
+     détecte, sans attendre le moindre geste du visiteur. */
   useEffect(() => {
     if (open) return; // l'invite est à l'écran : on cesse d'évaluer
     const id = setInterval(() => {
       if (document.visibilityState === "visible") timeRef.current += 1000;
-      const engagedNow =
-        (timeRef.current >= ENGAGE_TIME_MS && interactionsRef.current >= ENGAGE_INTERACTIONS) ||
-        (pagesRef.current >= FAST_PAGES &&
-          timeRef.current >= FAST_TIME_MS &&
-          interactionsRef.current >= FAST_INTERACTIONS);
-      if (engagedNow && !engagedRef.current) {
-        engagedRef.current = true;
-        setEngaged(true);
+
+      if (!engagedRef.current) {
+        const engagedNow =
+          (timeRef.current >= ENGAGE_TIME_MS && interactionsRef.current >= ENGAGE_INTERACTIONS) ||
+          (pagesRef.current >= FAST_PAGES &&
+            timeRef.current >= FAST_TIME_MS &&
+            interactionsRef.current >= FAST_INTERACTIONS);
+        if (engagedNow) engagedRef.current = true;
+        else return;
       }
-      if (timeRef.current > 0 && timeRef.current % 10_000 === 0) setCheck((c) => c + 1);
+
+      if (!canAppear(getPromptHubSnapshot(), pathnameRef.current)) return;
+      if (!acquirePrompt("notifications")) return;
+      setOpen(true);
     }, 1000);
     return () => clearInterval(id);
   }, [open]);
-
-  /* Décision : toutes les portes ouvertes → on prend le créneau d'attention. */
-  useEffect(() => {
-    if (open || !engaged) return;
-    if (!canAppear(hub, pathname)) return;
-    if (!acquirePrompt("notifications")) return;
-    setOpen(true);
-  }, [open, engaged, hub, pathname, check]);
 
   /* Libération du créneau + courtoisie, quelle que soit la voie de sortie. */
   useEffect(() => {
@@ -304,7 +303,7 @@ export function NotificationPrompt() {
   }, [busy, close]);
 
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange={handleOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogPortal>
         {/* Fond flouté : toute l'attention se concentre sur l'invite. z-[70] :
             même étage que l'invite d'installation, sous les toasts. */}
@@ -342,9 +341,55 @@ export function NotificationPrompt() {
                 <BellRing className="size-8" aria-hidden="true" />
               </div>
             </motion.div>
-            {/* TEXTES_ET_BOUTONS_ICI */}
+            {/* Titre + promesse sobre (3-4 mots chacun : pas de bavardage). */}
+            <div>
+              <DialogTitle className="text-lg leading-none font-semibold tracking-tight">
+                Rester informé ?
+              </DialogTitle>
+              <DialogDescription className="text-muted-foreground mt-2 text-[13px] font-medium">
+                Suivi de vos commandes et réponses clés. Rien d&rsquo;autre.
+              </DialogDescription>
+            </div>
+
+            {/* Boutons : action principale pleine largeur, « Plus tard » discret. */}
+            <div className="grid gap-2.5">
+              <Button
+                type="button"
+                onClick={activate}
+                disabled={busy}
+                autoFocus
+                className="h-11 w-full rounded-xl text-[15px] font-semibold shadow-sm"
+              >
+                {busy ? (
+                  <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+                ) : (
+                  <BellRing className="size-4" aria-hidden="true" />
+                )}
+                {busy ? "Un instant…" : "Activer"}
+              </Button>
+              <DialogClose
+                className={
+                  "text-muted-foreground hover:text-foreground h-9 w-full rounded-lg " +
+                  "text-[13px] font-medium transition-colors focus:outline-hidden " +
+                  "focus-visible:ring-2 focus-visible:ring-ring/60"
+                }
+              >
+                Plus tard
+              </DialogClose>
+            </div>
           </motion.div>
-          {/* CROIX_ICI */}
+          {/* Fermeture : silence escaladant jusqu'à la prochaine visite. */}
+          <DialogClose
+            aria-label="Fermer"
+            className={
+              "ring-offset-background focus:ring-ring absolute top-3.5 right-3.5 grid size-8 " +
+              "place-items-center rounded-full text-muted-foreground transition-colors " +
+              "hover:bg-accent hover:text-foreground focus:ring-2 focus:ring-offset-2 " +
+              "focus:outline-hidden disabled:pointer-events-none"
+            }
+          >
+            <X className="size-4" aria-hidden="true" />
+          </DialogClose>
         </DialogPrimitive.Content>
       </DialogPortal>
     </Dialog>

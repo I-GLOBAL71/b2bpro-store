@@ -269,3 +269,15 @@ model Order {
   createdAt       DateTime  @default(now())
   paidAt          DateTime?
 }
+
+// ─── Abonnements Web Push (notifications navigateur, v2.4.0) ──────────────────
+// Miroir strict du schéma SQLite : un abonnement par endpoint de navigateur.
+model PushSubscription {
+  id        String   @id @default(cuid())
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
