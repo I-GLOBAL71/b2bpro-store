@@ -117,6 +117,63 @@
 
 ---
 
+## [2.4.1] — 2026-11-13 — Route de test Web Push réellement créée + clés VAPID posées + Neon vérifié
+
+> Suite de v2.4.0 : son entrée annonçait « POST /api/push/test (garde
+> ensureAdmin) » et « clés VAPID générées et posées dans .env » — or la route
+> n'existait pas (404) et `.env` ne contenait que DATABASE_URL. Cette version
+> boucle le bout en bout réel, avec les identifiants Neon fournis par le client.
+>
+> [v2.5.1] Cette entrée a été restaurée : un reset environnemental avait fait
+> disparaître le commit d'origine (route non versionnée à cause du motif gitignore
+> nu `test`, .env revenu vierge) — fichiers, clés et correctifs reposés à
+> l'identique, vérification E2E refaite.
+
+### [CORRECTIF] — `POST /api/push/test` : la route documentée, enfin réelle
+- `src/app/api/push/test/route.ts` — notification d'essai (garde `ensureAdmin`,
+  401 sans session) : rapport `{ sent, failed, purged }` après `sendPushToAll`
+  (les endpoints morts 404/410 sont purgés par la même occasion) ; 503 explicite
+  si VAPID absent de l'environnement ; base vide → `{ sent: 0 }` (tout est câblé,
+  personne n'est abonné sur CET environnement).
+- `.gitignore` — le motif nu `test` avalait tout dossier nommé « test », y
+  compris cette route API (elle n'aurait jamais pu être versionnée) ; ancré en
+  `/test` (brouillon racine uniquement) : aucun chemin applicatif légitime n'est
+  plus avalé, aucun fichier suivi n'était couvert par l'ancien motif.
+
+### [ADDITIF] — Clés VAPID générées et posées dans `.env` local
+- Paire P-256 via `bunx web-push generate-vapid-keys --json` + sujet
+  `mailto:contact@b2bpro.store` : `VAPID_PUBLIC_KEY` / `VAPID_PRIVATE_KEY` /
+  `VAPID_SUBJECT` (fichier ignoré par git — les valeurs ne sont jamais
+  versionnées). En production : les poser dans Vercel → Settings →
+  Environment Variables (Production ET Preview) puis **Redeploy** — sans elles,
+  `/api/push/public-key` répond `null` et tout se dégrade proprement vers les
+  notifications locales du service worker.
+- `NEON_DATABASE_URL` posé dans `.env` (chaîne « pooled » du runbook, jamais
+  versionnée) : cible de `db:push:pg` / `db:migrate:neon`, sans jamais toucher au
+  `DATABASE_URL` SQLite local.
+
+### [DONNÉES] — Neon vérifié en synchro ; migration de données ÉCARTÉE à raison
+- `db:push:pg` : schéma Postgres « already in sync », table `PushSubscription`
+  conforme (index unique `endpoint`), prête et vide. `db:migrate:neon`
+  volontairement NON lancé : la base Neon de production est EN AVANCE sur
+  l'instantané local SQLite (commandes et comptes réels plus récents) — le
+  refresh complet (purge + copie) aurait détruit des données vivantes.
+- Aucune donnée de contenu touchée (`bun run guard` : 19 contrôles, 0 échec).
+
+### Vérification
+- E2E sur le serveur dev : abonnement crypto-valide → upsert idempotent (1
+  ligne SQLite, aucun doublon au 2e POST) ; `/api/push/test` sans session :
+  401 ; avec session admin : `{ ok, sent: 0, failed: 0, purged: 1 }` — la
+  signature VAPID est ACCEPTÉE par le service push (endpoint factice déclaré
+  mort → purgé sur-le-champ : c'est le chemin d'assainissement qui est prouvé) ;
+  `unsubscribe` idempotent sur un endpoint déjà disparu.
+- Navigateur réel : page rendue sans erreur console, service worker ACTIF
+  (scope `/`), `/api/push/public-key` sert la clé réelle, `sw.js` 200 — et
+  l'invite d'installation v2.3.0 visible à l'écran (le régisseur `prompt-hub`
+  coordonne toujours les deux invites : jamais ensemble).
+
+---
+
 ## [2.4.0] — 2026-11-14 — Notifications navigateur intelligentes, coordonnées avec l'installation de l'App
 
 > Demande client : fonctionnalité de notification sur navigateur « intelligente
