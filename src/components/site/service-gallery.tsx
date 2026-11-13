@@ -29,7 +29,7 @@ export function ServiceGallery({
         <Image
           key={active}
           src={images[active]}
-          alt={`${alt} — miniature ${active + 1} sur 3`}
+          alt={`${alt}, miniature ${active + 1} sur 3`}
           fill
           priority
           sizes="(max-width: 1024px) 100vw, 60vw"

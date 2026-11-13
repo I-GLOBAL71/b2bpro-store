@@ -480,6 +480,28 @@ NEON_DATABASE_URL="postgresql://…sslmode=require" bun run emojis:clean
 À dérouler après le prochain déploiement une fois, puis à la demande si de
 nouveaux textes en contiennent.
 
+### Hygiène FAQ : zéro tiret cadratin « — » (v2.2.1)
+
+Même logique que les émoticônes : le cadratin « — » est un marqueur typographique
+associé aux textes générés par IA. Or la FAQ est le bloc LE plus citable par les
+moteurs génératifs (format question/réponse autonome, repris tel quel dans
+`llms-full.txt` et le JSON-LD `FAQPage`). Le script `fix:faq-emdash` corrige le
+gabarit fautif constaté (« feu vert — le vendeur » → « feu vert : le vendeur »,
+forme déjà dominante dans le catalogue) de façon chirurgical et idempotent :
+
+```bash
+# Base locale (SQLite) :
+bun run fix:faq-emdash                        # écriture
+bun run scripts/fix-faq-emdash.ts --dry-run   # rapport seul
+
+# Production Neon (même convention que emojis:clean) :
+NEON_DATABASE_URL="postgresql://…sslmode=require" bun run fix:faq-emdash
+```
+
+Contrôle associé : `hygiene-emdash` de `bun run audit:seo` (0 cadratin attendu
+sur chaque fiche, FAQ comprise). Depuis v2.2.2, les gabarits alt des miniatures
+(« {titre}, miniature ») n'émettent plus aucun cadratin dans le HTML non plus.
+
 ### Rappels charte anti-régression applicables à la production
 
 - `bun run guard` **avant ET après** toute évolution (15 contrôles — exit 1 si

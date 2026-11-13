@@ -7,6 +7,24 @@
 
 ---
 
+## [2.2.2] — 2026-11-13 — Zéro cadratin dans tout le HTML crawlable (gabarits alt)
+
+> Complément de la vérification v2.2.1 : après correction des FAQ en base,
+> l'inspection du HTML rendu révélait des « — » résiduels — exclusivement dans
+> les attributs alt des miniatures, hors de portée de l'audit base (qui vérifie
+> le contenu des fiches, pas les gabarits des composants).
+
+### [CORRECTIF] — Gabarits alt des miniatures : « — » → «, »
+- `service-card.tsx` / `service-gallery.tsx` — « {titre} — miniature » devient
+  « {titre}, miniature » : les 113 alt de chaque page de catalogue, plus ceux
+  de la galerie de fiche, n'émettent plus aucun cadratin. Vérifié à 0 sur fiche
+  service, accueil, catalogue et article rendus.
+- Documentation : le runbook (`docs/DEPLOIEMENT-VERCEL.md`) gagne la section
+  « Hygiène FAQ : zéro tiret cadratin » avec la commande de production
+  `NEON_DATABASE_URL="postgresql://…sslmode=require" bun run fix:faq-emdash`.
+
+---
+
 ## [2.2.1] — 2026-11-13 — Audit élite SEO/GEO/AIO intégralité verte (1799 contrôles)
 
 > Demande client : « vérifications SEO, AIO, GEO afin de nous rassurer

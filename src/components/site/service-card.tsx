@@ -43,7 +43,7 @@ export function ServiceCard({
       <div className="relative aspect-[16/10] overflow-hidden">
         <Image
           src={thumbSrc}
-          alt={`${service.title} — miniature du service`}
+          alt={`${service.title}, miniature du service`}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className="object-cover transition-transform duration-500 group-hover:scale-[1.045]"
