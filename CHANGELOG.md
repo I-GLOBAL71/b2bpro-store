@@ -7,6 +7,51 @@
 
 ---
 
+## [2.2.1] — 2026-11-13 — Audit élite SEO/GEO/AIO intégralité verte (1799 contrôles)
+
+> Demande client : « vérifications SEO, AIO, GEO afin de nous rassurer
+> véritablement que nos services et articles sont de véritables bêtes de
+> référencement, citées dans les réponses IA avec liens directs, optimisées
+> pour ventes incitatives ».
+
+### [DONNÉES] — Hygiène typographique : 13 cadratins « — » retirés des FAQ
+- L'audit élite (`bun run audit:seo`) révélait 14 échecs : 13 fiches portaient
+  un cadratin (typographie mécanique « trop IA ») dans UNE même réponse FAQ de
+  séquestration, là où 46 occurrences de référence écrivent « feu vert : le
+  vendeur… » (deux-points typographique français). Le 14e échec
+  (`llms-full.txt : 13 cadratins`) provenait des mêmes FAQ (génération directe).
+- `scripts/fix-faq-emdash.ts` (`bun run fix:faq-emdash`) : correctif chirurgical
+  et idempotent, mode local Prisma + mode production Neon via
+  `NEON_DATABASE_URL` (même convention que `emojis:clean`). Production :
+  `NEON_DATABASE_URL="postgresql://…sslmode=require" bun run fix:faq-emdash`.
+
+### Vérifications livrées (toutes vertes)
+- `bun run audit:seo` : **113 services · 12 articles · 1799 contrôles · 0 échec**
+  (45 avertissements seo-density non bloquants — choix éditorial anti
+  keyword-stuffing assumé). Rapport versionné
+  `docs/audits/audit-seo-geo-aio-2026-11-13.md`.
+- `bun run guard` : 19 contrôles, aucun échec (standards rédactionnels SGA™,
+  anti-cannibalisation, activateurs GEO, maillage blog).
+- Rendu réel vérifié par fiche : title optimisé (mot-clé + prix + marque),
+  canonical absolu, Open Graph complet, `robots: index, follow`, 5 blocs
+  JSON-LD valides (Service + Offer + AggregateRating, Product, FAQPage,
+  BreadcrumbList) portant chacun l'URL canonique directe de la fiche.
+- Cohérence AIO prouvée : le bloc « Réponse rapide » du HTML et la ligne
+  « RÉPONSE DIRECTE » de llms-full.txt sont identiques mot pour mot (une seule
+  voix — condition de citation par les moteurs de réponse IA).
+- Protocoles crawlables : `robots.txt` autorise explicitement 18 crawleurs IA
+  (GPTBot, ClaudeBot, PerplexityBot, OAI-SearchBot, Google-Extended…) ;
+  `llms.txt` (113 URLs directes) ; `llms-full.txt` (113 RÉPONSE DIRECTE au
+  format canonique, 526 Ko) ; `sitemap.xml` (176 URLs, 100 % apex).
+- Blog : Article JSON-LD, canonical, 3 à 6 liens absolus par article vers les
+  fiches services (maillage incitatif d'achat).
+- Incitation à l'achat : CTA « Commander maintenant » en ancre de tunnel,
+  chiffres clés visibles (dès X € · délai · note/avis · ventes), paiement
+  séquestré expliqué partout, prompt du chat IA strictement fidèle à la fiche
+  et clos sur une invitation naturelle à commander.
+
+---
+
 ## [2.2.0] — 2026-11-13 — Prestataire humain, notifications propriétaire, tarifs pilotables
 
 > Demandes client : (1) discuter avec un vrai interlocuteur (le propriétaire,

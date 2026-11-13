@@ -27,7 +27,8 @@
     "add:service": "bun run scripts/add-service.ts",
     "gen:gsc-urls": "bun run scripts/gen-gsc-urls.ts",
     "gen:favicon": "bun run scripts/gen-favicon.ts",
-    "emojis:clean": "bun run scripts/remove-emojis.ts"
+    "emojis:clean": "bun run scripts/remove-emojis.ts",
+    "fix:faq-emdash": "bun run scripts/fix-faq-emdash.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
