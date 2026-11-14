@@ -1,0 +1,320 @@
+================================================================================
+b2bpro.store — SOUMISSION QUOTIDIENNE GSC : LISTE JOURNALIÈRE DES URLs À INDEXER
+================================================================================
+
+Généré le 2026-11-14 depuis la base locale (miroir de la production).
+176 URLs indexables au total : 4 pages clés, 14 catégories, 113 services, 33 vendeurs, 12 articles de blog.
+Chaque URL figure individuellement dans sitemap.xml — la rotation ci-dessous
+couvre exactement le même périmètre, une seule fois par URL.
+
+Régénérer à chaque nouvelle page publiée (nouveau service, nouvel article) :
+  bun run scripts/gen-gsc-daily.ts        (alias : bun run gen:gsc-daily)
+
+MODE D'EMPLOI — chaque matin, environ 10 minutes
+  1. Ouvrir Google Search Console, propriété https://b2bpro.store
+  2. Barre « Inspection d'URL » (en haut) -> coller une URL du lot du jour
+  3. « Tester la diffusion » -> « Demander l'indexation » -> URL suivante
+  4. Quota GSC : environ 10 demandes par jour et par propriété — chaque lot
+     « JOUR N » ci-dessous contient exactement 10 URLs (le dernier lot : le reste).
+  Astuce anti-gaspillage : si l'inspection répond « l'URL est sur Google », ne pas
+  re-demander l'indexation (sauf contenu significativement mis à jour) — passer
+  à l'URL suivante pour garder le quota pour les pages réellement nouvelles.
+
+PLAN DE LA ROTATION — 18 jours (~10 URLs/jour)
+  Jour 1        : 4 pages clés (accueil, catalogue, blog, support)
+  Jours 1 à 2   : 14 pages catégories (les plus fournies d'abord)
+  Jours 2 à 14  : 113 fiches service (best-sellers d'abord, ventes décroissantes)
+  Jours 14 à 17 : 33 profils vendeurs (« top » et mieux notés d'abord)
+  Jours 17 à 18 : 12 articles de blog (les plus récents d'abord)
+Une fois le jour 18 soumis, tout le site a été proposé à l'indexation.
+
+================================================================================
+ROTATION — 18 lots (~10 URLs/jour, le dernier : le reste) — soumettre le lot « JOUR N » puis passer au lendemain
+================================================================================
+
+JOUR 1 — pages clés 1-4 + catégories 1-6 (10 URLs)
+
+https://b2bpro.store
+https://b2bpro.store/services
+https://b2bpro.store/blog
+https://b2bpro.store/support
+https://b2bpro.store/categories/b2b-sales-intelligence
+https://b2bpro.store/categories/ecommerce-pricing
+https://b2bpro.store/categories/ia-rag-data
+https://b2bpro.store/categories/immobilier-local
+https://b2bpro.store/categories/seo-geo-medias
+https://b2bpro.store/categories/social-media-influence
+
+JOUR 2 — catégories 7-14 + services 1-2 (10 URLs)
+
+https://b2bpro.store/categories/grand-public
+https://b2bpro.store/categories/grandes-entreprises
+https://b2bpro.store/categories/hotellerie-tourisme
+https://b2bpro.store/categories/formation-sante
+https://b2bpro.store/categories/saas-tech
+https://b2bpro.store/categories/logistique-franchises
+https://b2bpro.store/categories/evenementiel-marches-publics
+https://b2bpro.store/categories/rh-recrutement
+https://b2bpro.store/services/je-vais-formater-votre-catalogue-produits-pour-migrer-vers-shopify
+https://b2bpro.store/services/je-vais-comparer-les-plans-tarifaires-et-options-de-20-logiciels-saas
+
+JOUR 3 — services 3-12 (10 URLs)
+
+https://b2bpro.store/services/je-vais-trouver-des-opportunites-de-liens-casses-pour-votre-seo
+https://b2bpro.store/services/je-vais-analyser-les-50-videos-youtube-les-plus-vues-de-votre-niche
+https://b2bpro.store/services/je-vais-identifier-les-aides-et-subventions-publiques-pour-votre-proje
+https://b2bpro.store/services/je-vais-surveiller-les-nominations-de-nouveaux-dirigeants-dans-votre-c
+https://b2bpro.store/services/je-vais-lister-les-fonds-investissement-et-business-angels-actifs
+https://b2bpro.store/services/je-vais-constituer-votre-fichier-de-pharmacies-et-magasins-bio-region
+https://b2bpro.store/services/je-vais-auditer-si-votre-marque-est-recommandee-par-les-moteurs-ia
+https://b2bpro.store/services/je-vais-traduire-et-analyser-les-avis-touristes-etrangers-du-secteur
+https://b2bpro.store/services/je-vais-lister-les-startups-et-pme-ayant-leve-des-fonds-ce-mois-ci
+https://b2bpro.store/services/je-vais-auditer-le-referencement-et-les-balises-des-produits-rivaux
+
+JOUR 4 — services 13-22 (10 URLs)
+
+https://b2bpro.store/services/je-vais-repertorier-les-conciergeries-et-hebergements-de-votre-zone
+https://b2bpro.store/services/je-vais-compiler-les-guides-des-tailles-et-fiches-techniques-marche
+https://b2bpro.store/services/je-vais-compiler-les-etudes-scientifiques-sur-votre-sujet-pubmed
+https://b2bpro.store/services/je-vais-mettre-en-place-votre-veille-sur-les-rappels-de-produits-flux
+https://b2bpro.store/services/je-vais-analyser-les-cartes-et-prix-des-livreurs-concurrents-locaux
+https://b2bpro.store/services/je-vais-comparer-le-prix-de-vos-materiaux-chez-4-grandes-enseignes
+https://b2bpro.store/services/je-vais-cartographier-les-tarifs-et-delais-de-livraison-concurrents
+https://b2bpro.store/services/je-vais-cartographier-l-organigramme-public-des-equipes-concurrentes
+https://b2bpro.store/services/je-vais-comparer-30-franchises-de-votre-secteur-apport-et-rentabilite
+https://b2bpro.store/services/je-vais-repertorier-les-locations-sans-frais-d-agence-de-votre-ville
+
+JOUR 5 — services 23-32 (10 URLs)
+
+https://b2bpro.store/services/je-vais-analyser-les-posts-linkedin-les-plus-engageants-du-secteur
+https://b2bpro.store/services/je-vais-identifier-avec-quels-influenceurs-vos-rivaux-collaborent
+https://b2bpro.store/services/je-vais-cartographier-les-bornes-electriques-et-zones-blanches-region
+https://b2bpro.store/services/je-vais-trouver-le-meilleur-tarif-reel-pour-votre-prochain-sejour
+https://b2bpro.store/services/je-vais-extraire-la-liste-complete-des-exposants-d-un-salon-pro
+https://b2bpro.store/services/je-vais-compiler-les-salaires-proposes-par-vos-rivaux-sur-vos-metiers
+https://b2bpro.store/services/je-vais-repertorier-les-commerces-de-votre-ville-sans-site-web-actif
+https://b2bpro.store/services/je-vais-detecter-les-annonces-immobilieres-en-baisse-dans-votre-zone
+https://b2bpro.store/services/je-vais-repertorier-les-marques-vendant-sur-amazon-dans-votre-niche
+https://b2bpro.store/services/je-vais-constituer-votre-liste-de-medias-et-journalistes-specialises
+
+JOUR 6 — services 33-42 (10 URLs)
+
+https://b2bpro.store/services/je-vais-vous-fournir-le-fichier-des-mairies-ciblees-selon-population
+https://b2bpro.store/services/je-vais-calculer-la-vraie-cote-de-vos-objets-de-collection-et-montres
+https://b2bpro.store/services/je-vais-extraire-les-critiques-de-vos-concurrents-saas-sur-g2-capterra
+https://b2bpro.store/services/je-vais-convertir-n-importe-quel-site-en-base-de-connaissances-ia
+https://b2bpro.store/services/je-vais-nettoyer-dedoublonner-et-formater-votre-base-de-contacts-clien
+https://b2bpro.store/services/je-vais-repertorier-les-domaines-de-mariage-et-wedding-planners-zone
+https://b2bpro.store/services/je-vais-detecter-les-produits-en-rupture-de-stock-chez-vos-concurrents
+https://b2bpro.store/services/je-vais-auditer-les-offres-promotionnelles-et-codes-promo-rivaux
+https://b2bpro.store/services/je-vais-lister-des-micro-influenceurs-avec-vrai-taux-d-engagement
+https://b2bpro.store/services/je-vais-lister-50-podcasts-de-votre-thematique-qui-invitent-des-pros
+
+JOUR 7 — services 43-52 (10 URLs)
+
+https://b2bpro.store/services/je-vais-constituer-votre-annuaire-de-professionnels-de-sante-par-ville
+https://b2bpro.store/services/je-vais-identifier-50-fabricants-europeens-pour-vos-achats-industriels
+https://b2bpro.store/services/je-vais-surveiller-les-variations-de-la-buy-box-sur-vos-produits-amazo
+https://b2bpro.store/services/je-vais-detecter-les-annonces-immobilieres-sous-le-prix-du-marche
+https://b2bpro.store/services/je-vais-repertorier-les-appels-d-offres-europeens-ouverts-du-secteur
+https://b2bpro.store/services/je-vais-repertorier-les-organismes-de-formation-avec-statuts-qualiopi
+https://b2bpro.store/services/je-vais-repertorier-les-permis-de-construire-et-declarations-travaux
+https://b2bpro.store/services/je-vais-transformer-votre-contenu-en-jeu-de-donnees-questions-reponses
+https://b2bpro.store/services/je-vais-lister-les-entreprises-ayant-remporte-des-marches-publics
+https://b2bpro.store/services/je-vais-lister-les-commerces-locaux-ayant-une-note-inferieure-a-3-8
+
+JOUR 8 — services 53-62 (10 URLs)
+
+https://b2bpro.store/services/je-vais-numeriser-votre-menu-ou-catalogue-pour-shopify-et-uber-eats
+https://b2bpro.store/services/je-vais-denicher-30-marques-etrangeres-a-succes-non-vendues-en-france
+https://b2bpro.store/services/je-vais-surveiller-les-nouvelles-marques-et-brevets-de-vos-concurrents
+https://b2bpro.store/services/je-vais-analyser-la-rentabilite-brute-de-100-biens-dans-votre-ville
+https://b2bpro.store/services/je-vais-creer-le-bilan-des-ecoles-et-commodites-de-votre-quartier
+https://b2bpro.store/services/je-vais-configurer-votre-veille-sur-mesure-des-marches-publics-boamp
+https://b2bpro.store/services/je-vais-denicher-100-offres-d-emploi-ou-alternance-pour-votre-profil
+https://b2bpro.store/services/je-vais-convertir-les-videos-youtube-de-votre-niche-en-fiches-ecrites
+https://b2bpro.store/services/je-vais-realiser-l-audit-complet-de-votre-visibilite-web-vs-3-rivaux
+https://b2bpro.store/services/je-vais-extraire-300-vraies-questions-posees-sur-google-dans-sa-niche
+
+JOUR 9 — services 63-72 (10 URLs)
+
+https://b2bpro.store/services/je-vais-identifier-les-entreprises-qui-recrutent-dans-votre-secteur
+https://b2bpro.store/services/je-vais-lister-tous-les-grands-evenements-de-votre-ville-sur-6-mois
+https://b2bpro.store/services/je-vais-vous-fournir-un-fichier-de-prospection-b2b-frais-et-verifie
+https://b2bpro.store/services/je-vais-vous-fournir-la-liste-complete-des-exposants-d-un-salon-pro
+https://b2bpro.store/services/je-vais-surveiller-les-nouvelles-fonctionnalites-de-vos-concurrents
+https://b2bpro.store/services/je-vais-creer-votre-veille-personnalisee-des-appels-d-offres-publics
+https://b2bpro.store/services/je-vais-surveiller-en-direct-les-prix-et-stocks-de-vos-concurrents
+https://b2bpro.store/services/je-vais-vous-fournir-la-liste-officielle-des-artisans-certifies-rge
+https://b2bpro.store/services/je-vais-lister-les-sites-web-utilisant-une-technologie-ou-cms-precis
+https://b2bpro.store/services/je-vais-convertir-n-importe-quel-site-web-en-markdown-propre-pour-ia
+
+JOUR 10 — services 73-82 (10 URLs)
+
+https://b2bpro.store/services/je-vais-repertorier-les-formats-et-sons-viraux-de-la-semaine-en-video
+https://b2bpro.store/services/je-vais-auditer-le-top-20-de-vos-concurrents-sur-google-maps-local
+https://b2bpro.store/services/je-vais-lister-les-agences-immobilieres-independantes-de-votre-zone
+https://b2bpro.store/services/je-vais-repertorier-les-nouveaux-outils-ia-et-saas-lances-ce-mois-ci
+https://b2bpro.store/services/je-vais-lister-les-associations-sportives-de-votre-departement-rna
+https://b2bpro.store/services/je-vais-recenser-toutes-les-discussions-sur-votre-marque-sur-forums
+https://b2bpro.store/services/je-vais-verifier-les-mentions-legales-et-conformite-rgpd-de-vos-sites
+https://b2bpro.store/services/je-vais-creer-votre-glossaire-metier-exhaustif-pour-alimenter-une-ia
+https://b2bpro.store/services/je-vais-cartographier-les-producteurs-locaux-autour-de-votre-resto
+https://b2bpro.store/services/je-vais-repertorier-les-avantages-employeurs-phares-de-votre-secteur
+
+JOUR 11 — services 83-92 (10 URLs)
+
+https://b2bpro.store/services/je-vais-repertorier-les-ventes-aux-encheres-de-materiel-pro-et-stocks
+https://b2bpro.store/services/je-vais-auditer-les-attributs-manquants-des-fiches-google-rivales
+https://b2bpro.store/services/je-vais-auditer-la-sante-financiere-publique-de-vos-fournisseurs
+https://b2bpro.store/services/je-vais-auditer-tous-les-articles-de-votre-blog-liens-morts-et-dates
+https://b2bpro.store/services/je-vais-identifier-les-nouvelles-entreprises-creees-dans-votre-secteur
+https://b2bpro.store/services/je-vais-analyser-les-extensions-les-plus-installees-de-votre-niche
+https://b2bpro.store/services/je-vais-identifier-les-entreprises-avec-postes-vacants-depuis-60j
+https://b2bpro.store/services/je-vais-compiler-les-engagements-rse-et-indicateurs-esg-concurrents
+https://b2bpro.store/services/je-vais-comparer-les-clauses-cles-des-conditions-de-vos-concurrents
+https://b2bpro.store/services/je-vais-condenser-et-extraire-les-donnees-cles-de-vos-gros-pdf
+
+JOUR 12 — services 93-102 (10 URLs)
+
+https://b2bpro.store/services/je-vais-reperer-les-entreprises-qui-ouvrent-une-agence-dans-votre-vill
+https://b2bpro.store/services/je-vais-compiler-des-profils-instagram-avec-email-pro-public-en-bio
+https://b2bpro.store/services/je-vais-controler-les-prix-pratiques-par-les-revendeurs-de-votre-marqu
+https://b2bpro.store/services/je-vais-analyser-les-avis-1-etoile-des-applications-mobiles-rivales
+https://b2bpro.store/services/je-vais-extraire-tous-les-sujets-d-articles-publies-par-vos-rivaux
+https://b2bpro.store/services/je-vais-trouver-les-createurs-tiktok-emergents-dans-votre-thematique
+https://b2bpro.store/services/je-vais-analyser-les-publicites-facebook-et-tiktok-de-vos-concurrents
+https://b2bpro.store/services/je-vais-comparer-automatiquement-les-tarifs-de-vos-3-grossistes-cles
+https://b2bpro.store/services/je-vais-extraire-tous-les-tableaux-financiers-de-vos-pdf-vers-excel
+https://b2bpro.store/services/je-vais-analyser-les-avis-employes-et-salaires-de-5-rivaux-glassdoor
+
+JOUR 13 — services 103-112 (10 URLs)
+
+https://b2bpro.store/services/je-vais-analyser-les-tarifs-et-avis-des-formations-cpf-concurrentes
+https://b2bpro.store/services/je-vais-extraire-les-questions-clients-sur-les-fiches-de-vos-rivaux
+https://b2bpro.store/services/je-vais-espionner-les-avis-negatifs-de-vos-concurrents-pour-les-battre
+https://b2bpro.store/services/je-vais-relever-les-tarifs-nuitees-et-remplissage-de-vos-20-voisins
+https://b2bpro.store/services/je-vais-lister-les-comites-d-entreprise-et-clubs-seniors-du-secteur
+https://b2bpro.store/services/je-vais-identifier-les-cours-en-ligne-les-plus-vendus-de-votre-niche
+https://b2bpro.store/services/je-vais-repertorier-les-nouveautes-et-best-sellers-d-un-site-rival
+https://b2bpro.store/services/je-vais-comparer-les-tarifs-et-disponibilites-des-ehpad-de-votre-zone
+https://b2bpro.store/services/je-vais-analyser-100-annonces-auto-pour-denicher-la-meilleure-affaire
+https://b2bpro.store/services/je-vais-cartographier-les-freelances-experts-de-votre-specialite-tech
+
+JOUR 14 — services 113 + vendeurs 1-9 (10 URLs)
+
+https://b2bpro.store/services/je-vais-rediger-votre-article-de-blog-ultra-optimise-seo-geo-et-aio
+https://b2bpro.store/vendeurs/camille-fontaine
+https://b2bpro.store/vendeurs/thomas-fabre
+https://b2bpro.store/vendeurs/gabriel-tremblay
+https://b2bpro.store/vendeurs/aissatou-diallo
+https://b2bpro.store/vendeurs/sophie-lambert
+https://b2bpro.store/vendeurs/yao-kouassi
+https://b2bpro.store/vendeurs/julien-marchand
+https://b2bpro.store/vendeurs/elise-bonnard
+https://b2bpro.store/vendeurs/marie-eve-gagnon
+
+JOUR 15 — vendeurs 10-19 (10 URLs)
+
+https://b2bpro.store/vendeurs/amine-benali
+https://b2bpro.store/vendeurs/amelie-fortin
+https://b2bpro.store/vendeurs/xavier-bouchard
+https://b2bpro.store/vendeurs/maxime-roussel
+https://b2bpro.store/vendeurs/serge-mbarga
+https://b2bpro.store/vendeurs/chloe-vasseur
+https://b2bpro.store/vendeurs/grace-adjoua
+https://b2bpro.store/vendeurs/fatou-ndiaye
+https://b2bpro.store/vendeurs/nicolas-moreau
+https://b2bpro.store/vendeurs/florence-lavoie
+
+JOUR 16 — vendeurs 20-29 (10 URLs)
+
+https://b2bpro.store/vendeurs/laura-mercier
+https://b2bpro.store/vendeurs/leila-balti
+https://b2bpro.store/vendeurs/nadia-elfassi
+https://b2bpro.store/vendeurs/raphael-guillon
+https://b2bpro.store/vendeurs/awa-cisse
+https://b2bpro.store/vendeurs/ines-chevalier
+https://b2bpro.store/vendeurs/antoine-delaunay
+https://b2bpro.store/vendeurs/lucas-beaulieu
+https://b2bpro.store/vendeurs/patrick-mulamba
+https://b2bpro.store/vendeurs/mariam-conde
+
+JOUR 17 — vendeurs 30-33 + articles de blog 1-6 (10 URLs)
+
+https://b2bpro.store/vendeurs/ibrahim-sawadogo
+https://b2bpro.store/vendeurs/salif-kone
+https://b2bpro.store/vendeurs/didier-mpoku
+https://b2bpro.store/vendeurs/jean-bosco-habimana
+https://b2bpro.store/blog/avis-negatifs-concurrents-marketing
+https://b2bpro.store/blog/veille-concurrentielle-efficace
+https://b2bpro.store/blog/seo-local-google-maps
+https://b2bpro.store/blog/micro-influenceurs-engagement
+https://b2bpro.store/blog/seo-geo-aio-guide-complet
+https://b2bpro.store/blog/freelance-b2b-francophone
+
+JOUR 18 — articles de blog 7-12 (6 URLs)
+
+https://b2bpro.store/blog/immobilier-opportunites-decotees
+https://b2bpro.store/blog/prospection-b2b-donnees-fraiches
+https://b2bpro.store/blog/generation-leads-b2b
+https://b2bpro.store/blog/llms-txt-protocole-ia
+https://b2bpro.store/blog/base-connaissances-ia-chatbot
+https://b2bpro.store/blog/marches-publics-boamp
+
+================================================================================
+APRÈS LA ROTATION — ROUTINE FIXE QUOTIDIENNE (3 URLs, environ 3 minutes)
+================================================================================
+
+Rotation terminée : ne plus re-demander les pages déjà indexées. Chaque jour,
+soumettre uniquement la routine fixe ci-dessous + les nouveautés (section
+suivante) le jour même de leur publication.
+
+https://b2bpro.store
+https://b2bpro.store/services
+https://b2bpro.store/blog
+
+================================================================================
+NOUVEAUTÉS — À SOUMETTRE DÈS LE JOUR DE LEUR PUBLICATION
+================================================================================
+
+Après chaque nouveau service ou nouvel article : régénérer ce fichier, repérer
+la nouvelle URL en tête de cette section et la soumettre immédiatement (une
+page fraîche est la mieux servie par « Demander l'indexation » : Google ne la
+connaît pas encore). Dernières pages publiées à ce jour :
+
+2026-11-09  https://b2bpro.store/services/je-vais-rediger-votre-article-de-blog-ultra-optimise-seo-geo-et-aio
+2026-11-07  https://b2bpro.store/services/je-vais-realiser-l-audit-complet-de-votre-visibilite-web-vs-3-rivaux
+2026-11-07  https://b2bpro.store/services/je-vais-repertorier-les-ventes-aux-encheres-de-materiel-pro-et-stocks
+2026-11-07  https://b2bpro.store/services/je-vais-denicher-30-marques-etrangeres-a-succes-non-vendues-en-france
+2026-11-07  https://b2bpro.store/services/je-vais-mettre-en-place-votre-veille-sur-les-rappels-de-produits-flux
+2026-11-01  https://b2bpro.store/blog/avis-negatifs-concurrents-marketing
+2026-10-26  https://b2bpro.store/blog/veille-concurrentielle-efficace
+2026-10-20  https://b2bpro.store/blog/seo-local-google-maps
+
+================================================================================
+TABLEAU DE SUIVI — cocher [x] chaque lot terminé (copie de travail du fichier)
+================================================================================
+
+[ ] JOUR 01 — pages clés 1-4 + catégories 1-6
+[ ] JOUR 02 — catégories 7-14 + services 1-2
+[ ] JOUR 03 — services 3-12
+[ ] JOUR 04 — services 13-22
+[ ] JOUR 05 — services 23-32
+[ ] JOUR 06 — services 33-42
+[ ] JOUR 07 — services 43-52
+[ ] JOUR 08 — services 53-62
+[ ] JOUR 09 — services 63-72
+[ ] JOUR 10 — services 73-82
+[ ] JOUR 11 — services 83-92
+[ ] JOUR 12 — services 93-102
+[ ] JOUR 13 — services 103-112
+[ ] JOUR 14 — services 113 + vendeurs 1-9
+[ ] JOUR 15 — vendeurs 10-19
+[ ] JOUR 16 — vendeurs 20-29
+[ ] JOUR 17 — vendeurs 30-33 + articles de blog 1-6
+[ ] JOUR 18 — articles de blog 7-12
+
+---
+Document généré depuis la base locale le 2026-11-14 — le garder à jour via
+bun run scripts/gen-gsc-daily.ts (procédure complète : docs/GSC-SOUMISSION-SERVICES.md).

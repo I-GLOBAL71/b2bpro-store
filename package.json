@@ -26,6 +26,7 @@
     "db:restore": "bun run scripts/db-restore.ts",
     "add:service": "bun run scripts/add-service.ts",
     "gen:gsc-urls": "bun run scripts/gen-gsc-urls.ts",
+    "gen:gsc-daily": "bun run scripts/gen-gsc-daily.ts",
     "gen:favicon": "bun run scripts/gen-favicon.ts",
     "emojis:clean": "bun run scripts/remove-emojis.ts",
     "fix:faq-emdash": "bun run scripts/fix-faq-emdash.ts"

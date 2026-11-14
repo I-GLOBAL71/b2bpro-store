@@ -7,6 +7,33 @@
 
 ---
 
+## [2.6.1] — 2026-11-14 — Liste journalière de soumission GSC (rotation 10 URLs/jour)
+
+> Demande client : « fournir dans un fichier txt la liste journalière des liens à
+> soumettre à GSC pour l'indexation rapide de nos différentes pages ». Livré comme
+> artefact GÉNÉRÉ depuis la base (toujours en phase avec le catalogue) plutôt que
+> texte figé, sur le pattern du générateur GSC existant.
+
+### [ADDITIF] — Générateur de la liste journalière de soumission
+- `scripts/gen-gsc-daily.ts` (nouveau, alias npm `gen:gsc-daily`) — lit la base
+  locale en readonly (même socle que `gen-gsc-urls.ts`) et produit
+  `docs/GSC-SOUMISSION-QUOTIDIENNE.txt` : les 176 URLs indexables (périmètre
+  EXACT de `sitemap.xml`, chaque URL une seule fois) découpées en 18 lots de
+  10 URLs — calés sur le quota GSC d'« Inspection d'URL → Demander l'indexation »
+  (~10 demandes/jour/propriété). Priorité : pages clés → 14 catégories (les plus
+  fournies d'abord) → 113 fiches service (best-sellers d'abord, ventes
+  décroissantes) → 33 vendeurs (« top » et mieux notés d'abord) → 12 articles de
+  blog (les plus récents d'abord).
+- Le txt embarque le mode d'emploi pas à pas (inspection d'URL + astuce
+  anti-gaspillage de quota « l'URL est sur Google »), le récapitulatif du plan
+  de rotation, les lots JOUR 1 à 18 (URLs nues, prêtes à coller), la routine fixe
+  post-rotation (accueil, catalogue, blog), la section NOUVEAUTÉS (5 derniers
+  services + 3 derniers articles, datés — à soumettre dès leur publication) et
+  un tableau de suivi `[ ]` à cocher au fil des jours.
+- Aucune modification du site, du sitemap ni du garde-fou : pur outillage docs.
+
+---
+
 ## [2.6.0] — 2026-11-14 — Création de service directement depuis le panneau admin
 
 > Demande client : permettre à l'admin de créer un service complet depuis le panneau,
