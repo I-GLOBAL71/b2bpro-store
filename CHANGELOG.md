@@ -7,6 +7,76 @@
 
 ---
 
+## [2.6.0] — 2026-11-14 — Création de service directement depuis le panneau admin
+
+> Demande client : permettre à l'admin de créer un service complet depuis le panneau,
+> via une fonctionnalité robuste de bout en bout. Principe directeur : une fiche créée
+> par le panneau doit PASSER LA GARDE D'INTÉGRITÉ par construction — le standard
+> rédactionnel SGA™ est répliqué champ par champ côté client (panneau de conformité en
+> direct), côté Zod (contrats) ET côté serveur (validateur miroir du garde-fou) : une
+> fiche non conforme est refusée AVANT insertion, jamais de 503 d'intégrité après coup.
+
+### [ADDITIF] — Contrats de création (schéma Zod + bornes éditoriales)
+- `src/lib/contracts.ts` — `SERVICE_EDITORIAL_RULES` (miroir EXACT des contrôles
+  services-content-standards / services-primary-wordcount / services-primary-unique /
+  services-faq-first-comment / services-invariants du garde-fou) +
+  `adminServiceCreateSchema` (titre 40-75, résumé 100-230, description ≥ 1000 avec
+  H2/puces/answer-first, primaire 3-5 mots ancré dans le titre, secondaires/traîne/IA ≥ 3,
+  FAQ ≥ 4 avec 1re question « comment… », points forts ≥ 4, livrables ≥ 3, étapes ≥ 3,
+  options 0-8, note bornes 4,2-5,0, prix plancher 20 € pour protéger la promesse
+  « dès 20 € ») + types `AdminServiceCreateInput` / `AdminServiceCreateResponse` /
+  `AdminSellerOption` + action journal `SERVICE_CREATE`.
+
+### [ADDITIF] — Logique serveur : validation miroir, slug/code canoniques, miniatures
+- `src/lib/admin-service-create.ts` (nouveau) — funnel complet :
+  pôle canonique (resolvePole) → vendeur (404 si inconnu) → validation éditoriale
+  (MIROIR INTÉGRAL du garde-fou : mêmes regex/bornes) → unicité du primaire (409
+  anti-cannibalisation avec la fiche porteuse citée) → slug auto (slugify du seed +
+  suffixes anti-collision) → code `#NNN` (suite numérique du catalogue) → insertion
+  TRANSACTIONNELLE service + options → miniatures par le GÉNÉRATEUR OFFICIEL
+  (data/gen/thumbs.ts : 3 SVG « Éclat / Données / Épuré ») : écrites dans
+  public/thumbs/ quand le FS est inscriptible (dev/self-hosted) ; sinon (Vercel
+  read-only) data URIs dans Service.thumbUrls — fiche illustrée immédiatement, et
+  contenus remis dans la réponse pour versionnement (runbook déploiement) →
+  journal d'audit.
+- `POST /api/admin/services` (extension additive de la route existante) — garde
+  ensureAdmin (401), Zod (400), erreurs métier (400/404/409), succès 201.
+- `GET /api/admin/sellers` (nouvelle route) — options du sélecteur (slug, nom, pays,
+  niveau, note) enrichies des pôles de spécialité canoniques : le formulaire met les
+  spécialistes du pôle choisi en tête.
+
+### [ADDITIF] — Formulaire complet à conformité en direct (`/admin/services`)
+- `src/components/admin/service-create-dialog.tsx` (nouveau) — dialog 10 sections
+  guidées (identité, tarif, résumé générable, description SGA™ avec compteurs H2/
+  puces/answer-first, mots-clés avec compteur de mots du primaire et ancrage titre,
+  points forts/livrables, méthode par étapes, FAQ avec statut « comment… » et tailles
+  de réponses, options additionnelles, preuve sociale initiale honnête) + PANNEAU DE
+  CONFORMITÉ collant qui réplique les 17 contrôles du garde-fou en badges temps réel
+  (soumission désactivée tant que non conforme — l'unicité du primaire reste serveur)
+  + écran de récapitulatif après création (code, URL publique, 3 miniatures rendues,
+  téléchargement des SVG en prod read-only, « créer un autre »).
+- `src/app/admin/(panel)/services/page.tsx` — bouton « Créer un service » +
+  intégration du dialog (rafraîchit la table après création). Aucune modification des
+  fonctionnalités existantes (recherche, filtres, éditeur de tarif, rotation, switches).
+
+### [ADDITIF] — Vérifications (E2E réel en navigateur)
+- Parcours complet exécuté : 7 taps → login → /admin/services → formulaire rempli
+  (fiche SGA™ complète conforme) → conformité verte → création → récapitulatif
+  (#102, 3 miniatures) → fiche publique 200 + intégrée au sitemap → garde
+  d'intégrité ok:true (114 services, 342/342 miniatures) → journal d'audit
+  `service.create` → ROBUSTESSE : fiche non conforme rejetée 400 (« Titre : 40
+  caractères minimum »), primaire déjà porté rejeté 409 (anti-cannibalisation) →
+  service de test supprimé (base revenue à 113/339, garde verte), snapshot posé.
+- Note runbook : après création EN PRODUCTION (FS read-only), télécharger les 3 SVG
+  depuis le récapitulatif, les committer dans public/thumbs/ et re-déployer (les
+  data URIs assurent l'affichage entre-temps).
+
+### [DONNÉES] — Snapshot post-vérification
+- `db/snapshots/snapshot-2026-11-14T11-35-17.json` — état nominal après validation
+  (113 services ; le service de test E2E a été créé PUIS supprimé proprement).
+
+---
+
 ## [2.5.0] — 2026-11-13 — Marque, accès admin discret, support routé par question, cycle de vie des commandes
 
 > Demande client : logo conçu dans l'interface (fini le « B » simple), accès au panneau

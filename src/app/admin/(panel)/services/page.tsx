@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { Package, Search, ChevronLeft, ChevronRight, Star, ExternalLink, Recycle, Pencil, Check, X } from "lucide-react";
+import { Package, Search, ChevronLeft, ChevronRight, Star, ExternalLink, Recycle, Pencil, Check, X, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import { POLE_LABELS } from "@/lib/site";
 import { apiGet, apiSend } from "@/components/admin/api";
 import { AdminPageHeader } from "@/components/admin/fields";
+import { ServiceCreateDialog } from "@/components/admin/service-create-dialog";
 
 interface AdminServiceRow {
   id: string;
@@ -158,6 +159,7 @@ export default function AdminServicesPage() {
   const [featured, setFeatured] = useState("all");
   const [page, setPage] = useState(1);
   const [toggling, setToggling] = useState<string | null>(null);
+  const [createOpen, setCreateOpen] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -214,6 +216,22 @@ export default function AdminServicesPage() {
         title="Services"
         description="Catalogue complet — recherche, filtres, tarifs (modifiables en place) et pilotage de la mise en avant éditoriale."
         icon={<Package className="h-6 w-6 text-primary" aria-hidden="true" />}
+      />
+
+      {/* Création (v2.6.0) : bouton + dialog complet de fiche SGA™ conforme à la garde */}
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+        <p className="text-[12.5px] text-muted-foreground">
+          Un service créé depuis le panneau est refusé s&apos;il ne respecterait pas le standard éditorial — la garde d&apos;intégrité reste verte.
+        </p>
+        <Button onClick={() => setCreateOpen(true)} className="gap-1.5">
+          <Plus className="h-4 w-4" aria-hidden="true" />
+          Créer un service
+        </Button>
+      </div>
+      <ServiceCreateDialog
+        open={createOpen}
+        onOpenChange={setCreateOpen}
+        onCreated={() => void load()}
       />
 
       {/* Filtres */}

@@ -1,13 +1,46 @@
 import { NextRequest, NextResponse } from "next/server";
-import { API_ROUTES } from "@/lib/contracts";
+import { API_ROUTES, adminServiceCreateSchema } from "@/lib/contracts";
 import { ensureAdmin } from "@/lib/admin-auth";
 import { db } from "@/lib/db";
 import { getSiteSettings } from "@/lib/settings";
+import { ServiceCreateError, createServiceFromAdmin } from "@/lib/admin-service-create";
 
 /**
  * GET /api/admin/services — liste paginée pour la gestion des services.
  * Filtres : q (recherche), pole, featured ("true"/"false"), page.
  */
+
+/**
+ * POST /api/admin/services — création d'un service complet depuis le panneau
+ * (v2.6.0). Corps : adminServiceCreateSchema (contracts.ts). La validation
+ * serveur réplique le standard SGA™ du garde-fou : une fiche non conforme est
+ * refusée AVANT insertion (jamais de 503 d'intégrité après coup).
+ * Réponse : AdminServiceCreateResponse (slug/code/url + état des miniatures).
+ */
+export async function POST(req: NextRequest) {
+  const denied = await ensureAdmin();
+  if (denied) return denied;
+
+  try {
+    const parsed = adminServiceCreateSchema.safeParse(await req.json().catch(() => null));
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: parsed.error.issues[0]?.message ?? "Requête invalide" },
+        { status: 400 }
+      );
+    }
+
+    const result = await createServiceFromAdmin(parsed.data);
+    return NextResponse.json(result, { status: 201 });
+  } catch (e) {
+    if (e instanceof ServiceCreateError) {
+      return NextResponse.json({ error: e.message }, { status: e.status });
+    }
+    console.error(`${API_ROUTES.adminServices} POST`, e);
+    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
+  }
+}
+
 export async function GET(req: NextRequest) {
   const denied = await ensureAdmin();
   if (denied) return denied;

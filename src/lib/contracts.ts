@@ -422,6 +422,8 @@ export const ADMIN_LOG_ACTIONS = {
   LOGOUT: "logout",
   CONFIG_UPDATE: "config.update",
   SERVICE_UPDATE: "service.update",
+  // ── v2.6.0 : création d'un service depuis le panneau admin ──
+  SERVICE_CREATE: "service.create",
   // ── v2.2.0 : conversation humaine client ↔ propriétaire ──
   SUPPORT_MESSAGE: "support.message",
   SUPPORT_REPLY: "support.reply",
@@ -890,6 +892,172 @@ export function orderActionUrl(reference: string, action: "revision" | "validate
 /** URL d'action admin sur une commande (route dynamique par référence). */
 export function adminOrderActionUrl(reference: string, action: "deliver"): string {
   return `/api/admin/orders/${encodeURIComponent(reference)}/${action}`;
+}
+
+// ═══ v2.6.0 — CRÉATION DE SERVICE DEPUIS LE PANNEAU ADMIN ═════════════════
+
+/**
+ * Bornes éditoriales d'une fiche SGA™ — miroir EXACT des contrôles du garde-fou
+ * (src/lib/guard.ts, checks services-content-standards / services-primary-* /
+ * services-faq-first-comment / services-invariants) : une fiche créée via le
+ * panneau est REFUSÉE si elle ne passerait pas la garde — jamais d'insertion
+ * qui transformerait le check intégrité en 503.
+ */
+export const SERVICE_EDITORIAL_RULES = {
+  /** Longueur du titre commercial (H1/title). */
+  TITLE_MIN: 40,
+  TITLE_MAX: 75,
+  /** Longueur du résumé carte (shortDesc). */
+  SHORTDESC_MIN: 100,
+  SHORTDESC_MAX: 230,
+  /** Description complète : caractères minimum. */
+  DESC_MIN: 1000,
+  /** Description complète : sections H2 minimum (^##). */
+  H2_MIN: 3,
+  /** Mots-clés secondaires / longue traîne minimum. */
+  KEYWORDS_ARRAY_MIN: 3,
+  /** Requêtes IA (aiQueries) minimum. */
+  AI_QUERIES_MIN: 3,
+  /** FAQ : entrées minimum, dont citables (réponse ≥ 80 car., question en « ? »). */
+  FAQ_MIN: 4,
+  FAQ_ANSWER_MIN: 80,
+  /** Points forts minimum. */
+  FEATURES_MIN: 4,
+  /** Livrables minimum. */
+  DELIVERABLES_MIN: 3,
+  /** Étapes de méthode minimum. */
+  PROCESS_MIN: 3,
+  /** Primaire : mots significatifs (> 2 lettres) — garde anti-cannibalisation. */
+  PRIMARY_WORDS_MIN: 3,
+  PRIMARY_WORDS_MAX: 5,
+  /** Prix plancher d'un NOUVEAU service : protège la promesse « dès 20 € » du catalogue. */
+  CREATE_PRICE_MIN: 20,
+  /** Délai de livraison borné (jours ouvrés). */
+  DELIVERY_MAX: 30,
+  /** Options additionnelles maximum à la création. */
+  OPTIONS_MAX: 8,
+} as const;
+
+/** Corps de POST /api/admin/services — création d'un service complet. */
+export const adminServiceCreateSchema = z.object({
+  /** Titre commercial (pattern du catalogue : « Je vais … », 40-75 car.). */
+  title: z
+    .string()
+    .trim()
+    .min(SERVICE_EDITORIAL_RULES.TITLE_MIN, `Titre : ${SERVICE_EDITORIAL_RULES.TITLE_MIN} caractères minimum`)
+    .max(SERVICE_EDITORIAL_RULES.TITLE_MAX, `Titre : ${SERVICE_EDITORIAL_RULES.TITLE_MAX} caractères maximum`),
+  /** Nom long métier (affiché dans les métadonnées de la fiche). */
+  name: z.string().trim().min(10, "Nom long : 10 caractères minimum").max(120, "Nom long : 120 caractères maximum"),
+  /** Catégorie fine (ex. « Prospection > Fichier entreprises »). */
+  category: z.string().trim().min(3, "Catégorie : 3 caractères minimum").max(80, "Catégorie : 80 caractères maximum"),
+  /** Slug du pôle canonique (validé serveur via data/gen/poles.ts). */
+  poleSlug: z.string().trim().min(2).max(60),
+  /** Slug du vendeur porteur (résolu serveur — 404 si inconnu). */
+  sellerSlug: z.string().trim().min(2).max(80),
+  /** Tarif de l'offre de base (EUR) — plancher 20 € (promesse du catalogue). */
+  basePrice: z
+    .number()
+    .min(SERVICE_EDITORIAL_RULES.CREATE_PRICE_MIN, "Prix plancher d'un nouveau service : 20 €")
+    .max(100000, "Prix plafond : 100 000 €"),
+  /** Délai de livraison en jours ouvrés. */
+  deliveryDays: z
+    .number()
+    .int()
+    .min(BUSINESS_RULES.MIN_DELIVERY_DAYS)
+    .max(SERVICE_EDITORIAL_RULES.DELIVERY_MAX, "Délai plafond : 30 jours"),
+  /** Résumé carte (100-230 car., prix + délai + note). */
+  shortDesc: z
+    .string()
+    .trim()
+    .min(SERVICE_EDITORIAL_RULES.SHORTDESC_MIN, `Résumé : ${SERVICE_EDITORIAL_RULES.SHORTDESC_MIN} caractères minimum`)
+    .max(SERVICE_EDITORIAL_RULES.SHORTDESC_MAX, `Résumé : ${SERVICE_EDITORIAL_RULES.SHORTDESC_MAX} caractères maximum`),
+  /** Description complète markdown SGA™ (validée serveur : ≥ 1000 car., ≥ 3 H2,
+   *  listes à puces, primaire en tête answer-first). */
+  description: z.string().min(SERVICE_EDITORIAL_RULES.DESC_MIN, `Description : ${SERVICE_EDITORIAL_RULES.DESC_MIN} caractères minimum`),
+  /** Mots-clés sourcés (primaire 3-5 mots ancré dans le titre, unique en base). */
+  keywords: z.object({
+    primary: z.string().trim().min(8, "Primaire : 8 caractères minimum").max(80, "Primaire : 80 caractères maximum"),
+    secondary: z.array(z.string().trim().min(3).max(120)).min(SERVICE_EDITORIAL_RULES.KEYWORDS_ARRAY_MIN, `Secondaires : ${SERVICE_EDITORIAL_RULES.KEYWORDS_ARRAY_MIN} minimum`),
+    longTail: z.array(z.string().trim().min(3).max(120)).min(SERVICE_EDITORIAL_RULES.KEYWORDS_ARRAY_MIN, `Longue traîne : ${SERVICE_EDITORIAL_RULES.KEYWORDS_ARRAY_MIN} minimum`),
+    aiQueries: z.array(z.string().trim().min(5).max(160)).min(SERVICE_EDITORIAL_RULES.AI_QUERIES_MIN, `Requêtes IA : ${SERVICE_EDITORIAL_RULES.AI_QUERIES_MIN} minimum`),
+  }),
+  /** FAQ (≥ 4, 1re question « comment… », réponses ≥ 80 car.). */
+  faq: z
+    .array(
+      z.object({
+        q: z.string().trim().min(10, "Question trop courte").max(200, "Question : 200 caractères maximum").refine((q) => q.endsWith("?"), "La question doit finir par « ? »"),
+        a: z.string().trim().min(SERVICE_EDITORIAL_RULES.FAQ_ANSWER_MIN, `Réponse : ${SERVICE_EDITORIAL_RULES.FAQ_ANSWER_MIN} caractères minimum`).max(1500, "Réponse : 1500 caractères maximum"),
+      })
+    )
+    .min(SERVICE_EDITORIAL_RULES.FAQ_MIN, `FAQ : ${SERVICE_EDITORIAL_RULES.FAQ_MIN} questions minimum`),
+  /** Points forts (≥ 4). */
+  features: z.array(z.string().trim().min(10).max(200)).min(SERVICE_EDITORIAL_RULES.FEATURES_MIN, `Points forts : ${SERVICE_EDITORIAL_RULES.FEATURES_MIN} minimum`),
+  /** Livrables (≥ 3). */
+  deliverables: z.array(z.string().trim().min(15).max(400)).min(SERVICE_EDITORIAL_RULES.DELIVERABLES_MIN, `Livrables : ${SERVICE_EDITORIAL_RULES.DELIVERABLES_MIN} minimum`),
+  /** Méthode (≥ 3 étapes — le rang est posé serveur). */
+  process: z
+    .array(
+      z.object({
+        title: z.string().trim().min(3, "Titre d'étape trop court").max(120, "Titre d'étape : 120 caractères maximum"),
+        detail: z.string().trim().min(30, "Détail d'étape : 30 caractères minimum").max(600, "Détail d'étape : 600 caractères maximum"),
+      })
+    )
+    .min(SERVICE_EDITORIAL_RULES.PROCESS_MIN, `Étapes : ${SERVICE_EDITORIAL_RULES.PROCESS_MIN} minimum`),
+  /** Options additionnelles de lancement (0-8, upsell ComeUp). */
+  options: z
+    .array(
+      z.object({
+        name: z.string().trim().min(3, "Nom d'option trop court").max(80),
+        description: z.string().trim().min(20, "Description d'option : 20 caractères minimum").max(600),
+        priceExtra: z.number().min(0).max(100000),
+        daysExtra: z.number().int().min(0).max(30),
+        monthly: z.boolean().default(false),
+      })
+    )
+    .max(SERVICE_EDITORIAL_RULES.OPTIONS_MAX, `Options : ${SERVICE_EDITORIAL_RULES.OPTIONS_MAX} maximum`)
+    .default([]),
+  /** Note initiale affichée — bornes garde-fou 4,2-5,0. */
+  rating: z
+    .number()
+    .min(BUSINESS_RULES.MIN_RATING, `Note minimum : ${BUSINESS_RULES.MIN_RATING}`)
+    .max(BUSINESS_RULES.MAX_RATING, `Note maximum : ${BUSINESS_RULES.MAX_RATING}`),
+  /** Preuve sociale initiale (honnête par défaut : aucun avis, aucune vente). */
+  reviewsCount: z.number().int().min(0).max(100000).default(0),
+  salesCount: z.number().int().min(0).max(1000000).default(0),
+  views: z.number().int().min(0).max(10000000).default(0),
+});
+
+export type AdminServiceCreateInput = z.infer<typeof adminServiceCreateSchema>;
+
+/** Réponse de succès de POST /api/admin/services. */
+export interface AdminServiceCreateResponse {
+  ok: true;
+  service: {
+    id: string;
+    slug: string;
+    code: string;
+    title: string;
+    url: string;
+    poleSlug: string;
+    optionsCount: number;
+  };
+  /** Miniatures : écrites sur disque (dev/self-hosted) ou encodées (prod
+   *  read-only : à committer dans public/thumbs/ puis re-déployer). */
+  thumbs: {
+    written: boolean;
+    files: string[];
+    dataUrls?: string[];
+  };
+}
+
+/** Ligne vendeur du sélecteur de création (GET /api/admin/sellers). */
+export interface AdminSellerOption {
+  slug: string;
+  name: string;
+  countryLabel: string;
+  level: string;
+  rating: number;
+  specialtyPoles: string[];
 }
 
 /** Ligne « Commandes » de /api/admin/orders (page /admin/commandes). */
