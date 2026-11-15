@@ -7,6 +7,51 @@
 
 ---
 
+## [2.7.1] — 2026-11-15 — Synchronisation Neon incrémentale + rapport GSC de réindexation
+
+> Demande client : « effectue dans cet environnement la tâche de synchronisation
+> de la base et fournis-nous les URLs modifiées pour lesquelles nous allons
+> redemander l'indexation. » Première exécution : 27 lignes de contenu poussées
+> (le delta v2.7.0 vivait uniquement en base locale), rapport livré dans
+> `docs/GSC-REINDEXATION.txt` — 27 URLs priorité 1 en 3 lots calés sur le quota
+> GSC (~10 demandes/jour/propriété).
+
+### [ADDITIF] — `scripts/sync-neon.ts` (alias `db:sync:neon`) : upsert du contenu local → Neon
+- Pourquoi un nouveau script : la production vit désormais (8 commandes réelles,
+  1 conversation support, 1 abonnement push, 1 compte Google) — le runbook
+  `db:migrate:neon` (purge intégrale + recopie) DÉTRUIRAIT ces données. La
+  synchronisation courante devient un **upsert incrémental du contenu seul**
+  (Seller, Service, ServiceOption, Review, BlogPost, KnowledgeItem, SiteConfig),
+  tables clients jamais lues pour écriture.
+- Fiabilité : diff par hash normalisé (booléens 0/1, dates en epoch ms, colonnes
+  communes triées — zéro faux positif vérifié champ par champ) ; snapshot de
+  sécurité pre-sync versionné (`db/snapshots/neon-pre-sync-*.json`, 1,7 Mo) ;
+  upsert du delta en une transaction (chunks multi-VALUES, ON CONFLICT (PK) DO
+  UPDATE, dédoublonnage des slugs) ; **re-lecture post-sync avec re-hash intégral
+  — chaque ligne locale doit exister en prod à l'identique** (code sortie 1 sinon) ;
+  `--dry-run` (diff sans écriture), `--no-backup`, `--url=`/NEON_DATABASE_URL
+  (channel_binding neutralisé pour les drivers node, TLS verify-full explicite).
+- Exécution du jour : 27 lignes poussées — **12/12 articles de blog** (maillage
+  interne réparé v2.7.0 : les liens cassés `/services/<slug court>` remplacés par
+  les slugs réels + retargeting complet des 4 articles porteurs : titres,
+  résumés, sections, FAQ), **14 fiches service** (13 FAQs consolidées + 1
+  note/nombre d'avis) et **1 groupe de réglages** (« support »). Vérification
+  post-sync : « contenu local intégralement reflété en production ». Les
+  commandes/conversations/comptes réels : intacts (aucune ligne purgée).
+
+### [DONNÉES] — `docs/GSC-REINDEXATION.txt` : les URLs à réindexer, prêtes à soumettre
+- Généré automatiquement après chaque synchronisation : priorité 1 = les 27 pages
+  au contenu modifié (accueil, 12 articles, 14 fiches) en 3 lots de 10 URLs ;
+  priorité 2 = les 25 listings impactés (blog, catalogue, 12 catégories,
+  12 vendeurs) à soumettre si quota restant ; traçabilité champ par champ
+  (« ce qui a changé »), mode d'emploi GSC, note sitemap (découverte naturelle
+  en parallèle), tableau de suivi [ ].
+- NEON_DATABASE_URL consigné dans `.env` (non versionné) pour les prochaines
+  exécutions ; avertissement apposé : ne plus jamais `db:migrate:neon` sur la
+  base vivante.
+
+---
+
 ## [2.7.0] — 2026-11-15 — Optimisation SEO guidée par les premiers rapports GSC
 
 > Demande client : « voici les premiers rapports de GSC, peux-tu t'en servir pour

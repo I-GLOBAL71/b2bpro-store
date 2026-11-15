@@ -14,6 +14,7 @@
     "db:generate:pg": "prisma generate --schema prisma/schema.postgres.prisma",
     "db:push:pg": "bun run scripts/push-neon-schema.ts",
     "db:migrate:neon": "bun run scripts/migrate-to-neon.ts",
+    "db:sync:neon": "bun run scripts/sync-neon.ts",
     "thumbs:blob": "bun run scripts/thumbs-to-blob.ts",
     "guard": "bun run scripts/check-integrity.ts",
     "audit:content": "bun run scripts/audit-content.ts",

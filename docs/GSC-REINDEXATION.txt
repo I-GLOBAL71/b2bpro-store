@@ -1,0 +1,226 @@
+================================================================================
+b2bpro.store — RÉINDEXATION GSC : URLs MODIFIÉES PAR LA DERNIÈRE SYNCHRONISATION
+================================================================================
+
+Généré le 2026-11-15 par scripts/sync-neon.ts juste après la synchronisation du contenu
+local vers la base de production (Neon PostgreSQL) — upsert incrémental, données
+clients de la production (commandes, conversations, comptes) intactes.
+
+27 ligne(s) de contenu poussée(s) → 27 page(s) au contenu modifié
+en production + 25 page(s) de listing impactée(s). Google a indexé les
+ANCIENNES versions de ces pages : redemander l'indexation accélère la mise à jour.
+
+MODE D'EMPLOI — ~10 minutes/jour, quota GSC ~10 demandes/jour/propriété
+  1. Ouvrir Google Search Console, propriété https://b2bpro.store
+  2. Barre « Inspection d'URL » -> coller une URL du lot du jour
+  3. « Tester la diffusion » -> « Demander l'indexation » -> URL suivante
+  Astuce : si l'inspection répond « l'URL est sur Google », la page est déjà indexée —
+  demander QUAND MÊME l'indexation ici : le contenu a significativement changé
+  (c'est exactement le cas prévu par Google). Passer seulement une fois le quota
+  du jour épuisé (reprendre au lot suivant le lendemain).
+
+================================================================================
+LOT 1 — PRIORITÉ 1 : pages au contenu modifié (10 URLs)
+================================================================================
+
+https://b2bpro.store/
+https://b2bpro.store/blog/avis-negatifs-concurrents-marketing
+https://b2bpro.store/blog/base-connaissances-ia-chatbot
+https://b2bpro.store/blog/freelance-b2b-francophone
+https://b2bpro.store/blog/generation-leads-b2b
+https://b2bpro.store/blog/immobilier-opportunites-decotees
+https://b2bpro.store/blog/llms-txt-protocole-ia
+https://b2bpro.store/blog/marches-publics-boamp
+https://b2bpro.store/blog/micro-influenceurs-engagement
+https://b2bpro.store/blog/prospection-b2b-donnees-fraiches
+
+================================================================================
+LOT 2 — PRIORITÉ 1 : pages au contenu modifié (10 URLs)
+================================================================================
+
+https://b2bpro.store/blog/seo-geo-aio-guide-complet
+https://b2bpro.store/blog/seo-local-google-maps
+https://b2bpro.store/blog/veille-concurrentielle-efficace
+https://b2bpro.store/services/je-vais-analyser-les-posts-linkedin-les-plus-engageants-du-secteur
+https://b2bpro.store/services/je-vais-auditer-les-attributs-manquants-des-fiches-google-rivales
+https://b2bpro.store/services/je-vais-compiler-les-etudes-scientifiques-sur-votre-sujet-pubmed
+https://b2bpro.store/services/je-vais-compiler-les-salaires-proposes-par-vos-rivaux-sur-vos-metiers
+https://b2bpro.store/services/je-vais-convertir-n-importe-quel-site-en-base-de-connaissances-ia
+https://b2bpro.store/services/je-vais-espionner-les-avis-negatifs-de-vos-concurrents-pour-les-battre
+https://b2bpro.store/services/je-vais-extraire-la-liste-complete-des-exposants-d-un-salon-pro
+
+================================================================================
+LOT 3 — PRIORITÉ 1 : pages au contenu modifié (7 URLs)
+================================================================================
+
+https://b2bpro.store/services/je-vais-lister-les-entreprises-ayant-remporte-des-marches-publics
+https://b2bpro.store/services/je-vais-lister-les-fonds-investissement-et-business-angels-actifs
+https://b2bpro.store/services/je-vais-repertorier-les-appels-d-offres-europeens-ouverts-du-secteur
+https://b2bpro.store/services/je-vais-repertorier-les-formats-et-sons-viraux-de-la-semaine-en-video
+https://b2bpro.store/services/je-vais-repertorier-les-nouveautes-et-best-sellers-d-un-site-rival
+https://b2bpro.store/services/je-vais-repertorier-les-ventes-aux-encheres-de-materiel-pro-et-stocks
+https://b2bpro.store/services/je-vais-vous-fournir-un-fichier-de-prospection-b2b-frais-et-verifie
+
+================================================================================
+PRIORITÉ 2 — LISTINGS IMPACTÉS (25 URLs, si quota restant)
+================================================================================
+
+Google recrawle souvent ces pages de liste — les soumettre seulement s'il reste du
+quota après les lots de priorité 1.
+
+https://b2bpro.store/blog
+https://b2bpro.store/services
+https://b2bpro.store/categories/ia-rag-data
+https://b2bpro.store/categories/b2b-sales-intelligence
+https://b2bpro.store/categories/evenementiel-marches-publics
+https://b2bpro.store/categories/ecommerce-pricing
+https://b2bpro.store/categories/immobilier-local
+https://b2bpro.store/categories/social-media-influence
+https://b2bpro.store/categories/rh-recrutement
+https://b2bpro.store/categories/grandes-entreprises
+https://b2bpro.store/categories/saas-tech
+https://b2bpro.store/categories/formation-sante
+https://b2bpro.store/categories/logistique-franchises
+https://b2bpro.store/vendeurs/sophie-lambert
+https://b2bpro.store/vendeurs/julien-marchand
+https://b2bpro.store/vendeurs/laura-mercier
+https://b2bpro.store/vendeurs/aissatou-diallo
+https://b2bpro.store/vendeurs/leila-balti
+https://b2bpro.store/vendeurs/thomas-fabre
+https://b2bpro.store/vendeurs/florence-lavoie
+https://b2bpro.store/vendeurs/mariam-conde
+https://b2bpro.store/vendeurs/nadia-elfassi
+https://b2bpro.store/vendeurs/patrick-mulamba
+https://b2bpro.store/vendeurs/didier-mpoku
+https://b2bpro.store/vendeurs/grace-adjoua
+
+================================================================================
+CE QUI A CHANGÉ, PAGE PAR PAGE (traçabilité de la synchronisation)
+================================================================================
+
+  /
+      → réglages du site (groupe « support » — date de mise à jour, réglages (JSON))
+  /blog/avis-negatifs-concurrents-marketing
+      → contenu de l'article
+  /blog/base-connaissances-ia-chatbot
+      → contenu de l'article
+  /blog/freelance-b2b-francophone
+      → contenu de l'article
+  /blog/generation-leads-b2b
+      → contenu de l'article
+  /blog/immobilier-opportunites-decotees
+      → contenu de l'article
+  /blog/llms-txt-protocole-ia
+      → contenu de l'article
+  /blog/marches-publics-boamp
+      → contenu de l'article
+  /blog/micro-influenceurs-engagement
+      → contenu de l'article
+  /blog/prospection-b2b-donnees-fraiches
+      → contenu de l'article
+  /blog/seo-geo-aio-guide-complet
+      → contenu de l'article
+  /blog/seo-local-google-maps
+      → contenu de l'article, résumé, titre
+  /blog/veille-concurrentielle-efficace
+      → contenu de l'article, résumé, titre
+  /services/je-vais-analyser-les-posts-linkedin-les-plus-engageants-du-secteur
+      → FAQ
+  /services/je-vais-auditer-les-attributs-manquants-des-fiches-google-rivales
+      → FAQ
+  /services/je-vais-compiler-les-etudes-scientifiques-sur-votre-sujet-pubmed
+      → FAQ
+  /services/je-vais-compiler-les-salaires-proposes-par-vos-rivaux-sur-vos-metiers
+      → FAQ
+  /services/je-vais-convertir-n-importe-quel-site-en-base-de-connaissances-ia
+      → note, nombre d'avis
+  /services/je-vais-espionner-les-avis-negatifs-de-vos-concurrents-pour-les-battre
+      → FAQ
+  /services/je-vais-extraire-la-liste-complete-des-exposants-d-un-salon-pro
+      → FAQ
+  /services/je-vais-lister-les-entreprises-ayant-remporte-des-marches-publics
+      → FAQ
+  /services/je-vais-lister-les-fonds-investissement-et-business-angels-actifs
+      → FAQ
+  /services/je-vais-repertorier-les-appels-d-offres-europeens-ouverts-du-secteur
+      → FAQ
+  /services/je-vais-repertorier-les-formats-et-sons-viraux-de-la-semaine-en-video
+      → FAQ
+  /services/je-vais-repertorier-les-nouveautes-et-best-sellers-d-un-site-rival
+      → FAQ
+  /services/je-vais-repertorier-les-ventes-aux-encheres-de-materiel-pro-et-stocks
+      → FAQ
+  /services/je-vais-vous-fournir-un-fichier-de-prospection-b2b-frais-et-verifie
+      → FAQ
+  /blog (listing)
+      → articles modifiés — la liste du blog change (extraits)
+  /services (listing)
+      → fiches service modifiées — le catalogue (cartes) change
+  /categories/ia-rag-data (listing)
+      → fiches du pôle modifiées — les cartes de la catégorie changent
+  /categories/b2b-sales-intelligence (listing)
+      → fiches du pôle modifiées — les cartes de la catégorie changent
+  /categories/evenementiel-marches-publics (listing)
+      → fiches du pôle modifiées — les cartes de la catégorie changent
+  /categories/ecommerce-pricing (listing)
+      → fiches du pôle modifiées — les cartes de la catégorie changent
+  /categories/immobilier-local (listing)
+      → fiches du pôle modifiées — les cartes de la catégorie changent
+  /categories/social-media-influence (listing)
+      → fiches du pôle modifiées — les cartes de la catégorie changent
+  /categories/rh-recrutement (listing)
+      → fiches du pôle modifiées — les cartes de la catégorie changent
+  /categories/grandes-entreprises (listing)
+      → fiches du pôle modifiées — les cartes de la catégorie changent
+  /categories/saas-tech (listing)
+      → fiches du pôle modifiées — les cartes de la catégorie changent
+  /categories/formation-sante (listing)
+      → fiches du pôle modifiées — les cartes de la catégorie changent
+  /categories/logistique-franchises (listing)
+      → fiches du pôle modifiées — les cartes de la catégorie changent
+  /vendeurs/sophie-lambert (listing)
+      → services de ce vendeur modifiés — ses cartes changent
+  /vendeurs/julien-marchand (listing)
+      → services de ce vendeur modifiés — ses cartes changent
+  /vendeurs/laura-mercier (listing)
+      → services de ce vendeur modifiés — ses cartes changent
+  /vendeurs/aissatou-diallo (listing)
+      → services de ce vendeur modifiés — ses cartes changent
+  /vendeurs/leila-balti (listing)
+      → services de ce vendeur modifiés — ses cartes changent
+  /vendeurs/thomas-fabre (listing)
+      → services de ce vendeur modifiés — ses cartes changent
+  /vendeurs/florence-lavoie (listing)
+      → services de ce vendeur modifiés — ses cartes changent
+  /vendeurs/mariam-conde (listing)
+      → services de ce vendeur modifiés — ses cartes changent
+  /vendeurs/nadia-elfassi (listing)
+      → services de ce vendeur modifiés — ses cartes changent
+  /vendeurs/patrick-mulamba (listing)
+      → services de ce vendeur modifiés — ses cartes changent
+  /vendeurs/didier-mpoku (listing)
+      → services de ce vendeur modifiés — ses cartes changent
+  /vendeurs/grace-adjoua (listing)
+      → services de ce vendeur modifiés — ses cartes changent
+
+================================================================================
+SITEMAP ET DÉCOUVERTE NATURELLE
+================================================================================
+
+sitemap.xml est généré dynamiquement depuis la base de production : les URLs
+ci-dessus y figurent déjà dans leur nouvelle version — Google les redécouvrira
+aussi naturellement ; la demande manuelle accélère la mise à jour de l'index.
+
+================================================================================
+TABLEAU DE SUIVI — cocher [x] chaque lot terminé (copie de travail)
+================================================================================
+
+[ ] LOT 01 — priorité 1, 10 URLs
+[ ] LOT 02 — priorité 1, 10 URLs
+[ ] LOT 03 — priorité 1, 7 URLs
+[ ] LISTINGS — priorité 2, 25 URLs (si quota restant)
+
+---
+Document généré par scripts/sync-neon.ts le 2026-11-15 — régénéré à chaque
+synchronisation : NEON_DATABASE_URL="…" bun run db:sync:neon (procédure GSC
+complète : docs/GSC-SOUMISSION-SERVICES.md et docs/GSC-SOUMISSION-QUOTIDIENNE.txt).
