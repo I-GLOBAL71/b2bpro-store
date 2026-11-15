@@ -7,6 +7,65 @@
 
 ---
 
+## [2.7.0] — 2026-11-15 — Optimisation SEO guidée par les premiers rapports GSC
+
+> Demande client : « voici les premiers rapports de GSC, peux-tu t'en servir pour
+> optimiser nos pages et services afin de les remonter à la première page de
+> recherche et en première position ? » Analyse des 6 captures (86 impressions,
+> 0 clics, 3 mois) → deux chantiers livrés le jour même, audit complet dans
+> `docs/audits/gsc-optimisation-2026-11-15.md` (lecture GSC, actions, plan
+> page 1/position 1 et indicateurs hebdomadaires).
+
+### [CORRECTIF] — Maillage interne du blog intégralement réparé (43/43 liens cassés)
+- Découverte de l'audit GSC : **100 % des liens absolus `/services/<slug>` du
+  blog pointaient vers des slugs courts inexistants** (`veille-boamp`,
+  `artisans-rge`, `audit-visibilite-ia`, `fichier-prospection-b2b`,
+  `people-also-ask`, `micro-influenceurs`…) — 43 occurrences sur 43 en 404
+  (les audits comptaient les liens sans valider les cibles). Le maillage
+  éditorial blog → fiches service n'existait donc pas.
+- `scripts/gsc-optimisation-2026-11-15.ts` — mapping sémantique ancre par
+  ancre (19 slugs courts → 19 slugs réels), chaque cible validée en base
+  AVANT écriture, remplacement idempotent, scan final automatique : 0 lien
+  cassé. La fiche artisans RGE (pos. 11, la seule fiche avec impressions)
+  reçoit enfin le jus des articles immobilier + SEO local.
+
+### [DONNÉES] — Retargeting GSC des 4 articles porteurs d'impressions
+- **veille-concurrentielle-efficace** (31 impr, pos. 76,1 — famille
+  « logiciel de veille concurrentielle » 13 + « logiciel de veille
+  commerciale » 6 + veilles tarifaires) : titre/excerpt remaniés « Logiciel de
+  veille concurrentielle : comparatif, prix et méthode » (64 car., title tag
+  entier) ; H2 « Quel logiciel de veille concurrentielle choisir ? » (4
+  familles d'outils + tableau comparatif budgets : alertes, tableurs,
+  plateformes e-commerce, expert humain) ; FAQ « meilleur logiciel » + « combien
+  coûte une veille tarifaire pour la distribution » ; première phrase portant
+  « logiciel » dès l'attaque.
+- **seo-local-google-maps** (21 impr, pos. 66,7 — famille « local map pack »/
+  « local pack seo », anglicismes réels des requêtes) : titre « SEO local :
+  dominer le local pack (map pack) de Google Maps » (59 car.) ; H2 « Local
+  pack, map pack, 3-pack : le vocabulaire du SEO local » ; FAQ « suivre vos
+  positions dans le local pack pour un rapport SEO client » (geo-grid,
+  requête 4 impr) ; synonymes posés dès la première phrase de réponse.
+- **seo-geo-aio-guide-complet** (8 impr, pos. 45,8 — questions choix d'outil à
+  pos. 10-11) : H2 « Quelle solution de GEO choisir ? » dont les H3 reprennent
+  MOT POUR MOT les questions GSC (équipe déjà équipée d'un outil SEO,
+  plateforme combinant SEO et GEO, GEO multilingue, comparaison GetMint/Surfer
+  SEO/Meteoria) + FAQ « comment choisir une solution de GEO ».
+- **generation-leads-b2b** (10 impr, pos. 88,9 — « génération de leads b2b »
+  9 impr + « strategie lead generation b2b » pos. 10) : paragraphe
+  réponse-first en tête + FAQ définition et priorisation partant de zéro.
+- Tous les nouveaux contenus citent des prix/notes vérifiés en base (25-45 €)
+  et des liens absolus vers les services réels — validation AVANT écriture :
+  titre ≤ 68 car., excerpt 80-200, ≥ 3 H2, ≥ 3 liens, zéro cadratin, aucun
+  nombre figé.
+
+### [ADDITIF] — Traçabilité
+- Snapshots avant (local, sécurité) et après (commité) ;
+  audit:seo 1799 contrôles verts, audit:content 1666/1666, garde 19/19, lint
+  vert ; vérification navigateur des 4 articles (titres rendus, sections
+  présentes, liens réparés → HTTP 200).
+
+---
+
 ## [2.6.1] — 2026-11-14 — Liste journalière de soumission GSC (rotation 10 URLs/jour)
 
 > Demande client : « fournir dans un fichier txt la liste journalière des liens à
