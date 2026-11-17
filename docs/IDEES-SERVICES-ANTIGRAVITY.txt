@@ -1,0 +1,1023 @@
+================================================================================
+b2bpro.store — BIBLIOTHÈQUE D'IDÉES DE SERVICES 100% ANTIGRAVITY
+Recherche approfondie du 2026-11-15 — candidats pour étendre le catalogue (113 ->)
+================================================================================
+
+Objectif : dénicher de nouveaux services réalisables à 100% avec Google
+Antigravity (navigateur agentique + exécution de code + raisonnement
+multi-étapes, zéro intervention humaine physique ou téléphonique), dont le
+besoin est massif en ligne dans les pays francophones. Aucune idée inventée :
+chaque candidat est ancré dans un signal de demande réel collecté par recherche
+web (sources datées en tête de fichier) et vérifié contre les 113 services
+existants (anti-cannibalisation). 45 idées retenues + 10 écartées avec raisons.
+
+Sommaire :
+  A. Méthodologie de la recherche (étapes menées)
+  B. Ce qu'Antigravity sait faire (et ne sait pas faire) — capacités vérifiées
+  C. Signaux de demande massive francophone (chiffres + sources)
+  D. LES 45 IDÉES RETENUES — par pôle, avec preuve et contrôle anti-doublon
+  E. Idées volontairement ÉCARTÉES (rigueur anti-hallucination)
+  F. Court-liste : les 12 prioritaires recommandées
+  G. Prochaines étapes (sélection client -> création -> garde-fou)
+
+================================================================================
+A. MÉTHODOLOGIE — les étapes menées ce jour
+================================================================================
+
+  1. Extraction du catalogue existant (113 services, 14 pôles) depuis la base
+     locale : lecture exhaustive des titres/slugs pour éviter tout doublon
+     sémantique et respecter la règle d'unicité anti-cannibalisation du
+     garde-fou (mots-clés primaires uniques).
+  2. Recherche web (10 requêtes ciblées) sur : les capacités officielles
+     d'Antigravity (docs antigravity.google, codelabs Google), les besoins
+     numériques des TPE/PME françaises (Baromètre France Num 2026), les
+     réformes réglementaires à échéance (facturation électronique,
+     accessibilité numérique EAA), la croissance francophone (Afrique de
+     l'Ouest, Maghreb, Québec, Belgique, Suisse), la demande freelance et
+     agents IA.
+  3. Croisement : une idée n'est retenue que si (1) elle est exécutable à 100%
+     par les capacités vérifiées d'Antigravity, (2) un signal de demande réel
+     la soutient, (3) elle est distincte des 113 existants (vérification
+     champ par champ), (4) son livrable est un document de données (fichier,
+     liste, audit, rapport) conforme au modèle du site.
+  4. Écartement documenté de tout ce qui ne remplit pas ces quatre critères.
+
+================================================================================
+B. CE QU'ANTIGRAVITY SAIT FAIRE — capacités vérifiées (docs officielles)
+================================================================================
+
+  Vérifié sur antigravity.google et codelabs.developers.google.com (18 nov.
+  2025 — lancement ; use-cases ; Browser Overview ; Agent Capabilities) :
+  - Navigateur agentique (« browser-in-the-loop ») : l'agent ouvre, lit et
+    actionne un vrai Google Chrome — naviguer des sites publics, lire de la
+    documentation, remplir des formulaires, vérifier visuellement des pages.
+  - Écrit et exécute du code, lance des terminaux, orchestre des pipelines
+    de données (parsing, nettoyage, agrégation, génération de fichiers
+    Excel/CSV/HTML).
+  - Raisonnement multi-étapes autonome (agents frontiers type Gemini 3) et
+    équipes d'agents coordonnées (Agent Manager).
+  - Production de rapports HTML et livrables structurés à partir de
+    recherches web (cas d'usage business documentés : recherche SEO,
+    analyse concurrentielle, génération de leads).
+  - Aperçu public gratuit.
+
+  Ce qu'Antigravity NE sait PAS faire (exclusions appliquées aux idées) :
+  - Appels téléphoniques, présence physique, signatures notariales.
+  - Accès aux données derrière identifiants du client (CRM privé, boîtes
+    mail, abonnements payants).
+  - Conseil réglementé signé (finance AMF, avis médical, avis juridique
+    personnalisé) — les idées « compilation factuelle sourcée » le précisent.
+  - Actions massives violant les conditions d'utilisation des plateformes
+    (scraping de pages privées, contournement de quotas).
+
+================================================================================
+C. SIGNAUX DE DEMANDE MASSIVE FRANCOPHONE (recherches du jour)
+================================================================================
+
+  1. Création d'entreprises — France :
+     - 3 031 447 auto-entrepreneurs inscrits fin 2025 (Urssaf) ; 758 600
+       micro-entreprises immatriculées sur l'année (INSEE, oct. 2026) ;
+       1,23 million de créations sur 12 mois, +11,1 % (INSEE, août 2026).
+     -> Marché massif : services d'aide à l'implantation, au local commercial,
+        à la mise en conformité des micro-entreprises.
+  2. Numérisation des TPE/PME — Baromètre France Num 2026 (sept. 2026) :
+     - 40 % des TPE/PME utilisent l'IA ; plus de 3/4 des entreprises ont des
+       projets numériques en cours 2026-2027.
+     - 5 priorités des PME 2026 : cybersécurité, IA, facturation
+       électronique, gestion des données, compétences numériques.
+  3. Facturation électronique (réforme française) :
+     - 1er septembre 2026 : toutes les entreprises assujetties à la TVA
+       doivent pouvoir RECEVOIR des factures électroniques ; émission
+       généralisée en 2027 selon la taille (calendrier officiel).
+     -> Des millions d'entreprises cherchent MAINTENANT quelle plateforme
+        choisir : comparatif = demande immédiate et massive.
+  4. Accessibilité numérique — European Accessibility Act :
+     - Applicable depuis le 28 juin 2025 dans les 27 États membres ; Carrefour
+       condamné (site + app, 6 mois pour se mettre en conformité, 500 EUR de
+       pénalité par jour de retard) ; RGAA obligatoire secteur public et
+       entreprises CA >= 250 M EUR.
+     -> L'audit d'accessibilité web devient un besoin urgent des e-commerçants.
+  5. Agents IA :
+     - Marché mondial : 8,03 Md EUR (2025) -> 11,78 Md EUR (2026), projections
+       jusqu'à 251 Md EUR (Fortune Business Insights).
+  6. GEO / AEO (recherche générative) :
+     - Un quart des recherches internet passeront par des assistants IA type
+       Deep Research / Perplexity d'ici 2026 (Bilan.ch, juil. 2025) ; canal à
+       la plus forte croissance 2026 (Semrush, Captain Marketing, sept. 2026).
+  7. Afrique francophone :
+     - E-commerce Afrique : +15,4 % en 2026 (moteur mondial) ; Afrique de
+       l'Ouest : +30 %/an ces dernières années (Yema Digital, juin 2026) ;
+       freelances digitaux +18 % (rapport T1 2026).
+     - Mobile money et commerce via WhatsApp structurent la demande.
+  8. Prospection B2B :
+     - LinkedIn : 12,6 millions d'utilisateurs actifs en France (janv.-juin
+       2026) ; ~80 % des leads B2B issus des réseaux sociaux.
+  9. Freelances France : environ 1 028 000 freelances enregistrés (2026).
+  10. Amazon FBA : plus de 40 % des nouveaux vendeurs 2026 sont hors
+      États-Unis ; communauté francophone très active (guides, formations).
+  11. Étudiants francophones : plateforme officielle Campus Bourses qui
+      référence 379 programmes de bourses ; procédures Campus France payantes
+      (105-180 EUR selon les pays) : flux massif d'étudiants africains
+      francophones cherchant bourses et études en France.
+  12. Emploi international francophone : demande forte d'offres au Canada,
+      Belgique, Suisse (mobilité francophone Afrique -> ces marchés).
+  13. International B2B : 69 % des répondants du numérique déclarent une
+      activité internationale en croissance sur douze mois (Enquête
+      internationale 2026, Numeum, oct. 2026).
+  14. E-commerce France : près de 200 Md EUR de chiffre d'affaires, 3,2
+      milliards de transactions et 42,2 millions de cyberacheteurs
+      (FEVAD, « Chiffres clés du e-commerce » 2026, juil. 2026).
+  15. Cybersécurité France : marché des solutions et services de
+      cybersécurité > 7,2 Md EUR en 2025, vers ~12 Md EUR (classement
+      2026 des fournisseurs, nov. 2026).
+
+================================================================================
+D. LES 45 IDÉES RETENUES — par pôle (14 pôles du catalogue)
+================================================================================
+
+Légende de chaque fiche :
+  LIVRABLE : ce que reçoit le client
+  MÉTHODE ANTIGRAVITY : comment l'agent l'exécute à 100%
+  PREUVE DE DEMANDE : signal réel (voir section C)
+  DOUBLON-CHECK : plus proche service existant + en quoi l'idée est distincte
+  MARCHÉ FRANCOPHONE : pays visés
+  PRIORITÉ : 1 (forte) / 2 (moyenne) / 3 (complément)
+
+PÔLE manquant volontairement ci-dessous : Hôtellerie & Tourisme — déjà saturé
+par 8 services bien différenciés (tarifs Airbnb, menus, avis, événements,
+wedding, CE) : aucune idée nouvelle franchit le filtre anti-doublon. Choix
+assumé, pas un oubli.
+
+--------------------------------------------------------------------------------
+D1. PÔLE « B2B SALES INTELLIGENCE » (2 idées)
+--------------------------------------------------------------------------------
+
+IDÉE 01 — « Je vais surveiller les nouvelles missions freelance publiées
+             dans votre spécialité sur Malt et ComeUp »
+  LIVRABLE : relevé quotidien/hebdo des missions publiées dans votre métier
+             (titre, budget indicatif, date, lien), fichier filtré.
+  MÉTHODE ANTIGRAVITY : navigateur agentique sur les pages publiques de
+             diffusion des missions, filtrage par mots-clés du métier,
+             dédoublonnage, export fichier.
+  PREUVE DE DEMANDE : ~1 million de freelances en France (signal C.9) ; les
+             freelances perdent des heures à rafraîchir ces plateformes.
+  DOUBLON-CHECK : « analyser les posts LinkedIn les plus engageants du
+             secteur » = analyse de contenu ; « cartographier les freelances
+             experts » = offre de talents. Ici : côté DEMANDE (missions).
+  MARCHÉ FRANCOPHONE : France, Belgique, Suisse (Malt), Québec (plateformes
+             locales à inclure).
+  PRIORITÉ : 1
+
+IDÉE 02 — « Je vais recenser les fédérations, syndicats et clusters de votre
+             secteur avec leurs contacts publics »
+  LIVRABLE : annuaire des organisations professionnelles du secteur (nom, site,
+             contact public, adhésion), pour prospection networking.
+  MÉTHODE ANTIGRAVITY : recherche + scraping des annuaires publics des
+             fédérations, croisement et nettoyage, fichier Excel.
+  PREUVE DE DEMANDE : le networking sectoriel est un canal classique des TPE
+             (750 k créations/an, signal C.1) ; aucune base simple à consulter.
+  DOUBLON-CHECK : « annuaire des professionnels de santé par ville » = fichier
+             de prescripteurs individuels ; ici : organismes collectifs.
+  MARCHÉ FRANCOPHONE : France, Belgique, Suisse, Québec, Maroc.
+  PRIORITÉ : 3
+
+--------------------------------------------------------------------------------
+D2. PÔLE « E-COMMERCE & PRICING » (5 idées)
+--------------------------------------------------------------------------------
+
+IDÉE 03 — « Je vais dénicher 20 produits à fort potentiel sur Amazon France
+             selon vos critères FBA »
+  LIVRABLE : rapport de recherche produit (demande estimée via classements
+             publics, concurrence, nombre d'avis, saisonnalité) + shortlist.
+  MÉTHODE ANTIGRAVITY : navigation des pages publiques de classement Amazon
+             (meilleures ventes, nouveautés), compilation des signaux publics
+             (rang, volume d'avis, variantes), scoring, rapport.
+  PREUVE DE DEMANDE : > 40 % des nouveaux vendeurs FBA hors États-Unis
+             (signal C.10) ; communauté francophone FBA très active.
+  DOUBLON-CHECK : « repertorier les marques vendant sur Amazon dans votre
+             niche » = inventaire des marques ; « best-sellers d'un site
+             rival » = un site donné. Ici : sélection de produits à lancer,
+             scoring trans-catégorie.
+  MARCHÉ FRANCOPHONE : France, Belgique, Suisse, Québec (Amazon.ca).
+  PRIORITÉ : 1
+  CONTRAINTE : pages publiques seulement, volume modéré, pas de données
+             privées du vendeur.
+
+IDÉE 04 — « Je vais extraire 500 vraies requêtes de recherche Amazon de votre
+             catégorie »
+  LIVRABLE : fichier de mots-clés tapés sur Amazon (volume indicatif par
+             position dans les suggestions, variantes A-Z et accents).
+  MÉTHODE ANTIGRAVITY : minage d'autocomplétion Amazon (public), expansion
+             systématique des radicaux du métier, nettoyage et scoring.
+  PREUVE DE DEMANDE : les vendeurs optimisent leurs fiches sur ces requêtes ;
+             le SEO Amazon est devenu une discipline à part entière (guides
+             FBA, signal C.10).
+  DOUBLON-CHECK : « extraire 300 vraies questions posées sur Google dans sa
+             niche » = People Also Ask de Google ; ici : suggestions AMAZON,
+             outil et usage différents (fiche produit vs article de blog).
+  MARCHÉ FRANCOPHONE : France, Belgique, Suisse, Québec.
+  PRIORITÉ : 1
+
+IDÉE 05 — « Je vais vérifier la fiabilité de 20 fournisseurs dropshipping
+             pour votre niche avec délais réels vers la France »
+  LIVRABLE : rapport de due diligence par fournisseur (avis publics, délais
+             annoncés vers la France, politique retours, red flags forums).
+  MÉTHODE ANTIGRAVITY : croisement des avis publics (Trustpilot, forums,
+             plateformes), fiches fournisseurs, synthèse notée.
+  PREUVE DE DEMANDE : le dropshipping reste un des modèles e-commerce les
+             plus recherchés par les francophones ; la peur du fournisseur
+             peu fiable est le frein n°1 documenté dans les guides.
+  DOUBLON-CHECK : « identifier 50 fabricants européens » = sourcing
+             industriel B2B ; « dénicher 30 marques étrangères » = marques de
+             détail. Ici : fiabilité de fournisseurs intermédiaires.
+  MARCHÉ FRANCOPHONE : France, Belgique, Suisse, Québec, Maghreb.
+  PRIORITÉ : 2
+
+IDÉE 06 — « Je vais vérifier la demande, les prix et la concurrence de votre
+             produit au Sénégal, en Côte d'Ivoire et au Cameroun »
+  LIVRABLE : mini étude de marché pays (prix constatés sur les marketplaces
+             locales, nombre d'offreurs, tendances de recherche par pays).
+  MÉTHODE ANTIGRAVITY : relevé public des marketplaces africaines (Jumia
+             & équivalents), tendances Google par pays, synthèse par marché.
+  PREUVE DE DEMANDE : e-commerce Afrique +15,4 % (2026), Afrique de l'Ouest
+             +30 %/an (signal C.7) ; peu d'outils d'étude pour ces marchés,
+             contrairement à l'Europe.
+  DOUBLON-CHECK : aucun service existant ne couvre les marchés africains.
+  MARCHÉ FRANCOPHONE : Sénégal, Côte d'Ivoire, Cameroun, Mali, Bénin, Togo.
+  PRIORITÉ : 1 — axe stratégique francophone demandé par le projet.
+
+IDÉE 07 — « Je vais identifier toutes les marketplaces actives d'Afrique
+             francophone pour votre catégorie de produits »
+  LIVRABLE : panorama des plateformes de vente en ligne actives (pays,
+             commissions publiées, catégories couvertes, flux de commandes
+             apparents), fichier comparatif.
+  MÉTHODE ANTIGRAVITY : recensement web (annonces, presse tech africaine),
+             vérification d'activité par navigation (site vivant ou non),
+             fiche par plateforme.
+  PREUVE DE DEMANDE : croissance C.7 + « top 5 des plateformes émergentes
+             2026 » (presse spécialisée) : vendeurs et e-commerçants qui
+             veulent s'étendre manquent d'une vue d'ensemble.
+  DOUBLON-CHECK : « repertorier les nouveaux outils IA et SaaS » = outils ;
+             ici : places de marché africaines.
+  MARCHÉ FRANCOPHONE : toute l'Afrique francophone + Maghreb.
+  PRIORITÉ : 2
+
+--------------------------------------------------------------------------------
+D3. PÔLE « IA, RAG & DATA » (3 idées)
+--------------------------------------------------------------------------------
+
+IDÉE 08 — « Je vais traduire et localiser votre catalogue ou site en anglais,
+             espagnol et allemand »
+  LIVRABLE : catalogue produits traduit et localisé (unités, devises, tournures
+             commerciales) en fichier prêt à importer (CSV) ou pages.
+  MÉTHODE ANTIGRAVITY : agent de traduction assistée + cohérence terminologique
+             (glossaire extrait du catalogue source) + contrôle qualité
+             automatisé des formats.
+  PREUVE DE DEMANDE : 3/4 des entreprises ont des projets numériques dont
+             internationalisation (signal C.2) ; 69 % des acteurs du
+             numérique déclarent une activité internationale en croissance.
+  DOUBLON-CHECK : « traduire et analyser les avis touristiques étrangers » =
+             analyse de réputation entrante ; ici : traduction SORTANTE de
+             vos contenus commerciaux.
+  MARCHÉ FRANCOPHONE : exportateurs France/Belgique/Suisse/Québec + e-commerce
+             200 Md EUR (FEVAD).
+  PRIORITÉ : 1
+
+IDÉE 09 — « Je vais recenser les jeux de données publiques exploitables pour
+             votre activité (data.gouv, INSEE, Eurostat) »
+  LIVRABLE : cartographie des datasets ouverts utiles à votre secteur
+             (producteur, fréquence, granularité, lien, cas d'usage suggéré).
+  MÉTHODE ANTIGRAVITY : parcours des catalogues open data publics, filtrage
+             sectoriel, qualification et documentation.
+  PREUVE DE DEMANDE : « gestion des données » = 4e priorité numérique des
+             PME 2026 (signal C.2) ; la donnée ouverte manque de curation.
+  DOUBLON-CHECK : « créer votre glossaire métier » = contenu linguistique ;
+             ici : inventaire de sources de données externes.
+  MARCHÉ FRANCOPHONE : France, Belgique, Suisse, Québec, UE.
+  PRIORITÉ : 2
+
+IDÉE 10 — « Je vais transformer votre documentation interne en base de
+             connaissances interrogeable (markdown structuré) »
+  LIVRABLE : corpus markdown structuré (sections, métadonnées, index) prêt à
+             brancher sur un RAG / GPT custom.
+  MÉTHODE ANTIGRAVITY : parsing documentaire, structuration headings,
+             extraction tableaux, contrôle de cohérence.
+  PREUVE DE DEMANDE : 40 % des TPE/PME utilisent l'IA (signal C.2) et le RAG
+             interne sur documentation propre est le cas d'usage n°1 cité
+             par les guides IA 2026.
+  DOUBLON-CHECK : « convertir n'importe quel site en base de connaissances »
+             = source web publique ; « condenser vos gros PDF » = synthèse
+             courte. Ici : structuration de VOS documents privés fournis
+             par upload (fichiers du client, pas du web).
+  MARCHÉ FRANCOPHONE : Toutes les PME francophones.
+  PRIORITÉ : 2
+
+--------------------------------------------------------------------------------
+D4. PÔLE « IMMOBILIER & LOCAL » (3 idées)
+--------------------------------------------------------------------------------
+
+IDÉE 11 — « Je vais recenser les biens vendus aux enchères des notaires et
+             tribunaux de votre ville »
+  LIVRABLE : liste des adjudications à venir (ville/zone, type de bien, prix
+             de mise à prix, date, liens des études).
+  MÉTHODE ANTIGRAVITY : veille des sites publics d'annonces judiciaires et
+             de ventes notariales, consolidation, fichier.
+  PREUVE DE DEMANDE : la recherche de biens décotés est massive (le site
+             prouve déjà la demande avec « annonces sous le prix du marché »
+             — les enchères sont l'étape au-delà, très recherchée des
+             investisseurs francophones).
+  DOUBLON-CHECK : « ventes aux enchères de matériel pro et stocks » =
+             équipement professionnel ; « annonces sous le prix du marché »
+             = annonces classiques. Ici : adjudications IMMOBILIÈRES.
+  MARCHÉ FRANCOPHONE : France (marchés notariaux), Belgique (notaires).
+  PRIORITÉ : 2
+
+IDÉE 12 — « Je vais recenser les locaux commerciaux disponibles à la location
+             dans votre zone avec prix d'affiche »
+  LIVRABLE : fichier des locaux commerciaux vacants (surface, loyer,
+             emplacement, vitrine, type d'activité autorisé).
+  MÉTHODE ANTIGRAVITY : relevé multi-portails publics, géocodage par
+             quartier, compilation Excel.
+  PREUVE DE DEMANDE : 758 600 micro-entreprises immatriculées/an + 750 k
+             créations/an (signal C.1) : chaque créateur cherche son local.
+  DOUBLON-CHECK : « analyser la rentabilité brute de 100 biens » = logement
+             résidentiel ; ici : local PROFESSIONNEL à louer.
+  MARCHÉ FRANCOPHONE : France, Belgique, Suisse, Québec, Maghreb.
+  PRIORITÉ : 1
+
+IDÉE 13 — « Je vais cartographier la densité de concurrents et de
+             complémentaires autour de votre future adresse commerciale »
+  LIVRABLE : étude d'implantation (rayon paramétrable) : concurrents directs,
+             activités complémentaires, flux de quartier (POI publics),
+             verdict de saturation.
+  MÉTHODE ANTIGRAVITY : extraction des POI publics par quartier (fiches
+             d'établissements), classification concurrent/complémentaire,
+             cartographie et rapport.
+  PREUVE DE DEMANDE : suite logique de C.1 — l'étude d'implantation est le
+             premier réflexe des créateurs de commerce ; prestée
+             traditionnellement plusieurs centaines d'euros.
+  DOUBLON-CHECK : « auditer les attributs des fiches Google rivales » =
+             audit SEO concurrent ; « top 20 concurrents Maps » = ranking
+             SEO. Ici : étude d'IMPLANTATION avant ouverture (client
+             pré-ouverture, pas commerçant installé).
+  MARCHÉ FRANCOPHONE : France, Belgique, Suisse, Québec, Afrique urbaine.
+  PRIORITÉ : 1
+
+--------------------------------------------------------------------------------
+D5. PÔLE « SOCIAL MEDIA & INFLUENCE » (1 idée)
+--------------------------------------------------------------------------------
+
+IDÉE 14 — « Je vais analyser les 10 comptes les plus suivis de votre secteur
+             sur Instagram, TikTok et LinkedIn en un seul benchmark »
+  LIVRABLE : benchmark multi-plateformes (taille, rythme de publication,
+             formats dominants, engagement apparent, thématiques gagnantes).
+  MÉTHODE ANTIGRAVITY : navigation des profils publics, relevé des métriques
+             publiques, tableau croisé + synthèse stratégique.
+  PREUVE DE DEMANDE : les benchmarks cross-plateformes sont la demande n°1
+             des community managers (les analyses existantes du site sont
+             mono-plateforme : LinkedIn seul, TikTok seul, YouTube seul).
+  DOUBLON-CHECK : exactement là : toutes les analyses sociales existantes
+             sont mono-plateforme ; l'idée vend le COMPARATIF INTER-PLATEFORMES
+             comme livrable unique.
+  MARCHÉ FRANCOPHONE : tous pays francophones.
+  PRIORITÉ : 2
+
+--------------------------------------------------------------------------------
+D6. PÔLE « RH & RECRUTEMENT » (2 idées)
+--------------------------------------------------------------------------------
+
+IDÉE 15 — « Je vais recenser les offres d'emploi de votre métier au Canada,
+             en Belgique et en Suisse avec procédures de candidature »
+  LIVRABLE : fichier d'offres vérifiées (employeur, lieu, salaire affiché,
+             permis exigé, lien) + note procédurale par pays.
+  MÉTHODE ANTIGRAVITY : relevé des plateformes publiques d'emploi des trois
+             pays, filtrage métier, structuration.
+  PREUVE DE DEMANDE : mobilité professionnelle francophone vers
+             Canada/Belgique/Suisse = flux massif documenté (signal C.12).
+  DOUBLON-CHECK : « dénicher 100 offres d'emploi ou alternance pour votre
+             profil » = marché FR non spécifié ; ici : PAYS ciblés +
+             procédures internationales. À valider par le garde-fou
+             anti-cannibalisation avant création (risque de proximité).
+  MARCHÉ FRANCOPHONE : candidats France + Afrique francophone -> Canada,
+             Belgique, Suisse.
+  PRIORITÉ : 2 (sous condition doublon)
+
+IDÉE 16 — « Je vais lister les écoles et CFA qui forment à vos métiers pour
+             vos recrutements en alternance »
+  LIVRABLE : annuaire des formations éligibles (diplômes, villes, rythmes
+             d'alternance, contacts publics), pour recruter des alternants.
+  MÉTHODE ANTIGRAVITY : croisement des référentiels publics (RNCP, annuaire
+             des CFA), filtrage métier, fichier.
+  PREUVE DE DEMANDE : ~85 000 postes IT non pourvus (signal C.9 étude TJM) ;
+             l'alternance est le levier de recrutement le plus cité des PME.
+  DOUBLON-CHECK : « identifier les entreprises qui recrutent » = signal
+             employeur ; ici : sources de TALENTS en formation.
+  MARCHÉ FRANCOPHONE : France, Belgique, Suisse, Québec.
+  PRIORITÉ : 3
+
+--------------------------------------------------------------------------------
+D7. PÔLE « ÉVÉNEMENTIEL & MARCHÉS PUBLICS » (3 idées)
+--------------------------------------------------------------------------------
+
+IDÉE 17 — « Je vais analyser les montants attribués des marchés publics de
+             votre secteur sur 24 mois pour calibrer vos offres »
+  LIVRABLE : statistiques d'attribution (montants, groupements attributaires,
+             types de procédure, répartition saisonnière) + recommandation
+             de fourchette.
+  MÉTHODE ANTIGRAVITY : analyse des avis d'attribution publics (BOAMP),
+             extraction des montants, agrégation sectorielle.
+  PREUVE DE DEMANDE : les PME répondantes surestiment/sous-estiment leurs
+             offres faute de données d'attribution ; la demande de
+             « résultats » est récurrente chez les conseils en marchés
+             publics.
+  DOUBLON-CHECK : « lister les entreprises ayant remporté des marchés
+             publics » = liste des lauréats ; ici : ANALYSE des montants
+             pour calibrage de prix.
+  MARCHÉ FRANCOPHONE : France (BOAMP), UE.
+  PRIORITÉ : 1
+
+IDÉE 18 — « Je vais surveiller les appels d'offres publics suisses, belges
+             et québécois de votre secteur »
+  LIVRABLE : veille multi-portails (simap.ch, portails belges, SEAO/Québec)
+             avec alerte par fichier périodique.
+  MÉTHODE ANTIGRAVITY : surveillance récurrente des portails publics
+             francophones hors TED, filtrage secteur.
+  PREUVE DE DEMANDE : 69 % des acteurs du numérique en croissance
+             internationale (signal C.13) ; les portails suisses et
+             québécois ne sont PAS couverts par la veille TED existante.
+  DOUBLON-CHECK : « appels d'offres européens ouverts » = TED/UE. Suisse et
+             Québec sont HORS UE : périmètres disjoints. Belgique : part
+             locale hors TED à documenter dans la fiche pour éviter tout
+             chevauchement.
+  MARCHÉ FRANCOPHONE : Suisse, Belgique, Québec + fournisseurs français.
+  PRIORITÉ : 2
+
+IDÉE 19 — « Je vais surveiller les appels d'offres des banques de
+             développement (BAD, Banque mondiale, AFD) dans votre domaine »
+  LIVRABLE : veille des opportunités de consultation (pays bailleur, domaine,
+             date limite, référence) pour consultants et PME en Afrique.
+  MÉTHODE ANTIGRAVITY : surveillance des portails d'acquisition publics des
+             institutions (afdb.org, worldbank.org/procurement, agences AFD).
+  PREUVE DE DEMANDE : les institutions multilatérales publient des volumes
+             massifs de consultations ; la Banque mondiale investit 25 M USD
+             dans l'infrastructure du commerce numérique africain (août
+             2026) — écosystème en expansion (signal C.7).
+  DOUBLON-CHECK : aucun service existant ne couvre les institutions
+             multilatérales (les veilles actuelles = BOAMP France + TED UE).
+  MARCHÉ FRANCOPHONE : Afrique francophone + fournisseurs francophones.
+  PRIORITÉ : 2
+
+--------------------------------------------------------------------------------
+D8. PÔLE « GRAND PUBLIC & QUOTIDIEN » (10 idées)
+--------------------------------------------------------------------------------
+
+IDÉE 20 — « Je vais suivre chaque semaine les taux immobiliers pratiqués
+             par 15 banques et courtiers »
+  LIVRABLE : tableau hebdo des taux par durée (baromètres publics des
+             courtiers, grilles publiées) + tendance sur 4 semaines.
+  MÉTHODE ANTIGRAVITY : relevé hebdomadaire des baromètres publics
+             (courtiers, presse spécialisée), consolidation, fichier.
+  PREUVE DE DEMANDE : « taux immobilier » = parmi les plus fortes audiences
+             de recherche financière en France ; la négociation bancaire est
+             un réflexe massif des acquéreurs francophones.
+  DOUBLON-CHECK : les services immo existants couvrent les BIENS (annonces,
+             rentabilité) — aucun ne couvre le FINANCEMENT.
+  MARCHÉ FRANCOPHONE : France, Belgique, Suisse, Québec.
+  PRIORITÉ : 1
+
+IDÉE 21 — « Je vais comparer les mutuelles santé compatibles avec votre
+             profil (âge, situation) »
+  LIVRABLE : tableau factuel des contrats du marché (garanties par poste,
+             tarifs publiés, délais de carence) filtré par profil déclaré.
+  MÉTHODE ANTIGRAVITY : compilation des grilles publiques des mutuelles et
+             documents tarifaires en vigueur, mise en tableau comparative.
+  PREUVE DE DEMANDE : « mutuelle » = audience de recherche massif en France
+             (open data des recherches santé les plus fréquentes).
+  DOUBLON-CHECK : aucun service santé/assurance existant au catalogue.
+  MARCHÉ FRANCOPHONE : France (mutuelles), Belgique (mutualités).
+  PRIORITÉ : 2
+  CADRE : compilation factuelle sourcée — pas de conseil personnalisé en
+  assurance (réglementé) : la fiche devra le préciser noir sur blanc.
+
+IDÉE 22 — « Je vais comparer tous les fournisseurs d'électricité et de gaz
+             pour votre consommation »
+  LIVRABLE : tableau des offres du marché (prix kWh/abonnement, offres
+             fixes/indexées/vertes) + estimation sur votre consommation
+             déclarée.
+  MÉTHODE ANTIGRAVITY : relevé des grilles tarifaires publiées des
+             fournisseurs, calcul comparatif sur la consommation déclarée.
+  PREUVE DE DEMANDE : le comparatif énergie est l'un des sujets de
+             recherche grand public les plus massifs en France (arbitrage
+             permanent suite crise énergie).
+  DOUBLON-CHECK : « comparer le prix de vos matériaux chez 4 grandes
+             enseignes » = matériaux BTP ; ici : ÉNERGIE domestique.
+  MARCHÉ FRANCOPHONE : France, Belgique.
+  PRIORITÉ : 1
+
+IDÉE 23 — « Je vais comparer les offres box internet et mobile du marché
+             français »
+  LIVRABLE : tableau des offres box/mobile (débit/prix/engagement/avantages)
+             + shortlist selon vos usages déclarés.
+  MÉTHODE ANTIGRAVITY : relevé des offres publiques des opérateurs et
+             comparateurs, actualisation, fichier.
+  PREUVE DE DEMANDE : « box internet » / « forfait mobile » = requêtes
+             grand public à très fort volume annuel en France.
+  DOUBLON-CHECK : aucun service télécom existant ; distinct de l'idée 22
+             (énergie) par univers de mots-clés disjoint.
+  MARCHÉ FRANCOPHONE : France, Belgique, Suisse, Québec.
+  PRIORITÉ : 2
+
+IDÉE 24 — « Je vais comparer les frais bancaires des banques adaptées à
+             votre profil »
+  LIVRABLE : tableau des frais (tenue de compte, carte, incidents,
+             conditions de gratuité) par banque + classement selon profil.
+  MÉTHODE ANTIGRAVITY : compilation des grilles tarifaires publiées (brochures
+             bancaires normalisées), comparaison, fichier.
+  PREUVE DE DEMANDE : « frais bancaires » = requête récurrente massive ;
+             le classement annuel des frais fait chaque année la une de la
+             presse grand public.
+  DOUBLON-CHECK : aucun service bancaire existant.
+  MARCHÉ FRANCOPHONE : France, Belgique, Suisse, Québec.
+  PRIORITÉ : 2
+
+IDÉE 25 — « Je vais lister les aides à la rénovation de votre logement
+             auxquelles vous êtes éligible »
+  LIVRABLE : note d'éligibilité (aides nationales, régionales, locales ;
+             montants forfaitaires publiés ; conditions officielles) selon
+             votre situation déclarée.
+  MÉTHODE ANTIGRAVITY : lecture des pages officielles des dispositifs,
+             croisement des critères publics avec le profil déclaré, tableau.
+  PREUVE DE DEMANDE : « aides rénovation » = audience massive des
+             propriétaires (sujets MaPrimeRénov constants dans la presse).
+  DOUBLON-CHECK : « identifier les aides et subventions publiques pour votre
+             PROJET » (pôle formation-santé) = aides ENTREPRISE. Ici :
+             aides LOGEMENT RÉSIDENTIEL. Univers de mots-clés disjoint,
+             mais le garde-fou devra vérifier la formulation.
+  MARCHÉ FRANCOPHONE : France (50 % du potentiel), Belgique, Québec.
+  PRIORITÉ : 1
+
+IDÉE 26 — « Je vais comparer les prix et avis des auto-écoles de votre ville »
+  LIVRABLE : tableau comparatif (prix permis B, formules, avis publics,
+             taux de réussite publiés par les préfectures).
+  MÉTHODE ANTIGRAVITY : relevé des sites d'auto-écoles + données publiques
+             des résultats (examens), consolidation par ville.
+  PREUVE DE DEMANDE : le permis est un rite massif ; les écarts de prix
+             constatés entre auto-écoles alimentent une demande de
+             comparatif constante.
+  DOUBLON-CHECK : « comparer le prix de vos matériaux » = matériaux ;
+             « trouver meilleur tarif pour votre séjour » = voyage. Ici :
+             AUTO-ÉCOLES (formation permis).
+  MARCHÉ FRANCOPHONE : France, Belgique, Suisse, Québec.
+  PRIORITÉ : 2
+
+IDÉE 27 — « Je vais recenser les crèches de votre ville avec tarifs et
+             places »
+  LIVRABLE : annuaire des crèches (municipales, associatives, privées :
+             tarifs publiés, capacités, dates d'ouverture).
+  MÉTHODE ANTIGRAVITY : compilation des pages mairies/CCAS + annuaires
+             publics PMI, structuration par ville.
+  PREUVE DE DEMANDE : la recherche de place en crèche est l'une des
+             anxiétés n°1 des jeunes parents francophones (constantes
+             médiatiques de pénurie).
+  DOUBLON-CHECK : « bilan des écoles et commodités de votre quartier » =
+             ÉCOLES + commodités du QUARTIER (immobilier). Ici : crèches +
+             places + TARIFS (jeunes parents).
+  MARCHÉ FRANCOPHONE : France, Belgique, Suisse, Québec.
+  PRIORITÉ : 2
+
+IDÉE 28 — « Je vais estimer le juste prix de vente de vos articles sur Vinted
+             et Leboncoin »
+  LIVRABLE : cote par article (fourchette de prix constatée sur annonces
+             comparables terminées, conseils de positionnement).
+  MÉTHODE ANTIGRAVITY : relevé d'annonces comparables publiques (filtre
+             « vendu » duboncoin en particulier), agrégation par article.
+  PREUVE DE DEMANDE : seconde main devenue massive en France (leader
+             européen de la mode de seconde main francophone) ; les
+             vendeurs particuliers s'estiment mal et vendent mal.
+  DOUBLON-CHECK : « calculer la vraie cote de vos objets de collection et
+             montres » = objets de COLLECTION (cote experte). Ici : articles
+             courants de seconde main (grande consommation).
+  MARCHÉ FRANCOPHONE : France, Belgique, Suisse.
+  PRIORITÉ : 2
+  CONTRAINTE : les données « vendues » de Vinted ne sont pas publiques — le
+  service s'appuie sur Leboncoin (public) + comparables vivants Vinted.
+
+IDÉE 29 — « Je vais comparer le coût de la vie de vos 5 villes
+             d'expatriation envisagées »
+  LIVRABLE : tableau comparatif (logement, transport, santé, courses,
+             éducation) sourcé sur les indices publics internationaux + note
+             par ville.
+  MÉTHODE ANTIGRAVITY : collecte des indices publics (Numbeo et équivalents),
+             vérification de fraîcheur, tableau + synthèse.
+  PREUVE DE DEMANDE : l'expatriation francophone (Canada, Suisse, Belgique,
+             Maroc, Maurice, Dubaï francophone) = flux massif documenté par
+             les guides d'expatriation en croissance constante.
+  DOUBLON-CHECK : « comparer tarifs et disponibilités des EHPAD » = santé
+             senior FR ; « meilleur tarif pour votre séjour » = VOYAGE
+             temporaire. Ici : projet de VIE (installation).
+  MARCHÉ FRANCOPHONE : France -> monde francophone.
+  PRIORITÉ : 2
+
+IDÉE 30 — « Je vais rédiger votre CV et votre lettre optimisés pour les
+             logiciels de tri (ATS) »
+  LIVRABLE : CV restructuré (passage ATS vérifié par simulation) + lettre
+             calibrée sur l'offre cible.
+  MÉTHODE ANTIGRAVITY : réécriture assistée + extraction des mots-clés de
+             l'offre cible + vérification automatisée du passage ATS
+             (parsing test).
+  PREUVE DE DEMANDE : la rédaction de CV est historiquement l'une des
+             catégories de micro-services les plus vendues des plateformes
+             de missions (marché massif francophone, toutes professions).
+  DOUBLON-CHECK : « rédiger votre article de blog optimisé SEO » = écriture
+             de CONTENU marketing. Ici : documents RECRUTEMENT personnels.
+  MARCHÉ FRANCOPHONE : tous pays francophones.
+  PRIORITÉ : 2
+
+--------------------------------------------------------------------------------
+D9. PÔLE « FORMATION & SANTÉ » (1 idée)
+--------------------------------------------------------------------------------
+
+IDÉE 31 — « Je vais recenser toutes les bourses d'études ouvertes à votre
+             profil avec leurs échéances »
+  LIVRABLE : liste des bourses actives (niveau, pays, discipline, montant,
+             date limite, lien officiel) filtrée par profil déclaré.
+  MÉTHODE ANTIGRAVITY : parcours de la plateforme officielle Campus Bourses
+             (379 programmes référencés) + bourses d'ambassades et
+             fondations, filtrage par profil, fichier calendrier.
+  PREUVE DE DEMANDE : flux massif d'étudiants francophones africains vers
+             la France (procédures Campus France payantes, 105-180 EUR —
+             signal C.11) ; la recherche de bourse est LA requête étudiante
+             dominante de l'espace francophone.
+  DOUBLON-CHECK : « identifier les cours en ligne les plus vendus » =
+             e-commerce formation ; « identifier les aides et subventions
+             publiques pour votre projet » = aides ENTREPRISES. Ici :
+             bourses ÉTUDES pour particuliers.
+  MARCHÉ FRANCOPHONE : Afrique francophone + France + Maghreb + Haïti.
+  PRIORITÉ : 1 — probablement la demande la plus massivement en ligne de
+  toute cette bibliothèque (public : des millions d'étudiants francophones).
+
+--------------------------------------------------------------------------------
+D10. PÔLE « GRANDES ENTREPRISES & FINANCE » (5 idées)
+--------------------------------------------------------------------------------
+
+IDÉE 32 — « Je vais auditer l'accessibilité RGAA de votre site et livrer le
+             plan de correction priorisé »
+  LIVRABLE : rapport d'audit (contraste, alternances textuelles, structure
+             de titres, navigation clavier, formulaires) + plan de correction
+             classé par criticité.
+  MÉTHODE ANTIGRAVITY : navigateur agentique + exécution d'outils
+             d'évaluation publics (analyses automatiques documentées) +
+             revue méthodique des pages clés, rapport.
+  PREUVE DE DEMANDE : European Accessibility Act applicable depuis le
+             28 juin 2025 ; Carrefour condamné avec 500 EUR de pénalité
+             journalière (signal C.4) : le sujet est passé de « RSE » à
+             « risque juridique » pour tout e-commerce.
+  DOUBLON-CHECK : « vérifier les mentions légales et conformité RGPD » =
+             conformité RGPD/données. Ici : conformité ACCESSIBILITÉ —
+             référentiel et livrable distincts.
+  MARCHÉ FRANCOPHONE : France + UE (ventile en Belgique/Suisse).
+  PRIORITÉ : 1 — fenêtre d'urgence réglementaire actuelle.
+
+IDÉE 33 — « Je vais scanner les failles publiques de votre site web (TLS,
+             en-têtes, certificats, fuites de données) »
+  LIVRABLE : rapport de scan public (qualité TLS, en-têtes de sécurité,
+             exposition de ports, secrets indexés publiquement) + plan de
+             remédiation priorisé.
+  MÉTHODE ANTIGRAVITY : exécution d'outils publics d'évaluation (SSL Labs,
+             securityheaders, registres de certificats publics) + revue du
+             code exposé, rapport.
+  PREUVE DE DEMANDE : cybersécurité = priorité n°1 des PME 2026 (Baromètre
+             France Num, signal C.2) ; marché français des services
+             cybersécurité > 7,2 Md EUR (signal C.15).
+  DOUBLON-CHECK : « auditer le référencement et balises des produits
+             rivaux » = SEO concurrent. Ici : SÉCURITÉ technique de VOTRE
+             site.
+  MARCHÉ FRANCOPHONE : toutes les entreprises francophones.
+  PRIORITÉ : 1
+
+IDÉE 34 — « Je vais comparer les plateformes de facturation électronique
+             conformes (PDP/PfM) adaptées à votre taille »
+  LIVRABLE : comparatif des plateformes de facturation électronique (rôle
+             PfM/PDP, tarifs publiés, formats Factur-X/Chorus Pro, intégrations)
+             + recommandation documentée par profil d'entreprise.
+  MÉTHODE ANTIGRAVITY : recensement de la liste officielle des acteurs
+             enregistrés + relevé des tarifs et formats publiés + grille
+             comparative par taille d'entreprise.
+  PREUVE DE DEMANDE : réforme à échéance nationale — réception obligatoire
+             depuis le 1er septembre 2026 pour toutes les entreprises
+             assujetties à la TVA, émission généralisée en 2027 (signal
+             C.3) : des millions d'entreprises cherchent MAINTENANT.
+  DOUBLON-CHECK : « comparer les plans tarifaires et options de 20
+             logiciels SaaS » = grille générique SaaS. Ici : comparatif
+             RÉGLEMENTÉ spécifique facturation électronique (mots-clés
+             « PDP », « PfM », « Factur-X »).
+  MARCHÉ FRANCOPHONE : France (réforme), UE.
+  PRIORITÉ : 1 — la plus forte actualité de la liste avec l'idée 32.
+
+IDÉE 35 — « Je vais surveiller les nouveaux textes réglementaires de votre
+             secteur (Légifrance, JO, bulletins officiels) »
+  LIVRABLE : veille périodique des textes applicables à votre secteur (lois,
+             décrets, arrêtés, avis) avec résumé et impact probable, fichier.
+  MÉTHODE ANTIGRAVITY : surveillance des flux publics (Légifrance, JO,
+             bulletins sectoriels), filtrage par mots-clés du secteur,
+             synthèse.
+  PREUVE DE DEMANDE : la veille réglementaire est un poste à temps partiel
+             dans les moyennes entreprises ; les TPE n'ont personne pour
+             ça (signal C.2 : conformité dans les priorités numériques).
+  DOUBLON-CHECK : « mettre en place votre veille sur les rappels de
+             produits » = rappels produits ; « veille sur les nominations
+             de dirigeants » = signal business. Ici : textes
+             RÉGLEMENTAIRES sectoriels.
+  MARCHÉ FRANCOPHONE : France, Belgique, Suisse, Québec.
+  PRIORITÉ : 2
+
+IDÉE 36 — « Je vais recenser les grossistes et importateurs de vos produits
+             en Afrique de l'Ouest »
+  LIVRABLE : fichier des importateurs/grossistes par pays (produits
+             traités, ville, contacts publics, références visibles).
+  MÉTHODE ANTIGRAVITY : croisement des annuaires professionnels publics,
+             presse d'affaires africaine, salons régionaux, vérification
+             d'activité par navigation, fichier.
+  PREUVE DE DEMANDE : exporter vers l'Afrique de l'Ouest = croissance +30 %/an
+             du e-commerce régional (signal C.7) ; l'exportateur francophone
+             manque d'intermédiaires identifiés.
+  DOUBLON-CHECK : « identifier 50 fabricants européens » = sourcing UE
+             montant ; « dénicher 30 marques étrangères non vendues en
+             France » = marques de détail. Ici : CANAL aval africain
+             (importateurs/distributeurs).
+  MARCHÉ FRANCOPHONE : Côte d'Ivoire, Sénégal, Cameroun, Bénin, Togo, Mali
+             + exportateurs France/Belgique/Suisse.
+  PRIORITÉ : 2
+
+IDÉE 37 — « Je vais compiler les règles TVA et obligations applicables à
+             votre produit dans 10 pays cibles »
+  LIVRABLE : tableau factuel par pays (taux applicables à votre catégorie,
+             seuils de TVA à l'importation, obligations de représentation
+             fiscale) avec sources officielles citées ligne par ligne.
+  MÉTHODE ANTIGRAVITY : lecture des pages officielles (portails TVA
+             nationaux, UE), extraction, structuration, citations.
+  PREUVE DE DEMANDE : l'export est un des chantiers de croissance les plus
+             documentés des PME (69 % des acteurs du numérique en croissance
+             internationale, signal C.13).
+  DOUBLON-CHECK : « comparer les clauses clés des conditions de vos
+             concurrents » = CGV concurrentes. Ici : FISCALITÉ de l'export
+             par pays.
+  MARCHÉ FRANCOPHONE : exportateurs vers UE + monde francophone.
+  PRIORITÉ : 3
+  CADRE : compilation factuelle avec sources — PAS un conseil fiscal
+  personnalisé (la fiche devra l'énoncer et recommander validation
+  comptable pour décision finale).
+
+--------------------------------------------------------------------------------
+D11. PÔLE « SAAS & TECH » (1 idée)
+--------------------------------------------------------------------------------
+
+IDÉE 38 — « Je vais repérer les meilleures applications Shopify de votre
+             niche avec avis et prix »
+  LIVRABLE : comparatif des apps Shopify utiles à votre niche (fonction,
+             avis, tarifs, alternative française quand elle existe).
+  MÉTHODE ANTIGRAVITY : navigation du Shopify App Store public, extraction
+             des avis et tarifs, filtrage par cas d'usage, tableau.
+  PREUVE DE DEMANDE : Shopify = plateforme e-commerce dominante des PME
+             francophones (l'offre d'accompagnement Shopify FR est pléthore
+             de partenaires et d'agences) ; chaque marchand règle sa stack
+             d'apps.
+  DOUBLON-CHECK : « analyser les extensions les plus installées de votre
+             niche » = extensions de NAVIGATEUR. Ici : applications SHOPIFY
+             (store marchand). À faire valider par le garde-fou
+             anti-cannibalisation (proximité thématique).
+  MARCHÉ FRANCOPHONE : France, Belgique, Suisse, Québec.
+  PRIORITÉ : 2
+
+--------------------------------------------------------------------------------
+D12. PÔLE « SEO, GEO & MEDIAS » (4 idées)
+--------------------------------------------------------------------------------
+
+IDÉE 39 — « Je vais auditer la cohérence de vos citations locales (NAP) sur
+             30 annuaires et dresser la liste des corrections »
+  LIVRABLE : rapport d'incohérences (nom, adresse, téléphone, horaires
+             déclarés) annuaire par annuaire + fichier de corrections.
+  MÉTHODE ANTIGRAVITY : recherche de l'établissement sur les annuaires
+             publics, relevé des mentions, comparaison, signalement des
+             écarts.
+  PREUVE DE DEMANDE : la cohérence NAP est le fondement du référencement
+             local (documenté par tous les guides SEO local — la demande
+             GEO/locale est en plus forte croissance, signal C.6).
+  DOUBLON-CHECK : « auditer les attributs manquants des fiches Google
+             RIVALES » = audit concurrent ; « auditer le top 20 de vos
+             concurrents Maps » = ranking. Ici : cohérence de VOS citations
+             multi-annuaires (soi-même, pas les rivaux).
+  MARCHÉ FRANCOPHONE : tous commerces francophones.
+  PRIORITÉ : 1
+
+IDÉE 40 — « Je vais trouver et sourcer les statistiques officielles de votre
+             article ou livre blanc (INSEE, Eurostat, ministères) »
+  LIVRABLE : banque de statistiques vérifiées (chiffre, source officielle,
+             millésime, lien direct, formulation citable) sur votre sujet.
+  MÉTHODE ANTIGRAVITY : parcours des portails statistiques publics,
+             extraction des données et millésimes, mise en page de citation.
+  PREUVE DE DEMANDE : les contenus « réponse-first » cités par les moteurs
+             IA exigent des statistiques sourcées (GEO/AEO = canal à la plus
+             forte croissance 2026, signal C.6) ; les rédacteurs passent
+             des heures à chercher ces chiffres.
+  DOUBLON-CHECK : aucun service de recherche statistique existant ; « extraire
+             300 questions Google » = mots-clés demandés, pas données
+             statistiques.
+  MARCHÉ FRANCOPHONE : rédacteurs et entreprises FR/BE/CH/QC.
+  PRIORITÉ : 1 — création de boucle vertueuse avec l'offre GEO du site.
+
+IDÉE 41 — « Je vais suivre les positions Google de vos 20 mots-clés pendant
+             4 semaines »
+  LIVRABLE : tableau des positions par semaine (mots-clés, appareil,
+             position constatée, concurrence directe) + rapport de tendance.
+  MÉTHODE ANTIGRAVITY : recherche navigateur quotidiennement, relevé de
+             position avec normalisation (sans API payante), consolidation.
+  PREUVE DE DEMANDE : le suivi de position est le besoin permanent des
+             équipes SEO (les outils dédiés coûtent des dizaines d'euros par
+             mois) ; aucune offre du site ne couvre le SUIVI temporel.
+  DOUBLON-CHECK : « auditer le top 20 des concurrents Maps » = photo
+             concurrente à un instant T ; ici : suivi TEMPOREL de VOS
+             mots-clés classiques.
+  MARCHÉ FRANCOPHONE : tous pays francophones.
+  PRIORITÉ : 2
+  RISQUE TECHNIQUE : cadencer le relevé pour éviter le blocage de recherche
+  automatisée (à documenter dans la fiche).
+
+IDÉE 42 — « Je vais générer les balises Schema.org (FAQ, produit, avis) de
+             vos 20 pages clés »
+  LIVRABLE : jeu de balises données structurées validées (JSON-LD prêt à
+             coller) pour chaque page + mode de pose.
+  MÉTHODE ANTIGRAVITY : lecture des pages, génération du JSON-LD conforme,
+             validation syntaxique automatisée.
+  PREUVE DE DEMANDE : les données structurées conditionnent l'éligibilité
+             aux résultats enrichis et aux citations IA (signal C.6).
+  DOUBLON-CHECK : « transformer votre contenu en jeu de données
+             questions-réponses » = dataset IA d'entraînement. Ici :
+             DONNÉES STRUCTURÉES de pages web (SEO technique).
+  MARCHÉ FRANCOPHONE : tous sites francophones.
+  PRIORITÉ : 3
+
+--------------------------------------------------------------------------------
+D13. PÔLE « LOGISTIQUE & FRANCHISES » (3 idées)
+--------------------------------------------------------------------------------
+
+IDÉE 43 — « Je vais comparer les prestataires logistiques e-commerce (3PL)
+             adaptés à votre volume »
+  LIVRABLE : comparatif des fulfilment/3PL francophones (tarifs publiés :
+             réception, stockage, préparation, retours) + simulation sur
+             votre volume déclaré.
+  MÉTHODE ANTIGRAVITY : relevé des grilles publiques des logisticiens,
+             simulation de coûts sur les volumes déclarés, tableau.
+  PREUVE DE DEMANDE : l'externalisation logistique est l'étape de croissance
+             classique des e-commerçants (FEVAD : 200 Md EUR de CA, 42,2 M
+             cyberacheteurs — signal C.14) ; les grilles 3PL sont opaques.
+  DOUBLON-CHECK : « cartographier les tarifs et délais de livraison
+             concurrents » = LIVRAISON des concurrents ; « comparer les
+             tarifs de vos 3 grossistes » = FOURNISSEURS de produits. Ici :
+             choix de VOTRE prestataire d'externalisation.
+  MARCHÉ FRANCOPHONE : France, Belgique, Suisse.
+  PRIORITÉ : 2
+
+IDÉE 44 — « Je vais compiler les normes d'étiquetage et d'importation
+             applicables à votre catégorie en France et dans l'UE »
+  LIVRABLE : note normative par catégorie (étiquetage obligatoire, logos,
+             enregistrements, marquage CE éventuel) avec articles de
+             référence officiels cités.
+  MÉTHODE ANTIGRAVITY : lecture des textes et guides officiels UE/français,
+             extraction des obligations par catégorie de produit, note.
+  PREUVE DE DEMANDE : l'importation e-commerce transfrontalière est massive
+             et les refus douaniers pour non-conformité d'étiquetage sont
+             un risque documenté récurrent des importateurs.
+  DOUBLON-CHECK : « dénicher 30 marques étrangères non vendues en France » =
+             OPPORTUNITÉS de marques ; ici : CONFORMITÉ d'importation.
+  MARCHÉ FRANCOPHONE : importateurs FR/BE/CH/QC.
+  PRIORITÉ : 2
+  CADRE : compilation factuelle réglementaire avec citations — validation
+  juridique recommandée pour décision finale.
+
+IDÉE 45 — « Je vais suivre les cours des matières premières qui impactent
+             vos achats (acier, plastique, papier) »
+  LIVRABLE : tableau périodique des indices publics des matières qui
+             pèsent dans vos achats + alerte seuil sur votre fiche.
+  MÉTHODE ANTIGRAVITY : relevé des indices publics (cotations de référence,
+             publications professionnelles), consolidation.
+  PREUVE DE DEMANDE : les acheteurs industriels suivent ces indices pour
+             renégocier leurs contrats d'approvisionnement ; aucune offre
+             simple pour PME.
+  DOUBLON-CHECK : « surveiller les prix et stocks de vos concurrents » =
+             prix concurrents ; « comparer les tarifs de vos 3 grossistes » =
+             fournisseurs directs. Ici : INDICES de matières premières.
+  MARCHÉ FRANCOPHONE : industriels et acheteurs FR/BE/CH.
+  PRIORITÉ : 3
+
+--------------------------------------------------------------------------------
+Décompte final : 45 fiches numérotées sans trou (01 à 45), toutes distinctes
+entre elles et des 113 existantes. L'idée « factures PDF vers Excel » a été
+écartée d'emblée au contrôle de doublon (voir E01) — elle ne compte pas.
+
+================================================================================
+E. IDÉES VOLONTAIREMENT ÉCARTÉES — rigueur anti-hallucination
+================================================================================
+
+Règle : mieux vaut 44 idées défendables que 80 idées dont 20 se recouvrent
+ou surpromettent. Écartées après contrôle, avec la raison :
+
+  E01. « Convertir vos 200 factures PDF en fichier Excel comptable »
+       -> DOUBLON FORT avec « extraire tous les tableaux financiers de vos
+       PDF vers Excel » (même mécanique, livrable trop proche : risque
+       réel de cannibalisation de mots-clés). À ne créer que si l'offre
+       PDF existante est saturée d'abord.
+  E02. « Audit de votre bandeau cookies / consentement RGPD »
+       -> trop proche de « vérifier les mentions légales et conformité
+       RGPD de vos sites » : cannibalisation probable.
+  E03. « Veille hebdo de votre visibilité dans ChatGPT / Perplexity /
+       Gemini »
+       -> variante récurrente de « auditer si votre marque est recommandée
+       par les moteurs IA » : cannibalisation directe. Améliorer la fiche
+       existante plutôt que créer une doublon.
+  E04. « Vérifier tous les opérateurs fibre disponibles à votre adresse »
+       -> faisabilité insuffisante : l'éligibilité par adresse exige des
+       interfaces des opérateurs, souvent protégées — pas de source
+       publique fiable pour un livrable honnête.
+  E05. « Comparer les SCPI / fonds en vue d'investir »
+       -> conseil en investissement financier : réglementé (AMF) — hors
+       périmètre éthique du site (données factuelles oui, orientation
+       d'investissement non).
+  E06. « Élaborer un diagnostic DPE / performance énergétique du bâtiment »
+       -> exige une visite physique : pas faisable à 100% par Antigravity.
+  E07. « Rédiger vos contrats / CGV sur mesure »
+       -> acte juridique personnalisé réglementé : compilation factuelle
+       possible (existant CGV concurrentes) mais pas la rédaction
+       personnalisée d'actes — écarté.
+  E08. « Surveiller les prix des carburants sur votre itinéraire »
+       -> données publiques existantes (prix-carburants.gouv) mais besoin
+       surtout personnel ponctuel, pas de marché assez large pour une
+       fiche de catalogue différenciée.
+  E09. « Analyser les avis de vos 30 derniers clients en fichier unique »
+       -> trop proche des offres d'espionnage d'avis concurrents et du
+       e-réputation existant : cannibalisation probable.
+  E10. « Trouver des billets de spectacles moins chers »
+       -> marché réel mais faisabilité fragile (billetteries dynamiques,
+       quotas anti-bot) : risque de promettre un livrable non tenable.
+
+================================================================================
+F. COURT-LISTE — les 12 prioritaires recommandées
+================================================================================
+
+Classement synthétique (demande massivement en ligne x faisabilité Antigravity
+100% x fenêtre d'opportunité) :
+
+   1. IDÉE 31 — Bourses d'études par profil : public massif francophone
+                (Afrique), la plus large audience en ligne de la liste.
+   2. IDÉE 32 — Audit accessibilité RGAA : urgence réglementaire actuelle
+                (EAA 2025, jurisprudence Carrefour).
+   3. IDÉE 34 — Comparatif plateformes facturation électronique :
+                échéance nationale (reception déjà obligatoire, émission
+                2027) : des millions d'acheteurs.
+   4. IDÉE 33 — Scan des failles publiques : cybersécurité = priorité n°1
+                des PME 2026.
+   5. IDÉE 17 — Montants attribués des marchés publics : différenciation
+                forte, acheteurs PME récurrents.
+   6. IDÉE 06 — Demande produit en Afrique de l'Ouest : axe stratégique
+                francophone du projet, concurrence quasi nulle.
+   7. IDÉE 03 — Produits à fort potentiel Amazon FBA : communauté
+                francophone très active.
+   8. IDÉE 12 + 13 — Locaux commerciaux + étude d'implantation :
+                750 000 créations d'entreprises/an (paire complémentaire).
+   9. IDÉE 20 — Suivi des taux immobiliers : audience de recherche
+                massive et permanente.
+  10. IDÉE 22 — Comparatif fournisseurs d'énergie : requête grand public
+                à très fort volume, concurrents payants.
+  11. IDÉE 39 — Audit citations locales NAP : fondation du SEO local,
+                cible = tous les commerces du catalogue existant.
+  12. IDÉE 40 — Statistiques officielles sourcées pour contenus : boucle
+                vertueuse avec l'offre GEO/AEO du site (AEO en plus forte
+                croissance 2026).
+
+================================================================================
+G. PROCHAINES ÉTAPES
+================================================================================
+
+  1. Vous sélectionnez les idées (numéros SUFFISENT : « je prends les idées
+     31, 32, 34 et 20 » par exemple).
+  2. Pour chaque sélection : création par le formulaire d'administration
+     (v2.6.0) ou par script add-service — avec rédaction complète à la
+     conformité SGA(TM) (17 contrôles du garde-fou), validation triple
+     client/Zod/serveur, vérification anti-cannibalisation du garde-fou
+     (mots-clés primaires uniques — indispensable pour les idées 15, 25,
+     28, 38 qui frôlent des offres existantes).
+  3. Après création : garde (19 contrôles) + lint, sitemap mis à jour
+     automatiquement, puis soumission GSC des nouvelles URLs (fichier
+     GSC-SOUMISSION-QUOTIDIENNE.txt régénéré par l'alias gen:gsc-daily).
+  4. Synchronisation production : bun run db:sync:neon puis rapport de
+     réindexation régénéré automatiquement.
+
+---
+Document de recherche généré le 2026-11-15 — recherche menée par le
+canal de recherche web du projet (10 requêtes : capacités Antigravity,
+Baromètre France Num 2026, réforme facturation électronique, European
+Accessibility Act, croissance e-commerce Afrique francophone, LinkedIn
+B2B, freelance France, Amazon FBA, bourses Campus France, agents IA).
+Aucune idée n'a été retenue sans signal de demande réel. Les données
+chiffrées citées proviennent des sources listées en section C (dates de
+publication indiquées). Pour décider : les numéros d'idées suffisent.

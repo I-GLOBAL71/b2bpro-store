@@ -7,6 +7,47 @@
 
 ---
 
+## [2.7.2] — 2026-11-15 — Bibliothèque de 45 idées de services 100% Antigravity (recherche approfondie)
+
+> Demande client : « effectue une recherche approfondie, étape par étape, avec un
+> raisonnement intelligent, afin de dénicher de nouvelles idées de services que
+> nous pouvons réaliser à 100% avec Antigravity comme le catalogue des 113
+> premiers services, et dont le besoin pourra être massif en ligne dans les pays
+> francophones. Répertorie-les dans un fichier .txt, le maximum possible sans
+> toutefois en inventer par hallucination éventuellement. »
+
+### [DONNÉES] — `docs/IDEES-SERVICES-ANTIGRAVITY.txt` : recherche web réelle, croisée et anti-doublon
+- Méthode exécutée dans l'ordre : (1) extraction des 113 services existants
+  depuis la base (14 pôles) pour verrouiller l'anti-cannibalisation ;
+  (2) 10 recherches web ciblées — capacités officielles d'Antigravity
+  (navigateur agentique « browser-in-the-loop », exécution de code, agents
+  multi-étapes, docs antigravity.google), Baromètre France Num 2026,
+  réforme facturation électronique (échéance 1er sept 2026), European
+  Accessibility Act (jurisprudence Carrefour, 500 EUR/jour), marché agents IA
+  (11,78 Md EUR 2026), GEO/AEO (25% des recherches via assistants IA), Afrique
+  francophone (+15,4% e-commerce 2026, +30%/an en Afrique de l'Ouest),
+  LinkedIn B2B (12,6 M France), freelance (≈1 M), Amazon FBA (40% des nouveaux
+  vendeurs hors US), Campus France (379 bourses, frais 105-180 EUR) ;
+  (3) croisement : 45 idées retenues seulement si exécutables à 100% par
+  Antigravity + signal de demande réel + distinctes des 113 existantes ;
+  (4) 10 idées volontairement ÉCARTÉES avec raisons documentées
+  (doublons internes, réglementation AMF, données privées, faisabilité
+  insuffisante) — l'anti-hallucination demandée est la section E entière.
+- Chaque fiche : livrable, méthode Antigravity, preuve de demande sourcée,
+  contrôle de doublon contre le plus proche existant, marché francophone
+  visé, priorité. Court-liste des 12 prioritaires (bourses d'études,
+  audit RGAA/EAA, comparatif PDP facturation électronique, cyberscan,
+  montants attribués marchés publics, Afrique de l'Ouest, FBA, locaux
+  commerciaux/implantation, taux immobiliers, énergie, NAP, stats GEO).
+- Document pur (`docs/`, 1 023 lignes) : zéro modification du site, de la
+  base ou du garde-fou — garde 19/19 vert et lint vert vérifiés quand même.
+  Prochaine étape : le client choisit par numéros d'idées → création via le
+  flux admin v2.6.0 (SGA™ + anti-cannibalisation) → sitemap → GSC → db:sync:neon.
+
+---
+
+
+
 ## [2.7.1] — 2026-11-15 — Synchronisation Neon incrémentale + rapport GSC de réindexation
 
 > Demande client : « effectue dans cet environnement la tâche de synchronisation
