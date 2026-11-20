@@ -32,6 +32,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { slug } = await params;
   const post = await db.blogPost.findUnique({ where: { slug } });
   if (!post) return {};
+  const imageUrl = `${SITE.url}/img/blog/${post.slug}.webp`;
   return {
     title: post.title.slice(0, 68),
     description: post.excerpt.slice(0, 165),
@@ -41,6 +42,20 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
       description: post.excerpt,
       type: "article",
       publishedTime: post.publishedAt.toISOString(),
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: [imageUrl],
     },
   };
 }
@@ -79,6 +94,7 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
     "@type": "Article",
     headline: post.title,
     description: post.excerpt,
+    image: `${SITE.url}/img/blog/${post.slug}.webp`,
     datePublished: post.publishedAt.toISOString(),
     author: {
       "@type": "Organization",
@@ -134,11 +150,16 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
           <p className="mt-4 text-[15.5px] leading-7 text-muted-foreground">{post.excerpt}</p>
         </header>
 
-        <div
-          className="mt-8 h-44 rounded-2xl sm:h-56"
-          style={{ background: `linear-gradient(130deg, ${a.hue[0]}, ${a.hue[1]})` }}
-          aria-hidden="true"
-        />
+        <div className="mt-8 overflow-hidden rounded-2xl border border-border bg-slate-900 shadow-md">
+          <img
+            src={`/img/blog/${post.slug}.webp`}
+            alt={post.title}
+            width={1200}
+            height={630}
+            className="w-full object-cover aspect-[1200/630]"
+            loading="eager"
+          />
+        </div>
 
         <div className="mt-10">
           <Markdown content={content} />

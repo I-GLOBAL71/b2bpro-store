@@ -53,11 +53,15 @@ export default async function BlogPage() {
               href={`/blog/${p.slug}`}
               className="card-hover group flex flex-col overflow-hidden rounded-2xl border border-border bg-card"
             >
-              <div
-                className="relative flex h-44 items-end p-5"
-                style={{ background: `linear-gradient(130deg, ${a.hue[0]}, ${a.hue[1]})` }}
-              >
-                <span className="rounded-full bg-black/30 px-3 py-1 text-[11.5px] font-semibold text-white backdrop-blur-sm">
+              <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-900">
+                <img
+                  src={`/img/blog/${p.slug}.webp`}
+                  alt={p.title}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                <span className="absolute bottom-3 left-3 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-md border border-white/10">
                   {p.category}
                 </span>
               </div>
