@@ -23,7 +23,7 @@
 import { readFileSync, readdirSync } from "fs";
 import { db } from "../src/lib/db";
 
-const BLOG_DIR = "/home/z/my-project/data/blog";
+const BLOG_DIR = "data/blog";
 
 async function main() {
   const files = readdirSync(BLOG_DIR).filter((f) => f.endsWith(".md"));
@@ -71,6 +71,15 @@ async function main() {
     if (svcLinks < 3) problemes.push(`${svcLinks} lien(s) absolu(s) vers /services/ (< 3)`);
     if (cadratins > 0) problemes.push(`${cadratins} cadratin(s)`);
     if (nombresFiges > 0) problemes.push("mention d'un nombre figé de services");
+
+    // [v2.0.0] Vérification anti-lien-cassé : chaque slug /services/<slug> doit exister en base
+    const slugsLies = [...content.matchAll(/https:\/\/b2bpro\.store\/services\/([a-z0-9-]+)/g)].map((m) => m[1]);
+    const slugsUniques = [...new Set(slugsLies)];
+    for (const svcSlug of slugsUniques) {
+      const svc = await db.service.findUnique({ where: { slug: svcSlug }, select: { slug: true } });
+      if (!svc) problemes.push(`lien cassé vers /services/${svcSlug} (slug inexistant)`);
+    }
+
     if (problemes.length) {
       nonConformes.push(`${slug} : ${problemes.join(" ; ")}`);
       continue;

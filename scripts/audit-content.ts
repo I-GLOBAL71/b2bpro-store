@@ -164,8 +164,8 @@ async function main() {
   for (const r of blogResults) {
     lines.push(`| ${r.slug} | ${r.checks.every((c) => c.ok) ? "CONFORME" : "À CORRIGER"} |`);
   }
-  mkdirSync("/home/z/my-project/docs/audits", { recursive: true });
-  const file = `/home/z/my-project/docs/audits/audit-content-${new Date().toISOString().slice(0, 10)}.md`;
+  mkdirSync("docs/audits", { recursive: true });
+  const file = `docs/audits/audit-content-${new Date().toISOString().slice(0, 10)}.md`;
   writeFileSync(file, lines.join("\n") + "\n");
   console.log(`  Rapport détaillé : ${file}`);
 

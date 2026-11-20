@@ -26,7 +26,7 @@ import { buildHumanizedBundle, REAL_POLE_QUERIES } from "./gen/humanize";
 async function main() {
   console.log("→ Lecture du catalogue…");
   const catalog: CatalogService[] = JSON.parse(
-    readFileSync("/home/z/my-project/data/catalog.json", "utf-8")
+    readFileSync("data/catalog.json", "utf-8")
   );
   console.log(`   ${catalog.length} services chargés.`);
 
@@ -280,7 +280,7 @@ async function main() {
 
   // ── 3. Blog ────────────────────────────────────────────────────────────────
   console.log("→ Import des articles de blog…");
-  const blogDir = "/home/z/my-project/data/blog";
+  const blogDir = "data/blog";
   const files = readdirSync(blogDir).filter((f) => f.endsWith(".md"));
   let published = 0;
   for (let i = 0; i < files.length; i++) {

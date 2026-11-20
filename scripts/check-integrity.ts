@@ -6,6 +6,13 @@
  */
 import { runIntegrityChecks, formatReportText } from "../src/lib/guard";
 
-const report = await runIntegrityChecks();
-console.log(formatReportText(report));
-process.exit(report.ok ? 0 : 1);
+async function main() {
+  const report = await runIntegrityChecks();
+  console.log(formatReportText(report));
+  process.exit(report.ok ? 0 : 1);
+}
+
+main().catch((err) => {
+  console.error("Erreur guard:", err);
+  process.exit(1);
+});

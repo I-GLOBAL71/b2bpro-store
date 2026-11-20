@@ -385,8 +385,8 @@ async function main() {
       L.push(`- **${p.slug}** : ${hauts.map((x) => `${x.cat} (${x.detail})`).join(" · ")}`);
     }
   }
-  mkdirSync("/home/z/my-project/docs/audits", { recursive: true });
-  const file = `/home/z/my-project/docs/audits/audit-ai-traces-${new Date().toISOString().slice(0, 10)}.md`;
+  mkdirSync("docs/audits", { recursive: true });
+  const file = `docs/audits/audit-ai-traces-${new Date().toISOString().slice(0, 10)}.md`;
   writeFileSync(file, L.join("\n") + "\n");
   console.log(`\n  Rapport détaillé : ${file}`);
 

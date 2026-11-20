@@ -342,8 +342,8 @@ async function main() {
     const links = r.checks.find((c) => c.id === "blog-internal-links")?.detail ?? "";
     lines.push(`| ${r.slug} | ${words} | ${chars} | ${h2} | ${links} |`);
   }
-  mkdirSync("/home/z/my-project/docs/audits", { recursive: true });
-  const file = `/home/z/my-project/docs/audits/audit-seo-geo-aio-${date}.md`;
+  mkdirSync("docs/audits", { recursive: true });
+  const file = `docs/audits/audit-seo-geo-aio-${date}.md`;
   writeFileSync(file, lines.join("\n") + "\n");
   console.log(`  Rapport détaillé : ${file}`);
   console.log(`  RÉSULTAT : ${failed === 0 && cannibalized.length === 0 ? "✓ intégralité verte" : `✗ ${failed + cannibalized.length} échec(s)`}`);

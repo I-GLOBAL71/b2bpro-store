@@ -615,6 +615,10 @@ export async function runIntegrityChecks(): Promise<IntegrityReport> {
         if ((b.title ?? "").length > 75) problems.push(`titre ${b.title.length} car. (> 75)`);
         const links = ((b.content ?? "").match(/https:\/\/b2bpro\.store\/services\//g) ?? []).length;
         if (links < 3) problems.push(`${links} liens absolus vers /services/ (< 3)`);
+        const serviceSlugs = new Set(services.map((s) => s.slug));
+        const svcMatches = [...((b.content ?? "").matchAll(/https:\/\/b2bpro\.store\/services\/([a-z0-9-]+)/g))].map((m) => m[1]);
+        const invalidSlugs = [...new Set(svcMatches.filter((slug) => !serviceSlugs.has(slug)))];
+        if (invalidSlugs.length > 0) problems.push(`lien(s) cassé(s) vers /services/ : ${invalidSlugs.join(", ")}`);
         const em = (((b.title ?? "") + (b.excerpt ?? "") + (b.content ?? "")).match(/—/g) ?? []).length;
         if (em > 0) problems.push(`${em} cadratin(s)`);
         if (problems.length) issues.push({ ref: `blog/${b.slug}`, problem: problems.join(" ; ") });
