@@ -58,11 +58,11 @@ export default function RootLayout({
     "@type": "Organization",
     name: "b2bpro.store",
     url: SITE.url,
+    logo: `${SITE.url}/apple-touch-icon.png`,
     description: SITE.description,
     areaServed: "Francophonie",
     slogan: SITE.tagline,
     knowsLanguage: ["fr", "en"],
-    sameAs: [],
   };
 
   return (

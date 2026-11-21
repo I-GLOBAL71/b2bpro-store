@@ -34,12 +34,15 @@ export default async function SellerPage({ params }: { params: Promise<Params> }
   const skills = JSON.parse(seller.skills) as string[];
   const languages = JSON.parse(seller.languages) as string[];
 
+  // Note GSC « Extraits d'avis » : `@type: "Person"` n'est pas un parent valide
+  // pour `aggregateRating` (ni dans Google Rich Results, ni dans Schema.org).
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
     name: seller.name,
     jobTitle: seller.title,
     description: seller.bio,
+    url: `${SITE.url}/vendeurs/${seller.slug}`,
     address: {
       "@type": "PostalAddress",
       addressLocality: seller.city,
@@ -48,11 +51,6 @@ export default async function SellerPage({ params }: { params: Promise<Params> }
     knowsLanguage: languages,
     knowsAbout: skills,
     worksFor: { "@type": "Organization", name: "b2bpro.store", url: SITE.url },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: seller.rating,
-      reviewCount: seller.reviewsCount,
-    },
   };
 
   return (

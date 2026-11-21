@@ -96,6 +96,7 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
     description: post.excerpt,
     image: `${SITE.url}/img/blog/${post.slug}.webp`,
     datePublished: post.publishedAt.toISOString(),
+    dateModified: post.publishedAt.toISOString(),
     author: {
       "@type": "Organization",
       name: post.author,
@@ -105,6 +106,10 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
       "@type": "Organization",
       name: "b2bpro.store",
       url: SITE.url,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE.url}/apple-touch-icon.png`,
+      },
     },
     mainEntityOfPage: `${SITE.url}/blog/${post.slug}`,
     inLanguage: "fr",

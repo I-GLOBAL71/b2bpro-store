@@ -218,7 +218,11 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
     return { star, count };
   });
 
-  // JSON-LD enrichi (Service + Offer + AggregateRating + FAQPage + Breadcrumb)
+  // JSON-LD enrichi (Service + Offer, Product + AggregateRating, FAQPage, Breadcrumb)
+  // Note GSC « Extraits d'avis » : Google n'autorise pas `aggregateRating` sur `@type: "Service"`
+  // (erreur critique : « Type d'objet non valide pour le champ <parent_node> »).
+  // `aggregateRating` est donc porté exclusivement par `@type: "Product"`, seul parent reconnu
+  // par Google Rich Results pour afficher les étoiles d'avis dans la SERP.
   const jsonLd = [
     {
       "@context": "https://schema.org",
@@ -247,20 +251,15 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
         availability: "https://schema.org/InStock",
         url: `${SITE.url}/services/${svc.slug}`,
       },
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: svc.rating,
-        reviewCount: svc.reviewsCount,
-        bestRating: 5,
-        worstRating: 1,
-      },
     },
     {
       "@context": "https://schema.org",
       "@type": "Product",
       name: svc.title,
       description: svc.shortDesc,
+      url: `${SITE.url}/services/${svc.slug}`,
       image: primaryThumb,
+      sku: svc.slug,
       brand: { "@type": "Brand", name: "b2bpro.store" },
       offers: {
         "@type": "Offer",
@@ -269,11 +268,48 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
         availability: "https://schema.org/InStock",
         // Lien vers la fiche : boucle Offer → Product → page canonique.
         url: `${SITE.url}/services/${svc.slug}`,
+        hasMerchantReturnPolicy: {
+          "@type": "MerchantReturnPolicy",
+          applicableCountry: "FR",
+          returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+          merchantReturnDays: 14,
+          returnMethod: "https://schema.org/ReturnByMail",
+          returnFees: "https://schema.org/FreeReturn",
+        },
+        shippingDetails: {
+          "@type": "OfferShippingDetails",
+          shippingRate: {
+            "@type": "MonetaryAmount",
+            value: 0,
+            currency: "EUR",
+          },
+          shippingDestination: {
+            "@type": "DefinedRegion",
+            addressCountry: "FR",
+          },
+          deliveryTime: {
+            "@type": "ShippingDeliveryTime",
+            handlingTime: {
+              "@type": "QuantitativeValue",
+              minValue: 0,
+              maxValue: 1,
+              unitCode: "DAY",
+            },
+            transitTime: {
+              "@type": "QuantitativeValue",
+              minValue: 1,
+              maxValue: svc.deliveryDays,
+              unitCode: "DAY",
+            },
+          },
+        },
       },
       aggregateRating: {
         "@type": "AggregateRating",
         ratingValue: svc.rating,
         reviewCount: svc.reviewsCount,
+        bestRating: 5,
+        worstRating: 1,
       },
     },
     {
