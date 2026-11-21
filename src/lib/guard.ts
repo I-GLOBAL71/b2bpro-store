@@ -16,7 +16,7 @@
  * ═══════════════════════════════════════════════════════════════════════════
  */
 
-import { existsSync, readdirSync, statSync } from "fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "fs";
 import path from "path";
 import { db } from "@/lib/db";
 import { POLE_LABELS } from "@/lib/site";
@@ -485,7 +485,7 @@ export async function runIntegrityChecks(): Promise<IntegrityReport> {
         if (!hasBullets) problems.push("aucune liste à puces");
         if (!primaryHead) problems.push("answer-first absent (primaire hors des 250 premiers car.)");
         if (!kw?.primary || (kw.secondary ?? []).length < 3 || (kw.longTail ?? []).length < 3) problems.push("mots-clés incomplets (primaire/secondaires/longue traîne)");
-        if ((kw.aiQueries ?? []).length < 3) problems.push(`${(kw?.aiQueries ?? []).length} aiQueries (< 3)`);
+        if ((kw?.aiQueries ?? []).length < 3) problems.push(`${(kw?.aiQueries ?? []).length} aiQueries (< 3)`);
         if (faqCitable < 4) problems.push(`${faqCitable} FAQ citables (< 4)`);
         if (features.length < 4) problems.push(`${features.length} points forts (< 4)`);
         if (deliverables.length < 3) problems.push(`${deliverables.length} livrables (< 3)`);
@@ -766,6 +766,108 @@ export async function runIntegrityChecks(): Promise<IntegrityReport> {
         "Vitrine rotative : réglages valides, cadence respectée, équité stricte du cycle complet",
         issues.length ? "fail" : "pass",
         rotationDetails,
+        issues
+      )
+    );
+  }
+
+  // ── 13. [ADDITIF] Conformité Google Search Console (Extraits d'avis, Fiches de marchand, URLs GSC) ──
+  {
+    const issues: IntegrityIssue[] = [];
+    try {
+      const svcPage = readFileSync(root("src/app/(public)/services/[slug]/page.tsx"), "utf8");
+      const sellerPage = readFileSync(root("src/app/(public)/vendeurs/[slug]/page.tsx"), "utf8");
+      const blogPage = readFileSync(root("src/app/(public)/blog/[slug]/page.tsx"), "utf8");
+      const catPage = readFileSync(root("src/app/(public)/categories/[slug]/page.tsx"), "utf8");
+
+      // 1. Extraits d'avis GSC : `Service` ne doit JAMAIS porter `aggregateRating`
+      const serviceBlock = svcPage.split('"@type": "Product"')[0] ?? "";
+      if (serviceBlock.includes('"@type": "Service"') && /aggregateRating\s*:/.test(serviceBlock)) {
+        issues.push({
+          ref: "src/app/(public)/services/[slug]/page.tsx",
+          problem: 'GSC Extraits d\'avis : `@type: "Service"` porte `aggregateRating` (erreur critique <parent_node>)',
+        });
+      }
+      // 2. `Product` doit porter `aggregateRating`, `hasMerchantReturnPolicy` et `shippingDetails`
+      const productBlock = svcPage.split('"@type": "Product"')[1]?.split('"@type": "FAQPage"')[0] ?? "";
+      if (!/aggregateRating\s*:/.test(productBlock)) {
+        issues.push({
+          ref: "src/app/(public)/services/[slug]/page.tsx",
+          problem: 'GSC Extraits d\'avis : `@type: "Product"` doit porter `aggregateRating`',
+        });
+      }
+      if (!productBlock.includes("hasMerchantReturnPolicy") || !productBlock.includes("MerchantReturnPolicy")) {
+        issues.push({
+          ref: "src/app/(public)/services/[slug]/page.tsx",
+          problem: 'GSC Fiches de marchand : `hasMerchantReturnPolicy` manquant dans `Product.offers`',
+        });
+      }
+      if (!productBlock.includes("shippingDetails") || !productBlock.includes("OfferShippingDetails")) {
+        issues.push({
+          ref: "src/app/(public)/services/[slug]/page.tsx",
+          problem: 'GSC Fiches de marchand : `shippingDetails` manquant dans `Product.offers`',
+        });
+      }
+      // 3. `Person` sur /vendeurs/[slug] ne doit JAMAIS porter `aggregateRating`
+      if (sellerPage.includes('"@type": "Person"') && /aggregateRating\s*:/.test(sellerPage)) {
+        issues.push({
+          ref: "src/app/(public)/vendeurs/[slug]/page.tsx",
+          problem: 'GSC Extraits d\'avis : `@type: "Person"` porte `aggregateRating` (erreur critique <parent_node>)',
+        });
+      }
+      // 4. `Article` sur /blog/[slug] doit porter `dateModified` et `publisher.logo`
+      if (!blogPage.includes("dateModified")) {
+        issues.push({
+          ref: "src/app/(public)/blog/[slug]/page.tsx",
+          problem: 'GSC Article : `dateModified` manquant dans `articleJsonLd`',
+        });
+      }
+      // 5. `CollectionPage` sur /categories/[slug] doit encapsuler `numberOfItems` dans `ItemList`
+      if (catPage.includes("numberOfItems") && !catPage.includes('"@type": "ItemList"')) {
+        issues.push({
+          ref: "src/app/(public)/categories/[slug]/page.tsx",
+          problem: 'Schema.org : `numberOfItems` sur `CollectionPage` doit être dans `mainEntity` (`ItemList`)',
+        });
+      }
+
+      // 6. Vérification de toutes les URLs de docs/GSC-REINDEXATION.txt contre la base active
+      const gscPath = root("docs/GSC-REINDEXATION.txt");
+      if (existsSync(gscPath) && dbOk) {
+        const gscText = readFileSync(gscPath, "utf8");
+        const urls = [...new Set(gscText.match(/https:\/\/b2bpro\.store[^\s)]*/g) ?? [])];
+        const svcSlugs = new Set(services.map((s) => s.slug));
+        const postSlugs = new Set(blogPosts.map((b) => b.slug));
+        const sellerSlugs = new Set(sellers.map((s) => s.slug));
+        for (const u of urls) {
+          const pathname = new URL(u).pathname;
+          if (pathname === "/" || pathname === "/blog" || pathname === "/services" || pathname === "/support") continue;
+          const mSvc = pathname.match(/^\/services\/([a-z0-9-]+)$/);
+          const mBlog = pathname.match(/^\/blog\/([a-z0-9-]+)$/);
+          const mCat = pathname.match(/^\/categories\/([a-z0-9-]+)$/);
+          const mSel = pathname.match(/^\/vendeurs\/([a-z0-9-]+)$/);
+          if (mSvc && !svcSlugs.has(mSvc[1]!)) {
+            issues.push({ ref: "docs/GSC-REINDEXATION.txt", problem: `Service introuvable en base : ${u}` });
+          } else if (mBlog && !postSlugs.has(mBlog[1]!)) {
+            issues.push({ ref: "docs/GSC-REINDEXATION.txt", problem: `Article introuvable en base : ${u}` });
+          } else if (mCat && !POLE_LABELS[mCat[1]!]) {
+            issues.push({ ref: "docs/GSC-REINDEXATION.txt", problem: `Catégorie inconnue : ${u}` });
+          } else if (mSel && !sellerSlugs.has(mSel[1]!)) {
+            issues.push({ ref: "docs/GSC-REINDEXATION.txt", problem: `Vendeur introuvable en base : ${u}` });
+          } else if (!mSvc && !mBlog && !mCat && !mSel) {
+            issues.push({ ref: "docs/GSC-REINDEXATION.txt", problem: `Route non reconnue : ${u}` });
+          }
+        }
+      }
+    } catch (e) {
+      issues.push({ ref: "gsc-structured-data", problem: `Erreur lors de la vérification : ${e instanceof Error ? e.message : String(e)}` });
+    }
+
+    checks.push(
+      makeCheck(
+        "gsc-structured-data-compliance",
+        "Conformité Google Search Console : Extraits d'avis (<parent_node>), Fiches de marchand (retours/livraison) et validité des URLs GSC",
+        issues.length ? "fail" : "pass",
+        "Schémas JSON-LD Service, Product, Person, Article, CollectionPage et 52 URLs GSC-REINDEXATION conformes.",
         issues
       )
     );

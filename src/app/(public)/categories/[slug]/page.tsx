@@ -6,7 +6,7 @@ import { ServiceCard } from "@/components/site/service-card";
 import { parseThumbUrls } from "@/lib/contracts";
 import { PoleIcon } from "@/components/site/pole-icon";
 import { getServices } from "@/lib/queries";
-import { POLE_LABELS, POLE_DESCRIPTIONS, POLE_ICONS, POLE_ACCENTS, POLE_DESCRIPTIONS as POLE_DESC } from "@/lib/site";
+import { POLE_LABELS, POLE_DESCRIPTIONS, POLE_ICONS, POLE_ACCENTS, POLE_DESCRIPTIONS as POLE_DESC, SITE } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -37,7 +37,17 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
     "@type": "CollectionPage",
     name: `${POLE_LABELS[slug]} | b2bpro.store`,
     description: POLE_DESCRIPTIONS[slug],
-    numberOfItems: total,
+    url: `${SITE.url}/categories/${slug}`,
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: items.length,
+      itemListElement: items.map((s, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: s.title,
+        url: `${SITE.url}/services/${s.slug}`,
+      })),
+    },
   };
 
   return (

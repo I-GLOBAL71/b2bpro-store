@@ -1,6 +1,6 @@
 # Audit élite SEO/GEO/AIO — 2026-11-21
 
-**113 services** · **32 articles** · 1955 contrôles · 0 échec(s) · 4 avertissement(s).
+**113 services** · **52 articles** · 2115 contrôles · 0 échec(s) · 4 avertissement(s).
 
 ## Fiches en échec
 
@@ -53,3 +53,23 @@ _Aucun._
 | veille-tarifaire-ecommerce-ajuster-prix | 998 | 6809 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
 | audit-google-maps-etablissement-local | 1022 | 7018 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
 | trouver-nano-influenceurs-tiktok-instagram | 993 | 6830 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
+| dataset-questions-reponses-faq-ia | 951 | 6546 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
+| signaux-affaires-entreprises-recrutent-b2b | 1049 | 6986 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
+| meilleures-ventes-amazon-produits-gagnants | 1124 | 7208 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
+| rentabilite-brute-immobiliere-calcul-rendement | 1068 | 6841 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
+| videos-youtube-plus-vues-formats-b2b | 1019 | 6653 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
+| levees-fonds-startups-opportunites-commerciales | 1040 | 6966 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
+| frais-livraison-delais-ecommerce-benchmark | 957 | 6000 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
+| annonces-immobilieres-prix-baisse-negociation | 924 | 6178 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
+| trouver-micro-influenceurs-vrai-taux-engagement | 908 | 6189 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
+| avis-glassdoor-salaires-concurrents-marque-employeur | 945 | 6581 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
+| conformite-rgpd-mentions-legales-securisation | 1002 | 6842 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
+| veille-brevets-inpi-protection-innovations | 932 | 6624 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
+| tarifs-ecoles-organismes-formation-benchmark | 968 | 6390 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
+| visibilite-centres-sante-parcours-patient | 937 | 6562 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
+| couts-transporteurs-fret-negociation-contrats | 938 | 6338 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
+| permis-construire-declarations-travaux-immobilier | 1189 | 7907 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
+| aides-subventions-publiques-entreprises-financement | 1053 | 7359 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
+| escrow-paiement-securise-b2b-retenue-fonds | 1072 | 7242 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
+| codes-promo-concurrents-veille-remises-ecommerce | 1125 | 7411 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
+| recommandations-marques-moteurs-ia-chatgpt-perplexity | 957 | 6672 | 5 H2 | 3 lien(s) absolu(s) vers /services/ |
