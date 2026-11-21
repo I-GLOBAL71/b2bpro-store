@@ -737,9 +737,14 @@ async function main() {
     audits.push(audit);
     totalScoreSum += audit.totalScore;
 
-    if (audit.criticalFailures.length > 0) failureCount++;
-    else if (audit.warnings.length > 0) warningCount++;
-    else perfectCount++;
+    if (audit.criticalFailures.length > 0 || audit.grade === "F") {
+      failureCount++;
+    } else if (audit.grade === "S+" || audit.grade === "A") {
+      perfectCount++;
+      if (audit.warnings.length > 0) warningCount++;
+    } else {
+      warningCount++;
+    }
 
     const gradeColor =
       audit.grade === "S+"
