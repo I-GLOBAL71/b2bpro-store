@@ -7,4 +7,4 @@
 
 | Rang | Score | Slug | Mots | SEO (30) | GEO (25) | Humain (25) | CRO (10) | Médias (10) | Statut |
 |---|---|---|---|---|---|---|---|---|---|
-| **S+** | **98/100** | `annonces-immobilieres-prix-baisse-negociation` | 924 | 28/30 | 25/25 | 25/25 | 10/10 | 10/10 | ✓ Validé |
+| **S+** | **98/100** | `couts-transporteurs-fret-negociation-contrats` | 938 | 28/30 | 25/25 | 25/25 | 10/10 | 10/10 | ✓ Validé |

@@ -250,5 +250,35 @@
     "localPath": "/img/blog/avis-glassdoor-salaires-concurrents-marque-employeur.webp",
     "blobUrl": "https://lr22nex73oduip5n.public.blob.vercel-storage.com/blog/avis-glassdoor-salaires-concurrents-marque-employeur.webp",
     "bytes": 29902
+  },
+  "conformite-rgpd-mentions-legales-securisation": {
+    "slug": "conformite-rgpd-mentions-legales-securisation",
+    "localPath": "/img/blog/conformite-rgpd-mentions-legales-securisation.webp",
+    "blobUrl": "https://lr22nex73oduip5n.public.blob.vercel-storage.com/blog/conformite-rgpd-mentions-legales-securisation.webp",
+    "bytes": 31052
+  },
+  "veille-brevets-inpi-protection-innovations": {
+    "slug": "veille-brevets-inpi-protection-innovations",
+    "localPath": "/img/blog/veille-brevets-inpi-protection-innovations.webp",
+    "blobUrl": "https://lr22nex73oduip5n.public.blob.vercel-storage.com/blog/veille-brevets-inpi-protection-innovations.webp",
+    "bytes": 29848
+  },
+  "tarifs-ecoles-organismes-formation-benchmark": {
+    "slug": "tarifs-ecoles-organismes-formation-benchmark",
+    "localPath": "/img/blog/tarifs-ecoles-organismes-formation-benchmark.webp",
+    "blobUrl": "https://lr22nex73oduip5n.public.blob.vercel-storage.com/blog/tarifs-ecoles-organismes-formation-benchmark.webp",
+    "bytes": 30656
+  },
+  "visibilite-centres-sante-parcours-patient": {
+    "slug": "visibilite-centres-sante-parcours-patient",
+    "localPath": "/img/blog/visibilite-centres-sante-parcours-patient.webp",
+    "blobUrl": "https://lr22nex73oduip5n.public.blob.vercel-storage.com/blog/visibilite-centres-sante-parcours-patient.webp",
+    "bytes": 29672
+  },
+  "couts-transporteurs-fret-negociation-contrats": {
+    "slug": "couts-transporteurs-fret-negociation-contrats",
+    "localPath": "/img/blog/couts-transporteurs-fret-negociation-contrats.webp",
+    "blobUrl": "https://lr22nex73oduip5n.public.blob.vercel-storage.com/blog/couts-transporteurs-fret-negociation-contrats.webp",
+    "bytes": 31458
   }
 }
