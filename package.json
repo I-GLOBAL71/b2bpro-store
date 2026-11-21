@@ -19,6 +19,7 @@
     "guard": "bun run scripts/check-integrity.ts",
     "audit:content": "bun run scripts/audit-content.ts",
     "audit:seo": "bun run scripts/audit-seo-geo-aio.ts",
+    "audit:blog": "pnpm dlx tsx --env-file=.env scripts/verify-blog-elite.ts",
     "migrate:elite": "bun run scripts/migrate-elite-seo.ts",
     "add:blog": "bun run scripts/add-blog.ts",
     "migrate:content-v12": "bun run scripts/migrate-content-v12.ts",
