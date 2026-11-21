@@ -76,7 +76,19 @@ function parseMarkdownFile(filePath: string): { frontmatter: Record<string, stri
   const fmRaw = match[1];
   const content = match[2].trim();
   const frontmatter: Record<string, string> = {};
+  let currentKey = "";
   for (const line of fmRaw.split("\n")) {
+    const trimmed = line.trim();
+    if (trimmed.startsWith("- ")) {
+      let item = trimmed.slice(2).trim();
+      if ((item.startsWith('"') && item.endsWith('"')) || (item.startsWith("'") && item.endsWith("'"))) {
+        item = item.slice(1, -1);
+      }
+      if (currentKey) {
+        frontmatter[currentKey] = frontmatter[currentKey] ? `${frontmatter[currentKey]}, ${item}` : item;
+      }
+      continue;
+    }
     const p = line.indexOf(":");
     if (p !== -1) {
       const key = line.slice(0, p).trim();
@@ -84,6 +96,7 @@ function parseMarkdownFile(filePath: string): { frontmatter: Record<string, stri
       if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
         val = val.slice(1, -1);
       }
+      currentKey = key;
       frontmatter[key] = val;
     }
   }
