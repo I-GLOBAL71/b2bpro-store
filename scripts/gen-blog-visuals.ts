@@ -389,6 +389,7 @@ async function main() {
           access: "public",
           contentType: "image/webp",
           addRandomSuffix: false,
+          allowOverwrite: true,
         });
         blobUrl = res.url;
       } catch (err) {
