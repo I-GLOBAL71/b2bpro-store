@@ -1,8 +1,16 @@
 const { PrismaClient } = require("@prisma/client");
 const { Client } = require("pg");
 
-const NEON_URL = process.env.DATABASE_URL_NEON ||
-  "postgresql://neondb_owner:npg_FJwsMQ9lY0dI@ep-still-cloud-b98pa22j-pooler.c-7.eu-central-1.aws.neon.tech/neondb?sslmode=require";
+const NEON_URL =
+  process.env.DATABASE_URL_NEON ||
+  process.env.NEON_DATABASE_URL ||
+  (process.env.DATABASE_URL && process.env.DATABASE_URL.startsWith("postgres") ? process.env.DATABASE_URL : undefined);
+
+if (!NEON_URL) {
+  console.error("❌ ERREUR CONFIGURATION : Aucune variable d'environnement DATABASE_URL_NEON ou NEON_DATABASE_URL n'est définie.");
+  console.error("Veuillez définir DATABASE_URL_NEON dans votre fichier .env ou vos variables d'environnement.");
+  process.exit(1);
+}
 
 const prisma = new PrismaClient();
 
