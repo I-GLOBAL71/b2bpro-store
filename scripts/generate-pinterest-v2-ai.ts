@@ -191,8 +191,8 @@ function esc(str: string): string {
     .replace(/'/g, "&apos;");
 }
 
-// Nettoyage ultra-court et percutant pour le titre (1 à 2 lignes max en HAUT)
-function makeUltraPunchyHook(rawTitle: string): { titleShort: string; subBadge: string } {
+// Découpage intégral et intelligent du titre SANS AUCUNE COUPURE
+function wrapFullTitle(rawTitle: string): { lines: string[]; fontSize: number; subBadge: string } {
   let title = rawTitle
     .replace(/^Je vais /i, "")
     .replace(/^Nous allons /i, "")
@@ -200,24 +200,36 @@ function makeUltraPunchyHook(rawTitle: string): { titleShort: string; subBadge: 
 
   title = title.charAt(0).toUpperCase() + title.slice(1);
 
-  // Synthèse ultra-impactante
-  if (title.length > 38) {
-    const parts = title.split(/ pour | avec | dans | sur | et | d'un | de vos /i);
-    if (parts[0].length >= 12 && parts[0].length <= 36) {
-      return {
-        titleShort: parts[0].toUpperCase(),
-        subBadge: parts.slice(1).join(" ").substring(0, 32) || "Livré clé en main en 24h"
-      };
+  const words = title.split(/\s+/);
+  const maxChars = 30;
+  const lines: string[] = [];
+  let cur = "";
+
+  for (const w of words) {
+    const cand = cur ? `${cur} ${w}` : w;
+    if (cand.length <= maxChars) {
+      cur = cand;
+    } else {
+      if (cur) lines.push(cur.toUpperCase());
+      cur = w;
     }
-    return {
-      titleShort: title.substring(0, 36).toUpperCase() + "…",
-      subBadge: "Livrable garanti · 0 friction"
-    };
+  }
+  if (cur) lines.push(cur.toUpperCase());
+
+  // Détermination de la taille de police adaptée
+  let fontSize = 42;
+  if (lines.length >= 3) {
+    fontSize = 37;
+  } else if (lines.length === 2 && lines.some(l => l.length > 27)) {
+    fontSize = 40;
+  } else if (lines.length === 1) {
+    fontSize = 48;
   }
 
   return {
-    titleShort: title.toUpperCase(),
-    subBadge: "Livrable complet & garanti 100%"
+    lines,
+    fontSize,
+    subBadge: "LIVRABLE CLÉ EN MAIN · PRÊT EN 24H · 100% GARANTI"
   };
 }
 
@@ -427,7 +439,7 @@ function generateAIPinSvg(service: any, index: number): { svg: string; theme: AI
   const themeKeys = Object.keys(AI_THEMES);
   const theme = AI_THEMES[themeKeys[index % themeKeys.length]];
 
-  const hook = makeUltraPunchyHook(service.title);
+  const hook = wrapFullTitle(service.title);
   const benefits = extractQuickBenefits(service);
   const price = service.basePrice || 25;
   const rating = Number(service.rating || 4.8).toFixed(1);
@@ -493,7 +505,7 @@ function generateAIPinSvg(service: any, index: number): { svg: string; theme: AI
     </g>
 
     <!-- ==================== TOP MINIMAL HEADER ==================== -->
-    <g transform="translate(0, 85)">
+    <g transform="translate(0, 80)">
       <!-- Board / Category Tech Pill -->
       <rect x="70" y="0" width="460" height="42" rx="21" fill="${theme.primaryNeon}" fill-opacity="0.12" stroke="${theme.primaryNeon}" stroke-width="1.5"/>
       <circle cx="95" cy="21" r="5" fill="${theme.primaryNeon}"/>
@@ -508,17 +520,22 @@ function generateAIPinSvg(service: any, index: number): { svg: string; theme: AI
       </text>
     </g>
 
-    <!-- ==================== SHORT PUNCHY TITLE (MAX 1-2 LINES) ==================== -->
-    <g transform="translate(70, 185)">
-      <!-- High-Impact Main Hook -->
-      <text x="0" y="45" font-family="'Plus Jakarta Sans', -apple-system, sans-serif" font-size="52" font-weight="900" fill="#ffffff" letter-spacing="-1">
-        ${esc(hook.titleShort)}
-      </text>
+    <!-- ==================== TITRE INTÉGRAL & ACCROCHEUR (SANS COUPURE) ==================== -->
+    <g transform="translate(70, 155)">
+      ${hook.lines
+        .map(
+          (line: string, i: number) => `
+        <text x="0" y="${40 + i * (hook.fontSize + 9)}" font-family="'Plus Jakarta Sans', -apple-system, sans-serif" font-size="${hook.fontSize}" font-weight="900" fill="#ffffff" letter-spacing="-0.5">
+          ${esc(line)}
+        </text>
+      `
+        )
+        .join("")}
 
       <!-- Sub-headline Pill Badge -->
-      <g transform="translate(0, 85)">
-        <rect width="520" height="40" rx="8" fill="#ffffff" fill-opacity="0.08" stroke="${theme.secondaryNeon}" stroke-width="1"/>
-        <text x="20" y="26" font-family="'Plus Jakarta Sans', sans-serif" font-size="17" font-weight="700" fill="${theme.secondaryNeon}">
+      <g transform="translate(0, ${40 + hook.lines.length * (hook.fontSize + 9) + 12})">
+        <rect width="600" height="38" rx="8" fill="#ffffff" fill-opacity="0.08" stroke="${theme.secondaryNeon}" stroke-width="1"/>
+        <text x="20" y="24" font-family="'Plus Jakarta Sans', sans-serif" font-size="15" font-weight="800" fill="${theme.secondaryNeon}">
           ⚡ ${esc(hook.subBadge)}
         </text>
       </g>
@@ -530,11 +547,11 @@ function generateAIPinSvg(service: any, index: number): { svg: string; theme: AI
     </g>
 
     <!-- ==================== 3 ULTRA-CONCISE BULLET POINTS ==================== -->
-    <g transform="translate(80, 1050)">
+    <g transform="translate(80, 1035)">
       ${benefits
         .map(
           (b, i) => `
-        <g transform="translate(0, ${i * 64})">
+        <g transform="translate(0, ${i * 62})">
           <!-- Neon Check Icon -->
           <circle cx="24" cy="22" r="18" fill="${theme.primaryNeon}" fill-opacity="0.2"/>
           <circle cx="24" cy="22" r="12" fill="${theme.primaryNeon}"/>
@@ -551,7 +568,7 @@ function generateAIPinSvg(service: any, index: number): { svg: string; theme: AI
     </g>
 
     <!-- ==================== MAGNETIC CALL TO ACTION BUTTON ==================== -->
-    <g transform="translate(70, 1265)" filter="url(#btnPulse)">
+    <g transform="translate(70, 1250)" filter="url(#btnPulse)">
       <!-- Button Base -->
       <rect width="860" height="106" rx="53" fill="url(#aiBtnGrad)"/>
       <rect x="2" y="2" width="856" height="102" rx="51" fill="none" stroke="#ffffff" stroke-width="1.8" opacity="0.4"/>
@@ -563,7 +580,7 @@ function generateAIPinSvg(service: any, index: number): { svg: string; theme: AI
     </g>
 
     <!-- ==================== TECH SECURITY FOOTER ==================== -->
-    <g transform="translate(0, 1435)">
+    <g transform="translate(0, 1425)">
       <text x="500" y="0" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="${theme.textMuted}" text-anchor="middle">
         🛡️ Paiement Séquestré · Retouches Incluses · Vendeur Vérifié · Support 7j/7
       </text>
@@ -626,14 +643,15 @@ export async function runPinterestV2Engine(requestedCount = 100) {
         const rating = Number(service.rating || 4.8).toFixed(1);
         const salesCount = service.salesCount || 150;
 
-        // Titre ultra-accrocheur (< 100 chars)
-        let pinTitle = `⚡ ${hook.titleShort} | ${hook.subBadge} (Dès ${service.basePrice}€)`;
+        // Titre ultra-accrocheur (< 100 chars) sans coupure brutale
+        const fullTitleClean = hook.lines.join(" ");
+        let pinTitle = `⚡ ${fullTitleClean} - Dès ${service.basePrice}€`;
         if (pinTitle.length > 95) {
           pinTitle = pinTitle.substring(0, 92) + "…";
         }
 
         // Description engageante et orientée conversion immédiate
-        const pinDesc = `🚀 Automatisez et boostez votre activité : ${hook.titleShort}. Obtenez un livrable clé en main dès ${service.basePrice} € garanti : 1) ${benefits[0]} 2) ${benefits[1]} 3) ${benefits[2]}. Vendeur noté ${rating}/5 (${salesCount}+ commandes). Paiement 100% séquestré jusqu'à validation. 👉 Cliquez sur l'image pour commander en 1 clic sur b2bpro.store ! ${boardInfo.hashtags.join(" ")}`;
+        const pinDesc = `🚀 Automatisez et boostez votre activité : ${fullTitleClean}. Obtenez un livrable clé en main dès ${service.basePrice} € garanti : 1) ${benefits[0]} 2) ${benefits[1]} 3) ${benefits[2]}. Vendeur noté ${rating}/5 (${salesCount}+ commandes). Paiement 100% séquestré jusqu'à validation. 👉 Cliquez sur l'image pour commander en 1 clic sur b2bpro.store ! ${boardInfo.hashtags.join(" ")}`;
 
         // URL GitHub Raw directe (accessible publiquement avec le dépôt en public)
         const rawGithubUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/public/pinterest/pins-v2/${filename}`;
