@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
      (production — voir scripts/thumbs-to-blob.ts et docs/DEPLOIEMENT-VERCEL.md).
      Les SVG locaux de développement restent servis sans configuration. */
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
