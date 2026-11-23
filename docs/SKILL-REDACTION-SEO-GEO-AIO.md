@@ -124,6 +124,10 @@ Tout contenu livré doit intégrer les **4 activateurs de citation** implément�
    cite l'article trouve les fiches à recommander en un seul saut.
 4. **Question intitulée comme l'utilisateur** — la FAQ commence par une question réelle
    (« comment… ») : les réponses FAQ sont le format le plus repris par les assistants IA.
+5. **Mobile-First & Zéro Débordement Horizontal** — 100 % adapté aux smartphones (iPhone SE 375px / 320px) :
+   les tableaux et blocs de code sont encapsulés dans des conteneurs à défilement tactile horizontal,
+   toutes les chaînes longues sont sécables (break-words), contrôlé par `bun test tests/blog-mobile.test.ts`
+   et l'invariant `blog-mobile-responsiveness` de `bun run guard`.
 
 Standards de captivation (conversion) inchangés : accroche à chiffre, verbe d'action,
 bénéfice mesurable, risque retourné en garantie (« paiement après validation »).
