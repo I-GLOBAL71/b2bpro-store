@@ -36,7 +36,14 @@
     "blog:visuals": "pnpm dlx tsx --env-file=.env scripts/gen-blog-visuals.ts",
     "daily:plan": "bun run scripts/schedule-daily-editorial.ts",
     "daily:publish": "bun run scripts/publish-daily-pair.ts",
-    "daily:auto": "bun run scripts/auto-daily-runner.ts"
+    "daily:auto": "bun run scripts/auto-daily-runner.ts",
+    "gsc:submit": "bun run scripts/gsc-sync.ts --sitemaps",
+    "gsc:sync": "bun run scripts/gsc-sync.ts --recent 5",
+    "gsc:all": "bun run scripts/gsc-sync.ts --all",
+    "gsc:list": "bun run scripts/gsc-sync.ts --list",
+    "gsc:inspect": "bun run scripts/gsc-sync.ts --inspect",
+    "flow:prompts": "tsx scripts/generate-flow-prompts-json.ts",
+    "flow:process": "tsx scripts/process-flow-visuals.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
