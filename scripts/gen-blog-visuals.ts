@@ -8,7 +8,7 @@
  * 4. Si BLOB_READ_WRITE_TOKEN est défini : téléverse directement sur Vercel Blob (blog/<slug>.webp).
  */
 
-import { existsSync, mkdirSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, writeFileSync, readdirSync, readFileSync } from "fs";
 import path from "path";
 import sharp from "sharp";
 import { put } from "@vercel/blob";
@@ -352,6 +352,33 @@ async function main() {
     select: { slug: true, title: true, category: true, readMinutes: true, coverTheme: true },
     orderBy: { publishedAt: "asc" },
   });
+
+  // Compléter avec les articles en cours de rédaction dans data/blog/
+  const blogDir = path.join(process.cwd(), "data", "blog");
+  if (existsSync(blogDir)) {
+    const mdFiles = readdirSync(blogDir).filter((f) => f.endsWith(".md"));
+    for (const f of mdFiles) {
+      const slug = f.replace(".md", "");
+      if (!posts.some((p) => p.slug === slug)) {
+        try {
+          const raw = readFileSync(path.join(blogDir, f), "utf8");
+          const titleM = raw.match(/title:\s*"?(.*?)"?\r?\n/);
+          const catM = raw.match(/category:\s*"?(.*?)"?\r?\n/);
+          const themeM = raw.match(/coverTheme:\s*"?(.*?)"?\r?\n/);
+          const minM = raw.match(/readMinutes:\s*(\d+)/);
+          posts.push({
+            slug,
+            title: titleM ? titleM[1] : slug,
+            category: catM ? catM[1] : "SEO & Visibilité IA",
+            coverTheme: themeM ? themeM[1] : "purple",
+            readMinutes: minM ? parseInt(minM[1], 10) : 6,
+          });
+        } catch {
+          // ignore
+        }
+      }
+    }
+  }
 
   console.log(`→ Traitement de ${posts.length} articles de blog…\n`);
 

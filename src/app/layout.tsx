@@ -68,7 +68,7 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col bg-background font-sans text-foreground antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen w-full max-w-full flex-col overflow-x-hidden bg-background font-sans text-foreground antialiased`}
       >
         {/* Icônes du site (remontées dans le <head> par React 19) */}
         <link rel="icon" href="/favicon.ico" sizes="48x48" />

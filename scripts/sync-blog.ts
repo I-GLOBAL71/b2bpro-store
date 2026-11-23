@@ -22,6 +22,7 @@
  */
 import { readFileSync, readdirSync } from "fs";
 import { db } from "../src/lib/db";
+import { submitNewOrUpdatedContent, submitSitemapToGSC, GSC_ALL_PROPERTIES } from "../src/lib/gsc";
 
 const BLOG_DIR = "data/blog";
 
@@ -98,8 +99,21 @@ async function main() {
         data: { title, excerpt, content, category, coverTheme, readMinutes },
       });
       updated++;
+      // Soumission automatique Google Search Console pour chaque article modifié
+      await submitNewOrUpdatedContent({
+        type: "blog",
+        slug,
+        title,
+      });
     } else {
       unchanged++;
+    }
+  }
+
+  if (updated > 0) {
+    console.log(`📡 [GSC] Re-soumission des Sitemaps suite à la mise à jour de ${updated} article(s)...`);
+    for (const prop of GSC_ALL_PROPERTIES) {
+      await submitSitemapToGSC(prop);
     }
   }
 

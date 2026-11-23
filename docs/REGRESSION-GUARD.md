@@ -213,5 +213,25 @@ promesses non tenables, contenu dupliqué.
 
 ---
 
-*Charte établie le 2026-11-08 — version 1.0.0 du socle contractuel. Toute évolution de
-la présente charte est elle-même soumise au protocole force majeure.*
+## 9. Règle absolue des visuels du Blog : Triple Résilience Anti-404
+
+**Tout article de blog publié ou mis à jour doit IMPÉRATIVEMENT disposer d'un visuel WebP 1200×630 résilient et accessible sans exception.**
+
+### Pourquoi cette règle ?
+En production sur Vercel, les fichiers du dossier local `public/img/blog/` ne sont servis que s'ils sont committés dans le repository Git et déployés lors du build. Si un article est injecté en base distante sans commit/push git immédiat ou sans CDN, l'image locale renvoie une erreur 404 dans les navigateurs.
+
+### Architecture de Triple Résilience imposée :
+1. **CDN Edge Vercel Blob Prioritaire (`src/lib/blog-image.ts`) :**
+   Tous les visuels sont servis prioritairement via l'URL Edge CDN (`https://*.public.blob.vercel-storage.com/blog/<slug>.webp`). Dès qu'un article est publié et son image générée, elle est disponible immédiatement sur le CDN mondial sans attendre le redéploiement Git.
+2. **Next.js Fallback Rewrite (`next.config.ts`) :**
+   Toute requête vers `/img/blog/:slug*.webp` bénéficie d'une réécriture de repli (*fallback rewrite*) vers le CDN Vercel Blob : si le fichier statique n'a pas encore été déployé sur le serveur, Next.js le sert directement depuis le Blob sans renvoyer de 404.
+3. **Synchronisation Git & Déploiement Automatique :**
+   Les scripts de publication (`publish-daily-pair.ts`, `auto-daily-runner.ts`, workflow GitHub) exécutent systématiquement la synchronisation Git (`git add`, `commit` et `push origin main` sans `[skip ci]`) pour que Vercel reconstruise les assets statiques.
+4. **Garde-fou Bloquant (`blog-visuals-integrity`) :**
+   Le garde d'intégrité (`bun run guard`) et la suite de tests (`bun test tests/blog-visuals.test.ts`) vérifient que :
+   - 100 % des articles en base possèdent leur fichier `.webp` local sur disque de taille ≥ 5 Ko.
+   - 100 % des articles figurent dans `public/img/blog/manifest.json` avec une URL `blobUrl` active.
+
+---
+
+*Charte établie le 2026-11-08 — enrichie le 2026-11-23 avec la règle d'intégrité des visuels de blog v1.10.0.*

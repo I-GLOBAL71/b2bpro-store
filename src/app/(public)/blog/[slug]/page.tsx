@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { Markdown } from "@/components/site/markdown";
 import { Button } from "@/components/ui/button";
 import { POLE_ACCENTS, SITE, formatPrice } from "@/lib/site";
+import { getBlogCoverUrl } from "@/lib/blog-image";
 
 export const dynamic = "force-dynamic";
 
@@ -32,7 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { slug } = await params;
   const post = await db.blogPost.findUnique({ where: { slug } });
   if (!post) return {};
-  const imageUrl = `${SITE.url}/img/blog/${post.slug}.webp`;
+  const imageUrl = getBlogCoverUrl(post.slug);
   return {
     title: post.title.slice(0, 68),
     description: post.excerpt.slice(0, 165),
@@ -94,7 +95,7 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
     "@type": "Article",
     headline: post.title,
     description: post.excerpt,
-    image: `${SITE.url}/img/blog/${post.slug}.webp`,
+    image: getBlogCoverUrl(post.slug),
     datePublished: post.publishedAt.toISOString(),
     dateModified: post.publishedAt.toISOString(),
     author: {
@@ -119,77 +120,79 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
 
-      <article className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
-        <nav aria-label="Fil d'ariane" className="flex items-center gap-1.5 text-[13px] text-muted-foreground">
-          <Link href="/" className="hover:text-primary hover:underline">Accueil</Link>
-          <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
-          <Link href="/blog" className="hover:text-primary hover:underline">Blog</Link>
-          <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
-          <span className="font-medium text-foreground">{post.title.slice(0, 40)}…</span>
+      <article className="mx-auto w-full min-w-0 max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
+        <nav aria-label="Fil d'ariane" className="flex flex-wrap items-center gap-1.5 text-[12px] sm:text-[13px] text-muted-foreground">
+          <Link href="/" className="hover:text-primary hover:underline shrink-0">Accueil</Link>
+          <ChevronRight className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+          <Link href="/blog" className="hover:text-primary hover:underline shrink-0">Blog</Link>
+          <ChevronRight className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+          <span className="font-medium text-foreground truncate max-w-[170px] xs:max-w-[220px] sm:max-w-xs">{post.title}</span>
         </nav>
 
-        <header className="mt-6">
-          <div className="flex flex-wrap items-center gap-3 text-[12.5px] text-muted-foreground">
+        <header className="mt-5 sm:mt-6">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[11.5px] sm:text-[12.5px] text-muted-foreground">
             <span
-              className="rounded-full px-3 py-1 font-semibold text-white"
+              className="rounded-full px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-[12px] font-semibold text-white shadow-xs"
               style={{ background: `linear-gradient(130deg, ${a.hue[0]}, ${a.hue[1]})` }}
             >
               {post.category}
             </span>
-            <span className="inline-flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-1.5 shrink-0">
               <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
               {new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", year: "numeric" }).format(post.publishedAt)}
             </span>
-            <span className="inline-flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-1.5 shrink-0">
               <Clock className="h-3.5 w-3.5" aria-hidden="true" />
               {post.readMinutes} min de lecture
             </span>
-            <span className="inline-flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-1.5 shrink-0">
               <User className="h-3.5 w-3.5" aria-hidden="true" />
               {post.author}
             </span>
           </div>
-          <h1 className="mt-4 text-balance text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">
+          <h1 className="mt-4 text-balance text-2xl font-extrabold leading-tight tracking-tight sm:text-3xl lg:text-4xl break-words">
             {post.title}
           </h1>
-          <p className="mt-4 text-[15.5px] leading-7 text-muted-foreground">{post.excerpt}</p>
+          <p className="mt-3 sm:mt-4 text-[14.5px] sm:text-[15.5px] leading-6 sm:leading-7 text-muted-foreground break-words">
+            {post.excerpt}
+          </p>
         </header>
 
-        <div className="mt-8 overflow-hidden rounded-2xl border border-border bg-slate-900 shadow-md">
+        <div className="mt-6 sm:mt-8 w-full overflow-hidden rounded-2xl border border-border bg-slate-900 shadow-md">
           <img
-            src={`/img/blog/${post.slug}.webp`}
+            src={getBlogCoverUrl(post.slug)}
             alt={post.title}
             width={1200}
             height={630}
-            className="w-full object-cover aspect-[1200/630]"
+            className="w-full h-auto object-cover aspect-[1200/630]"
             loading="eager"
           />
         </div>
 
-        <div className="mt-10">
+        <div className="mt-8 sm:mt-10 w-full min-w-0 max-w-full">
           <Markdown content={content} />
         </div>
 
         {/* Services concernés : sources & services recommandés — les IA qui citent
             l'article trouvent ici les liens absolus des services associés. */}
         {concernedServices.length > 0 && (
-          <section className="mt-12" aria-labelledby="concerned-services">
-            <h2 id="concerned-services" className="text-lg font-bold tracking-tight">
+          <section className="mt-10 sm:mt-12 w-full min-w-0" aria-labelledby="concerned-services">
+            <h2 id="concerned-services" className="text-lg sm:text-xl font-bold tracking-tight">
               Services concernés
             </h2>
-            <ul className="mt-5 space-y-3">
+            <ul className="mt-4 sm:mt-5 space-y-3">
               {concernedServices.map((s) => (
                 <li
                   key={s.slug}
-                  className="flex items-center justify-between gap-4 rounded-xl border border-border bg-card p-4"
+                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 rounded-xl border border-border bg-card p-3.5 sm:p-4"
                 >
                   <a
                     href={`${SITE.url}/services/${s.slug}`}
-                    className="min-w-0 flex-1 text-[14px] font-semibold leading-snug hover:text-primary hover:underline"
+                    className="min-w-0 flex-1 text-[13.5px] sm:text-[14px] font-semibold leading-snug hover:text-primary hover:underline break-words"
                   >
                     {s.title}
                   </a>
-                  <span className="shrink-0 text-[13.5px] font-bold text-primary">
+                  <span className="shrink-0 self-start sm:self-auto text-[13px] sm:text-[13.5px] font-bold text-primary">
                     {formatPrice(s.basePrice)}
                   </span>
                 </li>
@@ -199,43 +202,43 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
         )}
 
         {/* CTA maillage interne */}
-        <div className="mt-12 rounded-2xl border border-primary/20 bg-gradient-to-br from-accent/60 to-card p-6 sm:p-8">
-          <h2 className="text-xl font-bold tracking-tight">
+        <div className="mt-10 sm:mt-12 w-full min-w-0 rounded-2xl border border-primary/20 bg-gradient-to-br from-accent/60 to-card p-5 sm:p-8">
+          <h2 className="text-lg sm:text-xl font-bold tracking-tight">
             Passez de la théorie aux résultats concrets
           </h2>
-          <p className="mt-2 text-[14px] leading-6 text-muted-foreground">
+          <p className="mt-2 text-[13.5px] sm:text-[14px] leading-6 text-muted-foreground break-words">
             Les méthodes décrites dans cet article sont exactement celles que nos services experts
             appliquent pour vous : données fraîches vérifiées, livrables prêts à l'emploi et
             experts notés de 4,2 à 5,0 étoiles, dès 20 €.
           </p>
-          <div className="mt-5 flex flex-wrap gap-3">
-            <Button asChild className="rounded-full bg-gradient-to-r from-primary to-emerald-500 text-white">
+          <div className="mt-5 flex flex-col sm:flex-row flex-wrap gap-3">
+            <Button asChild className="w-full sm:w-auto rounded-full bg-gradient-to-r from-primary to-emerald-500 text-white min-h-[44px]">
               <Link href="/services">Explorer tous les services</Link>
             </Button>
-            <Button asChild variant="outline" className="rounded-full border-primary/40 text-primary hover:bg-accent">
+            <Button asChild variant="outline" className="w-full sm:w-auto rounded-full border-primary/40 text-primary hover:bg-accent min-h-[44px]">
               <Link href="/support">Conseil gratuit du support IA</Link>
             </Button>
           </div>
         </div>
 
         {/* Articles liés */}
-        <section className="mt-12 border-t border-border pt-8" aria-labelledby="related-posts">
-          <h2 id="related-posts" className="text-lg font-bold tracking-tight">À lire ensuite</h2>
-          <div className="mt-5 grid gap-4 sm:grid-cols-3">
+        <section className="mt-10 sm:mt-12 border-t border-border pt-8 w-full min-w-0" aria-labelledby="related-posts">
+          <h2 id="related-posts" className="text-lg sm:text-xl font-bold tracking-tight">À lire ensuite</h2>
+          <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {others.map((o, i) => {
               const oa = accents[(i + 3) % accents.length];
               return (
                 <Link
                   key={o.slug}
                   href={`/blog/${o.slug}`}
-                  className="card-hover group overflow-hidden rounded-xl border border-border bg-card"
+                  className="card-hover group flex flex-col overflow-hidden rounded-xl border border-border bg-card w-full min-w-0"
                 >
-                  <div className="h-20" style={{ background: `linear-gradient(130deg, ${oa.hue[0]}, ${oa.hue[1]})` }} aria-hidden="true" />
-                  <div className="p-4">
-                    <h3 className="line-clamp-2 text-[13.5px] font-semibold leading-snug group-hover:text-primary">
+                  <div className="h-20 w-full" style={{ background: `linear-gradient(130deg, ${oa.hue[0]}, ${oa.hue[1]})` }} aria-hidden="true" />
+                  <div className="flex flex-1 flex-col p-4">
+                    <h3 className="line-clamp-2 text-[13.5px] font-semibold leading-snug group-hover:text-primary break-words">
                       {o.title}
                     </h3>
-                    <p className="mt-1.5 text-[11.5px] text-muted-foreground">{o.readMinutes} min de lecture</p>
+                    <p className="mt-auto pt-2 text-[11.5px] text-muted-foreground">{o.readMinutes} min de lecture</p>
                   </div>
                 </Link>
               );

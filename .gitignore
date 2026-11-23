@@ -64,3 +64,10 @@ server.log
 # Skills directory
 /skills/# captures et analyses de test déposées par la passerelle de chat
 upload/
+
+# Google Search Console credentials (secrets OAuth2 / service account)
+gsc-token.json
+gsc-service-account.json
+*token_gsc*.json
+token_indexing.json
+

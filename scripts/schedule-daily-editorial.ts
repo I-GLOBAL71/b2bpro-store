@@ -84,7 +84,7 @@ export const EDITORIAL_CALENDAR: DailyEditorialPair[] = [
       targetServices: [
         "https://b2bpro.store/services/je-vais-auditer-si-votre-marque-est-recommandee-par-les-moteurs-ia",
         "https://b2bpro.store/services/je-vais-repertorier-les-nouveaux-outils-ia-et-saas-lances-ce-mois-ci",
-        "https://b2bpro.store/services/je-vais-optimiser-votre-code-promo-pour-qu-il-ressorte-dans-les-ia",
+        "https://b2bpro.store/services/je-vais-rediger-votre-article-de-blog-ultra-optimise-seo-geo-et-aio",
       ],
       outline: {
         answerFirstThesis: "La citation de marques par les moteurs conversationnels dépend à 68 % de la présence d'entités vérifiables sur les plateformes d'avis indépendantes et de pages d'accueil structurées en Answer-First.",
@@ -1023,7 +1023,9 @@ async function main() {
   console.log("  bun run daily:plan -- --status    Vérifier le statut d'avancement\n");
 }
 
-main().catch((err) => {
-  console.error("Erreur planificateur :", err);
-  process.exit(1);
-});
+if (import.meta.main || process.argv[1]?.includes("schedule-daily-editorial")) {
+  main().catch((err) => {
+    console.error("Erreur planificateur :", err);
+    process.exit(1);
+  });
+}

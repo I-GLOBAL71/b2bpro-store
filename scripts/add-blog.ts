@@ -21,6 +21,7 @@
  */
 import { readFileSync, existsSync } from "fs";
 import { db } from "../src/lib/db";
+import { submitNewOrUpdatedContent } from "../src/lib/gsc";
 
 const BLOG_DIR = "data/blog";
 
@@ -77,6 +78,8 @@ async function main() {
   if (svcLinks < 3) problemes.push(`${svcLinks} lien(s) absolu(s) vers /services/ (< 3)`);
   if (cadratins > 0) problemes.push(`${cadratins} cadratin(s)`);
   if (nombresFiges > 0) problemes.push("mention d'un nombre figé de services");
+  const codeBlocksCount = (content.match(/```/g) ?? []).length;
+  if (codeBlocksCount % 2 !== 0) problemes.push("bloc de code markdown non fermé (nombre impair de ```) — risque de débordement mobile");
   if (problemes.length) {
     console.error(`✗ Article REFUSÉ par la porte de qualité SGA™ (base inchangée) :`);
     for (const p of problemes) console.error(`  - ${p}`);
@@ -125,6 +128,14 @@ async function main() {
   console.log(`  URL        : /blog/${created.slug}`);
   console.log(`  Catégorie  : ${created.category}`);
   console.log(`  Volume     : ${words} mots · ${readMinutes} min de lecture · ${svcLinks} liens vers /services/`);
+
+  // Soumission automatique Google Search Console & IndexNow
+  await submitNewOrUpdatedContent({
+    type: "blog",
+    slug: created.slug,
+    title: created.title,
+  });
+
   console.log("  Prochaine étape : bun run audit:content && bun run audit:seo && bun run guard");
 }
 

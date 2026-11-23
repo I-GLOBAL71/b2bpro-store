@@ -310,5 +310,23 @@
     "localPath": "/img/blog/recommandations-marques-moteurs-ia-chatgpt-perplexity.webp",
     "blobUrl": "https://lr22nex73oduip5n.public.blob.vercel-storage.com/blog/recommandations-marques-moteurs-ia-chatgpt-perplexity.webp",
     "bytes": 31980
+  },
+  "pipeline-rag-entreprise-documents-internes-ia": {
+    "slug": "pipeline-rag-entreprise-documents-internes-ia",
+    "localPath": "/img/blog/pipeline-rag-entreprise-documents-internes-ia.webp",
+    "blobUrl": "https://lr22nex73oduip5n.public.blob.vercel-storage.com/blog/pipeline-rag-entreprise-documents-internes-ia.webp",
+    "bytes": 31774
+  },
+  "citation-ia-marques-classement-perplexity-chatgpt": {
+    "slug": "citation-ia-marques-classement-perplexity-chatgpt",
+    "localPath": "/img/blog/citation-ia-marques-classement-perplexity-chatgpt.webp",
+    "blobUrl": "https://lr22nex73oduip5n.public.blob.vercel-storage.com/blog/citation-ia-marques-classement-perplexity-chatgpt.webp",
+    "bytes": 32522
+  },
+  "tarification-dynamique-ecommerce-algorithmes-prix": {
+    "slug": "tarification-dynamique-ecommerce-algorithmes-prix",
+    "localPath": "/img/blog/tarification-dynamique-ecommerce-algorithmes-prix.webp",
+    "blobUrl": "https://lr22nex73oduip5n.public.blob.vercel-storage.com/blog/tarification-dynamique-ecommerce-algorithmes-prix.webp",
+    "bytes": 32254
   }
 }

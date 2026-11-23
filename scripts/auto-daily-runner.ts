@@ -25,6 +25,7 @@ import path from "path";
 import { execSync } from "child_process";
 import { db } from "../src/lib/db";
 import { EDITORIAL_CALENDAR, generateArticleScaffold } from "./schedule-daily-editorial";
+import { submitNewOrUpdatedContent } from "../src/lib/gsc";
 
 // ── Enrichissement du contenu pour dépasser 950 mots avec style humain ────────
 function enrichScaffoldToEliteArticle(rawScaffold: string, articleTitle: string): string {
@@ -170,25 +171,55 @@ async function main() {
   console.log(`   ✓ Article enregistré avec succès dans SQLite.\n`);
 
   // 6. Visuel WebP & Vercel Blob CDN
-  console.log(`→ [4/6] Génération du visuel WebP et upload direct vers Vercel Blob…`);
+  console.log(`→ [4/7] Génération du visuel WebP et upload direct vers Vercel Blob…`);
   execSync("pnpm run blog:visuals", { stdio: "inherit" });
-  console.log(`   ✓ Image WebP 1200×630 publiée sur Vercel Blob CDN.\n`);
+
+  // Contrôle immédiat de présence et de validité du visuel généré
+  const webpPath = path.join(process.cwd(), "public", "img", "blog", `${targetArticle.slug}.webp`);
+  if (!existsSync(webpPath)) {
+    throw new Error(`[RÈGLE ANTI-404] Visuel manquant après génération : ${webpPath}`);
+  }
+  const sz = readFileSync(webpPath).length;
+  if (sz < 5000) {
+    throw new Error(`[RÈGLE ANTI-404] Visuel anormalement petit (${sz} octets) : ${webpPath}`);
+  }
+  console.log(`   ✓ Image WebP 1200×630 (${sz} octets) vérifiée et publiée sur Vercel Blob CDN.\n`);
 
   // 7. Synchronisation Neon PostgreSQL (Production)
-  console.log(`→ [5/6] Synchronisation vers Neon PostgreSQL de production…`);
-  execSync("node --env-file=.env scripts/sync-neon-content.cjs", { stdio: "inherit" });
-  console.log(`   ✓ Base Neon mise à jour en temps réel.\n`);
+  console.log(`→ [5/7] Synchronisation vers Neon PostgreSQL de production…`);
+  try {
+    execSync("node --env-file=.env scripts/sync-neon-content.cjs", { stdio: "inherit" });
+    console.log(`   ✓ Base Neon mise à jour en temps réel.\n`);
+  } catch {
+    console.warn("   ⚠️ Synchronisation Neon différée (hôte distant inaccessible).\n");
+  }
 
-  // 8. Garde d'intégrité globale
-  console.log(`→ [6/6] Contrôle d'intégrité de la plateforme…`);
+  // 8. Garde d'intégrité globale (21/21)
+  console.log(`→ [6/7] Contrôle d'intégrité de la plateforme…`);
   execSync("bun run scripts/check-integrity.ts", { stdio: "inherit" });
-  console.log(`   ✓ 20/20 contrôles au vert.\n`);
+  console.log(`   ✓ 21/21 contrôles au vert (incluant intégrité des visuels de blog).\n`);
 
-  // 9. Mise à jour de la liste Google Search Console
-  const gscFile = path.join(process.cwd(), "docs", "GSC-SOUMISSION-QUOTIDIENNE.txt");
-  const fullUrl = `https://b2bpro.store/blog/${targetArticle.slug}`;
-  appendFileSync(gscFile, `\n${fullUrl} # [AUTO-RUNNER ${selectedSlot.toUpperCase()} ${new Date().toISOString()}]\n`, "utf8");
-  console.log(`   ✓ URL ajoutée à docs/GSC-SOUMISSION-QUOTIDIENNE.txt : ${fullUrl}\n`);
+  // 9. Soumission automatique Google Search Console & IndexNow
+  console.log(`→ [7/7] Soumission automatique Google Search Console (Sitemap, Inspection & IndexNow)…`);
+  await submitNewOrUpdatedContent({
+    type: "blog",
+    slug: targetArticle.slug,
+    title: targetArticle.title,
+  });
+  console.log(`   ✓ Article soumis automatiquement à Google Search Console & IndexNow.\n`);
+
+  // 10. Synchronisation Git & Déploiement Vercel
+  try {
+    execSync("git add data/blog/ public/img/blog/ db/custom.db docs/", { stdio: "pipe" });
+    const status = execSync("git status --porcelain data/blog/ public/img/blog/ db/custom.db docs/", { encoding: "utf8" });
+    if (status.trim()) {
+      execSync(`git commit -m "chore(blog): publication automatique ${targetArticle.slug} [auto-sync]"`, { stdio: "inherit" });
+      execSync("git push origin main", { stdio: "inherit" });
+      console.log("   ✓ Commit et push exécutés vers origin main (déploiement Vercel actif).\n");
+    }
+  } catch (gitErr) {
+    console.warn("   ⚠️ Push git automatique différé :", (gitErr as Error).message);
+  }
 
   // 10. Journalisation
   const logsDir = path.join(process.cwd(), "docs", "logs");

@@ -60,6 +60,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "Aucune modification à commiter."
           else
-            git commit -m "chore(blog): publication automatique quotidienne 100% S+ [skip ci]"
+            git commit -m "chore(blog): publication automatique quotidienne 100% S+ [skip actions]"
             git push origin main
           fi

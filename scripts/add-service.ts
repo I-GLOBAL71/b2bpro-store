@@ -27,6 +27,7 @@
  * (cf. docs/DEPLOIEMENT-VERCEL.md §8).
  */
 import { db } from "../src/lib/db";
+import { submitNewOrUpdatedContent } from "../src/lib/gsc";
 import { POLES, resolvePole } from "../data/gen/poles";
 import { SELLERS } from "../data/gen/sellers";
 import {
@@ -258,6 +259,14 @@ async function main() {
   console.log(`  Prix       : ${svc.basePrice} € · ${svc.deliveryDays} j · ${svc.options.length} options`);
   console.log(`  Preuve     : ${stats.rating}/5 · ${stats.reviewsCount} avis · ${stats.salesCount} ventes`);
   console.log(`  Miniatures : public/thumbs/${slug}-{1,2,3}.svg`);
+
+  // Soumission automatique Google Search Console & IndexNow pour le nouveau service
+  await submitNewOrUpdatedContent({
+    type: "service",
+    slug,
+    title: created.title,
+  });
+
   console.log("  Prochaine étape : bun run audit:content && bun run audit:seo && bun run guard");
 }
 

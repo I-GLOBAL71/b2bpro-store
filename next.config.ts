@@ -21,6 +21,16 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   reactStrictMode: false,
+  async rewrites() {
+    return {
+      fallback: [
+        {
+          source: "/img/blog/:slug*.webp",
+          destination: "https://lr22nex73oduip5n.public.blob.vercel-storage.com/blog/:slug*.webp",
+        },
+      ],
+    };
+  },
 };
 
 export default nextConfig;

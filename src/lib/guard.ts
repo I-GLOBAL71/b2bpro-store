@@ -76,8 +76,10 @@ const CRITICAL_FILES: string[] = [
   "src/lib/db.ts",
   "src/lib/queries.ts",
   "src/lib/site.ts",
+  "src/lib/blog-image.ts",
   "src/lib/contracts.ts",
   "src/lib/guard.ts",
+  "public/img/blog/manifest.json",
   "src/lib/settings.ts", // v1.5.0 — réglages dynamiques
   "src/lib/rotation.ts", // v1.5.0 — rotation équitable
   "src/lib/admin-auth.ts", // v1.5.0 — sessions admin
@@ -86,6 +88,7 @@ const CRITICAL_FILES: string[] = [
   "src/app/(public)/services/[slug]/page.tsx",
   "src/app/(public)/blog/page.tsx",
   "src/app/(public)/blog/[slug]/page.tsx",
+  "src/components/site/markdown.tsx",
   "src/app/(public)/categories/[slug]/page.tsx",
   "src/app/(public)/vendeurs/[slug]/page.tsx",
   "src/app/(public)/support/page.tsx",
@@ -414,6 +417,55 @@ export async function runIntegrityChecks(): Promise<IntegrityReport> {
       );
     }
 
+    // ── 6bis. [RÈGLE ANTI-404] Intégrité des visuels du Blog (Disque + CDN Vercel Blob) ──
+    {
+      const issues: IntegrityIssue[] = [];
+      const blogImgDir = root("public", "img", "blog");
+      const manifestPath = path.join(blogImgDir, "manifest.json");
+      let manifestData: Record<string, { slug?: string; blobUrl?: string; bytes?: number }> = {};
+
+      if (!existsSync(manifestPath)) {
+        issues.push({ ref: "public/img/blog/manifest.json", problem: "Fichier manifest.json introuvable" });
+      } else {
+        try {
+          manifestData = JSON.parse(readFileSync(manifestPath, "utf8"));
+        } catch {
+          issues.push({ ref: "public/img/blog/manifest.json", problem: "Manifest JSON invalide" });
+        }
+      }
+
+      for (const b of blogPosts) {
+        const localImg = path.join(blogImgDir, `${b.slug}.webp`);
+        if (!existsSync(localImg)) {
+          issues.push({ ref: `blog/${b.slug}`, problem: `Visuel WebP absent sur disque : public/img/blog/${b.slug}.webp` });
+        } else {
+          try {
+            const st = statSync(localImg);
+            if (st.size < 5000) {
+              issues.push({ ref: `blog/${b.slug}`, problem: `Visuel WebP trop petit/corrompu (${st.size} octets < 5 Ko)` });
+            }
+          } catch {
+            issues.push({ ref: `blog/${b.slug}`, problem: `Impossible de lire la taille de public/img/blog/${b.slug}.webp` });
+          }
+        }
+
+        const entry = manifestData[b.slug];
+        if (!entry?.blobUrl) {
+          issues.push({ ref: `blog/${b.slug}`, problem: `Entrée manquante ou sans blobUrl dans public/img/blog/manifest.json` });
+        }
+      }
+
+      checks.push(
+        makeCheck(
+          "blog-visuals-integrity",
+          "Visuels du Blog : présence WebP locale (≥ 5 Ko) et synchronisation CDN Vercel Blob",
+          issues.length ? "fail" : "pass",
+          `${counts.blogPosts} visuels d'articles vérifiés (100 % WebP sur disque et CDN Vercel Blob actif).`,
+          issues.slice(0, 15)
+        )
+      );
+    }
+
     // ── 7. Base de connaissances du support IA ──────────────────────────────
     {
       const issues: IntegrityIssue[] = [];
@@ -630,6 +682,55 @@ export async function runIntegrityChecks(): Promise<IntegrityReport> {
           issues.length ? "fail" : "pass",
           `${counts.blogPosts} articles : titre, maillage interne, hygiène typographique.`,
           issues.slice(0, 15)
+        )
+      );
+
+      // ── 8.b. Responsiveness mobile & protection anti-débordement horizontal
+      const mobileIssues: IntegrityIssue[] = [];
+      const markdownPath = root("src", "components", "site", "markdown.tsx");
+      const layoutPath = root("src", "app", "(public)", "layout.tsx");
+      const blogSlugPage = root("src", "app", "(public)", "blog", "[slug]", "page.tsx");
+
+      if (existsSync(markdownPath)) {
+        const mdSrc = readFileSync(markdownPath, "utf-8");
+        if (!mdSrc.includes("overflow-x-auto") || !mdSrc.includes("touch-pan-x")) {
+          mobileIssues.push({ ref: "src/components/site/markdown.tsx", problem: "Composant Markdown sans conteneur de défilement tactile (touch-pan-x / overflow-x-auto)" });
+        }
+        if (!mdSrc.includes("min-w-[560px]")) {
+          mobileIssues.push({ ref: "src/components/site/markdown.tsx", problem: "Tableaux Markdown sans largeur minimale garantie (min-w-[560px])" });
+        }
+      } else {
+        mobileIssues.push({ ref: "src/components/site/markdown.tsx", problem: "Fichier Markdown manquant" });
+      }
+
+      if (existsSync(layoutPath)) {
+        const layoutSrc = readFileSync(layoutPath, "utf-8");
+        if (!layoutSrc.includes("overflow-x-clip") || !layoutSrc.includes("min-w-0")) {
+          mobileIssues.push({ ref: "src/app/(public)/layout.tsx", problem: "Layout public sans garde-fou anti-débordement (overflow-x-clip / min-w-0)" });
+        }
+      }
+
+      if (existsSync(blogSlugPage)) {
+        const pageSrc = readFileSync(blogSlugPage, "utf-8");
+        if (!pageSrc.includes("min-w-0") || !pageSrc.includes("w-full")) {
+          mobileIssues.push({ ref: "src/app/(public)/blog/[slug]/page.tsx", problem: "Page d'article sans containment fluide (min-w-0 / w-full)" });
+        }
+      }
+
+      for (const b of blogPosts) {
+        const codeBlocks = (b.content.match(/```/g) ?? []).length;
+        if (codeBlocks % 2 !== 0) {
+          mobileIssues.push({ ref: `blog/${b.slug}`, problem: "Bloc de code markdown non fermé (nombre impair de ```)" });
+        }
+      }
+
+      checks.push(
+        makeCheck(
+          "blog-mobile-responsiveness",
+          "Responsiveness & Mobile-Friendly Blog : zéro débordement horizontal, tableaux/codes tactiles et containment",
+          mobileIssues.length ? "fail" : "pass",
+          mobileIssues.length ? undefined : `${counts.blogPosts} articles et composants sécurisés contre tout débordement mobile.`,
+          mobileIssues.slice(0, 15)
         )
       );
     }

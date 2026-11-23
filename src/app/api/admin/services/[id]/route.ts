@@ -3,6 +3,7 @@ import { ADMIN_LOG_ACTIONS, adminServicePatchSchema, API_ROUTES } from "@/lib/co
 import { ensureAdmin } from "@/lib/admin-auth";
 import { db } from "@/lib/db";
 import { logAdminAction } from "@/lib/settings";
+import { submitNewOrUpdatedContent } from "@/lib/gsc";
 
 /**
  * PATCH /api/admin/services/[id] — mise à jour pilotée d'un service.
@@ -50,6 +51,16 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         `Service « ${existing.title} » (${existing.slug}) : featured ${existing.featured ? "ON" : "OFF"} → ${updated.featured ? "ON" : "OFF"}`
       );
     }
+
+    // Soumission automatique Google Search Console (mise à jour)
+    void submitNewOrUpdatedContent({
+      type: "service",
+      slug: existing.slug,
+      title: existing.title,
+    }).catch((err) => {
+      console.warn(`⚠️ [GSC] Erreur soumission automatique /services/${existing.slug}:`, err);
+    });
+
     return NextResponse.json({ ok: true, service: updated });
   } catch (e) {
     console.error(`${API_ROUTES.adminServices}/[id] PATCH`, e);

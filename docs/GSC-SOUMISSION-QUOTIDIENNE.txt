@@ -318,3 +318,23 @@ TABLEAU DE SUIVI — cocher [x] chaque lot terminé (copie de travail du fichier
 ---
 Document généré depuis la base locale le 2026-11-14 — le garder à jour via
 bun run scripts/gen-gsc-daily.ts (procédure complète : docs/GSC-SOUMISSION-SERVICES.md).
+
+https://b2bpro.store/blog/avis-negatifs-concurrents-marketing # [AUTO-SUBMIT BLOG] 2026-11-22T18:26:30.095Z
+
+https://b2bpro.store/services/qualification-leads-b2b # [AUTO-SUBMIT SERVICE] 2026-11-22T18:26:47.989Z
+
+https://b2bpro.store/blog/pipeline-rag-entreprise-documents-internes-ia # [AUTO-SUBMIT BLOG] 2026-11-22T22:50:28.985Z
+
+https://b2bpro.store/blog/citation-ia-marques-classement-perplexity-chatgpt # [AUTO-SUBMIT BLOG] 2026-11-22T22:50:29.190Z
+
+https://b2bpro.store/blog/pipeline-rag-entreprise-documents-internes-ia # [AUTO-SUBMIT BLOG] 2026-11-23T10:00:12.033Z
+
+https://b2bpro.store/blog/citation-ia-marques-classement-perplexity-chatgpt # [AUTO-SUBMIT BLOG] 2026-11-23T10:01:15.248Z
+
+https://b2bpro.store/blog/avis-negatifs-concurrents-marketing # [AUTO-SUBMIT BLOG] 2026-11-23T12:04:45.133Z
+
+https://b2bpro.store/services/qualification-leads-b2b # [AUTO-SUBMIT SERVICE] 2026-11-23T12:04:56.702Z
+
+https://b2bpro.store/blog/avis-negatifs-concurrents-marketing # [AUTO-SUBMIT BLOG] 2026-11-23T13:24:05.227Z
+
+https://b2bpro.store/services/qualification-leads-b2b # [AUTO-SUBMIT SERVICE] 2026-11-23T13:24:16.549Z

@@ -25,6 +25,7 @@
 import { mkdirSync, writeFileSync } from "fs";
 import path from "path";
 import { db } from "@/lib/db";
+import { submitNewOrUpdatedContent } from "@/lib/gsc";
 import {
   ADMIN_LOG_ACTIONS,
   BUSINESS_RULES,
@@ -305,6 +306,15 @@ export async function createServiceFromAdmin(
     ADMIN_LOG_ACTIONS.SERVICE_CREATE,
     `Service « ${input.title} » créé depuis le panneau (${code}, pôle ${pole.label}, ${input.basePrice} €, ${input.deliveryDays} j, vendeur ${seller.name}) — /services/${slug}`
   );
+
+  // ── 9. Soumission automatique Google Search Console & IndexNow ───────────
+  void submitNewOrUpdatedContent({
+    type: "service",
+    slug,
+    title: input.title,
+  }).catch((err) => {
+    console.warn(`⚠️ [GSC] Erreur soumission automatique /services/${slug}:`, err);
+  });
 
   return {
     ok: true,

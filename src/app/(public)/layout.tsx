@@ -42,7 +42,7 @@ export default async function PublicLayout({ children }: { children: React.React
         Aller au contenu
       </a>
       <SiteHeader googleAuthEnabled={authStatus.google} emailAuthEnabled={authStatus.email} />
-      <main id="contenu" className="flex-1">
+      <main id="contenu" className="flex-1 w-full min-w-0 overflow-x-clip">
         {children}
       </main>
       <SiteFooter />
