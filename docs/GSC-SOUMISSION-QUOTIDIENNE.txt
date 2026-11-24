@@ -338,3 +338,11 @@ https://b2bpro.store/services/qualification-leads-b2b # [AUTO-SUBMIT SERVICE] 20
 https://b2bpro.store/blog/avis-negatifs-concurrents-marketing # [AUTO-SUBMIT BLOG] 2026-11-23T13:24:05.227Z
 
 https://b2bpro.store/services/qualification-leads-b2b # [AUTO-SUBMIT SERVICE] 2026-11-23T13:24:16.549Z
+
+https://b2bpro.store/blog/citation-ia-marques-classement-perplexity-chatgpt # [AUTO-SUBMIT BLOG] 2026-11-24T10:12:46.303Z
+
+https://b2bpro.store/blog/pipeline-rag-entreprise-documents-internes-ia # [AUTO-SUBMIT BLOG] 2026-11-24T10:13:28.866Z
+
+https://b2bpro.store/blog/tarification-dynamique-ecommerce-algorithmes-prix # [AUTO-SUBMIT BLOG] 2026-11-24T11:40:58.810Z
+
+https://b2bpro.store/blog/rupture-stock-concurrents-conquete-clients-ecommerce # [AUTO-SUBMIT BLOG] 2026-11-24T15:28:33.751Z
