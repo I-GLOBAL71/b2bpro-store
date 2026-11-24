@@ -1,6 +1,6 @@
 # Audit de contenu SEO/GEO/AIO — 2026-11-24
 
-**113 services** audités individuellement · **55 articles** · 1967 contrôles · 0 échec(s).
+**113 services** audités individuellement · **56 articles** · 1974 contrôles · 0 échec(s).
 
 | Service | SEO | GEO | AIO | Verdict |
 |---|---|---|---|---|
@@ -177,3 +177,4 @@
 | pipeline-rag-entreprise-documents-internes-ia | CONFORME |
 | citation-ia-marques-classement-perplexity-chatgpt | CONFORME |
 | tarification-dynamique-ecommerce-algorithmes-prix | CONFORME |
+| rupture-stock-concurrents-conquete-clients-ecommerce | CONFORME |

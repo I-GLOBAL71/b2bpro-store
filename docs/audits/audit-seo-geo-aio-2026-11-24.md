@@ -1,6 +1,6 @@
 # Audit élite SEO/GEO/AIO — 2026-11-24
 
-**113 services** · **55 articles** · 2139 contrôles · 0 échec(s) · 4 avertissement(s).
+**113 services** · **56 articles** · 2147 contrôles · 0 échec(s) · 4 avertissement(s).
 
 ## Fiches en échec
 
@@ -76,3 +76,4 @@ _Aucun._
 | pipeline-rag-entreprise-documents-internes-ia | 1201 | 8246 | 7 H2 | 3 lien(s) absolu(s) vers /services/ |
 | citation-ia-marques-classement-perplexity-chatgpt | 967 | 6703 | 7 H2 | 3 lien(s) absolu(s) vers /services/ |
 | tarification-dynamique-ecommerce-algorithmes-prix | 1658 | 10610 | 6 H2 | 4 lien(s) absolu(s) vers /services/ |
+| rupture-stock-concurrents-conquete-clients-ecommerce | 1421 | 9353 | 6 H2 | 4 lien(s) absolu(s) vers /services/ |

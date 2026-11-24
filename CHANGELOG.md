@@ -7,6 +7,20 @@
 
 ---
 
+## [2.7.3] — 2026-11-24 — Rédaction quotidienne Jour 2 (E-commerce) & correctif moteur autonome
+
+### [CORRECTIF] — `scripts/auto-daily-runner.ts` & `scripts/schedule-daily-editorial.ts`
+- **Correction Prisma `DateTime` (`publishedAt`)** : remplacement de la chaîne `YYYY-MM-DD` par `new Date()` lors de l'upsert SQLite (résolvait l'échec `LastTaskResult: 1` de la tâche planifiée).
+- **Ordonnancement des vérifications** : génération des visuels WebP + Blob (`bun run scripts/gen-blog-visuals.ts`, compatible local et GitHub Actions sans `pnpm`) exécutée avant `verify-blog-elite.ts --file=...` pour éviter le blocage faux-positif sur nouvel article avant création du WebP.
+- **Respect du frontmatter Markdown** : parsing complet (`title`, `excerpt`, `category`, `coverTheme`, `readMinutes`, `author`) et fermeture propre (`fullUrl` défini, `db.$disconnect()` dans `finally`, option `--no-git`, `--env-file=.env` conditionnel pour CI).
+- **Maillage calendrier J3/J4 (`scripts/schedule-daily-editorial.ts`)** : remplacement des 4 slugs de services inexistants par les slugs réels vérifiés en base (`je-vais-identifier-les-entreprises-qui-recrutent-dans-votre-secteur` et `je-vais-analyser-la-rentabilite-brute-de-100-biens-dans-votre-ville`).
+
+### [DONNÉES] — Publication du binôme Jour 2 (E-commerce & Pricing) — 100/100 S+
+- **Créneau matin (`tarification-dynamique-ecommerce-algorithmes-prix`)** : 1 658 mots, score 100/100 S+ (SEO 30/30, GEO 25/25, Humain 25/25, CRO 10/10, Médias 10/10), 4 liens `/services/` vérifiés avec tarifs exacts.
+- **Créneau après-midi (`rupture-stock-concurrents-conquete-clients-ecommerce`)** : 1 421 mots, score 100/100 S+, publié automatiquement à 16h15 via `B2BPro_DailyBlog_ApresMidi`, synchronisé sur Neon PostgreSQL (`56` articles), Vercel Blob CDN, GSC et IndexNow.
+
+---
+
 ## [2.7.2] — 2026-11-15 — Bibliothèque de 45 idées de services 100% Antigravity (recherche approfondie)
 
 > Demande client : « effectue une recherche approfondie, étape par étape, avec un

@@ -54,10 +54,69 @@ Toutes les prestations commandées sur B2B Pro bénéficient de la protection pa
   return rawScaffold + addition;
 }
 
+interface ParsedFrontmatter {
+  title: string;
+  excerpt: string;
+  category: string;
+  coverTheme: string;
+  readMinutes: number;
+  author: string;
+  content: string;
+}
+
+function parseFrontmatter(raw: string, fallback: {
+  title: string;
+  excerpt: string;
+  category: string;
+  coverTheme: string;
+}): ParsedFrontmatter {
+  const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
+  if (!match) {
+    const words = raw.trim().split(/\s+/).filter(Boolean).length;
+    return {
+      title: fallback.title,
+      excerpt: fallback.excerpt,
+      category: fallback.category,
+      coverTheme: fallback.coverTheme,
+      readMinutes: Math.max(4, Math.round(words / 220)),
+      author: "Équipe B2B Pro",
+      content: raw.trim(),
+    };
+  }
+
+  const data: Record<string, string> = {};
+  for (const line of match[1].split(/\r?\n/)) {
+    const p = line.indexOf(":");
+    if (p !== -1) {
+      const k = line.slice(0, p).trim();
+      let v = line.slice(p + 1).trim();
+      if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+        v = v.slice(1, -1);
+      }
+      data[k] = v;
+    }
+  }
+
+  const body = match[2].trim();
+  const words = body.split(/\s+/).filter(Boolean).length;
+  const parsedMinutes = parseInt(data.readMinutes ?? "", 10);
+
+  return {
+    title: data.title || fallback.title,
+    excerpt: data.excerpt || fallback.excerpt,
+    category: data.category || fallback.category,
+    coverTheme: data.coverTheme || fallback.coverTheme,
+    readMinutes: Number.isFinite(parsedMinutes) && parsedMinutes > 0 ? parsedMinutes : Math.max(4, Math.round(words / 220)),
+    author: data.author || "Équipe B2B Pro",
+    content: body,
+  };
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const slotArg = args.find((a) => a.startsWith("--slot="))?.split("=")[1];
   const dryRun = args.includes("--dry-run");
+  const noGit = args.includes("--no-git");
 
   console.log("═════════════════════════════════════════════════════════════════");
   console.log("  MOTEUR ÉDITORIAL AUTONOME QUOTIDIEN — b2bpro.store");
@@ -120,59 +179,26 @@ async function main() {
 
   let content = "";
   if (existsSync(filePath)) {
-    console.log(`→ [1/6] Lecture du fichier existant : ${filePath}`);
+    console.log(`→ [1/7] Lecture du fichier existant : ${filePath}`);
     content = readFileSync(filePath, "utf8");
   } else {
-    console.log(`→ [1/6] Génération automatique du contenu conforme SGA™…`);
+    console.log(`→ [1/7] Génération automatique du contenu conforme SGA™…`);
     const scaffold = generateArticleScaffold(targetPair, targetArticle, todayStr);
     content = enrichScaffoldToEliteArticle(scaffold, targetArticle.title);
     writeFileSync(filePath, content, "utf8");
     console.log(`   ✓ Fichier source créé : data/blog/${targetArticle.slug}.md`);
   }
 
-  // 4. Audit bloquant de conformité Élite (verify-blog-elite.ts)
-  console.log(`\n→ [2/6] Contrôle qualité machine impitoyable (verify-blog-elite)…`);
-  try {
-    execSync(`bun run scripts/verify-blog-elite.ts --slug=${targetArticle.slug}`, { stdio: "inherit" });
-    console.log(`   ✓ Article certifié Élite (Rang S+ / A). Zéro Trace d'IA validée.\n`);
-  } catch (err) {
-    console.error(`❌ Échec de l'audit de qualité pour ${targetArticle.slug}. Déploiement suspendu.`);
-    process.exit(1);
-  }
-
-  // 5. Insertion / Mise à jour dans SQLite
-  console.log(`→ [3/6] Insertion dans la base locale SQLite…`);
-  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
-  const articleBody = match ? match[2].trim() : content;
-  
-  await db.blogPost.upsert({
-    where: { slug: targetArticle.slug },
-    create: {
-      slug: targetArticle.slug,
-      title: targetArticle.title,
-      excerpt: targetArticle.outline.answerFirstThesis.slice(0, 160) + "...",
-      content: articleBody,
-      category: targetArticle.category,
-      coverTheme: targetArticle.coverTheme,
-      readMinutes: 6,
-      publishedAt: todayStr,
-      author: "Équipe B2B Pro",
-    },
-    update: {
-      title: targetArticle.title,
-      excerpt: targetArticle.outline.answerFirstThesis.slice(0, 160) + "...",
-      content: articleBody,
-      category: targetArticle.category,
-      coverTheme: targetArticle.coverTheme,
-      readMinutes: 6,
-      publishedAt: todayStr,
-    },
+  const parsed = parseFrontmatter(content, {
+    title: targetArticle.title,
+    excerpt: targetArticle.outline.answerFirstThesis.slice(0, 160) + "...",
+    category: targetArticle.category,
+    coverTheme: targetArticle.coverTheme,
   });
-  console.log(`   ✓ Article enregistré avec succès dans SQLite.\n`);
 
-  // 6. Visuel WebP & Vercel Blob CDN
-  console.log(`→ [4/7] Génération du visuel WebP et upload direct vers Vercel Blob…`);
-  execSync("pnpm run blog:visuals", { stdio: "inherit" });
+  // 4. Visuel WebP & Vercel Blob CDN (généré avant l'audit Élite qui contrôle la présence du WebP)
+  console.log(`\n→ [2/7] Génération du visuel WebP et upload direct vers Vercel Blob…`);
+  execSync("bun run scripts/gen-blog-visuals.ts", { stdio: "inherit" });
 
   // Contrôle immédiat de présence et de validité du visuel généré
   const webpPath = path.join(process.cwd(), "public", "img", "blog", `${targetArticle.slug}.webp`);
@@ -185,49 +211,97 @@ async function main() {
   }
   console.log(`   ✓ Image WebP 1200×630 (${sz} octets) vérifiée et publiée sur Vercel Blob CDN.\n`);
 
+  // 5. Audit bloquant de conformité Élite (verify-blog-elite.ts) AVANT insertion en base
+  console.log(`→ [3/7] Contrôle qualité machine impitoyable (verify-blog-elite)…`);
+  try {
+    execSync(`bun run scripts/verify-blog-elite.ts --file=data/blog/${targetArticle.slug}.md`, { stdio: "inherit" });
+    console.log(`   ✓ Article certifié Élite (Rang S+ / A). Zéro Trace d'IA validée.\n`);
+  } catch (err) {
+    console.error(`❌ Échec de l'audit de qualité pour ${targetArticle.slug}. Déploiement suspendu.`);
+    process.exit(1);
+  }
+
+  // 6. Insertion / Mise à jour dans SQLite
+  console.log(`→ [4/7] Insertion dans la base locale SQLite…`);
+  const publishedNow = new Date();
+
+  await db.blogPost.upsert({
+    where: { slug: targetArticle.slug },
+    create: {
+      slug: targetArticle.slug,
+      title: parsed.title,
+      excerpt: parsed.excerpt,
+      content: parsed.content,
+      category: parsed.category,
+      coverTheme: parsed.coverTheme,
+      readMinutes: parsed.readMinutes,
+      publishedAt: publishedNow,
+      author: parsed.author,
+    },
+    update: {
+      title: parsed.title,
+      excerpt: parsed.excerpt,
+      content: parsed.content,
+      category: parsed.category,
+      coverTheme: parsed.coverTheme,
+      readMinutes: parsed.readMinutes,
+      publishedAt: publishedNow,
+      author: parsed.author,
+    },
+  });
+  console.log(`   ✓ Article enregistré avec succès dans SQLite.\n`);
+
   // 7. Synchronisation Neon PostgreSQL (Production)
   console.log(`→ [5/7] Synchronisation vers Neon PostgreSQL de production…`);
   try {
-    execSync("node --env-file=.env scripts/sync-neon-content.cjs", { stdio: "inherit" });
+    const syncCmd = existsSync(path.join(process.cwd(), ".env"))
+      ? "node --env-file=.env scripts/sync-neon-content.cjs"
+      : "node scripts/sync-neon-content.cjs";
+    execSync(syncCmd, { stdio: "inherit" });
     console.log(`   ✓ Base Neon mise à jour en temps réel.\n`);
   } catch {
     console.warn("   ⚠️ Synchronisation Neon différée (hôte distant inaccessible).\n");
   }
 
-  // 8. Garde d'intégrité globale (21/21)
+  // 8. Garde d'intégrité globale (22/22)
   console.log(`→ [6/7] Contrôle d'intégrité de la plateforme…`);
   execSync("bun run scripts/check-integrity.ts", { stdio: "inherit" });
-  console.log(`   ✓ 21/21 contrôles au vert (incluant intégrité des visuels de blog).\n`);
+  console.log(`   ✓ 22/22 contrôles au vert (incluant intégrité des visuels de blog).\n`);
 
   // 9. Soumission automatique Google Search Console & IndexNow
+  const fullUrl = `https://b2bpro.store/blog/${targetArticle.slug}`;
   console.log(`→ [7/7] Soumission automatique Google Search Console (Sitemap, Inspection & IndexNow)…`);
   await submitNewOrUpdatedContent({
     type: "blog",
     slug: targetArticle.slug,
-    title: targetArticle.title,
+    title: parsed.title,
   });
   console.log(`   ✓ Article soumis automatiquement à Google Search Console & IndexNow.\n`);
 
   // 10. Synchronisation Git & Déploiement Vercel
-  try {
-    execSync("git add data/blog/ public/img/blog/ db/custom.db docs/", { stdio: "pipe" });
-    const status = execSync("git status --porcelain data/blog/ public/img/blog/ db/custom.db docs/", { encoding: "utf8" });
-    if (status.trim()) {
-      execSync(`git commit -m "chore(blog): publication automatique ${targetArticle.slug} [auto-sync]"`, { stdio: "inherit" });
-      execSync("git push origin main", { stdio: "inherit" });
-      console.log("   ✓ Commit et push exécutés vers origin main (déploiement Vercel actif).\n");
+  if (!noGit) {
+    try {
+      execSync("git add data/blog/ public/img/blog/ db/custom.db docs/", { stdio: "pipe" });
+      const status = execSync("git status --porcelain data/blog/ public/img/blog/ db/custom.db docs/", { encoding: "utf8" });
+      if (status.trim()) {
+        execSync(`git commit -m "chore(blog): publication automatique ${targetArticle.slug} [auto-sync]"`, { stdio: "inherit" });
+        execSync("git push origin main", { stdio: "inherit" });
+        console.log("   ✓ Commit et push exécutés vers origin main (déploiement Vercel actif).\n");
+      }
+    } catch (gitErr) {
+      console.warn("   ⚠️ Push git automatique différé :", (gitErr as Error).message);
     }
-  } catch (gitErr) {
-    console.warn("   ⚠️ Push git automatique différé :", (gitErr as Error).message);
+  } else {
+    console.log("   ℹ Mode --no-git activé : commit/push git différé à la validation finale.\n");
   }
 
-  // 10. Journalisation
+  // 11. Journalisation
   const logsDir = path.join(process.cwd(), "docs", "logs");
   if (!existsSync(logsDir)) mkdirSync(logsDir, { recursive: true });
   const logFile = path.join(logsDir, "daily-editorial-cron.log");
   appendFileSync(
     logFile,
-    `[${new Date().toISOString()}] SUCCES | Slot: ${selectedSlot} | Slug: ${targetArticle.slug} | Titre: ${targetArticle.title}\n`,
+    `[${new Date().toISOString()}] SUCCES | Slot: ${selectedSlot} | Slug: ${targetArticle.slug} | Titre: ${parsed.title}\n`,
     "utf8"
   );
 
@@ -237,7 +311,11 @@ async function main() {
   console.log("═════════════════════════════════════════════════════════════════\n");
 }
 
-main().catch((err) => {
-  console.error("Erreur critique auto-daily-runner :", err);
-  process.exit(1);
-});
+main()
+  .catch((err) => {
+    console.error("Erreur critique auto-daily-runner :", err);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await db.$disconnect();
+  });

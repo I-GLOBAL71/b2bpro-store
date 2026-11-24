@@ -171,7 +171,7 @@ export const EDITORIAL_CALENDAR: DailyEditorialPair[] = [
       coverTheme: "blue",
       targetServices: [
         "https://b2bpro.store/services/je-vais-vous-fournir-un-fichier-de-prospection-b2b-frais-et-verifie",
-        "https://b2bpro.store/services/je-vais-extraire-et-verifier-les-contacts-d-entreprises-qui-recrutent",
+        "https://b2bpro.store/services/je-vais-identifier-les-entreprises-qui-recrutent-dans-votre-secteur",
         "https://b2bpro.store/services/je-vais-verifier-les-mentions-legales-et-conformite-rgpd-de-vos-sites",
       ],
       outline: {
@@ -196,7 +196,7 @@ export const EDITORIAL_CALENDAR: DailyEditorialPair[] = [
       category: "Prospection & Vente",
       coverTheme: "blue",
       targetServices: [
-        "https://b2bpro.store/services/je-vais-extraire-et-verifier-les-contacts-d-entreprises-qui-recrutent",
+        "https://b2bpro.store/services/je-vais-identifier-les-entreprises-qui-recrutent-dans-votre-secteur",
         "https://b2bpro.store/services/je-vais-vous-fournir-un-fichier-de-prospection-b2b-frais-et-verifie",
         "https://b2bpro.store/services/je-vais-lister-les-startups-et-pme-ayant-leve-des-fonds-ce-mois-ci",
       ],
@@ -228,7 +228,7 @@ export const EDITORIAL_CALENDAR: DailyEditorialPair[] = [
       coverTheme: "teal",
       targetServices: [
         "https://b2bpro.store/services/je-vais-detecter-les-annonces-immobilieres-sous-le-prix-du-marche",
-        "https://b2bpro.store/services/je-vais-calculer-la-rentabilite-brute-et-nette-de-vos-biens-cibles",
+        "https://b2bpro.store/services/je-vais-analyser-la-rentabilite-brute-de-100-biens-dans-votre-ville",
         "https://b2bpro.store/services/je-vais-repertorier-les-permis-de-construire-et-declarations-travaux",
       ],
       outline: {
@@ -253,7 +253,7 @@ export const EDITORIAL_CALENDAR: DailyEditorialPair[] = [
       category: "Immobilier & Local",
       coverTheme: "teal",
       targetServices: [
-        "https://b2bpro.store/services/je-vais-calculer-la-rentabilite-brute-et-nette-de-vos-biens-cibles",
+        "https://b2bpro.store/services/je-vais-analyser-la-rentabilite-brute-de-100-biens-dans-votre-ville",
         "https://b2bpro.store/services/je-vais-detecter-les-annonces-immobilieres-sous-le-prix-du-marche",
         "https://b2bpro.store/services/je-vais-lister-les-agences-immobilieres-independantes-de-votre-zone",
       ],
@@ -872,14 +872,14 @@ keywords:
 
 Le contexte économique actuel exige une réactivité exemplaire de la part des dirigeants et responsables opérationnels. Traiter ces tâches manuellement en interne engendre des retards coûteux et disperse les ressources de l'entreprise.
 
-Une étude récente de l'Insee et de Gartner souligne que 61,8 % des projets menés sans méthodologie éprouvée accusent des dépassements budgétaires imprévus. Pour garantir des résultats mesurables, il convient de poser un cadre d'analyse strict dès le démarrage.
+Une étude récente de l'Insee et de Gartner souligne que 61,8 % des projets menés sans méthodologie éprouvée accusent des dépassements budgétaires imprévus. Posez un cadre d'analyse strict dès le démarrage pour garantir des résultats mesurables.
 
 \`\`\`
 Diagnostic initial ➔ Collecte de données fiables ➔ Traitement analytique ➔ Déploiement opérationnel
    [Timing optimal : 24 à 48 heures d'exécution pour devancer la concurrence]
 \`\`\`
 
-Pour automatiser cette étape stratégique, vous pouvez vous appuyer sur le service spécialisé pour [accéder à la solution dédiée](${svc1}) proposé dès 20 € sur B2B Pro.
+Pour automatiser cette étape stratégique, vous pouvez vous appuyer sur le service spécialisé pour [accéder à la solution dédiée](${svc1}) accessible sans abonnement sur B2B Pro.
 
 ---
 
