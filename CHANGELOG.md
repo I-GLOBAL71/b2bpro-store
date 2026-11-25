@@ -7,6 +7,33 @@
 
 ---
 
+## [2.7.6] — 2026-11-26 — Audit SEO/GEO/AIO/Humanisation intégral & enrichissement JSON-LD / llms-full.txt
+
+### [ADDITIF] — `src/app/(public)/blog/[slug]/page.tsx` & `src/app/llms-full.txt/route.ts`
+- **Schéma structuré complet sur les pages articles (`src/app/(public)/blog/[slug]/page.tsx`)** : ajout de `extractMarkdownFaq()`, génération JSON-LD `FAQPage` et `BreadcrumbList`, `WebPage` pour `mainEntityOfPage`, `significantLink` vers les services liés, `inLanguage: "fr-FR"`, `isAccessibleForFree: true`, `articleSection`, `authors` et métadonnées OpenGraph étendues (`modifiedTime`, `section`), avec `CATEGORY_POLES` étendu aux 10 catégories du blog.
+- **Catalogue IA complet (`src/app/llms-full.txt/route.ts`)** : ajout des 58 guides experts du blog avec préfixe `SYNTHÈSE BLOG:` afin d'exposer le corpus complet aux LLM tout en conservant les 113 entrées `RÉPONSE DIRECTE:` des services.
+
+### [CORRECTIF] — `scripts/sync-blog.ts`
+- **Compatibilité fins de ligne CRLF/LF sous Windows** : normalisation `.replace(/\r\n/g, "\n")` avant l'extraction du frontmatter YAML afin que les fichiers markdown à fins de ligne Windows ne soient plus silencieusement ignorés lors des synchronisations vers SQLite.
+
+### [DONNÉES] — Corpus Blog (`58` articles) & Fiches Services (`db/custom.db`)
+- **Portée éditoriale 100 % Élite S+ (`data/blog/*.md` & `BlogPost`)** : refonte ciblée des 12 plus anciens guides, ajout d'ouvertures *Answer-First*, de questions FAQ `Comment…`, de maillage interne vers des slugs `/services/` vérifiés, suppression des références/clichés répétés et des cadres ASCII larges en faveur de listes mobiles lisibles. Résultat `audit:blog` : `58/58` au rang S+ (score moyen `98,5/100`, `0` bloquant) et `1988/1988` contrôles verts sur `audit:content`.
+- **Déduplication anti-traces d'IA (`Service` & `audit:ai-traces`)** : variation de `7` titres H2 (`Sans risque : paiement séquestré…`) et `4` paragraphes régionaux sur `11` fiches services en base. Résultat `audit-ai-traces` : `0` signature `HAUT`, `0` répétition inter-articles, `0` répétition H2/FAQ/puces `>= 4` fiches.
+
+---
+
+## [2.7.5] — 2026-11-25 — Correctifs Blob CDN / Neon Sync & finalisation réindexation Jour 3
+
+### [CORRECTIF] — `scripts/gen-blog-visuals.ts` & `scripts/sync-neon-content.cjs`
+- **Préservation du cache Vercel Blob (`scripts/gen-blog-visuals.ts`)** : lecture défensive de `BLOB_READ_WRITE_TOKEN` dans `.env`, réutilisation des `blobUrl` existants dans `public/img/blog/manifest.json` pour les WebP inchangés, conservation de l'URL CDN précédente en cas de repli et compatibilité TypeScript strict (`Uint8Array`) sur `writeFileSync` (résolution de l'échec `guard` `blog-visuals-integrity` lors de l'exécution planifiée de 16h15).
+- **Résilience et synchronisation différentielle Neon (`scripts/sync-neon-content.cjs`)** : écouteur d'erreur socket non bloquant, reconnexion automatique sur coupure réseau ou timeout (`ECONNRESET`, `Query read timeout`) et lecture groupée par empreintes MD5 comparant l'état distant avant écriture pour ne pousser que les deltas.
+
+### [DONNÉES] — Clôture Jour 3 (`signaux-recrutement-entreprises-prospection-ciblee`) & Réindexation GSC
+- **Base Neon & CDN Vercel Blob alignés à 58 articles** : insertion et mise à jour différentielle sur Neon PostgreSQL (`58` articles dont `signaux-recrutement-entreprises-prospection-ciblee` à `100/100 Rang S+`, 1 246 mots, `113` services synchronisés) et `58/58` WebP vérifiés sur Vercel Blob CDN.
+- **Réindexation GSC & IndexNow (`222` URLs / `174` contenus)** : mise à jour de `docs/GSC-SOUMISSION-QUOTIDIENNE.txt` (`222` URLs en `23` lots), re-soumission des Sitemaps (`https://b2bpro.store/` et `https://www.b2bpro.store/`, HTTP 204, `0` erreur), `gsc:sync` (5 derniers articles + 5 derniers services) et `gsc:all` (`174` contenus notifiés en 4 lots IndexNow).
+
+---
+
 ## [2.7.4] — 2026-11-25 — Rédaction quotidienne Jour 3 (B2B Sales Intelligence) & réindexation GSC
 
 ### [ADDITIF] — `scripts/auto-daily-runner.ts` & `scripts/schedule-daily-editorial.ts`

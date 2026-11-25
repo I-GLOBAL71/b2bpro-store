@@ -382,11 +382,37 @@ async function main() {
 
   console.log(`→ Traitement de ${posts.length} articles de blog…\n`);
 
+  // Chargement défensif de .env si le lanceur externe (ex: planificateur Windows) n'a pas injecté les variables
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    const envPath = path.join(process.cwd(), ".env");
+    if (existsSync(envPath)) {
+      const envLines = readFileSync(envPath, "utf8").split(/\r?\n/);
+      for (const l of envLines) {
+        const m = l.match(/^\s*BLOB_READ_WRITE_TOKEN\s*=\s*"?([^"\r\n]+)"?/);
+        if (m) {
+          process.env.BLOB_READ_WRITE_TOKEN = m[1].trim();
+          break;
+        }
+      }
+    }
+  }
+
+  const manifestPath = path.join(OUTPUT_DIR, "manifest.json");
+  let existingManifest: Record<string, { slug: string; localPath: string; blobUrl?: string; bytes: number }> = {};
+  if (existsSync(manifestPath)) {
+    try {
+      existingManifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+    } catch {
+      existingManifest = {};
+    }
+  }
+
+  const forceUpload = process.argv.includes("--force");
   const hasBlobToken = Boolean(process.env.BLOB_READ_WRITE_TOKEN);
   if (hasBlobToken) {
     console.log("✓ BLOB_READ_WRITE_TOKEN détecté : upload direct activé vers Vercel Blob.");
   } else {
-    console.log("ℹ BLOB_READ_WRITE_TOKEN non défini : génération locale dans public/img/blog/ (prêt pour synchronisation).");
+    console.log("ℹ BLOB_READ_WRITE_TOKEN non défini : génération locale dans public/img/blog/ (manifeste existant préservé).");
   }
 
   const manifest: Record<string, { slug: string; localPath: string; blobUrl?: string; bytes: number }> = {};
@@ -404,13 +430,16 @@ async function main() {
 
     const localFileName = `${post.slug}.webp`;
     const localFilePath = path.join(OUTPUT_DIR, localFileName);
-    writeFileSync(localFilePath, webpBuffer);
+    const prevEntry = existingManifest[post.slug];
+    const fileChanged = !existsSync(localFilePath) || !prevEntry || prevEntry.bytes !== webpBuffer.length;
+    writeFileSync(localFilePath, new Uint8Array(webpBuffer));
 
     totalBytes += webpBuffer.length;
     const kb = (webpBuffer.length / 1024).toFixed(1);
 
-    let blobUrl: string | undefined = undefined;
-    if (hasBlobToken) {
+    let blobUrl: string | undefined = prevEntry?.blobUrl;
+    const needsUpload = forceUpload || !blobUrl || fileChanged;
+    if (hasBlobToken && needsUpload) {
       try {
         const res = await put(`blog/${localFileName}`, webpBuffer, {
           access: "public",
@@ -431,12 +460,10 @@ async function main() {
       bytes: webpBuffer.length,
     };
 
-    console.log(
-      `[${i + 1}/${posts.length}] ✓ ${post.slug} → ${kb} Ko ${blobUrl ? `(Blob: ${blobUrl})` : `(local)`}`
-    );
+    const statusTag = blobUrl ? (needsUpload && hasBlobToken ? `(Blob: ${blobUrl})` : `(Blob cache)`) : `(local)`;
+    console.log(`[${i + 1}/${posts.length}] ✓ ${post.slug} → ${kb} Ko ${statusTag}`);
   }
 
-  const manifestPath = path.join(OUTPUT_DIR, "manifest.json");
   writeFileSync(manifestPath, JSON.stringify(manifest, null, 2), "utf8");
 
   console.log("\n─────────────────────────────────────────────────────────");
