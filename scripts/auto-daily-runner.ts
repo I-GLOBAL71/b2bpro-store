@@ -112,33 +112,62 @@ function parseFrontmatter(raw: string, fallback: {
   };
 }
 
+function toParisDay(date: Date): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Paris",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const slotArg = args.find((a) => a.startsWith("--slot="))?.split("=")[1];
   const dryRun = args.includes("--dry-run");
   const noGit = args.includes("--no-git");
+  const force = args.includes("--force");
 
   console.log("═════════════════════════════════════════════════════════════════");
   console.log("  MOTEUR ÉDITORIAL AUTONOME QUOTIDIEN — b2bpro.store");
   console.log("  Déclenchement automatique · Cadence anti-spam Google · 100% S+");
   console.log("═════════════════════════════════════════════════════════════════\n");
 
-  // 1. Détermination du créneau horaire
-  const currentHour = new Date().getHours();
+  // 1. Détermination du créneau horaire (fuseau Europe/Paris)
+  const parisHour = parseInt(
+    new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Paris", hour: "2-digit", hour12: false }).format(new Date()),
+    10
+  );
   let selectedSlot: "matin" | "apres-midi" = "matin";
   if (slotArg === "matin" || slotArg === "apres-midi") {
     selectedSlot = slotArg;
   } else {
     // Si lancé avant 13h00 -> Matin (09h30). Si lancé à 13h00 ou après -> Après-midi (16h15)
-    selectedSlot = currentHour >= 13 ? "apres-midi" : "matin";
+    selectedSlot = parisHour >= 13 ? "apres-midi" : "matin";
   }
 
   console.log(`→ Créneau d'exécution actif : [${selectedSlot.toUpperCase()}]`);
 
   // 2. Détermination de l'article cible selon le statut en base
-  const publishedPosts = await db.blogPost.findMany({ select: { slug: true } });
+  const publishedPosts = await db.blogPost.findMany({ select: { slug: true, publishedAt: true } });
   const publishedSlugs = new Set(publishedPosts.map((p) => p.slug));
   console.log(`   ${publishedPosts.length} articles actuellement répertoriés en base.`);
+
+  // Garde anti-spam quotidienne : au plus 1 publication par créneau et par jour calendaire (Europe/Paris)
+  const todayParis = toParisDay(new Date());
+  const slotCalendarSlugs = new Set(
+    EDITORIAL_CALENDAR.map((p) => (selectedSlot === "matin" ? p.articleA.slug : p.articleB.slug))
+  );
+  const alreadyTodayForSlot = publishedPosts.find(
+    (p) => slotCalendarSlugs.has(p.slug) && toParisDay(p.publishedAt) === todayParis
+  );
+  if (alreadyTodayForSlot && !force) {
+    console.log(
+      `ℹ Le créneau [${selectedSlot.toUpperCase()}] a déjà été publié aujourd'hui (${todayParis} : ${alreadyTodayForSlot.slug}).`
+    );
+    console.log("  Cadence anti-spam Google respectée (max 1 matin + 1 après-midi / jour). Aucune action requise.");
+    return;
+  }
 
   let targetPair = EDITORIAL_CALENDAR[0];
   let targetArticle = targetPair.articleA;

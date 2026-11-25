@@ -190,7 +190,7 @@ export const EDITORIAL_CALENDAR: DailyEditorialPair[] = [
     articleB: {
       slot: "apres-midi",
       targetTime: "16:15",
-      slug: "signaux-recrutement-entreprises-prospection-ciblée",
+      slug: "signaux-recrutement-entreprises-prospection-ciblee",
       title: "Signaux de recrutement des entreprises : prospecter au meilleur moment",
       primaryKeyword: "signaux de recrutement entreprises",
       category: "Prospection & Vente",

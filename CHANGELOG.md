@@ -7,6 +7,19 @@
 
 ---
 
+## [2.7.4] — 2026-11-25 — Rédaction quotidienne Jour 3 (B2B Sales Intelligence) & réindexation GSC
+
+### [ADDITIF] — `scripts/auto-daily-runner.ts` & `scripts/schedule-daily-editorial.ts`
+- **Garde anti-doublon journalière (fuseau `Europe/Paris`)** : empêche qu'un déclenchement matinal anticipé suivi du cron de 09h30 (Windows Task Scheduler ou GitHub Actions) ne saute au Jour suivant et ne publie plus d'un article par créneau et par jour (option `--force` conservée).
+- **Normalisation ASCII du slug J3 après-midi** : `signaux-recrutement-entreprises-prospection-ciblee` (conforme au motif `guard` `[a-z0-9-]+` et aux URLs GSC/Blob).
+
+### [DONNÉES] — Jour 3 B2B Sales Intelligence & Réindexation GSC / IndexNow
+- **Créneau matin (`fichier-prospection-b2b-enrichi-email-telephone`)** : 1 492 mots, score 100/100 S+, 4 liens `/services/` vérifiés, WebP sur Vercel Blob CDN, synchronisé sur SQLite et Neon PostgreSQL (`57` articles).
+- **Créneau après-midi préparé (`signaux-recrutement-entreprises-prospection-ciblee`)** : 1 270 mots, score 100/100 S+, WebP sur Vercel Blob CDN, prêt sur disque pour publication automatique à 16h15 via `B2BPro_DailyBlog_ApresMidi`.
+- **Réindexation GSC & IndexNow** : régénération de `docs/GSC-SOUMISSION-QUOTIDIENNE.txt` (221 URLs en 23 lots), re-soumission des Sitemaps (`https://b2bpro.store/` et `https://www.b2bpro.store/`, HTTP 204, 0 erreur), `gsc:sync` (5 derniers articles + 5 derniers services) et `gsc:all` (173 contenus poussés via IndexNow).
+
+---
+
 ## [2.7.3] — 2026-11-24 — Rédaction quotidienne Jour 2 (E-commerce) & correctif moteur autonome
 
 ### [CORRECTIF] — `scripts/auto-daily-runner.ts` & `scripts/schedule-daily-editorial.ts`

@@ -2,8 +2,8 @@
 b2bpro.store — SOUMISSION QUOTIDIENNE GSC : LISTE JOURNALIÈRE DES URLs À INDEXER
 ================================================================================
 
-Généré le 2026-11-14 depuis la base locale (miroir de la production).
-176 URLs indexables au total : 4 pages clés, 14 catégories, 113 services, 33 vendeurs, 12 articles de blog.
+Généré le 2026-11-25 depuis la base locale (miroir de la production).
+221 URLs indexables au total : 4 pages clés, 14 catégories, 113 services, 33 vendeurs, 57 articles de blog.
 Chaque URL figure individuellement dans sitemap.xml — la rotation ci-dessous
 couvre exactement le même périmètre, une seule fois par URL.
 
@@ -20,16 +20,16 @@ MODE D'EMPLOI — chaque matin, environ 10 minutes
   re-demander l'indexation (sauf contenu significativement mis à jour) — passer
   à l'URL suivante pour garder le quota pour les pages réellement nouvelles.
 
-PLAN DE LA ROTATION — 18 jours (~10 URLs/jour)
+PLAN DE LA ROTATION — 23 jours (~10 URLs/jour)
   Jour 1        : 4 pages clés (accueil, catalogue, blog, support)
   Jours 1 à 2   : 14 pages catégories (les plus fournies d'abord)
   Jours 2 à 14  : 113 fiches service (best-sellers d'abord, ventes décroissantes)
   Jours 14 à 17 : 33 profils vendeurs (« top » et mieux notés d'abord)
-  Jours 17 à 18 : 12 articles de blog (les plus récents d'abord)
-Une fois le jour 18 soumis, tout le site a été proposé à l'indexation.
+  Jours 17 à 23 : 57 articles de blog (les plus récents d'abord)
+Une fois le jour 23 soumis, tout le site a été proposé à l'indexation.
 
 ================================================================================
-ROTATION — 18 lots (~10 URLs/jour, le dernier : le reste) — soumettre le lot « JOUR N » puis passer au lendemain
+ROTATION — 23 lots (~10 URLs/jour, le dernier : le reste) — soumettre le lot « JOUR N » puis passer au lendemain
 ================================================================================
 
 JOUR 1 — pages clés 1-4 + catégories 1-6 (10 URLs)
@@ -246,20 +246,80 @@ https://b2bpro.store/vendeurs/ibrahim-sawadogo
 https://b2bpro.store/vendeurs/salif-kone
 https://b2bpro.store/vendeurs/didier-mpoku
 https://b2bpro.store/vendeurs/jean-bosco-habimana
+https://b2bpro.store/blog/fichier-prospection-b2b-enrichi-email-telephone
+https://b2bpro.store/blog/rupture-stock-concurrents-conquete-clients-ecommerce
+https://b2bpro.store/blog/tarification-dynamique-ecommerce-algorithmes-prix
+https://b2bpro.store/blog/citation-ia-marques-classement-perplexity-chatgpt
+https://b2bpro.store/blog/pipeline-rag-entreprise-documents-internes-ia
+https://b2bpro.store/blog/recommandations-marques-moteurs-ia-chatgpt-perplexity
+
+JOUR 18 — articles de blog 7-16 (10 URLs)
+
+https://b2bpro.store/blog/codes-promo-concurrents-veille-remises-ecommerce
+https://b2bpro.store/blog/escrow-paiement-securise-b2b-retenue-fonds
+https://b2bpro.store/blog/aides-subventions-publiques-entreprises-financement
+https://b2bpro.store/blog/permis-construire-declarations-travaux-immobilier
+https://b2bpro.store/blog/couts-transporteurs-fret-negociation-contrats
+https://b2bpro.store/blog/visibilite-centres-sante-parcours-patient
+https://b2bpro.store/blog/tarifs-ecoles-organismes-formation-benchmark
+https://b2bpro.store/blog/veille-brevets-inpi-protection-innovations
+https://b2bpro.store/blog/conformite-rgpd-mentions-legales-securisation
+https://b2bpro.store/blog/avis-glassdoor-salaires-concurrents-marque-employeur
+
+JOUR 19 — articles de blog 17-26 (10 URLs)
+
+https://b2bpro.store/blog/trouver-micro-influenceurs-vrai-taux-engagement
+https://b2bpro.store/blog/annonces-immobilieres-prix-baisse-negociation
+https://b2bpro.store/blog/frais-livraison-delais-ecommerce-benchmark
+https://b2bpro.store/blog/levees-fonds-startups-opportunites-commerciales
+https://b2bpro.store/blog/videos-youtube-plus-vues-formats-b2b
+https://b2bpro.store/blog/rentabilite-brute-immobiliere-calcul-rendement
+https://b2bpro.store/blog/meilleures-ventes-amazon-produits-gagnants
+https://b2bpro.store/blog/signaux-affaires-entreprises-recrutent-b2b
+https://b2bpro.store/blog/dataset-questions-reponses-faq-ia
+https://b2bpro.store/blog/trouver-nano-influenceurs-tiktok-instagram
+
+JOUR 20 — articles de blog 27-36 (10 URLs)
+
+https://b2bpro.store/blog/audit-google-maps-etablissement-local
+https://b2bpro.store/blog/veille-tarifaire-ecommerce-ajuster-prix
+https://b2bpro.store/blog/scraping-linkedin-extraire-prospects-cibles
+https://b2bpro.store/blog/nettoyage-donnees-excel-csv-fiabilite
+https://b2bpro.store/blog/prestataires-digitaux-afrique-francophone-garanties
+https://b2bpro.store/blog/acheter-voiture-occasion-denicher-bonne-affaire
+https://b2bpro.store/blog/franchises-expansion-trouver-reseau-investir
+https://b2bpro.store/blog/formations-eligibles-cpf-analyse-programmes
+https://b2bpro.store/blog/sante-financiere-fournisseurs-defaillances-b2b
+https://b2bpro.store/blog/tarification-hoteliere-prix-taux-remplissage
+
+JOUR 21 — articles de blog 37-46 (10 URLs)
+
+https://b2bpro.store/blog/content-gap-seo-sujets-concurrents
+https://b2bpro.store/blog/avis-g2-capterra-faiblesses-logiciels-rivaux
+https://b2bpro.store/blog/liste-exposants-salon-professionnel-rentabilite
+https://b2bpro.store/blog/chasse-tetes-b2b-recruter-profils-sans-cabinet
+https://b2bpro.store/blog/trouver-createurs-tiktok-emergents-partenariats
+https://b2bpro.store/blog/annonces-immobilieres-sous-prix-marche
+https://b2bpro.store/blog/ruptures-stock-concurrentes-opportunite-ventes
+https://b2bpro.store/blog/fichier-prospection-b2b-qualifie-verification
+https://b2bpro.store/blog/audit-visibilite-ia-chatgpt-perplexity
 https://b2bpro.store/blog/avis-negatifs-concurrents-marketing
+
+JOUR 22 — articles de blog 47-56 (10 URLs)
+
 https://b2bpro.store/blog/veille-concurrentielle-efficace
 https://b2bpro.store/blog/seo-local-google-maps
 https://b2bpro.store/blog/micro-influenceurs-engagement
 https://b2bpro.store/blog/seo-geo-aio-guide-complet
 https://b2bpro.store/blog/freelance-b2b-francophone
-
-JOUR 18 — articles de blog 7-12 (6 URLs)
-
 https://b2bpro.store/blog/immobilier-opportunites-decotees
 https://b2bpro.store/blog/prospection-b2b-donnees-fraiches
 https://b2bpro.store/blog/generation-leads-b2b
 https://b2bpro.store/blog/llms-txt-protocole-ia
 https://b2bpro.store/blog/base-connaissances-ia-chatbot
+
+JOUR 23 — articles de blog 57 (1 URLs)
+
 https://b2bpro.store/blog/marches-publics-boamp
 
 ================================================================================
@@ -288,9 +348,9 @@ connaît pas encore). Dernières pages publiées à ce jour :
 2026-11-07  https://b2bpro.store/services/je-vais-repertorier-les-ventes-aux-encheres-de-materiel-pro-et-stocks
 2026-11-07  https://b2bpro.store/services/je-vais-denicher-30-marques-etrangeres-a-succes-non-vendues-en-france
 2026-11-07  https://b2bpro.store/services/je-vais-mettre-en-place-votre-veille-sur-les-rappels-de-produits-flux
-2026-11-01  https://b2bpro.store/blog/avis-negatifs-concurrents-marketing
-2026-10-26  https://b2bpro.store/blog/veille-concurrentielle-efficace
-2026-10-20  https://b2bpro.store/blog/seo-local-google-maps
+2026-11-25  https://b2bpro.store/blog/fichier-prospection-b2b-enrichi-email-telephone
+2026-11-24  https://b2bpro.store/blog/rupture-stock-concurrents-conquete-clients-ecommerce
+2026-11-24  https://b2bpro.store/blog/tarification-dynamique-ecommerce-algorithmes-prix
 
 ================================================================================
 TABLEAU DE SUIVI — cocher [x] chaque lot terminé (copie de travail du fichier)
@@ -313,36 +373,33 @@ TABLEAU DE SUIVI — cocher [x] chaque lot terminé (copie de travail du fichier
 [ ] JOUR 15 — vendeurs 10-19
 [ ] JOUR 16 — vendeurs 20-29
 [ ] JOUR 17 — vendeurs 30-33 + articles de blog 1-6
-[ ] JOUR 18 — articles de blog 7-12
+[ ] JOUR 18 — articles de blog 7-16
+[ ] JOUR 19 — articles de blog 17-26
+[ ] JOUR 20 — articles de blog 27-36
+[ ] JOUR 21 — articles de blog 37-46
+[ ] JOUR 22 — articles de blog 47-56
+[ ] JOUR 23 — articles de blog 57
 
 ---
-Document généré depuis la base locale le 2026-11-14 — le garder à jour via
+Document généré depuis la base locale le 2026-11-25 — le garder à jour via
 bun run scripts/gen-gsc-daily.ts (procédure complète : docs/GSC-SOUMISSION-SERVICES.md).
 
-https://b2bpro.store/blog/avis-negatifs-concurrents-marketing # [AUTO-SUBMIT BLOG] 2026-11-22T18:26:30.095Z
+https://b2bpro.store/blog/fichier-prospection-b2b-enrichi-email-telephone # [AUTO-SUBMIT BLOG] 2026-11-25T07:55:37.534Z
 
-https://b2bpro.store/services/qualification-leads-b2b # [AUTO-SUBMIT SERVICE] 2026-11-22T18:26:47.989Z
+https://b2bpro.store/blog/rupture-stock-concurrents-conquete-clients-ecommerce # [AUTO-SUBMIT BLOG] 2026-11-25T07:56:01.955Z
 
-https://b2bpro.store/blog/pipeline-rag-entreprise-documents-internes-ia # [AUTO-SUBMIT BLOG] 2026-11-22T22:50:28.985Z
+https://b2bpro.store/blog/tarification-dynamique-ecommerce-algorithmes-prix # [AUTO-SUBMIT BLOG] 2026-11-25T07:56:14.269Z
 
-https://b2bpro.store/blog/citation-ia-marques-classement-perplexity-chatgpt # [AUTO-SUBMIT BLOG] 2026-11-22T22:50:29.190Z
+https://b2bpro.store/blog/pipeline-rag-entreprise-documents-internes-ia # [AUTO-SUBMIT BLOG] 2026-11-25T07:56:24.709Z
 
-https://b2bpro.store/blog/pipeline-rag-entreprise-documents-internes-ia # [AUTO-SUBMIT BLOG] 2026-11-23T10:00:12.033Z
+https://b2bpro.store/blog/citation-ia-marques-classement-perplexity-chatgpt # [AUTO-SUBMIT BLOG] 2026-11-25T07:56:43.411Z
 
-https://b2bpro.store/blog/citation-ia-marques-classement-perplexity-chatgpt # [AUTO-SUBMIT BLOG] 2026-11-23T10:01:15.248Z
+https://b2bpro.store/services/je-vais-rediger-votre-article-de-blog-ultra-optimise-seo-geo-et-aio # [AUTO-SUBMIT SERVICE] 2026-11-25T07:56:56.231Z
 
-https://b2bpro.store/blog/avis-negatifs-concurrents-marketing # [AUTO-SUBMIT BLOG] 2026-11-23T12:04:45.133Z
+https://b2bpro.store/services/je-vais-realiser-l-audit-complet-de-votre-visibilite-web-vs-3-rivaux # [AUTO-SUBMIT SERVICE] 2026-11-25T07:57:07.790Z
 
-https://b2bpro.store/services/qualification-leads-b2b # [AUTO-SUBMIT SERVICE] 2026-11-23T12:04:56.702Z
+https://b2bpro.store/services/je-vais-repertorier-les-ventes-aux-encheres-de-materiel-pro-et-stocks # [AUTO-SUBMIT SERVICE] 2026-11-25T07:57:18.605Z
 
-https://b2bpro.store/blog/avis-negatifs-concurrents-marketing # [AUTO-SUBMIT BLOG] 2026-11-23T13:24:05.227Z
+https://b2bpro.store/services/je-vais-denicher-30-marques-etrangeres-a-succes-non-vendues-en-france # [AUTO-SUBMIT SERVICE] 2026-11-25T07:57:29.195Z
 
-https://b2bpro.store/services/qualification-leads-b2b # [AUTO-SUBMIT SERVICE] 2026-11-23T13:24:16.549Z
-
-https://b2bpro.store/blog/citation-ia-marques-classement-perplexity-chatgpt # [AUTO-SUBMIT BLOG] 2026-11-24T10:12:46.303Z
-
-https://b2bpro.store/blog/pipeline-rag-entreprise-documents-internes-ia # [AUTO-SUBMIT BLOG] 2026-11-24T10:13:28.866Z
-
-https://b2bpro.store/blog/tarification-dynamique-ecommerce-algorithmes-prix # [AUTO-SUBMIT BLOG] 2026-11-24T11:40:58.810Z
-
-https://b2bpro.store/blog/rupture-stock-concurrents-conquete-clients-ecommerce # [AUTO-SUBMIT BLOG] 2026-11-24T15:28:33.751Z
+https://b2bpro.store/services/je-vais-mettre-en-place-votre-veille-sur-les-rappels-de-produits-flux # [AUTO-SUBMIT SERVICE] 2026-11-25T07:57:39.731Z
