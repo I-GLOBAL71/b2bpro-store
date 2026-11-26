@@ -7,4 +7,4 @@
 
 | Rang | Score | Slug | Mots | SEO (30) | GEO (25) | Humain (25) | CRO (10) | Médias (10) | Statut |
 |---|---|---|---|---|---|---|---|---|---|
-| **S+** | **100/100** | `negociation-immobiliere-baisses-prix-opportunites` | 1425 | 30/30 | 25/25 | 25/25 | 10/10 | 10/10 | ✓ Validé |
+| **S+** | **100/100** | `calcul-rendement-locatif-brut-net-investissement` | 1422 | 30/30 | 25/25 | 25/25 | 10/10 | 10/10 | ✓ Validé |
