@@ -7,6 +7,28 @@
 
 ---
 
+## [2.8.1] — 2026-11-26 — Rédaction quotidienne Jour 4 (Immobilier & Local) : article matin Rang S+ & préparation 16h15
+
+### [DONNÉES] — Jour 4 Immobilier & Local, Neon PostgreSQL & Réindexation GSC / IndexNow
+- **Élévation Rang S+ du créneau matin (`negociation-immobiliere-baisses-prix-opportunites`)** : réécriture complète du squelette généré automatiquement à 10h23 (`B2BPro_DailyBlog_Matin`) vers le standard SGA™ intégral (`1 425` mots, score `100.0/100 Rang S+`, citabilité `95/100`, `4` liens `/services/` vérifiés en base, `0` marqueur IA et `0` cadratin), synchronisé sur SQLite (`59` articles), Neon PostgreSQL (`59` articles) et re-notifié à GSC/IndexNow.
+- **Préparation du créneau après-midi 16h15 (`calcul-rendement-locatif-brut-net-investissement`)** : rédaction anticipée sur disque conforme SGA™ (`95/100` de citabilité, `4` liens `/services/` vérifiés, `0` marqueur IA, prêt pour publication automatique par `B2BPro_DailyBlog_ApresMidi`).
+- **Réindexation GSC & IndexNow** : régénération de `docs/GSC-SOUMISSION-QUOTIDIENNE.txt` (`223` URLs en `23` lots), re-soumission des Sitemaps (`https://b2bpro.store/` et `https://www.b2bpro.store/`, HTTP 204, `0` erreur) et `gsc:sync --recent 5`.
+
+---
+
+## [2.8.0] — 2026-11-26 — Moteur de Prospection B2B 100 % Autonome, Multi-Canal & Syndication Gratuite
+
+### [ADDITIF] — Moteur modulaire (`src/lib/prospecting/*`), routes publiques/RSS, panneau `/admin/prospection` & planificateur Windows
+- **Sourcing & audit technique B2B gratuit (`src/lib/prospecting/sourcer.ts`)** : découverte d'entreprises francophones actives via APIs publiques gratuites (organisations francophones + repli par codes NAF `recherche-entreprises.api.gouv.fr`), extraction stricte d'e-mails publics du domaine (y compris décodage `data-cfemail`), vérification DNS MX et audit en direct (`/llms.txt`, `JSON-LD`, `meta description`, `OpenGraph`, `H1`, `TTFB`).
+- **Rédaction personnalisée sans trace IA & conformité RGPD (`src/lib/prospecting/copywriter.ts`, `types.ts`)** : génération via `DEEPSEEK_API_KEY` (repli déterministe local sans tiret cadratin `—`), signature commerciale Lyon, double appel à l'action vers `/services/[slug]` et le bouton de contact `/support`, et désinscription signée HMAC-SHA256 en 1 clic (`/desinscription` + `/api/prospecting/unsubscribe`).
+- **Isolation du transport d'envoi 1-à-1 (`src/lib/prospecting/brevo-sender.ts`)** : réservation stricte de Brevo aux e-mails transactionnels/opt-in du site (`src/lib/mailer.ts`), envois de prospection 1-à-1 isolés sur transport SMTP dédié (`GMAIL_SMTP_USER` / `GMAIL_SMTP_PASSWORD` ou `OUTREACH_SMTP_*`, plafond prudent de `15`/jour) avec remise automatique en file `"audited"` (`requeuePausedProspects`).
+- **Persistance sans migration & synchro Neon (`src/lib/prospecting/store.ts`, `engine.ts`)** : stockage additif sur `SiteConfig` (`prospecting:*`), journal local `data/prospecting/history.jsonl` (ignoré par Git), création des `Lead` et `AdminLog`, et synchronisation différentielle rapide vers Neon (`syncProspectingToNeon`).
+- **Syndication sociale & flux RSS gratuits (`src/lib/prospecting/social-publisher.ts`, `rss.ts`)** : publication automatique sur Dev.to (`canonical_url`, tags alphanumériques, liens `/services/` et `/support`), kit de posts quotidiens (LinkedIn, X/Bluesky, Facebook, WhatsApp) et flux RSS 2.0 `/pinterest-rss.xml` et `/syndication-rss.xml`.
+- **Interface `/admin/prospection` & automatisation CLI/Windows** : page mobile-first ajoutée dans `src/components/admin/admin-shell.tsx`, APIs admin `/api/admin/prospecting` et `/api/admin/prospecting/run`, runner `scripts/prospect-autonomous-runner.ts` et 3 tâches quotidiennes Windows (`scripts/setup-windows-prospection-tasks.ps1` à `09:15`, `11:45`, `15:15`).
+- **Tests (`tests/prospecting.test.ts`)** : couverture unitaire et rendu SSR de la désinscription, extraction B2B, `data-cfemail`, audit HTML, génération e-mails et flux RSS.
+
+---
+
 ## [2.7.6] — 2026-11-26 — Audit SEO/GEO/AIO/Humanisation intégral & enrichissement JSON-LD / llms-full.txt
 
 ### [ADDITIF] — `src/app/(public)/blog/[slug]/page.tsx` & `src/app/llms-full.txt/route.ts`

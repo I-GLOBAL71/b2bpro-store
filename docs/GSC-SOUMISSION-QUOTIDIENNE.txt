@@ -2,8 +2,8 @@
 b2bpro.store — SOUMISSION QUOTIDIENNE GSC : LISTE JOURNALIÈRE DES URLs À INDEXER
 ================================================================================
 
-Généré le 2026-11-25 depuis la base locale (miroir de la production).
-222 URLs indexables au total : 4 pages clés, 14 catégories, 113 services, 33 vendeurs, 58 articles de blog.
+Généré le 2026-11-26 depuis la base locale (miroir de la production).
+223 URLs indexables au total : 4 pages clés, 14 catégories, 113 services, 33 vendeurs, 59 articles de blog.
 Chaque URL figure individuellement dans sitemap.xml — la rotation ci-dessous
 couvre exactement le même périmètre, une seule fois par URL.
 
@@ -25,7 +25,7 @@ PLAN DE LA ROTATION — 23 jours (~10 URLs/jour)
   Jours 1 à 2   : 14 pages catégories (les plus fournies d'abord)
   Jours 2 à 14  : 113 fiches service (best-sellers d'abord, ventes décroissantes)
   Jours 14 à 17 : 33 profils vendeurs (« top » et mieux notés d'abord)
-  Jours 17 à 23 : 58 articles de blog (les plus récents d'abord)
+  Jours 17 à 23 : 59 articles de blog (les plus récents d'abord)
 Une fois le jour 23 soumis, tout le site a été proposé à l'indexation.
 
 ================================================================================
@@ -246,15 +246,16 @@ https://b2bpro.store/vendeurs/ibrahim-sawadogo
 https://b2bpro.store/vendeurs/salif-kone
 https://b2bpro.store/vendeurs/didier-mpoku
 https://b2bpro.store/vendeurs/jean-bosco-habimana
+https://b2bpro.store/blog/negociation-immobiliere-baisses-prix-opportunites
 https://b2bpro.store/blog/signaux-recrutement-entreprises-prospection-ciblee
 https://b2bpro.store/blog/fichier-prospection-b2b-enrichi-email-telephone
 https://b2bpro.store/blog/rupture-stock-concurrents-conquete-clients-ecommerce
 https://b2bpro.store/blog/tarification-dynamique-ecommerce-algorithmes-prix
 https://b2bpro.store/blog/citation-ia-marques-classement-perplexity-chatgpt
-https://b2bpro.store/blog/pipeline-rag-entreprise-documents-internes-ia
 
 JOUR 18 — articles de blog 7-16 (10 URLs)
 
+https://b2bpro.store/blog/pipeline-rag-entreprise-documents-internes-ia
 https://b2bpro.store/blog/recommandations-marques-moteurs-ia-chatgpt-perplexity
 https://b2bpro.store/blog/codes-promo-concurrents-veille-remises-ecommerce
 https://b2bpro.store/blog/escrow-paiement-securise-b2b-retenue-fonds
@@ -264,10 +265,10 @@ https://b2bpro.store/blog/couts-transporteurs-fret-negociation-contrats
 https://b2bpro.store/blog/visibilite-centres-sante-parcours-patient
 https://b2bpro.store/blog/tarifs-ecoles-organismes-formation-benchmark
 https://b2bpro.store/blog/veille-brevets-inpi-protection-innovations
-https://b2bpro.store/blog/conformite-rgpd-mentions-legales-securisation
 
 JOUR 19 — articles de blog 17-26 (10 URLs)
 
+https://b2bpro.store/blog/conformite-rgpd-mentions-legales-securisation
 https://b2bpro.store/blog/avis-glassdoor-salaires-concurrents-marque-employeur
 https://b2bpro.store/blog/trouver-micro-influenceurs-vrai-taux-engagement
 https://b2bpro.store/blog/annonces-immobilieres-prix-baisse-negociation
@@ -277,10 +278,10 @@ https://b2bpro.store/blog/videos-youtube-plus-vues-formats-b2b
 https://b2bpro.store/blog/rentabilite-brute-immobiliere-calcul-rendement
 https://b2bpro.store/blog/meilleures-ventes-amazon-produits-gagnants
 https://b2bpro.store/blog/signaux-affaires-entreprises-recrutent-b2b
-https://b2bpro.store/blog/dataset-questions-reponses-faq-ia
 
 JOUR 20 — articles de blog 27-36 (10 URLs)
 
+https://b2bpro.store/blog/dataset-questions-reponses-faq-ia
 https://b2bpro.store/blog/trouver-nano-influenceurs-tiktok-instagram
 https://b2bpro.store/blog/audit-google-maps-etablissement-local
 https://b2bpro.store/blog/veille-tarifaire-ecommerce-ajuster-prix
@@ -290,10 +291,10 @@ https://b2bpro.store/blog/prestataires-digitaux-afrique-francophone-garanties
 https://b2bpro.store/blog/acheter-voiture-occasion-denicher-bonne-affaire
 https://b2bpro.store/blog/franchises-expansion-trouver-reseau-investir
 https://b2bpro.store/blog/formations-eligibles-cpf-analyse-programmes
-https://b2bpro.store/blog/sante-financiere-fournisseurs-defaillances-b2b
 
 JOUR 21 — articles de blog 37-46 (10 URLs)
 
+https://b2bpro.store/blog/sante-financiere-fournisseurs-defaillances-b2b
 https://b2bpro.store/blog/tarification-hoteliere-prix-taux-remplissage
 https://b2bpro.store/blog/content-gap-seo-sujets-concurrents
 https://b2bpro.store/blog/avis-g2-capterra-faiblesses-logiciels-rivaux
@@ -303,10 +304,10 @@ https://b2bpro.store/blog/trouver-createurs-tiktok-emergents-partenariats
 https://b2bpro.store/blog/annonces-immobilieres-sous-prix-marche
 https://b2bpro.store/blog/ruptures-stock-concurrentes-opportunite-ventes
 https://b2bpro.store/blog/fichier-prospection-b2b-qualifie-verification
-https://b2bpro.store/blog/audit-visibilite-ia-chatgpt-perplexity
 
 JOUR 22 — articles de blog 47-56 (10 URLs)
 
+https://b2bpro.store/blog/audit-visibilite-ia-chatgpt-perplexity
 https://b2bpro.store/blog/avis-negatifs-concurrents-marketing
 https://b2bpro.store/blog/veille-concurrentielle-efficace
 https://b2bpro.store/blog/seo-local-google-maps
@@ -316,10 +317,10 @@ https://b2bpro.store/blog/freelance-b2b-francophone
 https://b2bpro.store/blog/immobilier-opportunites-decotees
 https://b2bpro.store/blog/prospection-b2b-donnees-fraiches
 https://b2bpro.store/blog/generation-leads-b2b
+
+JOUR 23 — articles de blog 57-59 (3 URLs)
+
 https://b2bpro.store/blog/llms-txt-protocole-ia
-
-JOUR 23 — articles de blog 57-58 (2 URLs)
-
 https://b2bpro.store/blog/base-connaissances-ia-chatbot
 https://b2bpro.store/blog/marches-publics-boamp
 
@@ -349,9 +350,9 @@ connaît pas encore). Dernières pages publiées à ce jour :
 2026-11-07  https://b2bpro.store/services/je-vais-repertorier-les-ventes-aux-encheres-de-materiel-pro-et-stocks
 2026-11-07  https://b2bpro.store/services/je-vais-denicher-30-marques-etrangeres-a-succes-non-vendues-en-france
 2026-11-07  https://b2bpro.store/services/je-vais-mettre-en-place-votre-veille-sur-les-rappels-de-produits-flux
+2026-11-26  https://b2bpro.store/blog/negociation-immobiliere-baisses-prix-opportunites
 2026-11-25  https://b2bpro.store/blog/signaux-recrutement-entreprises-prospection-ciblee
 2026-11-25  https://b2bpro.store/blog/fichier-prospection-b2b-enrichi-email-telephone
-2026-11-24  https://b2bpro.store/blog/rupture-stock-concurrents-conquete-clients-ecommerce
 
 ================================================================================
 TABLEAU DE SUIVI — cocher [x] chaque lot terminé (copie de travail du fichier)
@@ -379,124 +380,28 @@ TABLEAU DE SUIVI — cocher [x] chaque lot terminé (copie de travail du fichier
 [ ] JOUR 20 — articles de blog 27-36
 [ ] JOUR 21 — articles de blog 37-46
 [ ] JOUR 22 — articles de blog 47-56
-[ ] JOUR 23 — articles de blog 57-58
+[ ] JOUR 23 — articles de blog 57-59
 
 ---
-Document généré depuis la base locale le 2026-11-25 — le garder à jour via
+Document généré depuis la base locale le 2026-11-26 — le garder à jour via
 bun run scripts/gen-gsc-daily.ts (procédure complète : docs/GSC-SOUMISSION-SERVICES.md).
 
-https://b2bpro.store/blog/signaux-recrutement-entreprises-prospection-ciblee # [AUTO-SUBMIT BLOG] 2026-11-25T21:07:14.171Z
+https://b2bpro.store/blog/negociation-immobiliere-baisses-prix-opportunites # [AUTO-SUBMIT BLOG] 2026-11-26T10:57:28.922Z
 
-https://b2bpro.store/blog/fichier-prospection-b2b-enrichi-email-telephone # [AUTO-SUBMIT BLOG] 2026-11-25T21:07:27.559Z
+https://b2bpro.store/blog/signaux-recrutement-entreprises-prospection-ciblee # [AUTO-SUBMIT BLOG] 2026-11-26T10:57:47.755Z
 
-https://b2bpro.store/blog/rupture-stock-concurrents-conquete-clients-ecommerce # [AUTO-SUBMIT BLOG] 2026-11-25T21:07:40.205Z
+https://b2bpro.store/blog/fichier-prospection-b2b-enrichi-email-telephone # [AUTO-SUBMIT BLOG] 2026-11-26T10:57:57.313Z
 
-https://b2bpro.store/blog/tarification-dynamique-ecommerce-algorithmes-prix # [AUTO-SUBMIT BLOG] 2026-11-25T21:07:58.713Z
+https://b2bpro.store/blog/rupture-stock-concurrents-conquete-clients-ecommerce # [AUTO-SUBMIT BLOG] 2026-11-26T10:58:07.276Z
 
-https://b2bpro.store/blog/pipeline-rag-entreprise-documents-internes-ia # [AUTO-SUBMIT BLOG] 2026-11-25T21:08:33.065Z
+https://b2bpro.store/blog/tarification-dynamique-ecommerce-algorithmes-prix # [AUTO-SUBMIT BLOG] 2026-11-26T10:58:16.998Z
 
-https://b2bpro.store/services/je-vais-rediger-votre-article-de-blog-ultra-optimise-seo-geo-et-aio # [AUTO-SUBMIT SERVICE] 2026-11-25T21:08:44.704Z
+https://b2bpro.store/services/je-vais-rediger-votre-article-de-blog-ultra-optimise-seo-geo-et-aio # [AUTO-SUBMIT SERVICE] 2026-11-26T10:58:30.255Z
 
-https://b2bpro.store/services/je-vais-realiser-l-audit-complet-de-votre-visibilite-web-vs-3-rivaux # [AUTO-SUBMIT SERVICE] 2026-11-25T21:09:14.810Z
+https://b2bpro.store/services/je-vais-realiser-l-audit-complet-de-votre-visibilite-web-vs-3-rivaux # [AUTO-SUBMIT SERVICE] 2026-11-26T10:58:41.563Z
 
-https://b2bpro.store/services/je-vais-repertorier-les-ventes-aux-encheres-de-materiel-pro-et-stocks # [AUTO-SUBMIT SERVICE] 2026-11-25T21:09:26.209Z
+https://b2bpro.store/services/je-vais-repertorier-les-ventes-aux-encheres-de-materiel-pro-et-stocks # [AUTO-SUBMIT SERVICE] 2026-11-26T10:58:56.183Z
 
-https://b2bpro.store/services/je-vais-denicher-30-marques-etrangeres-a-succes-non-vendues-en-france # [AUTO-SUBMIT SERVICE] 2026-11-25T21:09:52.732Z
+https://b2bpro.store/services/je-vais-denicher-30-marques-etrangeres-a-succes-non-vendues-en-france # [AUTO-SUBMIT SERVICE] 2026-11-26T10:59:06.970Z
 
-https://b2bpro.store/services/je-vais-mettre-en-place-votre-veille-sur-les-rappels-de-produits-flux # [AUTO-SUBMIT SERVICE] 2026-11-25T21:10:15.102Z
-
-https://b2bpro.store/blog/annonces-immobilieres-sous-prix-marche # [AUTO-SUBMIT BLOG] 2026-11-25T21:44:53.147Z
-
-https://b2bpro.store/blog/audit-google-maps-etablissement-local # [AUTO-SUBMIT BLOG] 2026-11-25T21:46:31.529Z
-
-https://b2bpro.store/blog/citation-ia-marques-classement-perplexity-chatgpt # [AUTO-SUBMIT BLOG] 2026-11-25T21:46:43.444Z
-
-https://b2bpro.store/blog/codes-promo-concurrents-veille-remises-ecommerce # [AUTO-SUBMIT BLOG] 2026-11-25T21:46:54.047Z
-
-https://b2bpro.store/blog/content-gap-seo-sujets-concurrents # [AUTO-SUBMIT BLOG] 2026-11-25T21:47:11.189Z
-
-https://b2bpro.store/blog/couts-transporteurs-fret-negociation-contrats # [AUTO-SUBMIT BLOG] 2026-11-25T21:47:22.646Z
-
-https://b2bpro.store/blog/fichier-prospection-b2b-enrichi-email-telephone # [AUTO-SUBMIT BLOG] 2026-11-25T21:47:38.012Z
-
-https://b2bpro.store/blog/levees-fonds-startups-opportunites-commerciales # [AUTO-SUBMIT BLOG] 2026-11-25T21:47:50.196Z
-
-https://b2bpro.store/blog/liste-exposants-salon-professionnel-rentabilite # [AUTO-SUBMIT BLOG] 2026-11-25T21:48:01.605Z
-
-https://b2bpro.store/blog/meilleures-ventes-amazon-produits-gagnants # [AUTO-SUBMIT BLOG] 2026-11-25T21:48:15.911Z
-
-https://b2bpro.store/blog/nettoyage-donnees-excel-csv-fiabilite # [AUTO-SUBMIT BLOG] 2026-11-25T21:48:30.545Z
-
-https://b2bpro.store/blog/pipeline-rag-entreprise-documents-internes-ia # [AUTO-SUBMIT BLOG] 2026-11-25T21:49:10.996Z
-
-https://b2bpro.store/blog/rupture-stock-concurrents-conquete-clients-ecommerce # [AUTO-SUBMIT BLOG] 2026-11-25T21:49:20.106Z
-
-https://b2bpro.store/blog/sante-financiere-fournisseurs-defaillances-b2b # [AUTO-SUBMIT BLOG] 2026-11-25T21:49:33.358Z
-
-https://b2bpro.store/blog/signaux-recrutement-entreprises-prospection-ciblee # [AUTO-SUBMIT BLOG] 2026-11-25T21:49:45.295Z
-
-https://b2bpro.store/blog/tarification-dynamique-ecommerce-algorithmes-prix # [AUTO-SUBMIT BLOG] 2026-11-25T21:50:01.690Z
-
-https://b2bpro.store/blog/tarification-hoteliere-prix-taux-remplissage # [AUTO-SUBMIT BLOG] 2026-11-25T21:50:23.459Z
-
-https://b2bpro.store/blog/veille-tarifaire-ecommerce-ajuster-prix # [AUTO-SUBMIT BLOG] 2026-11-25T21:50:38.913Z
-
-https://b2bpro.store/blog/videos-youtube-plus-vues-formats-b2b # [AUTO-SUBMIT BLOG] 2026-11-25T21:51:00.132Z
-
-https://b2bpro.store/blog/avis-negatifs-concurrents-marketing # [AUTO-SUBMIT BLOG] 2026-11-25T22:34:27.138Z
-
-https://b2bpro.store/blog/base-connaissances-ia-chatbot # [AUTO-SUBMIT BLOG] 2026-11-25T22:35:17.734Z
-
-https://b2bpro.store/blog/freelance-b2b-francophone # [AUTO-SUBMIT BLOG] 2026-11-25T22:35:45.377Z
-
-https://b2bpro.store/blog/generation-leads-b2b # [AUTO-SUBMIT BLOG] 2026-11-25T22:35:56.535Z
-
-https://b2bpro.store/blog/immobilier-opportunites-decotees # [AUTO-SUBMIT BLOG] 2026-11-25T22:36:06.871Z
-
-https://b2bpro.store/blog/llms-txt-protocole-ia # [AUTO-SUBMIT BLOG] 2026-11-25T22:36:20.976Z
-
-https://b2bpro.store/blog/marches-publics-boamp # [AUTO-SUBMIT BLOG] 2026-11-25T22:36:34.305Z
-
-https://b2bpro.store/blog/micro-influenceurs-engagement # [AUTO-SUBMIT BLOG] 2026-11-25T22:36:45.446Z
-
-https://b2bpro.store/blog/prospection-b2b-donnees-fraiches # [AUTO-SUBMIT BLOG] 2026-11-25T22:36:57.603Z
-
-https://b2bpro.store/blog/seo-geo-aio-guide-complet # [AUTO-SUBMIT BLOG] 2026-11-25T22:37:16.400Z
-
-https://b2bpro.store/blog/seo-local-google-maps # [AUTO-SUBMIT BLOG] 2026-11-25T22:37:30.251Z
-
-https://b2bpro.store/blog/veille-concurrentielle-efficace # [AUTO-SUBMIT BLOG] 2026-11-25T22:37:51.334Z
-
-https://b2bpro.store/blog/acheter-voiture-occasion-denicher-bonne-affaire # [AUTO-SUBMIT BLOG] 2026-11-25T22:53:46.883Z
-
-https://b2bpro.store/blog/aides-subventions-publiques-entreprises-financement # [AUTO-SUBMIT BLOG] 2026-11-25T22:54:44.652Z
-
-https://b2bpro.store/blog/citation-ia-marques-classement-perplexity-chatgpt # [AUTO-SUBMIT BLOG] 2026-11-25T22:54:58.511Z
-
-https://b2bpro.store/blog/codes-promo-concurrents-veille-remises-ecommerce # [AUTO-SUBMIT BLOG] 2026-11-25T22:55:14.070Z
-
-https://b2bpro.store/blog/escrow-paiement-securise-b2b-retenue-fonds # [AUTO-SUBMIT BLOG] 2026-11-25T22:55:26.018Z
-
-https://b2bpro.store/blog/fichier-prospection-b2b-enrichi-email-telephone # [AUTO-SUBMIT BLOG] 2026-11-25T22:55:53.924Z
-
-https://b2bpro.store/blog/formations-eligibles-cpf-analyse-programmes # [AUTO-SUBMIT BLOG] 2026-11-25T22:56:12.294Z
-
-https://b2bpro.store/blog/franchises-expansion-trouver-reseau-investir # [AUTO-SUBMIT BLOG] 2026-11-25T22:56:23.531Z
-
-https://b2bpro.store/blog/permis-construire-declarations-travaux-immobilier # [AUTO-SUBMIT BLOG] 2026-11-25T22:56:38.767Z
-
-https://b2bpro.store/blog/pipeline-rag-entreprise-documents-internes-ia # [AUTO-SUBMIT BLOG] 2026-11-25T22:56:54.515Z
-
-https://b2bpro.store/blog/prestataires-digitaux-afrique-francophone-garanties # [AUTO-SUBMIT BLOG] 2026-11-25T22:57:06.131Z
-
-https://b2bpro.store/blog/recommandations-marques-moteurs-ia-chatgpt-perplexity # [AUTO-SUBMIT BLOG] 2026-11-25T22:57:16.104Z
-
-https://b2bpro.store/blog/rupture-stock-concurrents-conquete-clients-ecommerce # [AUTO-SUBMIT BLOG] 2026-11-25T22:57:31.471Z
-
-https://b2bpro.store/blog/sante-financiere-fournisseurs-defaillances-b2b # [AUTO-SUBMIT BLOG] 2026-11-25T22:57:47.190Z
-
-https://b2bpro.store/blog/signaux-recrutement-entreprises-prospection-ciblee # [AUTO-SUBMIT BLOG] 2026-11-25T22:58:02.142Z
-
-https://b2bpro.store/blog/tarification-dynamique-ecommerce-algorithmes-prix # [AUTO-SUBMIT BLOG] 2026-11-25T22:58:26.337Z
-
-https://b2bpro.store/blog/negociation-immobiliere-baisses-prix-opportunites # [AUTO-SUBMIT BLOG] 2026-11-26T09:57:17.804Z
+https://b2bpro.store/services/je-vais-mettre-en-place-votre-veille-sur-les-rappels-de-produits-flux # [AUTO-SUBMIT SERVICE] 2026-11-26T10:59:16.708Z
