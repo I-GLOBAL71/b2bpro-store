@@ -40,7 +40,7 @@ Pour automatiser ce travail de recueil fastidieux sur votre département, vous p
 Toutes les demandes déposées en mairie ne recèlent pas le même potentiel financier. Il est indispensable de segmenter les sources administratives selon vos spécialités métiers.
 
 | Type d'autorisation | Seuil de surface / Travaux | Cible de prospection idéale | Valeur moyenne de contrat | Délai moyen avant démarrage |
-| :--- | :--- | :--- | :--- | :--- |
+|---|---|---|---|---|
 | **Permis de Construire (PC)** | Création > 20 m² (ou > 40 m² en zone PLU), changement de destination avec travaux | Gros œuvre, maçonnerie, charpente, électriciens, bureaux thermiques | 45 000 € à 320 000 € | 3 à 6 mois |
 | **Déclaration Préalable (DP)** | Extension 5 à 20 m², ravalement, clôture, pose de panneaux solaires, velux | Menuisiers, peintres façadiers, installateurs photovoltaïques | 4 500 € à 28 000 € | 4 à 8 semaines |
 | **Permis d'Aménager (PA)** | Lotissements > 2 lots, campings, aires de stationnement ouvertes au public | Terrassiers, VRD, géomètres-experts, paysagistes d'envergure | 80 000 € à 650 000 € | 6 à 12 mois |

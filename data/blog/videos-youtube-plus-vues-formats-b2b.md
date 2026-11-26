@@ -76,4 +76,4 @@ Construire une stratégie vidéo sans analyser la concurrence revient à navigue
 Les données d'audience indiquent que les vidéos de 8 à 14 minutes obtiennent le meilleur ratio entre engagement profond et taux de complétion. Cette durée permet de traiter un sujet de fond avec suffisamment de rigueur sans lasser le spectateur.
 
 ### Comment transformer les spectateurs YouTube en clients de mon entreprise ?
-Placez votre appel à l'action dès le milieu de la vidéo, puis répétez-le en conclusion. Proposez une ressource gratuite directement liée au sujet (un fichier Excel, une checklist PDF ou un audit gratuit) accessible via un lien traqué placé en première ligne de votre description et épinglé dans le premier commentaire.
+Placez votre appel à l'action dès le milieu de la vidéo, puis rappelez-le dans les trente dernières secondes. Proposez une ressource gratuite directement liée au sujet (un fichier Excel, une checklist PDF ou un audit gratuit) accessible via un lien traqué placé en première ligne de votre description et épinglé dans le premier commentaire.

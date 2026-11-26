@@ -70,7 +70,7 @@ La promesse logistique devient votre arme principale. Un client qui vient d'essu
 Toutes les ruptures de stock ne méritent pas la même intensité commerciale. Adapter votre réaction à l'horizon estimé de réapprovisionnement protège votre rentabilité publicitaire.
 
 | Scénario de rupture rivale | Durée estimée | Action prix recommandée | Tactique d'acquisition prioritaire |
-| :--- | :--- | :--- | :--- |
+|---|---|---|---|
 | **Micro-rupture éclair** | 24 à 72 heures | Maintenir le prix catalogue plein | Hausse modérée Shopping (+15 %) sur le top 20 |
 | **Tension logistique moyenne** | 7 à 14 jours | Remonter la marge de +4 % à +8 % | Campagne Search sur références exactes + livraison 24h |
 | **Rupture longue importateur** | 30 à 60 jours | Optimiser marge pleine (+8 % à +12 %) | Pages comparatives dédiées et conquête SEO/Shopping |

@@ -11,13 +11,13 @@ author: "Rédaction b2bpro.store"
 
 # Veille tarifaire e-commerce : ajuster ses prix intelligemment
 
-**La réponse en 30 secondes :** la veille tarifaire e-commerce consiste à collecter et analyser en temps réel les prix de vente, les remises promotionnelles, les frais de port et l'état des stocks pratiqués par vos concurrents directs. D'après une étude McKinsey, une stratégie d'ajustement dynamique des prix bien exécutée permet d'augmenter le chiffre d'affaires de 2 % à 5 % et d'améliorer la marge d'exploitation de 5 % à 10 %. L'objectif n'est pas de déclencher une guerre des prix destructrice en s'alignant systématiquement vers le bas, mais d'identifier les segments où vos rivaux sont en rupture pour revaloriser vos tarifs tout en restant compétitif sur vos produits d'appel.
+**La réponse en 30 secondes :** la veille tarifaire e-commerce consiste à relever en continu les prix de vente, les remises, les frais de port et l'état des stocks chez vos concurrents directs. L'enjeu est simple : protéger la marge nette. Sur un catalogue actif, surveiller ses écarts de prix et réajuster ses références sensibles en temps réel permet généralement de capter de 2 % à 5 % de volume additionnel tout en défendant de 5 % à 10 % de marge sur les articles où vos rivaux tombent en rupture. S'aligner aveuglément vers le bas détruit votre trésorerie ; ajuster référence par référence consolide votre résultat net.
 
 ## Pourquoi la veille tarifaire e-commerce est indispensable
 
-Sur internet, la transparence des prix est absolue. Un cyberacheteur compare en moyenne 3,4 sites différents ou utilise des comparateurs en ligne avant de valider son panier. Si vos tarifs sont déconnectés des standards du marché, vous perdez immédiatement vos ventes au profit de boutiques plus réactives.
+Sur internet, comparer prend dix secondes. Un cyberacheteur consulte souvent 3 à 4 boutiques ou comparateurs avant de sortir sa carte bancaire. Si vos tarifs décrochent sans justification visible, le panier part chez le concurrent le plus réactif.
 
-Mais la baisse aveugle des prix représente un danger mortel pour la trésorerie. Baisser son prix de vente de 10 % exige souvent de doubler ses volumes de vente pour conserver la même marge brute en euros.
+Brader tout le catalogue ? Dangereux pour votre trésorerie. Baisser son prix de vente de 10 % oblige souvent à doubler le volume vendu pour dégager la même marge brute en euros.
 
 Une démarche de veille tarifaire e-commerce rigoureuse poursuit trois objectifs stratégiques :
 1. **Défendre vos marges :** ne jamais baisser vos prix inutilement lorsque vos concurrents sont en rupture de stock.

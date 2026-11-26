@@ -1,7 +1,7 @@
 ---
-title: "SEO local : le plan en 10 étapes pour dominer le pack local Google Maps"
+title: "SEO local : dominer le local pack (map pack) de Google Maps"
 slug: "seo-local-google-maps"
-excerpt: "Le plan d'action en 10 étapes pour dominer le pack local de Google Maps : fiche Google Business Profile optimisée, avis, citations et signaux de proximité."
+excerpt: "Le plan SEO local en 10 étapes pour entrer dans le local pack (le map pack) de Google Maps : fiche Google Business Profile, avis, citations et signaux de proximité."
 category: "SEO & Visibilité IA"
 keywords: "SEO local Google Maps, pack local Google, fiche Google Business Profile, apparaître premier Google Maps, visibilité locale entreprise"
 coverTheme: "seo-local-maps"
@@ -9,9 +9,9 @@ readMinutes: 9
 author: "Rédaction b2bpro.store"
 ---
 
-# SEO local : le plan en 10 étapes pour dominer le pack local Google Maps
+# SEO local : dominer le local pack (map pack) de Google Maps
 
-**La réponse en 30 secondes :** dominer le pack local de Google Maps se joue sur trois facteurs que Google affiche lui-même (la pertinence, la distance et la notoriété) et sur un levier opérationnel : les avis clients. Le pack local (les 3 premières fiches affichées avec la carte) capte environ 60 % des clics des recherches locales, et 46 % des recherches sur Google portent une intention locale. Le plan d'action en 10 étapes ci-dessous optimise ces facteurs dans l'ordre de rentabilité : fiche Google Business Profile irréprochable, flux d'avis régulier, citations locales cohérentes et pages de service géolocalisées. La plupart des étapes demandent moins d'une heure chacune ; les résultats mesurables arrivent en 4 à 12 semaines.
+**La réponse en 30 secondes :** dominer le local pack (le map pack) de Google Maps se joue sur trois facteurs que Google affiche lui-même (la pertinence, la distance et la notoriété) et sur un levier opérationnel : les avis clients. Ce local pack (les 3 premières fiches affichées avec la carte) capte environ 60 % des clics des recherches locales, et 46 % des recherches sur Google portent une intention locale. Le plan d'action en 10 étapes ci-dessous optimise ces facteurs dans l'ordre de rentabilité : fiche Google Business Profile irréprochable, flux d'avis régulier, citations locales cohérentes et pages de service géolocalisées. La plupart des étapes demandent moins d'une heure chacune ; les résultats mesurables arrivent en 4 à 12 semaines.
 
 ## Comment fonctionne le pack local (et pourquoi c'est là que tout se joue)
 
@@ -65,7 +65,7 @@ Une page par prestation majeure × zone (« Réparation de chaudière à Rennes 
 
 ### Étape 9 : Analysez les fiches concurrentes qui vous battent
 
-Note moyenne et volume d'avis, catégories, fréquence de publication, mots-clés présents dans les avis eux-mêmes (« ponctuel », « pas cher », « conseil ») : chaque écart identifié est une action prioritaire. Si le n° 1 du pack affiche 320 avis à 4,8 et que vous en avez 40 à 4,6, votre feuille de route s'écrit toute seule. Notre [analyse des avis clients des concurrents](https://b2bpro.store/services/analyse-avis-concurrents) automatise ce benchmark sur Google Maps et les plateformes de votre secteur.
+Note moyenne et volume d'avis, catégories, fréquence de publication, mots-clés présents dans les avis eux-mêmes (« ponctuel », « pas cher », « conseil ») : chaque écart identifié est une action prioritaire. Si le n° 1 du pack affiche 320 avis à 4,8 et que vous en avez 40 à 4,6, votre feuille de route s'écrit toute seule. Notre [analyse des avis clients des concurrents](https://b2bpro.store/services/je-vais-espionner-les-avis-negatifs-de-vos-concurrents-pour-les-battre) automatise ce benchmark sur Google Maps et les plateformes de votre secteur.
 
 ### Étape 10 : Mesurez et corrigez chaque mois
 
@@ -73,7 +73,7 @@ Trois indicateurs dans le tableau de bord Google Business Profile : apparitions 
 
 ## Cas concrets : ce que ça change selon votre métier
 
-- **Artisan du bâtiment** : 60 % des demandes de devis passent par le pack local en 2025 pour les métiers RGE. Un plombier-chauffagiste passé de la 7e à la 2e position du pack sur sa ville a mesuré +11 appels par mois, à périmètre publicitaire constant. Pour identifier les zones où la concurrence de fiches est faible (les « déserts de pack local »), notre [détection d'artisans RGE par zone](https://b2bpro.store/services/artisans-rge) cartographie la densité et les notes moyennes par département.
+- **Artisan du bâtiment** : 60 % des demandes de devis passent par le pack local en 2025 pour les métiers RGE. Un plombier-chauffagiste passé de la 7e à la 2e position du pack sur sa ville a mesuré +11 appels par mois, à périmètre publicitaire constant. Pour identifier les zones où la concurrence de fiches est faible (les « déserts de pack local »), notre [détection d'artisans RGE par zone](https://b2bpro.store/services/je-vais-vous-fournir-la-liste-officielle-des-artisans-certifies-rge) cartographie la densité et les notes moyennes par département.
 - **Restaurant** : les photos et les horaires exacts font plus que la note : 30 % des recherches « restaurant + ville » sont filtrées par « ouvert maintenant ».
 - **Agence de services** : sans adresse physique dans la ville visée, la distance vous pénalise ; compensez par la notoriété (avis, mentions, pages géolocalisées) et le maillage de citations locales.
 
@@ -85,7 +85,18 @@ Trois indicateurs dans le tableau de bord Google Business Profile : apparitions 
 4. Aucun avis auquel on a répondu (signal d'abandon).
 5. Zéro page géolocalisée sur le site pour les zones visées.
 
+## Local pack, map pack, 3-pack : le vocabulaire du SEO local
+
+Le local pack (dit aussi map pack, ou 3-pack lorsqu'il affichait exactement trois fiches) désigne le bloc de résultats enrichi, accompagné d'une carte, qui s'affiche en tête des recherches à intention locale, que la requête soit formulée en français (« artisan Lyon 3 ») ou avec les anglicismes du métier (« local pack SEO », « map pack Google »). Ces termes sont utilisés indifféremment par les agences et les outils de suivi de positions : dans un audit ou un rapport SEO client, « visibilité local pack », « présence map pack » et « entrée dans le 3-pack » mesurent la même réalité.
+
+Trois principes gouvernent ce bloc, quel que soit le nom qu'on lui donne : la pertinence (à quel point la fiche correspond à la requête), la distance (proximité signalée au moment de la recherche) et la notoriété (volume, fraîcheur et note des avis). Le plan en 10 étapes de cet article agit précisément sur ces trois leviers.
+
+
 ## FAQ
+
+### Comment suivre vos positions dans le local pack pour un rapport SEO client ?
+
+Pour un rapport SEO client, mesurez la position de la fiche dans le local pack sur un quadrillage de points autour de l'adresse (la méthode du geo-grid), à fréquence hebdomadaire, en notant pour chaque requête cible le rang dans le pack et la présence ou l'absence de la fiche. Présentez l'évolution rang par requête, le delta de semaine en semaine et la corrélation avec les actions menées (avis obtenus, publications, photos). Les données concurrentes visibles dans le pack se collectent manuellement ou via un expert : [l'audit du top 20 des concurrents sur Google Maps local](https://b2bpro.store/services/je-vais-auditer-le-top-20-de-vos-concurrents-sur-google-maps-local) livre ce relevé prêt à intégrer dans le rapport.
 
 ### Comment apparaître dans le pack local de Google Maps ?
 
@@ -109,4 +120,4 @@ Oui, avec des limites : sur la ville de votre adresse, vous jouez les trois fact
 
 ## Passez à l'action cette semaine
 
-Commencez par les étapes 1 à 5 : elles ne demandent aucune compétence technique et produisent l'essentiel de l'effet. Pour les étapes 9 et 10, déléguez le benchmark concurrentiel : l'[analyse des avis de vos concurrents](https://b2bpro.store/services/analyse-avis-concurrents) et la cartographie des artisans RGE sont livrées en 2 à 3 jours sur b2bpro.store, socle de 25 à 50 €, avec options d'approfondissement. Le pack local de votre ville n'attend que votre fiche, et vos concurrents ne vous attendent pas.
+Commencez par les étapes 1 à 5 : elles ne demandent aucune compétence technique et produisent l'essentiel de l'effet. Pour les étapes 9 et 10, déléguez le benchmark concurrentiel : l'[analyse des avis de vos concurrents](https://b2bpro.store/services/je-vais-espionner-les-avis-negatifs-de-vos-concurrents-pour-les-battre) et la cartographie des artisans RGE sont livrées en 2 à 3 jours sur b2bpro.store, dès 25 €, avec paiement sécurisé sous séquestre et options d'approfondissement. Le pack local de votre ville n'attend que votre fiche, et vos concurrents ne vous attendent pas.

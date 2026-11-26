@@ -38,7 +38,7 @@ Pour mesurer votre positionnement actuel face à vos concurrents, vous pouvez fa
 Les modèles comme GPT-4o, Perplexity Pro ou Gemini ne sélectionnent pas leurs recommandations par hasard. Ils s'appuient sur des critères algorithmiques précis de recoupement d'informations :
 
 | Critère d'évaluation IA | Fonctionnement algorithmique | Impact sur la citation finale | Action prioritaire à mener |
-| :--- | :--- | :--- | :--- |
+|---|---|---|---|
 | **Cohérence d'entité (Wikidata / Schema.org)** | Vérification de l'existence juridique et sectorielle de la marque | 35 % du score d'autorité | Structurer les balises JSON-LD Organization et SameAs |
 | **Recoupement d'avis tiers indépendants** | Scraping des comparateurs (Trustpilot, G2, Capterra, Reddit) | 28 % du score de confiance | Collecter des avis clients vérifiés et détaillés |
 | **Structure textuelle Answer-First** | Détection de résumés factuels denses en début de page web | 22 % de probabilité d'extraction RAG | Placer des réponses de synthèse chiffrées en 40 à 60 mots |

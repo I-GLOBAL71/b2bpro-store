@@ -1,5 +1,5 @@
 ---
-title: "llms.txt : le guide d'implémentation pour un site lisible par les IA"
+title: "llms.txt : protocole et guide pour un site lisible par les IA"
 slug: "llms-txt-protocole-ia"
 excerpt: "llms.txt expliqué : syntaxe, implémentation pas à pas, exemples concrets et limites du protocole qui rend votre site lisible par ChatGPT et Perplexity."
 category: "SEO & Visibilité IA"
@@ -9,7 +9,7 @@ readMinutes: 10
 author: "Rédaction b2bpro.store"
 ---
 
-# llms.txt : le guide d'implémentation pour un site lisible par les IA
+# llms.txt : protocole et guide pour un site lisible par les IA
 
 **La réponse en 30 secondes :** llms.txt est un fichier markdown placé à la racine de votre site (`https://votre-site.fr/llms.txt`) qui présente votre activité et liste vos contenus clés dans un format pensé pour les grands modèles de langage. Proposé par Jeremy Howard (Answer.AI) le 18 septembre 2024, ce protocole complète robots.txt et sitemap.xml en offrant aux IA une « carte d'entrée » sélective : qui vous êtes, ce que vous faites, où trouver vos meilleures ressources. Il se crée en une heure, ne remplace ni le SEO ni le balisage JSON-LD, et se révèle le plus utile combiné à des contenus structurés et chiffrés, l'étude GEO de Princeton (KDD 2024) ayant mesuré que citer ses sources inline améliore la visibilité dans les réponses IA de +115 %. Voici le guide d'implémentation complet.
 
@@ -25,9 +25,9 @@ Le protocole a été proposé par Jeremy Howard, cofondateur de Answer.AI, le 18
 
 Les corpus d'entraînement et les outils de récupération des modèles manipulent nativement du markdown : titres `#`, listes, liens. Un document markdown se découpe naturellement en sections, sans parser le HTML, sans ignorer le contenu rendu en Javascript, sans charger des mégaoctets de CSS. llms.txt capitalise ce format pour la racine de votre site, exactement comme les pages de documentation techniques qui publient désormais des versions markdown de leurs contenus.
 
-### Le statut d'adoption en 2025
+### Le statut d'adoption en 2026
 
-Le protocole reste une proposition, pas un standard imposé : aucun moteur n'annonce en faire une exigence. Mais l'écosystème bouge vite : des documentations majeures (Anthropic, Stripe, Cloudflare, Mintlify) publient leur llms.txt ; des outils de génération de sites l'intègrent en option ; les crawlers dédiés à l'IA (GPTBot d'OpenAI, ClaudeBot d'Anthropic, PerplexityBot, Google-Extended) indexent massivement le web pour l'ère générative. Publier son llms.txt aujourd'hui, c'est s'équiper avant la course générale, comme le sitemap.xml en 2006, ignoré la première année, indispensable la troisième.
+Le protocole reste une proposition, pas un standard imposé : aucun moteur n'annonce en faire une exigence. Mais l'écosystème évolue rapidement : des documentations majeures (Anthropic, Stripe, Cloudflare, Mintlify) publient leur manifeste ; des outils de génération de sites l'intègrent en option ; les crawlers dédiés à l'IA (GPTBot d'OpenAI, ClaudeBot d'Anthropic, PerplexityBot, Google-Extended) indexent massivement le web pour l'ère générative. Publier ce fichier dès maintenant, c'est s'équiper avant la course générale, comme le sitemap.xml en 2006.
 
 ## llms.txt vs robots.txt vs sitemap.xml : les trois couches
 
@@ -61,9 +61,9 @@ de 4,2 à 5 étoiles.
 
 ## Services principaux
 
-- [Audit de visibilité dans les IA](https://b2bpro.store/services/audit-visibilite-ia): mesurez vos citations sur ChatGPT, Perplexity et AI Overviews
-- [Fichiers de prospection B2B](https://b2bpro.store/services/fichier-prospection-b2b): listes fraîches reconstruites sur les flux SIRENE et BODACC
-- [Détection des annonces sous le prix du marché](https://b2bpro.store/services/detection-annonces-sous-prix): biens décotés croisés avec les transactions DVF
+- [Audit de visibilité dans les IA](https://b2bpro.store/services/je-vais-auditer-si-votre-marque-est-recommandee-par-les-moteurs-ia): mesurez vos citations sur ChatGPT, Perplexity et AI Overviews
+- [Fichiers de prospection B2B](https://b2bpro.store/services/je-vais-vous-fournir-un-fichier-de-prospection-b2b-frais-et-verifie): listes fraîches reconstruites sur les flux SIRENE et BODACC
+- [Détection des annonces sous le prix du marché](https://b2bpro.store/services/je-vais-detecter-les-annonces-immobilieres-sous-le-prix-du-marche): biens décotés croisés avec les transactions DVF
 
 ## Ressources
 
@@ -149,23 +149,23 @@ Trois indicateurs à suivre avant/après publication :
 
 1. **Les crawlers IA dans vos logs** : fréquence de passage de GPTBot, ClaudeBot, PerplexityBot (observable dans les logs serveur ou via votre outil d'analyse).
 2. **Le trafic référent des IA** : sessions depuis chatgpt.com, perplexity.ai, gemini.google.com : la progression typique observée sur les sites techniques bien structurés est de l'ordre de 3 à 5 fois en un an.
-3. **Votre taux de citation** : la part des questions cibles où votre domaine apparaît dans les réponses des IA. [Notre audit de visibilité dans les IA](https://b2bpro.store/services/audit-visibilite-ia) mesure ce taux : état des lieux sur 30 à 50 questions, comparaison concurrentielle, plan d'action, livré en 2 à 3 jours.
+3. **Votre taux de citation** : la part des questions cibles où votre domaine apparaît dans les réponses des IA. [Notre audit de visibilité dans les IA](https://b2bpro.store/services/je-vais-auditer-si-votre-marque-est-recommandee-par-les-moteurs-ia) mesure ce taux : état des lieux sur 30 à 50 questions, comparaison concurrentielle, plan d'action, livré en 2 à 3 jours.
 
-Et si vous voulez aller au bout de la logique « AI-ready », la conversion complète de vos contenus clés en markdown propre alimente à la fois votre llms-full.txt, vos Custom GPT et vos bases RAG : c'est le cœur de [notre service de conversion de site en base de connaissances IA](https://b2bpro.store/services/base-connaissances-ia).
+Et si vous voulez aller au bout de la logique « AI-ready », la conversion complète de vos contenus clés en markdown propre alimente à la fois votre llms-full.txt, vos Custom GPT et vos bases RAG : c'est le cœur de [notre service de conversion de site en base de connaissances IA](https://b2bpro.store/services/je-vais-convertir-n-importe-quel-site-en-base-de-connaissances-ia).
 
 ## FAQ
-
-### Qu'est-ce que le fichier llms.txt ?
-
-llms.txt est un fichier au format markdown publié à la racine d'un site web qui présente l'organisation et liste ses contenus essentiels avec des descriptions d'une ligne, afin de guider les modèles de langage vers les bonnes ressources. Proposé par Jeremy Howard (Answer.AI) le 18 septembre 2024, il se complète d'une variante llms-full.txt qui embarque le contenu intégral des pages clés.
-
-### llms.txt remplace-t-il robots.txt et sitemap.xml ?
-
-Non : les trois fichiers jouent des rôles complémentaires. robots.txt (1994) régule l'accès des crawlers, sitemap.xml (2006) inventorie les pages à indexer pour les moteurs de recherche, llms.txt (2024) présente et hiérarchise les contenus pour les systèmes d'IA générative. Un site complet publie les trois, avec des rôles distincts et non superposables.
 
 ### Comment créer un llms.txt en une heure ?
 
 Créez un fichier markdown avec : un titre H1 (nom de l'organisation), une description en blockquote, un paragraphe de présentation chiffrée, puis des sections par thème contenant chacune une liste de liens vers vos 15 à 40 pages essentielles, chaque lien décrit en une ligne. Déposez le fichier à la racine du site, servez-le en text/plain ou text/markdown, et vérifiez avec curl qu'il renvoie un code 200.
+
+### Qu'est-ce que le fichier llms.txt ?
+
+Publié à la racine d'un site web au format markdown, ce manifeste présente l'organisation et liste ses contenus essentiels avec des descriptions d'une ligne, afin de guider les modèles de langage vers les bonnes ressources. Proposé par Jeremy Howard (Answer.AI) le 18 septembre 2024, il se complète d'une variante llms-full.txt qui embarque le contenu intégral des pages clés.
+
+### llms.txt remplace-t-il robots.txt et sitemap.xml ?
+
+Non : les trois fichiers jouent des rôles complémentaires. robots.txt (1994) régule l'accès des crawlers, sitemap.xml (2006) inventorie les pages à indexer pour les moteurs de recherche, llms.txt (2024) présente et hiérarchise les contenus pour les systèmes d'IA générative. Un site complet publie les trois, avec des rôles distincts et non superposables.
 
 ### Les IA comme ChatGPT lisent-elles obligatoirement llms.txt ?
 
@@ -173,7 +173,7 @@ Non, aucun fournisseur ne s'est engagé à lire systématiquement llms.txt : le 
 
 ### Quelle différence entre llms.txt et llms-full.txt ?
 
-llms.txt est un fichier compact (idéalement sous 50 Ko) qui décrit et relie les contenus clés ; llms-full.txt est sa version exhaustive, contenant l'intégralité du contenu des pages sélectionnées en markdown. Le premier guide les modèles vers vos URL, le second leur donne tout à lire en un seul document, utile pour les documentations techniques et les sites dont les pages clés changent peu.
+Alors que le fichier index compact (idéalement sous 50 Ko) décrit et relie les contenus clés, sa variante exhaustive llms-full.txt contient l'intégralité du contenu des pages sélectionnées en markdown. Le premier guide les modèles vers vos URL, le second leur donne tout à lire en un seul document, utile pour les documentations techniques et les sites dont les pages clés changent peu.
 
 ### Combien coûte la mise en place de llms.txt ?
 
@@ -181,4 +181,4 @@ Faire soi-même : une heure de rédaction et un déploiement technique simple. E
 
 ## Ce que vous pouvez faire maintenant
 
-Une heure de travail, un fichier, et votre site parle enfin la langue des modèles. Rédigez votre llms.txt cette semaine, puis mesurez ce qu'il change : [lancez votre audit de visibilité dans les IA](https://b2bpro.store/services/audit-visibilite-ia) sur b2bpro.store pour connaître votre taux de citation actuel, et laissez les moteurs de réponse découvrir une version de votre site qu'ils comprendront enfin.
+Une heure de travail, un fichier, et votre site parle enfin la langue des modèles. Rédigez votre llms.txt cette semaine, puis mesurez ce qu'il change : [lancez votre audit de visibilité dans les IA](https://b2bpro.store/services/je-vais-auditer-si-votre-marque-est-recommandee-par-les-moteurs-ia) sur b2bpro.store pour connaître votre taux de citation actuel, et laissez les moteurs de réponse découvrir une version de votre site qu'ils comprendront enfin.

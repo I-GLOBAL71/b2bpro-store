@@ -79,7 +79,7 @@ Les organismes transparents affichent leurs indicateurs de résultats, obligatoi
 Analyser manuellement des dizaines de fiches sur le moteur de recherche de Mon Compte Formation est une tâche chronophage et fastidieuse en raison des filtres limités de l'interface publique :
 
 | Critères de comparaison | Veille manuelle en interne | Logiciels d'intelligence marché spécialisés | Audit concurrentiel CPF sur b2bpro.store |
-| :--- | :--- | :--- | :--- |
+|---|---|---|---|
 | **Temps requis** | 15 à 25 heures de saisie fastidieuse | Prise en main complexe d'outils SaaS | **0 heure**, délégation complète clé en main |
 | **Coût financier** | 600 € à 1 000 € en coût salarial interne | 1 500 € à 4 000 € / an d'abonnement logiciel | **35 € par lot audité**, sans engagement |
 | **Exhaustivité des données** | Relevé partiel souvent biaisé | Données volumineuses non synthétisées | **Tableau comparatif structuré** et prêt à l'emploi |
@@ -91,24 +91,11 @@ Analyser manuellement des dizaines de fiches sur le moteur de recherche de Mon C
 
 ## Comment structurer votre audit concurrentiel en 3 étapes concrètes
 
-Pour transformer cette veille en leviers de croissance immédiats pour votre centre de formation, suivez cette méthode :
+Pour transformer cette veille en leviers de croissance immédiats pour votre centre de formation, suivez cette séquence en trois phases :
 
-```
-┌────────────────────────────────────────────────────────┐
-│         MÉTHODE D'AUDIT CONCURRENTIEL CPF              │
-└───────────────────────────┬────────────────────────────┘
-                            │
-  1. EXTRACTION DES DONNÉES TARIF ET CONTENU
-  │  Relevé des 10 à 20 offres les plus visibles sur votre mot-clé
-  │
-  ▼
-  2. VÉRIFICATION DES CERTIFICATIONS ET STATUTS QUALIOPI
-  │  Contrôle des habilitations officielles et conformité Caisse des Dépôts
-  │
-  ▼
-  3. REPOSITIONNEMENT STRATÉGIQUE DE VOTRE CATALOGUE
-     Ajustement du taux horaire, du tutorat et des arguments de conversion
-```
+- **Relevé tarif et contenu :** extraction des 10 à 20 offres concurrentes les mieux placées sur votre mot-clé.
+- **Vérification Qualiopi :** contrôle des habilitations officielles et des critères Caisse des Dépôts.
+- **Repositionnement catalogue :** ajustement du taux horaire, du tutorat et des preuves d'insertion.
 
 1. **Définir votre requête métier cible :** identifiez les 3 ou 4 intitulés de compétences les plus recherchés par vos futurs stagiaires (exemples : *« Anglais professionnel TOEIC »*, *« Développeur web React »*, *« Management d'équipe hybride »*).
 2. **Commander un relevé exhaustif des offres rivales :** déléguez la collecte de données via notre service spécialisé pour [analyser les tarifs et avis des formations CPF concurrentes](https://b2bpro.store/services/je-vais-analyser-les-tarifs-et-avis-des-formations-cpf-concurrentes) dès 35 €. Vous obtenez un fichier Excel complet compilant les prix, durées, organismes dispensateurs et notes d'évaluation.

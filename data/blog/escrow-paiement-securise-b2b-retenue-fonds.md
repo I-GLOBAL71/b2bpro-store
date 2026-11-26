@@ -39,7 +39,7 @@ L'escrow supprime ce dilemme de défiance. L'argent est réservé avant le débu
 Pour évaluer la supériorité du séquestre bancaire numérique face aux méthodes historiques, comparons les caractéristiques clés de chaque système.
 
 | Critère d'évaluation | Facturation classique à 30 jours | Acompte bancaire préalable | Virement bancaire direct | Escrow / Séquestre B2B Pro |
-| :--- | :--- | :--- | :--- | :--- |
+|---|---|---|---|---|
 | **Garantie d'impayé prestataire** | Nulle (risque légal de contentieux) | Partielle (limitée à l'acompte 30 %) | Nulle (délai d'encaissement aléatoire) | **100 % (fonds garantis sous séquestre)** |
 | **Protection de l'acheteur** | Élevée (l'acheteur garde la main) | Faible (perte sèche si abandon) | Nulle (aucun contrôle sur le livrable) | **Totale (remboursement si non conforme)** |
 | **Délai moyen de règlement** | 45 à 72 jours ouvrés | Immédiat pour l'acompte, solde à 45 jours | 5 à 15 jours après facture | **24 à 48 heures après validation** |

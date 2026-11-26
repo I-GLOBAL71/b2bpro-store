@@ -17,7 +17,7 @@ author: "Rédaction b2bpro.store"
 
 ## Pourquoi le risque fournisseur est devenu la première menace opérationnelle
 
-Les perturbations des chaînes d'approvisionnement mondiales et l'inflation des coûts énergétiques ont fragilisé les trésoreries d'entreprises autrefois solides. Dans un écosystème B2B interdépendant, la défaillance d'un sous-traitant critique ne se traduit pas seulement par une perte financière immédiate : elle paralyse les lignes de fabrication, génère des pénalités de retard client et dégrade votre réputation commerciale.
+Les perturbations des chaînes d'approvisionnement mondiales et l'inflation des coûts énergétiques ont fragilisé les trésoreries d'entreprises autrefois solides. Dans un écosystème B2B interdépendant, la défaillance d'un sous-traitant critique dépasse vite une perte financière immédiate : elle paralyse les lignes de fabrication, génère des pénalités de retard client et dégrade votre réputation commerciale.
 
 La plupart des directions d'achats et directions générales commettent la même erreur : elles attendent l'alerte formelle d'un liquidateur judiciaire ou le rejet d'un virement bancaire pour agir. Or, une entreprise ne fait jamais faillite du jour au lendemain. Entre les premiers déséquilibres de trésorerie et la cessation des paiements déclarée au tribunal, il s'écoule généralement entre 6 et 18 mois de dégradation progressive, parfaitement visible dans les comptes annuels et les annonces légales.
 
@@ -81,24 +81,10 @@ $$Z' = 0{,}717 X_1 + 0{,}847 X_2 + 3{,}107 X_3 + 0{,}420 X_4 + 0{,}998 X_5$$
 
 ## Les signaux faibles non comptables à surveiller d'urgence
 
-Les bilans comptables officiels présentent un décalage temporel : ils reflètent l'exercice clos plusieurs mois auparavant. Pour anticiper les défaillances avec une réactivité maximale, vous devez recouper les chiffres avec les signaux extra-financiers :
+Les bilans comptables officiels présentent un décalage temporel : ils reflètent l'exercice clos plusieurs mois auparavant. Pour anticiper les défaillances avec une réactivité maximale, croisez deux familles d'indicateurs :
 
-```
-             ┌─────────────────────────────────────────────────────────┐
-             │       SURVEILLANCE COMPLÈTE DU RISQUE FOURNISSEUR       │
-             └────────────────────────────┬────────────────────────────┘
-                                          │
-            ┌─────────────────────────────┴─────────────────────────────┐
-            ▼                                                           ▼
-┌───────────────────────┐                                   ┌───────────────────────┐
-│   SIGNAUX FINANCIERS  │                                   │   SIGNAUX EXTRA-FIN   │
-├───────────────────────┤                                   ├───────────────────────┤
-│ • Dégradation du Z'   │                                   │ • Retards livraisons  │
-│ • BFR en forte hausse │                                   │ • Privilèges URSSAF   │
-│ • Capitaux propres <0 │                                   │ • Turnover clé cadres │
-│ • Perte d'exploitation│                                   │ • Litiges BODACC      │
-└───────────────────────┘                                   └───────────────────────┘
-```
+- **Signaux comptables :** glissement du score Z, gonflement anormal du besoin en fonds de roulement, perte d'exploitation ou capitaux propres négatifs.
+- **Signaux opérationnels extra-financiers :** inscriptions de privilèges URSSAF ou Trésor, retards répétés de livraison, mentions au BODACC et départs de cadres dirigeants.
 
 1. **Inscriptions de privilèges au greffe :** les inscriptions de privilèges prises par l'URSSAF, le Trésor Public ou les caisses de retraite complémentaire constituent l'indicateur le plus fiable d'un blocage de trésorerie imminent.
 2. **Publications au BODACC :** avis de modification du capital social, cessions de branches d'activité, déclarations de perte de la moitié du capital social ou ouvertures de procédures amiables (mandat ad hoc, conciliation).
@@ -113,7 +99,7 @@ Les bilans comptables officiels présentent un décalage temporel : ils reflète
 Pour surveiller leurs partenaires, les grandes entreprises recourent traditionnellement à des contrats de veille financière auprès de prestataires historiques. Pourtant, pour une PME, une ETI ou un service achats agile, ce modèle contractuel présente de lourds inconvénients :
 
 | Critères de comparaison | Abonnements classiques (CreditSafe, Ellisphere, Altares) | Audit financier à la demande sur b2bpro.store |
-| :--- | :--- | :--- |
+|---|---|---|
 | **Coût d'entrée annuel** | 1 800 € à 5 500 € / an avec engagement 12 mois | **0 € d'abonnement**, paiement unitaire à la mission |
 | **Tarif par analyse** | Crédits bloqués, coût réel 80 € à 150 € / fiche | **45 € par lot audité**, sans engagement |
 | **Profondeur d'analyse** | Score automatique généré par algorithme sans relecture | **Analyse humaine experte**, calcul manuel des ratios et synthèse |

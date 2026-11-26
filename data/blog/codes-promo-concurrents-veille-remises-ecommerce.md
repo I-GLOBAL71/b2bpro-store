@@ -34,7 +34,7 @@ Prix catalogue public : 100 € ➔ Code influenceur (-15 %) ➔ Livraison gratu
           [Écart réel constaté : 20 % d'avantage concurrentiel dissimulé]
 ```
 
-Si votre boutique affiche un produit équivalent à 92 € en pensant être la moins chère du marché, vous perdez en réalité la commande au profit d'un rival dont le panier final s'établit à 80 €. Une étude du cabinet McKinsey sur les comportements d'achat en ligne confirme que 63 % des cyberacheteurs abandonnent leur panier si aucun champ de remise n'est validé. C'est une erreur coûteuse. Chaque euro compte.
+Si votre boutique affiche un produit équivalent à 92 € en pensant être la moins chère du marché, vous perdez en réalité la commande au profit d'un rival dont le panier final s'établit à 80 €. Sur un tunnel de commande e-commerce, un acheteur face à un champ « code promo » vide sort souvent de la page pour comparer ailleurs et bascule chez le vendeur qui propose une remise active. C'est une fuite directe de chiffre d'affaires. Chaque euro compte.
 
 Pour cartographier l'ensemble de ces rabais occultes chez vos rivaux, vous pouvez commander un audit complet pour [auditer les offres promotionnelles et codes promo rivaux](https://b2bpro.store/services/je-vais-auditer-les-offres-promotionnelles-et-codes-promo-rivaux) sur B2B Pro.
 
@@ -45,7 +45,7 @@ Pour cartographier l'ensemble de ces rabais occultes chez vos rivaux, vous pouve
 Mesurer l'agressivité promotionnelle de votre marché nécessite de catégoriser précisément chaque type d'opération commerciale.
 
 | Mécanisme promotionnel | Déclencheur utilisateur | Écart moyen au prix facial | Impact constaté sur le taux de conversion | Fréquence de renouvellement |
-| :--- | :--- | :--- | :--- | :--- |
+|---|---|---|---|---|
 | **Code de bienvenue (Newsletter)** | Inscription email / pop-in premier visiteur | -10 % à -15 % ou bon de 5 € à 10 € | +18,4 % de conversion premier achat | Quasi permanent (validité 14 jours) |
 | **Code d'affiliation / Influenceur** | Liens sponsorisés, réseaux sociaux, YouTube | -15 % à -25 % avec commission partenaire | +26,2 % sur les segments Gen Z & Millenials | Mensuelle ou liée à des campagnes de 48h |
 | **Paliers de gratuité de livraison** | Atteinte d'un montant de commande (ex. dès 60 €) | Équivalent à 4,90 € - 8,90 € d'économie | +34,8 % sur la valeur moyenne du panier | Permanent avec ajustements saisonniers |

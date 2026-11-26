@@ -1,6 +1,6 @@
 # Audit élite SEO/GEO/AIO — 2026-11-25
 
-**113 services** · **58 articles** · 2163 contrôles · 0 échec(s) · 4 avertissement(s).
+**113 services** · **58 articles** · 2167 contrôles · 0 échec(s) · 0 avertissement(s).
 
 ## Fiches en échec
 
@@ -12,10 +12,7 @@ _Aucun._
 
 ## Avertissements (non bloquants)
 
-- [site] site-llms → dev local injoignable
-- [site] site-llms-full → dev local injoignable
-- [site] site-sitemap → dev local injoignable
-- [site] site-robots → dev local injoignable
+_Aucun._
 
 ## Volumétrie des articles (mots)
 

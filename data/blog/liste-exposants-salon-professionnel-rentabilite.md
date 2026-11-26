@@ -21,7 +21,7 @@ Chaque année, les entreprises consacrent des budgets considérables aux salons 
 2. **La saturation des exposants le jour de l'événement :** Sur leur stand, les dirigeants et décideurs clés sont accaparés par leurs propres clients, les démonstrations de produits et les conférences. Essayer de les aborder à froid sur place se solde dans 90 % des cas par un échange rapide de carte de visite sans lendemain.
 3. **Le coût horaire démesuré :** Entre les billets de train, l'hôtel, la restauration et le temps passé hors du bureau, deux journées de salon coûtent en moyenne 1 800 € par collaborateur. Sans opportunités qualifiées en amont, ce déplacement constitue une pure perte sèche.
 
-À l'opposé, les commerciaux les plus performants considèrent le salon non pas comme un lieu de découverte, mais comme le point d'atterrissage de négociations déjà engagées plusieurs semaines auparavant.
+Plus vite vous contactez ces cibles avant l'ouverture, plus votre agenda se remplit. Les meilleurs commerciaux arrivent sur place avec des négociations déjà entamées quinze jours plus tôt.
 
 ## Les 4 étapes pour transformer la liste des exposants en carnet de commandes
 
@@ -72,7 +72,7 @@ Pour ne pas froisser vos prospects lors de vos rendez-vous sur stand, respectez 
 ## Foire aux questions sur la prospection des exposants de salon
 
 ### Comment récupérer la liste des exposants d'un salon professionnel ?
-Pour récupérer la liste des exposants d'un salon professionnel, il convient de consulter l'annuaire officiel publié sur le site web de l'événement. Comme ces annuaires sont souvent protégés contre l'export direct, il est recommandé de confier cette extraction à un spécialiste de la data qui utilise des robots automatisés pour regrouper tous les stands dans un fichier Excel exploitable.
+Commencez par consulter le catalogue officiel publié sur le site de l'événement. Ces annuaires bloquent souvent l'export CSV natif : confier l'extraction à un prestataire spécialisé vous permet de récupérer tous les stands, sites web et catégories dans un tableau Excel propre en 48 heures.
 
 ### Quand faut-il commencer à contacter les exposants avant le salon ?
 Le moment optimal pour contacter les exposants se situe entre 2 et 3 semaines avant l'ouverture de l'événement. À cette période, les agendas des directeurs ne sont pas encore totalement verrouillés et ils cherchent activement à rentabiliser leur temps de présence sur le stand.

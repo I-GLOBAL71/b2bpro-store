@@ -21,11 +21,11 @@ Chaque jour, des milliers de particuliers et de marchands de biens parcourent Le
 2. **Le piège du prix affiché initial :** Beaucoup d'annonces débutent à un tarif déconnecté de la réalité avant de subir plusieurs baisses successives (de 5 % puis 10 %). Sans historique des modifications de prix, il est impossible pour un visiteur occasionnel de repérer le vendeur pressé prêt à négocier fortement.
 3. **Le manque de vision financière instantanée :** Calculer le rendement brut, le coût des travaux au mètre carré et l'impact de la fiscalité sur 50 annonces prend des journées entières. Sans tableau d'analyse standardisé, l'investisseur hésite et laisse passer l'opportunité.
 
-Pour réussir dans l'investissement locatif ou l'activité de marchand de biens, il est indispensable de substituer l'intuition par un protocole de sourcing automatisé et rationnel.
+Oubliez l'intuition. Un protocole automatisé repère chaque écart réel bien avant les visiteurs occasionnels.
 
 ## Les 4 signaux révélateurs d'une annonce sous le prix du marché
 
-Pour repérer rapidement si un bien immobilier dissimule une rentabilité exceptionnelle, recherchez systématiquement ces quatre signaux faibles :
+Ne parcourez plus les portails sans filtre. Cherchez d'abord ces quatre anomalies concrètes :
 
 ### 1. L'écart négatif au prix médian communal au m²
 La première étape consiste à confronter le prix au mètre carré de l'annonce avec les statistiques réelles des notaires et la base DVF (Demandes de Valeurs Foncières) des 12 derniers mois dans un rayon de 500 mètres. Si le bien se situe au moins 18 % sous cette moyenne à typologie égale (étage, surface, quartier), l'investigation s'impose.

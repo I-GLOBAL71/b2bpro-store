@@ -32,7 +32,7 @@ Allocation budgétaire immédiate : 40 % en outils et prestataires externes
 Recrutements massifs et structuration des process opérationnels
 ```
 
-Selon une analyse réalisée par le cabinet McKinsey sur les investissements technologiques européens, plus de 62 % des arbitrages d'outillage SaaS et de prestations d'infrastructure sont signés durant le premier trimestre suivant la clôture d'un tour financier. Pour tirer parti de cette dynamique, vous pouvez vous appuyer sur notre service dédié : [je vais lister les startups et PME ayant levé des fonds ce mois-ci](https://b2bpro.store/services/je-vais-lister-les-startups-et-pme-ayant-leve-des-fonds-ce-mois-ci).
+La fenêtre de tir est courte : dans les 90 jours qui suivent la clôture d'un tour financier, les fondateurs et directeurs opérationnels arbitrent rapidement leurs budgets d'outillage SaaS, de recrutement et d'infrastructure. Pour tirer parti de cette dynamique, vous pouvez vous appuyer sur notre service dédié : [je vais lister les startups et PME ayant levé des fonds ce mois-ci](https://b2bpro.store/services/je-vais-lister-les-startups-et-pme-ayant-leve-des-fonds-ce-mois-ci).
 
 ---
 

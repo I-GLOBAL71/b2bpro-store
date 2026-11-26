@@ -1,5 +1,5 @@
 ---
-title: "Marchés publics : gagnez votre premier appel d'offres (BOAMP, DCE, TED)"
+title: "Marchés publics et appels d'offres : gagner au BOAMP, DCE et TED"
 slug: "marches-publics-boamp"
 excerpt: "La commande publique pèse 215 milliards d'euros par an et une procédure sur trois n'attire qu'un ou deux candidats : suivez la méthode complète pour décrocher votre premier appel d'offres."
 category: "Prospection & Croissance"
@@ -9,7 +9,7 @@ readMinutes: 9
 author: "Rédaction b2bpro.store"
 ---
 
-# Marchés publics : gagnez votre premier appel d'offres (BOAMP, DCE, TED)
+# Marchés publics et appels d'offres : gagner au BOAMP, DCE et TED
 
 **La réponse en 30 secondes :** la commande publique française représente environ **215 milliards d'euros par an**, et les PME remportent environ 30 % de cette valeur : un marché plus accessible qu'il n'y paraît, car **une procédure sur trois environ n'attire qu'un ou deux candidats**. Gagner son premier appel d'offres ne demande pas d'être le moins cher : 60 à 70 % des mises à l'écart proviennent d'erreurs de forme (dossier incomplet, pièce manquante, offre hors délai), pas de prix. La méthode : cibler les petites procédures adaptées (MAPA, inférieures à 40 000 € HT), lire le DCE en entier jusqu'à sa dernière annexe, répondre point par point au règlement de consultation, et surveiller le BOAMP chaque matin. Suivez le guide.
 
@@ -56,7 +56,7 @@ La conséquence stratégique est capitale : **une offre à +8 % mais irréprocha
 ## La méthode complète en 8 étapes
 
 1. **Ciblez les MAPA sous 40 000 €.** Procédure allégée, dossier simplifié, concurrence locale : c'est là que se gagnent les premiers marchés. Résidences de services, écoles, mairies, syndicats intercommunaux : des milliers d'acheteurs publient chaque semaine.
-2. **Mettez en place une veille BOAMP quotidienne.** Les consultations au-dessus des seuils sont publiées au BOAMP (et sur les profils d'acheteurs en dessous). Filtrer par code CPV, département et mots-clés de vos prestations : sans veille automatique, vous découvrez les consultations quand les résultats sont déjà publiés. [Notre veille des marchés publics BOAMP](https://b2bpro.store/services/veille-boamp) fait exactement ce travail : signaux filtrés selon votre activité, livrés en 2 à 3 jours.
+2. **Mettez en place une veille BOAMP quotidienne.** Les consultations au-dessus des seuils sont publiées au BOAMP (et sur les profils d'acheteurs en dessous). Filtrer par code CPV, département et mots-clés de vos prestations : sans veille automatique, vous découvrez les consultations quand les résultats sont déjà publiés. [Notre veille des marchés publics BOAMP](https://b2bpro.store/services/je-vais-configurer-votre-veille-sur-mesure-des-marches-publics-boamp) fait exactement ce travail : signaux filtrés selon votre activité, livrés en 2 à 3 jours.
 3. **Lisez le DCE en entier, y compris les annexes.** Le RC liste les pièces exigées et les critères : c'est votre cahier de route. Chaque annexe non lue est une note perdue. Comptez 2 à 4 heures pour un premier marché.
 4. **Rédigez le mémoire technique en répondant point par point au CCTP.** Reprenez la structure exacte du cahier des charges, article par article, avec pour chacun : votre réponse, vos moyens, votre preuve. Les jurys notent grille en main : leur faciliter la lecture, c'est gagner des points.
 5. **Sécurisez les pièces administratives.** Attestations fiscales et sociales à jour, assurance RC professionnelle, déclaration de sous-traitance, certificats. Le saviez-vous ? L'absence d'une seule pièce exigée est un motif d'élimination sans même examen de l'offre : c'est la première cause de sortie.
@@ -76,12 +76,16 @@ La conséquence stratégique est capitale : **une offre à +8 % mais irréprocha
 ## Où trouver les appels d'offres adaptés à votre taille
 
 - **BOAMP** (boamp.fr) : le journal légal, consultations au-dessus des seuils, mise à jour quotidienne.
-- **Profils d'acheteurs et plateformes de dématérialisation** : la majorité des MAPA et consultations sous seuils n'apparaissent qu'ici.
+- **Profils d'acheteurs et plateformes de dématérialisation** : la majorité des MAPA et consultations sous seuils n'apparaissent qu'ici, d'où l'utilité d'une [veille personnalisée des appels d'offres publics](https://b2bpro.store/services/je-vais-creer-votre-veille-personnalisee-des-appels-d-offres-publics) multi-plateformes dès 35 € (paiement protégé sous séquestre).
 - **TED / portail EU** : pour les marchés européens, à réserver aux entreprises déjà rodées.
 - **La presse locale économique** relaie parfois les grosses consultations, avec retard.
-- **Le salonnier :** les exposants des salons professionnels publics (Congrès du Maire, salon des maires et collectivités…) sont littéralement la carte des prestataires qui travaillent avec les collectivités. Notre [détection des exposants de salons professionnels](https://b2bpro.store/services/exposants-salons) identifie ces acteurs (précieux pour repérer les sous-traitants associables sur une réponse groupée).
+- **Le salonnier :** les exposants des salons professionnels publics (Congrès du Maire, salon des maires et collectivités…) sont littéralement la carte des prestataires qui travaillent avec les collectivités. Notre [détection des exposants de salons professionnels](https://b2bpro.store/services/je-vais-extraire-la-liste-complete-des-exposants-d-un-salon-pro) identifie ces acteurs (précieux pour repérer les sous-traitants associables sur une réponse groupée).
 
 ## FAQ
+
+### Comment gagner son premier appel d'offres en marché public ?
+
+Ciblez d'abord les MAPA inférieurs à 40 000 € HT où 30 à 40 % des consultations n'attirent qu'un ou deux candidats, lisez l'intégralité du DCE annexes comprises, rédigez votre mémoire technique en suivant l'ordre exact du CCTP avec des preuves chiffrées et déposez toutes les pièces administratives à jour avant l'heure limite.
 
 ### Qu'est-ce que le BOAMP exactement ?
 
@@ -109,4 +113,4 @@ Oui, dès lors qu'elle est immatriculée, à jour de ses obligations fiscales et
 
 ## Passez à l'action
 
-Ce matin même, des centaines de consultations ont été publiées dont certaines n'auront qu'un candidat. Mettez en place votre veille : [le service de veille des marchés publics BOAMP](https://b2bpro.store/services/veille-boamp) de b2bpro.store filtre les annonces selon votre activité et vos zones, livrées en 2 à 3 jours, socle de 25 à 50 € et options de suivi, et votre premier DCE n'aura plus aucun secret.
+Ce matin même, des centaines de consultations ont été publiées dont certaines n'auront qu'un candidat. Mettez en place votre veille : [le service de veille des marchés publics BOAMP](https://b2bpro.store/services/je-vais-configurer-votre-veille-sur-mesure-des-marches-publics-boamp) de b2bpro.store filtre les annonces selon votre activité et vos zones, livrées en 2 à 3 jours, socle de 25 à 50 € et options de suivi, et votre premier DCE n'aura plus aucun secret.

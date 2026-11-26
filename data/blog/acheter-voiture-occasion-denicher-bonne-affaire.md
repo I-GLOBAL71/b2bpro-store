@@ -28,28 +28,12 @@ Consulter deux ou trois annonces au hasard sur son smartphone ne permet pas de s
 
 ## Les 5 étapes pour analyser 100 annonces automobiles méthodiquement
 
-Pour dénicher la perle rare sans se noyer dans la masse des petites annonces, voici la méthode d'ingénierie appliquée aux annonces auto :
+Pour dénicher la perle rare sans se noyer dans la masse des petites annonces, voici les quatre temps du protocole de tri auto :
 
-```
-┌────────────────────────────────────────────────────────┐
-│        PROTOCOLE D'EXTRACTION ET TRI AUTO 100          │
-└───────────────────────────┬────────────────────────────┘
-                            │
-  1. EXTRACTION EXHAUSTIVE MULTI-PLATEFORMES
-  │  Collecte de 100 annonces (modèle, motorisation, année, km)
-  │
-  ▼
-  2. NORMALISATION ET CALCUL DE LA DÉCOTE KILOMÉTRIQUE
-  │  Élimination des valeurs extrêmes et calcul du prix au millier de km
-  │
-  ▼
-  3. AUDIT HISTOVEC ET VÉRIFICATION ADMINISTRATIVE
-  │  Contrôle du nombre de propriétaires, sinistres et gage
-  │
-  ▼
-  4. CHECKLIST D'INSPECTION SUR PLACE ET NÉGOCIATION
-     Identification des points d'usure pour obtenir une remise ciblée
-```
+1. **Extraction multi-plateformes :** collecte de 100 annonces (modèle, motorisation, année, kilométrage).
+2. **Normalisation kilométrique :** filtrage des valeurs aberrantes et calcul du prix rapporté au millier de kilomètres.
+3. **Audit HistoVec et administratif :** contrôle du nombre de propriétaires, sinistres et certificat de non-gage.
+4. **Inspection et négociation sur place :** repérage des points d'usure pour appuyer une remise chiffrée.
 
 ### 1. La formule de la décote kilométrique ajustée
 
@@ -85,7 +69,7 @@ Présenter au vendeur un tableau de 10 annonces concurrentes strictement équiva
 ## Comparatif : recherche solitaire vs service d'analyse de données
 
 | Critères de comparaison | Recherche manuelle le soir après le travail | Délégation d'analyse de données sur b2bpro.store |
-| :--- | :--- | :--- |
+|---|---|---|
 | **Temps investi** | 20 à 35 heures réparties sur plusieurs semaines | **Moins de 5 minutes** pour soumettre vos critères |
 | **Volume analysé** | 10 à 15 annonces mémorisées confusément | **100 annonces complètes extraites et scorées** |
 | **Précision du prix marché** | Intuition approximative souvent biaisée | **Prix médian exact et décote calculée mathématiquement** |

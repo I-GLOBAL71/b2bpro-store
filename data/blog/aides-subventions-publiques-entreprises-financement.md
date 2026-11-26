@@ -42,7 +42,7 @@ Pour déléguer cette veille stratégique et obtenir un audit personnalisé de v
 Selon la nature de vos investissements, différents organismes publics peuvent intervenir pour soutenir votre trésorerie et vos recrutements.
 
 | Dispositif / Organisme | Cible d'entreprises | Type de dépenses couvertes | Taux d'intervention | Modalité de versement |
-| :--- | :--- | :--- | :--- | :--- |
+|---|---|---|---|---|
 | **France 2030 (Bpifrance)** | Startups deeptech, PME industrielles, ETI de pointe | R&D, industrialisation, prototypes, équipements de production décarbonés | 25 % à 50 % des coûts éligibles | Avances remboursables et subventions directes |
 | **Aides régionales à l'investissement** | PME locales, artisans en développement, ateliers | Achat de machines neuves, extension de locaux, transition écologique | 15 % à 35 % du montant HT | Subvention à fonds perdus sur présentation des factures |
 | **Ademe (Tremplin Transition Écologique)** | TPE, PME de tous secteurs | Bilan carbone, isolation thermique, rénovation éclairage, mobilité douce | Forfaits fixes de 2 000 € à 100 000 € | Versement rapide après instruction simplifiée |

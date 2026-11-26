@@ -33,7 +33,7 @@ Décomposition de la facture de fret
           └─ Benchmark et renégociation active ──► -12 % d'économies annuelles pérennes
 ```
 
-Selon une analyse réalisée par le cabinet McKinsey sur la chaîne d'approvisionnement européenne et les barèmes de l'Insee, les entreprises qui mettent leurs prestataires en concurrence tous les deux ans réduisent leurs dépenses de fret de 14,5 %. Pour comparer vos conditions actuelles aux réalités du marché, consultez notre service : [je vais cartographier les tarifs et délais de livraison concurrents](https://b2bpro.store/services/je-vais-cartographier-les-tarifs-et-delais-de-livraison-concurrents).
+Sur les grilles de messagerie et d'affrètement B2B analysées sur le marché français, une mise en concurrence biennale ciblée sur les tranches de poids dominantes et les surcharges gazole permet de dégager de 10 % à 15 % d'économies à volume constant. Pour comparer vos conditions actuelles aux réalités du marché, consultez notre service : [je vais cartographier les tarifs et délais de livraison concurrents](https://b2bpro.store/services/je-vais-cartographier-les-tarifs-et-delais-de-livraison-concurrents).
 
 ---
 
