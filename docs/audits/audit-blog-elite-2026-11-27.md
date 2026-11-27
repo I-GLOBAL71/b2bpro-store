@@ -7,4 +7,4 @@
 
 | Rang | Score | Slug | Mots | SEO (30) | GEO (25) | Humain (25) | CRO (10) | Médias (10) | Statut |
 |---|---|---|---|---|---|---|---|---|---|
-| **S+** | **98/100** | `sante-financiere-fournisseurs-audit-defaillances` | 957 | 30/30 | 25/25 | 23/25 | 10/10 | 10/10 | ✓ Validé |
+| **S+** | **98/100** | `financement-france-2030-dossier-subvention-reussi` | 963 | 30/30 | 25/25 | 23/25 | 10/10 | 10/10 | ✓ Validé |
