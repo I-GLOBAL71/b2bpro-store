@@ -63,3 +63,9 @@ jobs:
             git commit -m "chore(blog): publication automatique quotidienne 100% S+ [skip actions]"
             git push origin main
           fi
+
+      - name: Cleanup stale Vercel deployments (if VERCEL_TOKEN configured)
+        if: ${{ secrets.VERCEL_TOKEN != '' }}
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: node scripts/cleanup-vercel-deployments.mjs || true

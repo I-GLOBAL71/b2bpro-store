@@ -173,12 +173,13 @@ function produceThumbs(params: {
   };
   const svgs = [thumbV1(svc), thumbV2(svc), thumbV3(svc)];
   try {
-    const dir = path.join(process.cwd(), "public", "thumbs");
-    mkdirSync(dir, { recursive: true });
+    if (process.env.VERCEL) throw new Error("read-only serverless filesystem");
+    const dir = path.join(/*turbopackIgnore: true*/ process.cwd(), "public", "thumbs");
+    mkdirSync(/*turbopackIgnore: true*/ dir, { recursive: true });
     const files: string[] = [];
     svgs.forEach((svg, i) => {
       const file = `public/thumbs/${params.slug}-${i + 1}.svg`;
-      writeFileSync(path.join(process.cwd(), file), svg, "utf-8");
+      writeFileSync(path.join(/*turbopackIgnore: true*/ process.cwd(), file), svg, "utf-8");
       files.push(file);
     });
     return { written: true, files, thumbUrlsJson: null };

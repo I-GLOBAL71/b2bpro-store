@@ -36,7 +36,9 @@ import {
 
 /** Racine du projet (fonctionne en dev Next, en script bun et en standalone). */
 function root(...parts: string[]): string {
-  return path.join(process.cwd(), ...parts);
+  // Les fichiers requis en production sur /api/integrity sont déclarés explicitement
+  // dans next.config.ts (outputFileTracingIncludes) afin d'éviter le traçage de tout le dépôt.
+  return path.join(/*turbopackIgnore: true*/ process.cwd(), ...parts);
 }
 
 function norm(s: string): string {

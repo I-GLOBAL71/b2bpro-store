@@ -1,0 +1,39 @@
+# Fichiers et dossiers locaux volumineux inutiles aux builds et fonctions Vercel
+node_modules
+.next
+.git
+.vercel
+.agents
+.clawhub
+.zscripts
+
+# Base locale SQLite & sauvegardes (Vercel utilise Neon PostgreSQL)
+db/snapshots
+db/*.db
+db/*.db-journal
+
+# Archives et lots Pinterest bruts locaux (50-70 Mo+)
+Pinterest Domination Engine - Visuels B2B.zip
+incoming-flow-pins
+pinterest-bulk-upload-*.csv
+
+# Artefacts de dev, uploads locaux, skills IA, tests et journaux
+upload
+tool-results
+skills
+examples
+mini-services
+download
+tests
+docs/audits
+docs/logs
+docs/IDEES-SERVICES-ANTIGRAVITY.txt
+docs/PLAN-*
+CHANGELOG.md
+*.log
+*.tsbuildinfo
+gsc-token.json
+gsc-service-account.json
+*token_gsc*.json
+token_indexing.json
+data/prospecting

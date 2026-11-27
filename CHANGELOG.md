@@ -7,6 +7,16 @@
 
 ---
 
+## [2.8.2] — 2026-11-27 — Optimisation Functions Storage Vercel (Traçage Serverless & Exclusions Build)
+
+### [CORRECTIF] — Réduction de 66–81 % de l'empreinte des fonctions serverless (`next.config.ts`, `src/lib/*`, `.vercelignore`, `vercel.json`)
+- **Suppression des traçages dynamiques projet entier (`src/lib/gsc.ts`, `src/lib/admin-service-create.ts`, `src/lib/guard.ts`)** : ajout de `/*turbopackIgnore: true*/` sur les appels `path.join(process.cwd(), ...)` et garde `!process.env.VERCEL` pour les fichiers dev locaux (`gsc-token.json`, `token_gsc.json`, `docs/GSC-SOUMISSION-QUOTIDIENNE.txt`, `docs/logs/`, `public/thumbs/`), supprimant les avertissements Turbopack et l'inclusion parasite des dossiers `db/snapshots/`, `public/pinterest/`, `upload/`, `skills/`, `scripts/` et `tests/` dans `/api/integrity`, `/api/admin/services` et `/api/admin/services/[id]`.
+- **Exclusions ciblées dans `next.config.ts` (`outputFileTracingExcludes` + `outputFileTracingIncludes`)** : exclusion des ~56 Mo de moteurs WASM/Edge Prisma inutilisés en Node.js (`*wasm*`, `query_engine_bg.*`, `*.map`) sur toutes les routes, tout en déclarant explicitement sous `/api/integrity` les seuls fichiers requis par `guard.ts` (`public/img/blog/**`, `public/thumbs/**`, `public/avatars/**`, `public/logo.svg`, `data/seed.ts`, `data/catalog.json`, `docs/GSC-REINDEXATION.txt`, `src/**`).
+- **`.vercelignore`, `vercel.json` (`ignoreCommand`) & automatisation (`scripts/auto-daily-runner.ts`, `.github/workflows/daily-blog.yml`, `package.json`)** : exclusion des archives locales (`*.zip`, `incoming-flow-pins/`, `db/snapshots/`, `upload/`, `skills/`), saut des builds Vercel lorsque seuls des fichiers hors-runtime changent, et purge automatique optionnelle via `cleanup-vercel-deployments.mjs` si `VERCEL_TOKEN` est défini (`bun run vercel:cleanup`).
+- **Résultat mesuré (`.next/server/**/*.nft.json`)** : total des traces réduit de `3 678,05 Mo` (57 traces) à `1 246,26 Mo` (64 traces, soit **-66 %**), et `/api/integrity` de `150,67 Mo` (`1 414` fichiers) à `29,27 Mo` (`781` fichiers, **-80,6 %**).
+
+---
+
 ## [2.8.1] — 2026-11-26 — Rédaction quotidienne Jour 4 (Immobilier & Local) : article matin Rang S+ & préparation 16h15
 
 ### [DONNÉES] — Jour 4 Immobilier & Local, Neon PostgreSQL & Réindexation GSC / IndexNow

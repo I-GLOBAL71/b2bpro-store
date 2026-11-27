@@ -316,6 +316,13 @@ async function main() {
         execSync(`git commit -m "chore(blog): publication automatique ${targetArticle.slug} [auto-sync]"`, { stdio: "inherit" });
         execSync("git push origin main", { stdio: "inherit" });
         console.log("   ✓ Commit et push exécutés vers origin main (déploiement Vercel actif).\n");
+        if (process.env.VERCEL_TOKEN) {
+          try {
+            execSync("node scripts/cleanup-vercel-deployments.mjs", { stdio: "inherit" });
+          } catch {
+            console.warn("   ⚠️ Purge automatique Vercel différée (non bloquant).");
+          }
+        }
       }
     } catch (gitErr) {
       console.warn("   ⚠️ Push git automatique différé :", (gitErr as Error).message);

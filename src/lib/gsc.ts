@@ -116,23 +116,23 @@ export function loadGscCredentials(): GscCredentials | null {
     }
   }
 
-  // 2. Fichier local ./gsc-token.json
-  const localPath = path.join(process.cwd(), "gsc-token.json");
-  if (existsSync(localPath)) {
+  // 2. Fichier local ./gsc-token.json (local dev uniquement — sur Vercel, GSC_TOKEN_JSON est utilisé)
+  const localPath = path.join(/*turbopackIgnore: true*/ process.cwd(), "gsc-token.json");
+  if (!process.env.VERCEL && existsSync(/*turbopackIgnore: true*/ localPath)) {
     try {
-      return JSON.parse(readFileSync(localPath, "utf8")) as GscCredentials;
+      return JSON.parse(readFileSync(/*turbopackIgnore: true*/ localPath, "utf8")) as GscCredentials;
     } catch (e) {
       console.warn(`⚠️ [GSC] Erreur lors de la lecture de ${localPath}`);
     }
   }
 
-  // 3. Fallback sur le projet Blogger central
-  if (existsSync(CENTRAL_BLOGGER_TOKEN_PATH)) {
+  // 3. Fallback sur le projet Blogger central (dev local uniquement)
+  if (!process.env.VERCEL && existsSync(/*turbopackIgnore: true*/ CENTRAL_BLOGGER_TOKEN_PATH)) {
     try {
-      const raw = readFileSync(CENTRAL_BLOGGER_TOKEN_PATH, "utf8");
+      const raw = readFileSync(/*turbopackIgnore: true*/ CENTRAL_BLOGGER_TOKEN_PATH, "utf8");
       // Sauvegarde locale automatique pour les prochains lancements
       try {
-        writeFileSync(localPath, raw, "utf8");
+        writeFileSync(/*turbopackIgnore: true*/ localPath, raw, "utf8");
       } catch {
         // En lecture seule (ex: Vercel serverless), pas grave
       }
@@ -439,13 +439,15 @@ export async function submitNewOrUpdatedContent(
     }
   }
 
-  // 4. Inscription dans la file quotidienne docs/GSC-SOUMISSION-QUOTIDIENNE.txt
-  try {
-    const gscFile = path.join(process.cwd(), "docs", "GSC-SOUMISSION-QUOTIDIENNE.txt");
-    const entry = `\n${fullUrl} # [AUTO-SUBMIT ${options.type.toUpperCase()}] ${timestamp}\n`;
-    appendFileSync(gscFile, entry, "utf8");
-  } catch {
-    // Best-effort
+  // 4. Inscription dans la file quotidienne docs/GSC-SOUMISSION-QUOTIDIENNE.txt (local uniquement)
+  if (!process.env.VERCEL) {
+    try {
+      const gscFile = path.join(/*turbopackIgnore: true*/ process.cwd(), "docs", "GSC-SOUMISSION-QUOTIDIENNE.txt");
+      const entry = `\n${fullUrl} # [AUTO-SUBMIT ${options.type.toUpperCase()}] ${timestamp}\n`;
+      appendFileSync(/*turbopackIgnore: true*/ gscFile, entry, "utf8");
+    } catch {
+      // Best-effort
+    }
   }
 
   // 5. Journalisation structurée dans docs/logs/gsc-submissions.jsonl
@@ -460,13 +462,15 @@ export async function submitNewOrUpdatedContent(
     indexnow: indexNowRes,
   };
 
-  try {
-    const logsDir = path.join(process.cwd(), "docs", "logs");
-    if (!existsSync(logsDir)) mkdirSync(logsDir, { recursive: true });
-    const logFile = path.join(logsDir, "gsc-submissions.jsonl");
-    appendFileSync(logFile, JSON.stringify(result) + "\n", "utf8");
-  } catch {
-    // Best-effort
+  if (!process.env.VERCEL) {
+    try {
+      const logsDir = path.join(/*turbopackIgnore: true*/ process.cwd(), "docs", "logs");
+      if (!existsSync(/*turbopackIgnore: true*/ logsDir)) mkdirSync(/*turbopackIgnore: true*/ logsDir, { recursive: true });
+      const logFile = path.join(/*turbopackIgnore: true*/ logsDir, "gsc-submissions.jsonl");
+      appendFileSync(/*turbopackIgnore: true*/ logFile, JSON.stringify(result) + "\n", "utf8");
+    } catch {
+      // Best-effort
+    }
   }
 
   if (!options.silent) {

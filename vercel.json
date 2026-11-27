@@ -2,5 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
   "buildCommand": "bun scripts/ensure-neon-schema.ts && bunx prisma generate --schema prisma/schema.postgres.prisma && next build",
-  "installCommand": "bun install"
+  "installCommand": "bun install",
+  "ignoreCommand": "git diff --quiet \"${VERCEL_GIT_PREVIOUS_SHA:-HEAD^}\" HEAD -- src/ prisma/ public/ data/seed.ts data/catalog.json docs/GSC-REINDEXATION.txt scripts/ensure-neon-schema.ts package.json bun.lock next.config.ts vercel.json 2>/dev/null || exit 1"
 }
