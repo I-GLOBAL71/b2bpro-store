@@ -15,6 +15,35 @@ interface Params {
 }
 
 /**
+ * Extrait les Q/R d'une section FAQ markdown (`## FAQ` / `## Questions fréquentes` /
+ * `## Foire aux questions`) pour alimenter le schéma JSON-LD `FAQPage`.
+ */
+function extractMarkdownFaq(md: string): { question: string; answer: string }[] {
+  const faqMatch = md.match(/^##\s+(?:FAQ|Questions\s+fréquentes|Foire\s+aux\s+questions)[^\n]*\n([\s\S]*)$/im);
+  if (!faqMatch) return [];
+  const afterFaq = faqMatch[1].split(/\n##\s+/)[0] ?? "";
+  const items: { question: string; answer: string }[] = [];
+  const blocks = afterFaq.split(/\n###\s+/);
+  for (const block of blocks) {
+    const trimmed = block.trim();
+    if (!trimmed) continue;
+    const firstNl = trimmed.indexOf("\n");
+    if (firstNl === -1) continue;
+    const question = trimmed.slice(0, firstNl).replace(/^###\s+/, "").trim();
+    const answer = trimmed
+      .slice(firstNl + 1)
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+      .replace(/\*\*([^*]+)\*\*/g, "$1")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (question.endsWith("?") && answer.length >= 20) {
+      items.push({ question, answer });
+    }
+  }
+  return items.slice(0, 8);
+}
+
+/**
  * Maillage éditorial → catalogue : pôles (poleSlug des fiches Service) concernés
  * par chaque catégorie d'article du blog (BlogPost.category — pas de liaison en
  * base, la correspondance est éditoriale). Les articles cités par les IA exposent
@@ -27,6 +56,10 @@ const CATEGORY_POLES: Record<string, string[]> = {
   "Métiers & Carrière": ["rh-recrutement"],
   "Marketing & Influence": ["social-media-influence"],
   "E-commerce": ["ecommerce-pricing"],
+  "Grandes Entreprises & Finance": ["grandes-entreprises"],
+  "Tourisme & Hôtellerie": ["hotellerie-tourisme"],
+  "Formation & Santé": ["formation-sante"],
+  "Logistique & Franchises": ["logistique-franchises"],
 };
 
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
@@ -37,12 +70,16 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   return {
     title: post.title.slice(0, 68),
     description: post.excerpt.slice(0, 165),
+    authors: [{ name: post.author }],
     alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
       title: post.title,
       description: post.excerpt,
       type: "article",
+      section: post.category,
       publishedTime: post.publishedAt.toISOString(),
+      modifiedTime: post.publishedAt.toISOString(),
+      authors: [post.author],
       images: [
         {
           url: imageUrl,
@@ -86,9 +123,16 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
 
   // Retire le H1 dupliqué du contenu (le header de page l'affiche déjà)
   const content = post.content.replace(/^#\s+.+\n+/, "");
+  const faqItems = extractMarkdownFaq(post.content);
 
   const accents = Object.values(POLE_ACCENTS);
   const a = accents[post.slug.length % accents.length];
+
+  const pageUrl = `${SITE.url}/blog/${post.slug}`;
+  const significantLinks = [
+    ...concernedServices.map((s) => `${SITE.url}/services/${s.slug}`),
+    ...others.map((o) => `${SITE.url}/blog/${o.slug}`),
+  ];
 
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -96,6 +140,9 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
     headline: post.title,
     description: post.excerpt,
     image: getBlogCoverUrl(post.slug),
+    url: pageUrl,
+    articleSection: post.category,
+    isAccessibleForFree: true,
     datePublished: post.publishedAt.toISOString(),
     dateModified: post.publishedAt.toISOString(),
     author: {
@@ -112,13 +159,42 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
         url: `${SITE.url}/apple-touch-icon.png`,
       },
     },
-    mainEntityOfPage: `${SITE.url}/blog/${post.slug}`,
-    inLanguage: "fr",
+    mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
+    ...(significantLinks.length ? { significantLink: significantLinks } : {}),
+    inLanguage: "fr-FR",
   };
+
+  const faqJsonLd = faqItems.length
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqItems.map((f) => ({
+          "@type": "Question",
+          name: f.question,
+          acceptedAnswer: { "@type": "Answer", text: f.answer },
+        })),
+      }
+    : null;
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Accueil", item: SITE.url },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE.url}/blog` },
+      { "@type": "ListItem", position: 3, name: post.title, item: pageUrl },
+    ],
+  };
+
+  const structuredData = [
+    articleJsonLd,
+    ...(faqJsonLd ? [faqJsonLd] : []),
+    breadcrumbJsonLd,
+  ];
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
 
       <article className="mx-auto w-full min-w-0 max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
         <nav aria-label="Fil d'ariane" className="flex flex-wrap items-center gap-1.5 text-[12px] sm:text-[13px] text-muted-foreground">
@@ -208,7 +284,7 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
           </h2>
           <p className="mt-2 text-[13.5px] sm:text-[14px] leading-6 text-muted-foreground break-words">
             Les méthodes décrites dans cet article sont exactement celles que nos services experts
-            appliquent pour vous : données fraîches vérifiées, livrables prêts à l'emploi et
+            appliquent pour vous : données fraîches vérifiées, livrables prêts à l&apos;emploi et
             experts notés de 4,2 à 5,0 étoiles, dès 20 €.
           </p>
           <div className="mt-5 flex flex-col sm:flex-row flex-wrap gap-3">

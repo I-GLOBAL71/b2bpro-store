@@ -17,6 +17,7 @@ import {
   ExternalLink,
   Menu,
   ShoppingCart,
+  Rocket,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -27,6 +28,7 @@ import { BrandLogo } from "@/components/site/brand-logo";
 
 const NAV = [
   { href: "/admin", label: "Tableau de bord", icon: LayoutDashboard, exact: true },
+  { href: "/admin/prospection", label: "Prospection Auto", icon: Rocket },
   { href: "/admin/messages", label: "Messages clients", icon: MessagesSquare, badge: true },
   { href: "/admin/commandes", label: "Commandes", icon: ShoppingCart },
   { href: "/admin/vitrine", label: "Vitrine & Rotation", icon: Recycle },

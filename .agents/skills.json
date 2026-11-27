@@ -1,0 +1,11 @@
+{
+  "entries": [
+    {
+      "path": "skills",
+      "exclude": ["fullstack-dev", "skill-finder-cn", "task-review"]
+    },
+    {
+      "path": ".agents/skills"
+    }
+  ]
+}

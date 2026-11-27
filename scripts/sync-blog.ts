@@ -37,7 +37,7 @@ async function main() {
   let nonConformes: string[] = [];
 
   for (const f of files) {
-    const raw = readFileSync(`${BLOG_DIR}/${f}`, "utf-8");
+    const raw = readFileSync(`${BLOG_DIR}/${f}`, "utf-8").replace(/\r\n/g, "\n");
     const fmMatch = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
     if (!fmMatch) continue;
     const fm: Record<string, string> = {};

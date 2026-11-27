@@ -71,3 +71,6 @@ gsc-service-account.json
 *token_gsc*.json
 token_indexing.json
 
+# Historique local du moteur de prospection autonome
+data/prospecting/
+

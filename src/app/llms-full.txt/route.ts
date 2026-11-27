@@ -16,21 +16,33 @@ export const dynamic = "force-dynamic";
 const EMPTY_KEYWORDS: ServiceKeywords = { primary: "", secondary: [], longTail: [] };
 
 export async function GET() {
-  const services = await db.service.findMany({
-    select: {
-      slug: true,
-      title: true,
-      description: true,
-      basePrice: true,
-      deliveryDays: true,
-      rating: true,
-      reviewsCount: true,
-      keywords: true,
-      faq: true,
-      seller: { select: { name: true } },
-    },
-    orderBy: [{ salesCount: "desc" }],
-  });
+  const [services, posts] = await Promise.all([
+    db.service.findMany({
+      select: {
+        slug: true,
+        title: true,
+        description: true,
+        basePrice: true,
+        deliveryDays: true,
+        rating: true,
+        reviewsCount: true,
+        keywords: true,
+        faq: true,
+        seller: { select: { name: true } },
+      },
+      orderBy: [{ salesCount: "desc" }],
+    }),
+    db.blogPost.findMany({
+      select: {
+        slug: true,
+        title: true,
+        excerpt: true,
+        category: true,
+        content: true,
+      },
+      orderBy: [{ publishedAt: "desc" }],
+    }),
+  ]);
 
   const blocks = services
     .map((s) => {
@@ -68,15 +80,34 @@ export async function GET() {
     })
     .join("\n\n");
 
-  const txt = `# b2bpro.store : catalogue étendu
+  const blogBlocks = posts
+    .map((p) => {
+      // Retire tout cadratin éventuel et expose l'article + URL canonique aux IA
+      const bodyClean = p.content.replace(/^#\s+.+\r?\n+/, "").replace(/—/g, ",").trim();
+      return [
+        `## ${p.title}`,
+        `URL: ${SITE.url}/blog/${p.slug}`,
+        `Catégorie: ${p.category}`,
+        `SYNTHÈSE BLOG: ${p.excerpt.replace(/—/g, ",")}`,
+        "",
+        bodyClean,
+      ].join("\n");
+    })
+    .join("\n\n");
+
+  const txt = `# b2bpro.store : catalogue et guides étendus
 
 > ${SITE.description}
 
-Fichier étendu : contenu complet des fiches services pour assistants IA (version courte : ${SITE.url}/llms.txt).
+Fichier étendu : contenu complet des ${services.length} fiches services et des ${posts.length} guides d'experts pour assistants IA (version courte : ${SITE.url}/llms.txt).
 
 La place de marché des services digitaux B2B francophones : ${services.length} services notés de 4,2 à 5,0 étoiles, livrés par des vendeurs vérifiés (notes de 4,5 à 4,9), dès 20 €, en 2 à 3 jours ouvrés, avec paiement séquestré. Support IA 7 j/7. Couverture : France, Québec, Belgique, Suisse et Afrique francophone.
 
 ${blocks}
+
+# b2bpro.store : guides et articles d'experts (${posts.length} guides)
+
+${blogBlocks}
 `;
 
   return new Response(txt, {
