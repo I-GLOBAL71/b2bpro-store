@@ -74,3 +74,7 @@ token_indexing.json
 # Historique local du moteur de prospection autonome
 data/prospecting/
 
+# Archives lourdes et visuels bruts sources Pinterest (génération locale uniquement)
+Pinterest Domination Engine - Visuels B2B.zip
+incoming-flow-pins/
+
